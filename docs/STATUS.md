@@ -2,12 +2,13 @@
 
 > 此页由 `python3 scripts/generate_status.py` 从 `tasks.json` 生成；只编辑账本。
 
-- Phase A: A4=done, A3=done, A2=done, A1=done
+- Phase A: A4=done, A3=verifying, A2=done, A1=verifying
 - 原始计划验收：10/76 点（13.2%）
 - 已批准调整计划验收：10/76 点（13.2%）；当前无批准范围变更
-- 后续产品任务：Phase A 已获负责人界面验收；按账本依赖继续，真实 Provider 未接入
+- 增量任务：VA-01=verifying, QC-01=verifying
+- 后续产品任务：Phase A Mock UI 已获分项确认；新增菜单栏系统指标待复核，真实 Provider 未接入
 - Build/Unit：见 `reports/phase-a.md` 与 `.artifacts/verification.json`
-- Manual UI：负责人已确认 Phase A Mock 双入口，见 `reports/phase-a-owner-acceptance.md`；Performance/Live Provider：NOT_RUN
+- Manual UI：负责人已确认配额与品牌图标；新增菜单栏四项系统指标待人工验收，见 `reports/phase-a-owner-acceptance.md`；Performance/Live Provider：NOT_RUN
 
 ## 未完成任务
 

@@ -1,0 +1,21 @@
+{
+  "images": [
+    {
+      "idiom": "mac",
+      "scale": "1x",
+      "filename": "soul-sleeping.png"
+    },
+    {
+      "idiom": "mac",
+      "scale": "2x",
+      "filename": "soul-sleeping@2x.png"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  },
+  "properties": {
+    "template-rendering-intent": "original"
+  }
+}

@@ -1,0 +1,486 @@
+{
+  "generated_on": "2026-09-28",
+  "scope": "Generated source-image archive and asset-catalog static checks; not app validation",
+  "static": {
+    "kind": "STATIC_ASSET_DELIVERY_CHECK",
+    "status": "PASS",
+    "files_checked": 59,
+    "png_headers_checked": 38,
+    "asset_sets_checked": 8,
+    "errors": [],
+    "warnings": [
+      "MenuBar asset is a DRAFT, not approved for default production use.",
+      "App icon preserves the opaque exterior dark matte; Dock review is pending.",
+      "Static pass is not Xcode build, runtime UI, accessibility, or performance approval."
+    ],
+    "not_run": [
+      "actool",
+      "xcode_build",
+      "app_launch",
+      "dock_visual_check",
+      "menubar_light_dark_check",
+      "accessibility",
+      "performance"
+    ]
+  },
+  "png_decode_checks": [
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_128x128.png",
+      "decoded": true,
+      "size": [
+        128,
+        128
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_128x128@2x.png",
+      "decoded": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_16x16.png",
+      "decoded": true,
+      "size": [
+        16,
+        16
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_16x16@2x.png",
+      "decoded": true,
+      "size": [
+        32,
+        32
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_256x256.png",
+      "decoded": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_256x256@2x.png",
+      "decoded": true,
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_32x32.png",
+      "decoded": true,
+      "size": [
+        32,
+        32
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_32x32@2x.png",
+      "decoded": true,
+      "size": [
+        64,
+        64
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_512x512.png",
+      "decoded": true,
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_512x512@2x.png",
+      "decoded": true,
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBloated.imageset/soul-bloated.png",
+      "decoded": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBloated.imageset/soul-bloated@2x.png",
+      "decoded": true,
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBusy.imageset/soul-busy.png",
+      "decoded": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBusy.imageset/soul-busy@2x.png",
+      "decoded": true,
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulLowBattery.imageset/soul-low-battery.png",
+      "decoded": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulLowBattery.imageset/soul-low-battery@2x.png",
+      "decoded": true,
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulMenuTemplateDraft.imageset/macsoul-menu-template-draft.png",
+      "decoded": true,
+      "size": [
+        18,
+        18
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "black_rgb_template_verified": true
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulMenuTemplateDraft.imageset/macsoul-menu-template-draft@2x.png",
+      "decoded": true,
+      "size": [
+        36,
+        36
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "black_rgb_template_verified": true
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulNormal.imageset/soul-normal.png",
+      "decoded": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulNormal.imageset/soul-normal@2x.png",
+      "decoded": true,
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulOverload.imageset/soul-overload.png",
+      "decoded": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulOverload.imageset/soul-overload@2x.png",
+      "decoded": true,
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulSleeping.imageset/soul-sleeping.png",
+      "decoded": true,
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulSleeping.imageset/soul-sleeping@2x.png",
+      "decoded": true,
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets-source/app-icon/macsoul-app-icon-source.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "assets-source/menu-bar/macsoul-menu-template-source.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets-source/reference/concept-01-ghost-orbit.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "assets-source/reference/concept-02-ghost-monitor.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "assets-source/reference/concept-03-system-ring.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "assets-source/reference/concept-04-heartbeat.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "assets-source/reference/macsoul-product-hero.png",
+      "decoded": true,
+      "size": [
+        1672,
+        941
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "assets-source/reference/selected-refinement.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB"
+    },
+    {
+      "path": "assets-source/soul/soul-bloated.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets-source/soul/soul-busy.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets-source/soul/soul-low-battery.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets-source/soul/soul-normal.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets-source/soul/soul-overload.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "path": "assets-source/soul/soul-sleeping.png",
+      "decoded": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    }
+  ],
+  "negative_validator_tests": [
+    {
+      "test": "missing_runtime_png",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "status": "PASS"
+    },
+    {
+      "test": "changed_delivery_file_hash",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "status": "PASS"
+    }
+  ],
+  "source_originals_byte_identical": true,
+  "overlay_check": {
+    "against": "MacSoul-All-in-One.zip",
+    "same_relative_file_paths": [],
+    "status": "PASS",
+    "note": "Does not inspect the user's current local working tree."
+  },
+  "not_run": [
+    "actool",
+    "xcode_build",
+    "app_launch",
+    "dock_visual_check",
+    "menubar_light_dark_check",
+    "accessibility",
+    "performance"
+  ]
+}

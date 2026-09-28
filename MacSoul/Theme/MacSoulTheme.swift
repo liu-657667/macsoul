@@ -16,6 +16,8 @@ enum MacSoulTheme {
 
     enum Size {
         static let soulGlyph: CGFloat = 64
+        static let soulArtwork: CGFloat = 128
+        static let soulPopover: CGFloat = 48
     }
 
     static var cardBackground: Color {

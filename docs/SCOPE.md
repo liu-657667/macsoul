@@ -30,9 +30,9 @@ Soul only reacts to meaningful state transitions and recovery; it never replaces
 - Lightweight GitHub/OpenAI/Anthropic connectivity status
 
 ### 4. AI Coding
-Only:
-- Codex: 5h used %, reset; 1-week used %, reset
-- Claude Code: 5h used %, reset; 1-week used %, reset
+Only Codex and Claude Code quota windows, up to 5h and 1-week per provider. Display the windows actually applicable and reported for the current account, with used % and available reset. A Week-only account has no invented 5h bar. Do not infer window presence from Pro / Plus names.
+
+Valid 0%, explicitly not applicable, unreported, request failed and stale are distinct states. Missing data is not evidence of unlimited quota; reset expiry does not clear the last used value.
 
 No token dashboard, costs, session analytics, model routing, or agent history.
 

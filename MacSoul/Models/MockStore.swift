@@ -3,23 +3,104 @@ import Combine
 
 protocol SnapshotProvider { func snapshot(now: Date) -> AppSnapshot }
 struct MockProvider: SnapshotProvider {
-    enum Fixture: String, CaseIterable { case healthy, cpuCritical, cpuRecovery, memoryPressure, quota95, missingWindow, staleOffline, noBattery }
+    enum Fixture: String, CaseIterable, Identifiable {
+        case healthy, busy, cpuCritical, cpuRecovery, memoryPressure, lowBattery, sleeping
+        case quota95, codexWeeklyOnly, claudeWeeklyOnly, codexUnreported, claudeUnreported
+        case zeroUsage, requestFailed, staleOffline, noBattery
+
+        var id: String { rawValue }
+        var label: String {
+            switch self {
+            case .healthy: "Normal"
+            case .busy: "Busy"
+            case .cpuCritical: "CPU overload"
+            case .cpuRecovery: "CPU recovery"
+            case .memoryPressure: "Memory pressure"
+            case .lowBattery: "Low battery"
+            case .sleeping: "Resting"
+            case .quota95: "Quota 95%"
+            case .codexWeeklyOnly: "Codex: Week only"
+            case .claudeWeeklyOnly: "Claude: Week only"
+            case .codexUnreported: "Codex: 5h not reported"
+            case .claudeUnreported: "Claude: Week not reported"
+            case .zeroUsage: "Valid 0% quota"
+            case .requestFailed: "Quota request failed"
+            case .staleOffline: "Stale / offline"
+            case .noBattery: "No battery"
+            }
+        }
+        var soulVisual: SoulVisual {
+            switch self {
+            case .busy: .busy
+            case .cpuCritical: .overload
+            case .memoryPressure: .bloated
+            case .lowBattery: .lowBattery
+            case .sleeping: .sleeping
+            default: .normal
+            }
+        }
+        var soulMood: String {
+            switch self {
+            case .busy: "Busy · Mock"
+            case .cpuCritical: "Overload · Mock"
+            case .memoryPressure: "Memory pressure · Mock"
+            case .lowBattery: "Low battery · Mock"
+            case .sleeping: "Resting · Mock"
+            case .cpuRecovery: "Recovering · Mock"
+            default: "Calm · Mock"
+            }
+        }
+    }
     let fixture: Fixture
     func snapshot(now: Date) -> AppSnapshot {
         let stale = fixture == .staleOffline
+        let failed = fixture == .requestFailed
+        let codexFive = QuotaWindow(usedPercent: fixture == .zeroUsage ? 0 : fixture == .quota95 ? 95 : 62,
+            durationMinutes: 300, resetsAt: now.addingTimeInterval(8280))!
+        let codexWeek = QuotaWindow(usedPercent: 31, durationMinutes: 10080,
+            resetsAt: now.addingTimeInterval(367200))!
+        let claudeFive = QuotaWindow(usedPercent: 81, durationMinutes: 300,
+            resetsAt: now.addingTimeInterval(3960))!
+        let claudeWeek = QuotaWindow(usedPercent: fixture == .zeroUsage ? 0 : fixture == .quota95 ? 95 : 47,
+            durationMinutes: 10080, resetsAt: now.addingTimeInterval(302400))!
+        let codexFiveState: QuotaWindowState = switch fixture {
+        case .codexWeeklyOnly: .notApplicable
+        case .codexUnreported: .unreported
+        case .requestFailed: .requestFailed
+        default: .available(codexFive)
+        }
+        let claudeFiveState: QuotaWindowState = switch fixture {
+        case .claudeWeeklyOnly: .notApplicable
+        case .requestFailed: .requestFailed
+        default: .available(claudeFive)
+        }
+        let source = failed ? "Bundled failure fixture" : "Bundled fixture"
+        let sampledAt: Date? = failed ? nil : stale ? now.addingTimeInterval(-600) : now
+        let freshness: Freshness = failed ? .unavailable : stale ? .stale : .fresh
         let codex = QuotaItem(provider: .codex,
-            fiveHour: fixture == .missingWindow ? nil : QuotaWindow(usedPercent: fixture == .quota95 ? 95 : 62, durationMinutes: 300, resetsAt: now.addingTimeInterval(8280)),
-            weekly: QuotaWindow(usedPercent: 31, durationMinutes: 10080, resetsAt: now.addingTimeInterval(367200)),
-            sampledAt: stale ? now.addingTimeInterval(-600) : now, source: "Bundled fixture", freshness: stale ? .stale : .fresh, mode: .mock)
+            fiveHour: codexFiveState,
+            weekly: failed ? .requestFailed : .available(codexWeek),
+            sampledAt: sampledAt, source: source, freshness: freshness, mode: .mock)
         let claude = QuotaItem(provider: .claude,
-            fiveHour: QuotaWindow(usedPercent: 81, durationMinutes: 300, resetsAt: now.addingTimeInterval(3960)),
-            weekly: QuotaWindow(usedPercent: 47, durationMinutes: 10080, resetsAt: now.addingTimeInterval(302400)),
-            sampledAt: stale ? now.addingTimeInterval(-600) : now, source: "Bundled fixture", freshness: stale ? .stale : .fresh, mode: .mock)
-        let cpu = fixture == .cpuCritical ? 96.0 : fixture == .cpuRecovery ? 20.0 : 32.0
-        return AppSnapshot(mode: .mock, soulMood: fixture == .cpuCritical ? "Critical · Mock" : "Calm · Mock",
+            fiveHour: claudeFiveState,
+            weekly: failed ? .requestFailed : fixture == .claudeUnreported ? .unreported : .available(claudeWeek),
+            sampledAt: sampledAt, source: source, freshness: freshness, mode: .mock)
+        let cpu: Double = switch fixture {
+        case .busy: 72
+        case .cpuCritical: 96
+        case .cpuRecovery: 20
+        case .sleeping: 5
+        default: 32
+        }
+        let battery: Double? = switch fixture {
+        case .lowBattery: 4
+        case .noBattery: nil
+        default: 78
+        }
+        return AppSnapshot(mode: .mock, soulVisual: fixture.soulVisual, soulMood: fixture.soulMood,
             soulMessage: "演示数据，未连接系统采样", cpu: PercentMetric(usedPercent: cpu),
             memoryUsed: PercentMetric(usedPercent: 54), memoryPressure: fixture == .memoryPressure ? "Critical · Mock" : "Normal · Mock",
-            disk: PercentMetric(usedPercent: 67), battery: PercentMetric(usedPercent: fixture == .noBattery ? nil : 78),
+            disk: PercentMetric(usedPercent: 67), battery: PercentMetric(usedPercent: battery),
             publicIP: stale ? nil : "203.0.113.42", region: stale ? nil : "Example region",
             proxyHint: "Unknown · Mock", tunnelHint: "Unknown · Mock", quotas: [codex, claude],
             runtimes: [RuntimeItem(name: "Java", version: "21 · Mock"), RuntimeItem(name: "Node", version: "18 · Mock")],
@@ -29,8 +110,8 @@ struct MockProvider: SnapshotProvider {
 // Explicit composition boundary; Phase A never starts live collection.
 struct UnavailableProvider: SnapshotProvider {
     func snapshot(now: Date) -> AppSnapshot {
-        let empty = QuotaProvider.allCases.map { QuotaItem(provider: $0, fiveHour: nil, weekly: nil, sampledAt: nil, source: "No live provider", freshness: .unavailable, mode: .live) }
-        return AppSnapshot(mode: .live, soulMood: "Unavailable", soulMessage: "No live provider",
+        let empty = QuotaProvider.allCases.map { QuotaItem(provider: $0, fiveHour: .providerUnavailable, weekly: .providerUnavailable, sampledAt: nil, source: "No live provider", freshness: .unavailable, mode: .live) }
+        return AppSnapshot(mode: .live, soulVisual: nil, soulMood: "Unavailable", soulMessage: "No live provider",
             cpu: PercentMetric(usedPercent: nil), memoryUsed: PercentMetric(usedPercent: nil), memoryPressure: "Unknown",
             disk: PercentMetric(usedPercent: nil), battery: PercentMetric(usedPercent: nil), publicIP: nil, region: nil,
             proxyHint: "Unknown", tunnelHint: "Unknown", quotas: empty, runtimes: [], ports: [], cleanerItems: [], serviceLatency: [])
@@ -38,9 +119,20 @@ struct UnavailableProvider: SnapshotProvider {
 }
 @MainActor final class AppStore: ObservableObject {
     @Published private(set) var snapshot: AppSnapshot
-    private let provider: any SnapshotProvider
+    @Published private(set) var previewFixture: MockProvider.Fixture?
+    private var provider: any SnapshotProvider
     init(provider: any SnapshotProvider = MockProvider(fixture: .healthy), now: Date = Date()) {
-        self.provider = provider; snapshot = provider.snapshot(now: now)
+        self.provider = provider
+        previewFixture = (provider as? MockProvider)?.fixture
+        snapshot = provider.snapshot(now: now)
     }
     func refresh(now: Date = Date()) { snapshot = provider.snapshot(now: now) }
+    #if DEBUG
+    func selectPreviewFixture(_ fixture: MockProvider.Fixture, now: Date = Date()) {
+        guard previewFixture != nil else { return }
+        previewFixture = fixture
+        provider = MockProvider(fixture: fixture)
+        refresh(now: now)
+    }
+    #endif
 }

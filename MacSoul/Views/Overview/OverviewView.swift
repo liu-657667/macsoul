@@ -36,9 +36,9 @@ struct OverviewView: View {
     }
 
     private var soulCard: some View {
-        CardContainer(title: "Soul", systemImage: "brain.head.profile") {
+        CardContainer(title: "Soul", assetImage: "MacSoulMenuTemplateDraft") {
             HStack(spacing: MacSoulTheme.Spacing.card) {
-                SoulGlyph()
+                SoulArtwork(visual: store.snapshot.soulVisual, size: MacSoulTheme.Size.soulArtwork)
                 VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                     Text(store.snapshot.soulMood)
                         .font(.title3.bold())
@@ -64,7 +64,7 @@ struct OverviewView: View {
         CardContainer(title: "AI Coding", systemImage: "sparkles") {
             VStack(alignment: .leading, spacing: 16) {
                 ForEach(store.snapshot.quotas) { quota in
-                    QuotaRow(quota: quota, now: Date())
+                    QuotaRow(quota: quota)
                     if quota.id != store.snapshot.quotas.last?.id { Divider() }
                 }
             }
@@ -107,7 +107,7 @@ struct OverviewView: View {
     }
 
     private var cleanerCard: some View {
-        CardContainer(title: "Cleaner", systemImage: "broom") {
+        CardContainer(title: "Cleaner", systemImage: "magnifyingglass") {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     Text("Read-only scan")

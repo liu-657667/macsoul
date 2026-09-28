@@ -36,11 +36,12 @@ Port collision: `8080 这扇门已经有人占了。`
 Network loss: `我看不到外面的世界了。`
 Network recovery: `回来了。`
 IP country change: `嗯？我们搬家了？`
-Codex 5h >=95%: `你快把 Codex 榨干了。`
-Claude 5h >=95%: `Claude 快不行了。`
+Codex 5h >=95% when that window is fresh and applicable: `你快把 Codex 榨干了。`
+Claude 5h >=95% when that window is fresh and applicable: `Claude 快不行了。`
 
 ## Tests required
 Threshold timing, hysteresis, cooldown, priority, recovery, repeated samples, clock/reset handling.
 
 ## Evidence guardrails
 AI Coding stays quota-only; no agent-session sensor is required for Soul. A listening port alone cannot trigger a conflict claim. Memory pressure, not used RAM %, determines the memory-critical message.
+Quota Soul copy and notifications may read only fresh, applicable numeric 5h/Week windows. A Week-only account has no 5h countdown or 5h warning; unreported, failed and stale windows cannot trigger quota copy. This is an eligibility rule, not a claim that live alerts already exist in the Mock App.

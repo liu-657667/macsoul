@@ -2,12 +2,39 @@ import SwiftUI
 
 struct CardContainer<Content: View>: View {
     let title: String
-    let systemImage: String
-    @ViewBuilder let content: () -> Content
+    private let systemImage: String?
+    private let assetImage: String?
+    private let content: () -> Content
+
+    init(title: String, systemImage: String, @ViewBuilder content: @escaping () -> Content) {
+        self.title = title
+        self.systemImage = systemImage
+        self.assetImage = nil
+        self.content = content
+    }
+
+    init(title: String, assetImage: String, @ViewBuilder content: @escaping () -> Content) {
+        self.title = title
+        self.systemImage = nil
+        self.assetImage = assetImage
+        self.content = content
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.card) {
-            Label(title, systemImage: systemImage)
+            Label {
+                Text(title)
+            } icon: {
+                if let systemImage {
+                    Image(systemName: systemImage)
+                } else if let assetImage {
+                    Image(assetImage)
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 18, height: 18)
+                }
+            }
                 .font(.headline)
             content()
         }
@@ -18,7 +45,28 @@ struct CardContainer<Content: View>: View {
     }
 }
 
-/// Decorative vector placeholder. The adjacent mood text carries the state.
+/// The shared snapshot selects the artwork; adjacent text carries the accessible state.
+struct SoulArtwork: View {
+    let visual: SoulVisual?
+    let size: CGFloat
+
+    var body: some View {
+        Group {
+            if let visual {
+                Image(visual.assetName)
+                    .renderingMode(.original)
+                    .resizable()
+                    .scaledToFit()
+            } else {
+                SoulGlyph()
+            }
+        }
+        .frame(width: size, height: size)
+        .accessibilityHidden(true)
+    }
+}
+
+/// Explicit fallback for a snapshot whose Soul state is unavailable.
 struct SoulGlyph: View {
     var body: some View {
         ZStack {

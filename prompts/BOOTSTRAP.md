@@ -20,7 +20,7 @@
 
 ## 本次交付
 遵循 `review/CODEX-HARDENING-PROMPT.md` 完成 A1–A4：
-- 统一规范，双 surface 都显示 4 个 quota 窗口；
+- 统一规范，双 surface 按实际适用情况动态展示 Codex / Claude Code 的 5h / Week；仅有 Week 时不补假 5h；
 - 可重复 build/test/verify 与真实证据；
 - Mock/真实数据共用契约，消除硬编码，覆盖缺失/过期等场景；
 - 结构化任务账本和进度校验，保留旧基线与未完成项。

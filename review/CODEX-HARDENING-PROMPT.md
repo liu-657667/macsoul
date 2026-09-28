@@ -1,5 +1,7 @@
 # Codex / Claude Code：MacSoul Harness 加固执行提示
 
+> 2026-09-28 负责人修正：下文历史“四窗口必显”措辞已由 `AGENTS.md`、`docs/DESIGN.md` 和 `docs/AI-QUOTA.md` 的动态窗口规则取代。保留原审查文字作为历史记录，不再据此要求虚构 5h。
+
 你正在一个已有 MacSoul 仓库内工作。本次先改造执行可靠性，不重新设计产品，也不一次做完七天功能。
 
 ## 读取

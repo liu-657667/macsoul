@@ -39,9 +39,9 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         },
         {
           "acceptance_id": "A4-NEGATIVE",
@@ -51,9 +51,9 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         }
       ],
       "blocker": null,
@@ -72,16 +72,16 @@
       "acceptance": [
         {
           "id": "A3-CONTRACT",
-          "description": "A3-CONTRACT",
+          "description": "共享 Snapshot 对每个额度窗口保存明确状态；Mock 和单测覆盖 Week-only、双窗口、未报告、真实 0%、失败与过期。",
           "kind": "command"
         },
         {
           "id": "A3-UI",
-          "description": "A3-UI",
+          "description": "负责人复核主窗口与菜单栏使用同一 Snapshot 的动态窗口展示；历史四窗口确认保留但不替代新验收。",
           "kind": "manual-ui"
         }
       ],
-      "status": "done",
+      "status": "verifying",
       "evidence": [
         {
           "acceptance_id": "A3-CONTRACT",
@@ -91,9 +91,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         },
         {
           "acceptance_id": "A3-UI",
@@ -110,7 +110,9 @@
       ],
       "blocker": null,
       "scope_change_approval": null,
-      "human_ui_confirmation": "Owner confirmed Mock quota display and single Menu Bar entry, 2026-09-28; non-default fixtures covered by unit tests"
+      "human_ui_confirmation": "Owner confirmed Mock quota display and single Menu Bar entry, 2026-09-28; non-default fixtures covered by unit tests",
+      "revalidation_note": "2026-09-28 owner corrected fixed-window rule; historical four-window approval retained. Owner confirmed 0%/failed/stale fixtures; dynamic Week-only Menu Bar UI remains for current acceptance.",
+      "owner_feedback": "2026-09-28: Owner confirmed shared-snapshot Week-only Overview/Menu Bar screenshots and 0%/failure/stale fixtures; owner accepted prior menu icon/background/quota presentation. New 2×2 system metrics layout awaits current visual review."
     },
     {
       "id": "A2",
@@ -144,9 +146,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         },
         {
           "acceptance_id": "A2-UNIT",
@@ -156,9 +158,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         }
       ],
       "blocker": null,
@@ -166,7 +168,7 @@
     },
     {
       "id": "A1",
-      "title": "统一产品设计和双入口四窗口显示",
+      "title": "统一产品设计和双入口动态配额窗口显示",
       "priority": "P0",
       "original_day": null,
       "planned_day": 1,
@@ -177,16 +179,16 @@
       "acceptance": [
         {
           "id": "A1-CONTRACT",
-          "description": "A1-CONTRACT",
+          "description": "Overview、AI Coding 和 Menu Bar 共用动态 5h / Week 规则；明确区分有效 0%、不适用、未报告、失败与过期，不按套餐名判断。",
           "kind": "command"
         },
         {
           "id": "A1-UI",
-          "description": "A1-UI",
+          "description": "负责人复核双窗口与仅 Week 的 Mock 界面、来源和重置信息；旧四窗口截图不是本次验收。",
           "kind": "manual-ui"
         }
       ],
-      "status": "done",
+      "status": "verifying",
       "evidence": [
         {
           "acceptance_id": "A1-CONTRACT",
@@ -196,9 +198,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         },
         {
           "acceptance_id": "A1-UI",
@@ -215,7 +217,10 @@
       ],
       "blocker": null,
       "scope_change_approval": null,
-      "human_ui_confirmation": "Owner confirmed main window and Menu Bar quotas after duplicate test app exited, 2026-09-28"
+      "human_ui_confirmation": "Owner confirmed main window and Menu Bar quotas after duplicate test app exited, 2026-09-28",
+      "previous_title": "统一产品设计和双入口四窗口显示",
+      "revalidation_note": "2026-09-28 owner corrected fixed-window rule; historical four-window approval retained. Owner confirmed 0%/failed/stale fixtures; Week-only Menu Bar UI remains for current acceptance.",
+      "owner_feedback": "2026-09-28: Owner confirmed Week-only Overview/Menu Bar screenshots and 0%/failure/stale fixtures; owner also accepted menu icon, opaque background and quota text. New 2×2 CPU/Memory/Disk/Battery menu layout awaits current visual review."
     },
     {
       "id": "D1-01",
@@ -244,9 +249,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         },
         {
           "acceptance_id": "D1-01-A",
@@ -256,9 +261,9 @@
           "command": "./scripts/doctor.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         },
         {
           "acceptance_id": "D1-01-A",
@@ -268,9 +273,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         }
       ],
       "blocker": null,
@@ -303,9 +308,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         }
       ],
       "blocker": null,
@@ -325,7 +330,7 @@
       "acceptance": [
         {
           "id": "D1-03-A",
-          "description": "Implement typed mock snapshots and dependency injection.",
+          "description": "Typed Mock Snapshot and dependency injection distinguish per-window availability, failure and freshness without inventing values.",
           "kind": "implementation"
         }
       ],
@@ -339,9 +344,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         }
       ],
       "blocker": null,
@@ -360,7 +365,7 @@
       "acceptance": [
         {
           "id": "D1-04-A",
-          "description": "Build complete mock Overview + AI/Network/Dev/System pages matching `DESIGN.md`.",
+          "description": "Mock Overview, AI Coding, Network, Dev and System pages use the current dynamic quota presentation contract.",
           "kind": "implementation"
         }
       ],
@@ -374,9 +379,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         }
       ],
       "blocker": null,
@@ -410,9 +415,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         }
       ],
       "blocker": null,
@@ -445,9 +450,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:37:59.393318+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         },
         {
           "acceptance_id": "D1-06-A",
@@ -457,9 +462,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
-          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
-          "checked_at": "2026-09-28T07:37:59.393318+00:00"
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
         }
       ],
       "blocker": null,
@@ -824,7 +829,7 @@
       "acceptance": [
         {
           "id": "D4-01-A",
-          "description": "Codex app-server quota adapter: initial read + update path, 5h/week mapping.",
+          "description": "Codex app-server adapter maps only verified response windows by duration/semantics; no Pro / Plus hardcoding or missing-as-unlimited inference.",
           "kind": "implementation"
         }
       ],
@@ -896,7 +901,7 @@
       "acceptance": [
         {
           "id": "D4-04-A",
-          "description": "If supported source exists: 5h/week parser/bridge; otherwise honest unavailable state.",
+          "description": "Claude adapter distinguishes applicable 5h/Week values, not applicable, unreported, request failure and stale; unavailable fallback is honest.",
           "kind": "implementation"
         }
       ],
@@ -920,7 +925,7 @@
       "acceptance": [
         {
           "id": "D4-05-A",
-          "description": "AI Coding page + Menu Bar live quota summary.",
+          "description": "AI Coding and Menu Bar share dynamic window rows, sources and resets; Week-only does not create a 5h progress bar.",
           "kind": "implementation"
         }
       ],
@@ -944,7 +949,7 @@
       "acceptance": [
         {
           "id": "D4-06-A",
-          "description": "95% deduplicated notifications/Soul events.",
+          "description": "Notifications and Soul quota copy use only fresh, applicable, numeric windows; missing 5h never triggers countdown or alert.",
           "kind": "implementation"
         }
       ],
@@ -1480,6 +1485,136 @@
       "evidence": [],
       "blocker": null,
       "scope_change_approval": null
+    },
+    {
+      "id": "VA-01",
+      "title": "Integrate supplied visual assets into the existing Mock App.",
+      "priority": "P1",
+      "original_day": null,
+      "planned_day": 1,
+      "original_points": 0,
+      "current_points": 0,
+      "scope": "Owner-requested incremental visual assets; outside the original 76-point baseline",
+      "depends_on": [
+        "A1",
+        "A3",
+        "D1-05"
+      ],
+      "acceptance": [
+        {
+          "id": "VA-01-STATIC",
+          "description": "Delivery manifest and asset catalog pass static checks.",
+          "kind": "command"
+        },
+        {
+          "id": "VA-01-BUILD",
+          "description": "Existing App target compiles assets and App Icon Source; runtime catalog excludes original archive.",
+          "kind": "command"
+        },
+        {
+          "id": "VA-01-UNIT",
+          "description": "Six Mock Soul states map to bundled artwork while the shared, dynamic quota presentation remains intact.",
+          "kind": "command"
+        },
+        {
+          "id": "VA-01-UI",
+          "description": "Owner reviews six Mock Soul images, Dock icon and active Menu Bar Draft at native small size; final menu artwork approval remains separate.",
+          "kind": "manual-ui"
+        }
+      ],
+      "status": "verifying",
+      "evidence": [
+        {
+          "acceptance_id": "VA-01-STATIC",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/visual-assets-check.json",
+          "check": "visual_assets",
+          "command": "python3 scripts/verify-visual-assets.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        }
+      ],
+      "blocker": null,
+      "scope_change_approval": null,
+      "owner_feedback": "2026-09-28: Owner confirmed Cleaner icon, six Soul states, Dock icon and Soul title artwork; accepted current menu icon/background/quota text. New Disk/Battery menu layout awaits current visual review."
+    },
+    {
+      "id": "QC-01",
+      "title": "Apply owner-approved dynamic AI quota window contract to Mock App.",
+      "priority": "P0",
+      "original_day": null,
+      "planned_day": 1,
+      "original_points": 0,
+      "current_points": 0,
+      "scope": "Owner-approved requirement correction; outside original 76-point baseline",
+      "depends_on": [
+        "A2",
+        "D1-03"
+      ],
+      "acceptance": [
+        {
+          "id": "QC-01-DOCS",
+          "description": "Current design, scope, AI-QUOTA and task criteria use dynamic 5h / Week semantics; dated history remains intact.",
+          "kind": "command"
+        },
+        {
+          "id": "QC-01-UNIT",
+          "description": "Mock/model tests cover both providers, Week-only, two windows, unreported, valid 0%, request failure, stale/expired and alert eligibility.",
+          "kind": "command"
+        },
+        {
+          "id": "QC-01-UI",
+          "description": "Owner reviews Overview, AI Coding and Menu Bar dynamic windows in Mock App.",
+          "kind": "manual-ui"
+        }
+      ],
+      "status": "verifying",
+      "evidence": [
+        {
+          "acceptance_id": "QC-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00",
+          "note": "12 XCTest cases, zero failures."
+        }
+      ],
+      "blocker": null,
+      "scope_change_approval": null,
+      "requirement_update": "Owner instruction on 2026-09-28 supersedes fixed four-window acceptance; no original plan points changed.",
+      "owner_feedback": "2026-09-28: Owner confirmed 0%/failure/stale fixtures, Week-only screens, and menu icon/background/quota text. New 2×2 system metrics layout awaits current visual review."
     }
   ],
   "change_log": []

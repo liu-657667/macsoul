@@ -110,7 +110,9 @@ sampledAt, publicIPv4?, publicIPv6?, region?, asn?, isp?, environmentProxy, syst
 sampledAt, runtimes, listeningPorts
 
 ### AIQuotaSnapshot
-provider, fiveHour?, weekly?, source, status, sampledAt
+provider, fiveHour: QuotaWindowState, weekly: QuotaWindowState, source, status, sampledAt
+
+Each window distinguishes available (including 0%), not applicable, unreported, request failed and Provider unavailable. Presentation derives freshness per available window; all surfaces use one snapshot and shared display rules. See `AI-QUOTA.md`.
 
 ## Concurrency
 Prefer structured concurrency/actors for shared mutable state. UI updates on MainActor. Providers must not block the main thread.

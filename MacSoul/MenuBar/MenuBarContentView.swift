@@ -5,6 +5,8 @@ struct MenuBarContentView: View {
     @EnvironmentObject private var store: AppStore
     @Environment(\.openWindow) private var openWindow
     private var snapshot: AppSnapshot { store.snapshot }
+    private let metricColumns = [GridItem(.flexible(), spacing: MacSoulTheme.Spacing.compact),
+                                 GridItem(.flexible(), spacing: MacSoulTheme.Spacing.compact)]
     var body: some View {
         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.regular) {
             HStack {
@@ -12,14 +14,24 @@ struct MenuBarContentView: View {
                 Spacer()
                 Text("MOCK DATA").font(.caption.bold()).foregroundStyle(.orange)
             }
-            Text(snapshot.soulMessage).font(.caption).foregroundStyle(.secondary)
+            HStack(spacing: MacSoulTheme.Spacing.regular) {
+                SoulArtwork(visual: snapshot.soulVisual, size: MacSoulTheme.Size.soulPopover)
+                VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.compact) {
+                    Text(snapshot.soulMood).fontWeight(.semibold)
+                    Text(snapshot.soulMessage).font(.caption).foregroundStyle(.secondary)
+                }
+            }
             Divider()
-            MetricTile(name: "CPU", metric: snapshot.cpu)
-            MetricTile(name: "Memory used", metric: snapshot.memoryUsed)
+            LazyVGrid(columns: metricColumns, spacing: MacSoulTheme.Spacing.compact) {
+                MetricTile(name: "CPU", metric: snapshot.cpu)
+                MetricTile(name: "Memory used", metric: snapshot.memoryUsed)
+                MetricTile(name: "Disk", metric: snapshot.disk)
+                MetricTile(name: "Battery", metric: snapshot.battery)
+            }
             Text("Pressure: \(snapshot.memoryPressure)").font(.caption).foregroundStyle(.secondary)
             Divider()
             ForEach(snapshot.quotas) { quota in
-                QuotaRow(quota: quota, now: Date())
+                QuotaRow(quota: quota)
             }
             Divider()
             LabeledContent("IP", value: snapshot.publicIP ?? "Unavailable").font(.caption)
@@ -31,5 +43,6 @@ struct MenuBarContentView: View {
         }
         .padding(MacSoulTheme.Spacing.card)
         .frame(width: 390)
+        .background(Color(nsColor: .windowBackgroundColor))
     }
 }

@@ -18,7 +18,7 @@ enum AppSection: String, CaseIterable, Identifiable {
         case .network: "network"
         case .ai: "sparkles"
         case .dev: "terminal"
-        case .cleaner: "broom"
+        case .cleaner: "magnifyingglass"
         case .settings: "gearshape"
         }
     }

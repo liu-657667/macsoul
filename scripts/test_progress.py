@@ -14,7 +14,7 @@ def bad(mutator, expected):
     assert any(expected in e for e in errors), errors
 bad(lambda o:o['tasks'].append(copy.deepcopy(o['tasks'][0])),'duplicate task ID')
 bad(lambda o:o['tasks'][0].update(status='blocked',blocker=None),'blocked without reason')
-bad(lambda o:next(t for t in o['tasks'] if t['id']=='A1').update(status='done'),'uncovered acceptance')
+bad(lambda o:next(t for t in o['tasks'] if t['id']=='A1').update(status='done',evidence=[]),'uncovered acceptance')
 bad(lambda o:o['tasks'][0].update(current_points=2),'unapproved point change')
 bad(lambda o:o['tasks'][0].update(depends_on=['MISSING']),'missing dependency')
 bad(lambda o:o['tasks'][0].update(status='deferred',blocker='delayed'),'deferred without approval')

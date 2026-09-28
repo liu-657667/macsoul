@@ -1,0 +1,320 @@
+{
+  "bundle_date": "2026-09-28",
+  "primary_sources": 8,
+  "historical_references": 6,
+  "sources": [
+    {
+      "path": "assets-source/app-icon/macsoul-app-icon-source.png",
+      "role": "app_icon",
+      "source_file_id": "file_00000000336082308c0ec3968bf22dc4",
+      "sha256": "5cace304afb3b54b9751103a0d2787ac1cc6c16c0815e8915f08e844a341c90e",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "byte_identical_to_source": true,
+      "has_alpha": false,
+      "alpha_min": null,
+      "alpha_max": null,
+      "fully_transparent_fraction": 0,
+      "partially_transparent_fraction": 0
+    },
+    {
+      "path": "assets-source/menu-bar/macsoul-menu-template-source.png",
+      "role": "menu_template_source",
+      "source_file_id": "file_0000000043fc81fd9f14adad6fa079da",
+      "sha256": "8f17d0ab8d742ca551ff52af6cd10674849fa3e782a2310e9d44c3367ad00080",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "byte_identical_to_source": true,
+      "has_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_fraction": 0.759692,
+      "partially_transparent_fraction": 0.238634
+    },
+    {
+      "path": "assets-source/soul/soul-normal.png",
+      "role": "normal",
+      "source_file_id": "file_00000000d46881fdac4520836ec82534",
+      "sha256": "044721a95d8eaacd6dab79927ca87e1afbcd55a4a13ff903c1df115e4a56e164",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "byte_identical_to_source": true,
+      "has_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_fraction": 0.541781,
+      "partially_transparent_fraction": 0.458186
+    },
+    {
+      "path": "assets-source/soul/soul-busy.png",
+      "role": "busy",
+      "source_file_id": "file_000000003b4881f589b8da0dd98503b1",
+      "sha256": "90af787927204b581f2c1547e973ce86d9969b44a626fe3abf693816401d94a9",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "byte_identical_to_source": true,
+      "has_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_fraction": 0.591797,
+      "partially_transparent_fraction": 0.408198
+    },
+    {
+      "path": "assets-source/soul/soul-overload.png",
+      "role": "overload",
+      "source_file_id": "file_00000000bf3c8230ae988848cdbfa217",
+      "sha256": "708f0c5fb8848cc4ffe772894f59d389ab9b8082cc67f8e879bd66caa22d6116",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "byte_identical_to_source": true,
+      "has_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_fraction": 0.466551,
+      "partially_transparent_fraction": 0.533427
+    },
+    {
+      "path": "assets-source/soul/soul-bloated.png",
+      "role": "bloated",
+      "source_file_id": "file_000000003ab08230b695f096cce70a6f",
+      "sha256": "6c249a3b0f623d3d4156b2a4152fc27374582ef17e04c4f1efd3b40ef72692d1",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "byte_identical_to_source": true,
+      "has_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_fraction": 0.554435,
+      "partially_transparent_fraction": 0.445564
+    },
+    {
+      "path": "assets-source/soul/soul-low-battery.png",
+      "role": "lowBattery",
+      "source_file_id": "file_000000005578820c9ea46733908c3673",
+      "sha256": "6e0d59431d67294ecefc3792cc2e37d3b52ae4e92246aa5b606d46993159e4bb",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "byte_identical_to_source": true,
+      "has_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_fraction": 0.579887,
+      "partially_transparent_fraction": 0.419911
+    },
+    {
+      "path": "assets-source/soul/soul-sleeping.png",
+      "role": "sleeping",
+      "source_file_id": "file_000000009b6081fdb2f3821a45e9b670",
+      "sha256": "a68375ab3e5c1f979d482615accd829a07cfe2c7c04bb02cd1e1503a6b7e37ab",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "byte_identical_to_source": true,
+      "has_alpha": true,
+      "alpha_min": 0,
+      "alpha_max": 255,
+      "fully_transparent_fraction": 0.561233,
+      "partially_transparent_fraction": 0.438752
+    },
+    {
+      "path": "assets-source/reference/concept-01-ghost-orbit.png",
+      "role": "reference_only",
+      "source_file_id": "file_0000000055b0823090bb0975277aa3ea",
+      "sha256": "102908dd92e4231ffc88fc1042b04e7b87e6fa0e512a20f9dc11fde065ca6528",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "byte_identical_to_source": true
+    },
+    {
+      "path": "assets-source/reference/concept-02-ghost-monitor.png",
+      "role": "reference_only",
+      "source_file_id": "file_00000000657881fd806400ccba731cc3",
+      "sha256": "3862d91913c57f384fcf9744f8cedc030d7ae58f3bfa2853d48a489e562a82d4",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "byte_identical_to_source": true
+    },
+    {
+      "path": "assets-source/reference/concept-03-system-ring.png",
+      "role": "reference_only",
+      "source_file_id": "file_00000000612c81fd9bba8d89b4584467",
+      "sha256": "7d9ebab8d9d78158045dd3343526b06f9a46169192acb862ba994f81bb62b84c",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "byte_identical_to_source": true
+    },
+    {
+      "path": "assets-source/reference/concept-04-heartbeat.png",
+      "role": "reference_only",
+      "source_file_id": "file_00000000bf0c8230b215ae09ea483d6d",
+      "sha256": "131e93fe421f69088222d5a568792ac05e234ecdb27b65a450e3694713ab3871",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "byte_identical_to_source": true
+    },
+    {
+      "path": "assets-source/reference/selected-refinement.png",
+      "role": "reference_only",
+      "source_file_id": "file_0000000087e8823089424d54a5219b63",
+      "sha256": "ac653189cb75d2704ae9ab4c0fe65ecdc540dce03d52db45d868d4fed9672847",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB",
+      "byte_identical_to_source": true
+    },
+    {
+      "path": "assets-source/reference/macsoul-product-hero.png",
+      "role": "reference_only",
+      "source_file_id": "file_00000000164c81fd99af0f823427dddb",
+      "sha256": "cc68a29ccc4bff777560708953164f5a0b6693927c583f32800a25b9eb8aa44c",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "byte_identical_to_source": true
+    }
+  ],
+  "assets": [
+    {
+      "name": "MacSoulAppIcon",
+      "type": "appiconset",
+      "source": "assets-source/app-icon/macsoul-app-icon-source.png",
+      "status": "development_candidate",
+      "notes": [
+        "Source is opaque RGB including the exterior dark matte.",
+        "No Dock/App Store/Icon Composer validation has been performed.",
+        "Multi-size export is not small-size manual redesign."
+      ]
+    },
+    {
+      "name": "MacSoulNormal",
+      "type": "imageset",
+      "source": "assets-source/soul/soul-normal.png",
+      "status": "integration_candidate",
+      "logical_canvas_pt": 256,
+      "pixel_dimensions": [
+        256,
+        512
+      ],
+      "notes": [
+        "Transparent RGBA; original glow retained.",
+        "UI light/dark and state-transition checks pending."
+      ]
+    },
+    {
+      "name": "MacSoulBusy",
+      "type": "imageset",
+      "source": "assets-source/soul/soul-busy.png",
+      "status": "integration_candidate",
+      "logical_canvas_pt": 256,
+      "pixel_dimensions": [
+        256,
+        512
+      ],
+      "notes": [
+        "Transparent RGBA; original glow retained.",
+        "UI light/dark and state-transition checks pending."
+      ]
+    },
+    {
+      "name": "MacSoulOverload",
+      "type": "imageset",
+      "source": "assets-source/soul/soul-overload.png",
+      "status": "integration_candidate",
+      "logical_canvas_pt": 256,
+      "pixel_dimensions": [
+        256,
+        512
+      ],
+      "notes": [
+        "Transparent RGBA; original glow retained.",
+        "UI light/dark and state-transition checks pending."
+      ]
+    },
+    {
+      "name": "MacSoulBloated",
+      "type": "imageset",
+      "source": "assets-source/soul/soul-bloated.png",
+      "status": "integration_candidate",
+      "logical_canvas_pt": 256,
+      "pixel_dimensions": [
+        256,
+        512
+      ],
+      "notes": [
+        "Transparent RGBA; original glow retained.",
+        "UI light/dark and state-transition checks pending."
+      ]
+    },
+    {
+      "name": "MacSoulLowBattery",
+      "type": "imageset",
+      "source": "assets-source/soul/soul-low-battery.png",
+      "status": "integration_candidate",
+      "logical_canvas_pt": 256,
+      "pixel_dimensions": [
+        256,
+        512
+      ],
+      "notes": [
+        "Transparent RGBA; original glow retained.",
+        "UI light/dark and state-transition checks pending."
+      ]
+    },
+    {
+      "name": "MacSoulSleeping",
+      "type": "imageset",
+      "source": "assets-source/soul/soul-sleeping.png",
+      "status": "integration_candidate",
+      "logical_canvas_pt": 256,
+      "pixel_dimensions": [
+        256,
+        512
+      ],
+      "notes": [
+        "Transparent RGBA; original glow retained.",
+        "UI light/dark and state-transition checks pending."
+      ]
+    },
+    {
+      "name": "MacSoulMenuTemplateDraft",
+      "type": "imageset",
+      "source": "assets-source/menu-bar/macsoul-menu-template-source.png",
+      "status": "draft_do_not_enable_by_default",
+      "logical_canvas_pt": 18,
+      "pixel_dimensions": [
+        18,
+        36
+      ],
+      "processing": {
+        "rgb": "black",
+        "alpha": "preserved from separate monochrome source",
+        "source_crop_xyxy": [
+          205,
+          273,
+          1103,
+          1013
+        ],
+        "crop_threshold": 8,
+        "padding_pixels": 12
+      },
+      "notes": [
+        "Not derived from the colored app icon.",
+        "Orbit/stars/face are still too detailed for guaranteed 18 pt readability.",
+        "Do not rename to approved MacSoulMenuTemplate until human small-size approval."
+      ]
+    }
+  ],
+  "color_handling": "Original bytes unchanged. Exports assume sRGB because original PNGs lack an embedded ICC profile; sRGB ICC is assigned, without artistic recoloring.",
+  "overall_status": "PACKAGED_FOR_INTEGRATION_NOT_RELEASE_VALIDATED"
+}

@@ -1,0 +1,560 @@
+{
+  "version": 1,
+  "package": "MacSoul-Visual-Assets",
+  "created_on": "2026-09-28",
+  "archive_layout": "Paths relative to existing project root; no enclosing macsoul directory.",
+  "catalog": "MacSoul/Resources/MacSoulBrand.xcassets",
+  "asset_names": [
+    "MacSoulAppIcon",
+    "MacSoulMenuTemplateDraft",
+    "MacSoulNormal",
+    "MacSoulBusy",
+    "MacSoulOverload",
+    "MacSoulBloated",
+    "MacSoulLowBattery",
+    "MacSoulSleeping"
+  ],
+  "original_source_count": 14,
+  "primary_original_count": 8,
+  "reference_original_count": 6,
+  "runtime_png_count": 24,
+  "files": [
+    {
+      "path": "ASSETS-START-HERE.md",
+      "bytes": 3832,
+      "sha256": "6b847766a897c6c5ef9ca705d1c11552f905d3fac30da15928fc3ee5f32b34d9"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/Contents.json",
+      "bytes": 60,
+      "sha256": "f5fb0e1f3a8142892ed092efb5955c1c2cc537003a89ad7bbdb9dade7fe8985f"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/Contents.json",
+      "bytes": 1257,
+      "sha256": "7155e04b17691591a1f0b09c05b5280c670de80254d06e18bd204da67819db2f"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_128x128.png",
+      "bytes": 22160,
+      "sha256": "bc5281499443fd741963d52f2a441687b25cf223a1c85835922dd487a47153fb",
+      "png": {
+        "width": 128,
+        "height": 128,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_128x128@2x.png",
+      "bytes": 71760,
+      "sha256": "3c54e9741a9ca5968c0e80d3b4fec4ab272f8681c9df096fa4ab1a47a77f0c52",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_16x16.png",
+      "bytes": 1117,
+      "sha256": "b18fad5da988c86612009ba44058a9dca90f20dda12f82b457f688a5d9b2253f",
+      "png": {
+        "width": 16,
+        "height": 16,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_16x16@2x.png",
+      "bytes": 2651,
+      "sha256": "91784609d6c82047e029e517b3a027c578210725ad1f09ee8e66fbae005333f6",
+      "png": {
+        "width": 32,
+        "height": 32,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_256x256.png",
+      "bytes": 71760,
+      "sha256": "3c54e9741a9ca5968c0e80d3b4fec4ab272f8681c9df096fa4ab1a47a77f0c52",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_256x256@2x.png",
+      "bytes": 266044,
+      "sha256": "a154706dd3bc010c0d1ce7725c3733414f0e69c6886d872611fdcaa2d3d9b31a",
+      "png": {
+        "width": 512,
+        "height": 512,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_32x32.png",
+      "bytes": 2651,
+      "sha256": "91784609d6c82047e029e517b3a027c578210725ad1f09ee8e66fbae005333f6",
+      "png": {
+        "width": 32,
+        "height": 32,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_32x32@2x.png",
+      "bytes": 7358,
+      "sha256": "3882edeeb239c30ad910fedbdd946f212de84cd3918bc21bda9c783512889874",
+      "png": {
+        "width": 64,
+        "height": 64,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_512x512.png",
+      "bytes": 266044,
+      "sha256": "a154706dd3bc010c0d1ce7725c3733414f0e69c6886d872611fdcaa2d3d9b31a",
+      "png": {
+        "width": 512,
+        "height": 512,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_512x512@2x.png",
+      "bytes": 1038858,
+      "sha256": "ceb09640bb6be9b4c641ad3ad82e266c8bc64e78bb5b7db31ae7919334faf438",
+      "png": {
+        "width": 1024,
+        "height": 1024,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBloated.imageset/Contents.json",
+      "bytes": 334,
+      "sha256": "6d731f47762b2b14a193a581f02674356f58bdbd3e70aec9f5ec5a0fbbd9c106"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBloated.imageset/soul-bloated.png",
+      "bytes": 57037,
+      "sha256": "e5b4ecbe9bbcf8ed8931279cd0a99d574265d29db870af0f72da551e69bb61cd",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBloated.imageset/soul-bloated@2x.png",
+      "bytes": 193112,
+      "sha256": "34a9b0008e17c2e2ebe1b5a9aeb0f81b52d64d3073179b92f9c2dbb3d623e3d0",
+      "png": {
+        "width": 512,
+        "height": 512,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBusy.imageset/Contents.json",
+      "bytes": 328,
+      "sha256": "68004585c8188d5a1ae4f20094479486c247bfdced9d56fce8f4ce8438d940e3"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBusy.imageset/soul-busy.png",
+      "bytes": 53502,
+      "sha256": "34ce26f578f082e61a2a56eec5da04d71272aa93c6ed229c8c326ec82da16e71",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBusy.imageset/soul-busy@2x.png",
+      "bytes": 180984,
+      "sha256": "5058dd700b12a7dcf4e17922ebbf3bd515063bf406dd822827aae4895a8220f4",
+      "png": {
+        "width": 512,
+        "height": 512,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulLowBattery.imageset/Contents.json",
+      "bytes": 342,
+      "sha256": "2562a850af2160214abf92ea5edc64c761c8c3dee88c192d205827a17a00aad2"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulLowBattery.imageset/soul-low-battery.png",
+      "bytes": 54294,
+      "sha256": "7a6ae0bcebfe79d24a7181af0583cf2111e155eed44987835623681021842dd4",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulLowBattery.imageset/soul-low-battery@2x.png",
+      "bytes": 180401,
+      "sha256": "ea8380b1b164d13810a65ae012125c3a1dabc4d73379fcadbee65944b0ce8323",
+      "png": {
+        "width": 512,
+        "height": 512,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulMenuTemplateDraft.imageset/Contents.json",
+      "bytes": 364,
+      "sha256": "23c3383af268112c151c52bb364b1abb74ba7fcac249d2e3f0dd549b3e249c5d"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulMenuTemplateDraft.imageset/macsoul-menu-template-draft.png",
+      "bytes": 809,
+      "sha256": "a445ba310cdb0c63a5ed8ae56e5824976e08f83aef6328b68c34490eb8feaa4e",
+      "png": {
+        "width": 18,
+        "height": 18,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulMenuTemplateDraft.imageset/macsoul-menu-template-draft@2x.png",
+      "bytes": 1377,
+      "sha256": "eb5b2a7713d5e7b34323a824f71eadd471c24c95ab53b0236c619adc84e6f38c",
+      "png": {
+        "width": 36,
+        "height": 36,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulNormal.imageset/Contents.json",
+      "bytes": 332,
+      "sha256": "b33334c383a21c935e10805acc52873ecafa03e95a8b837483c3bf5a06c9b964"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulNormal.imageset/soul-normal.png",
+      "bytes": 59788,
+      "sha256": "e5c514bb1554c253acee1128620191631cd39c3973419eae8cb382aab777334a",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulNormal.imageset/soul-normal@2x.png",
+      "bytes": 201305,
+      "sha256": "7e6b7299b00e5e3eccdfb44962e87d77b71e49a77a428f01e88118001280df93",
+      "png": {
+        "width": 512,
+        "height": 512,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulOverload.imageset/Contents.json",
+      "bytes": 336,
+      "sha256": "02555ca654b140fc3f8a344bb6e1760213724de7d861f1c41635be7882edee02"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulOverload.imageset/soul-overload.png",
+      "bytes": 74861,
+      "sha256": "1be6c6e8e687f6204090b34e494c0919cbedec01f5f8e3d2b152f4abebaaa6b3",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulOverload.imageset/soul-overload@2x.png",
+      "bytes": 250349,
+      "sha256": "6a5165cb17104707228785d89d7feccc4222fdc5675fed8cde18513bb74761ca",
+      "png": {
+        "width": 512,
+        "height": 512,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulSleeping.imageset/Contents.json",
+      "bytes": 336,
+      "sha256": "992ab8ac985fa569d3dcfa813ccf9b67bf6af82bc3c5d3f960ab2828b0f9470a"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulSleeping.imageset/soul-sleeping.png",
+      "bytes": 57565,
+      "sha256": "9124e481fcbb39092c1ea72fe92a2d5028183e85d85a42a066e5f1ddc4710994",
+      "png": {
+        "width": 256,
+        "height": 256,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulSleeping.imageset/soul-sleeping@2x.png",
+      "bytes": 193429,
+      "sha256": "3bee5fab655d678a963ae8fae6a36a75a72c6d2ce25ae6f68a8567e1057cdf7a",
+      "png": {
+        "width": 512,
+        "height": 512,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "assets-source/README.md",
+      "bytes": 908,
+      "sha256": "438c8a04a17be7b72c538cd3e5c0e38070320372fab84ba3109a039c09dccbfd"
+    },
+    {
+      "path": "assets-source/app-icon/macsoul-app-icon-source.png",
+      "bytes": 1569357,
+      "sha256": "5cace304afb3b54b9751103a0d2787ac1cc6c16c0815e8915f08e844a341c90e",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "assets-source/menu-bar/macsoul-menu-template-source.png",
+      "bytes": 336801,
+      "sha256": "8f17d0ab8d742ca551ff52af6cd10674849fa3e782a2310e9d44c3367ad00080",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "assets-source/preview/asset-overview.jpg",
+      "bytes": 246447,
+      "sha256": "536726c354835b5e6b0e20b61677084edbac9ece67f7a6496caaa85990c79f06"
+    },
+    {
+      "path": "assets-source/preview/menu-template-draft-review.jpg",
+      "bytes": 36798,
+      "sha256": "095beabc48bec4674619b301780f2f7b10c1a6debe6824325f381a93a1b9c088"
+    },
+    {
+      "path": "assets-source/preview/soul-light-dark.jpg",
+      "bytes": 126433,
+      "sha256": "1adaf1bda4e928ed8b638dd6f2c0b2db9b021f4c3f2ee9f68aad7b95351bb6bc"
+    },
+    {
+      "path": "assets-source/reference/concept-01-ghost-orbit.png",
+      "bytes": 1530513,
+      "sha256": "102908dd92e4231ffc88fc1042b04e7b87e6fa0e512a20f9dc11fde065ca6528",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "assets-source/reference/concept-02-ghost-monitor.png",
+      "bytes": 1648402,
+      "sha256": "3862d91913c57f384fcf9744f8cedc030d7ae58f3bfa2853d48a489e562a82d4",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "assets-source/reference/concept-03-system-ring.png",
+      "bytes": 1273124,
+      "sha256": "7d9ebab8d9d78158045dd3343526b06f9a46169192acb862ba994f81bb62b84c",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "assets-source/reference/concept-04-heartbeat.png",
+      "bytes": 1381394,
+      "sha256": "131e93fe421f69088222d5a568792ac05e234ecdb27b65a450e3694713ab3871",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "assets-source/reference/macsoul-product-hero.png",
+      "bytes": 1669419,
+      "sha256": "cc68a29ccc4bff777560708953164f5a0b6693927c583f32800a25b9eb8aa44c",
+      "png": {
+        "width": 1672,
+        "height": 941,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "assets-source/reference/selected-refinement.png",
+      "bytes": 1524055,
+      "sha256": "ac653189cb75d2704ae9ab4c0fe65ecdc540dce03d52db45d868d4fed9672847",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 2
+      }
+    },
+    {
+      "path": "assets-source/soul/soul-bloated.png",
+      "bytes": 992522,
+      "sha256": "6c249a3b0f623d3d4156b2a4152fc27374582ef17e04c4f1efd3b40ef72692d1",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "assets-source/soul/soul-busy.png",
+      "bytes": 928325,
+      "sha256": "90af787927204b581f2c1547e973ce86d9969b44a626fe3abf693816401d94a9",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "assets-source/soul/soul-low-battery.png",
+      "bytes": 914732,
+      "sha256": "6e0d59431d67294ecefc3792cc2e37d3b52ae4e92246aa5b606d46993159e4bb",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "assets-source/soul/soul-normal.png",
+      "bytes": 1042993,
+      "sha256": "044721a95d8eaacd6dab79927ca87e1afbcd55a4a13ff903c1df115e4a56e164",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "assets-source/soul/soul-overload.png",
+      "bytes": 1271439,
+      "sha256": "708f0c5fb8848cc4ffe772894f59d389ab9b8082cc67f8e879bd66caa22d6116",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "assets-source/soul/soul-sleeping.png",
+      "bytes": 987413,
+      "sha256": "a68375ab3e5c1f979d482615accd829a07cfe2c7c04bb02cd1e1503a6b7e37ab",
+      "png": {
+        "width": 1254,
+        "height": 1254,
+        "bit_depth": 8,
+        "color_type": 6
+      }
+    },
+    {
+      "path": "assets-source/source-provenance.json",
+      "bytes": 10320,
+      "sha256": "bfad19745d0a25273f3da5246febf5d827cba0c40c0eba99b0e5c28c4cb9e271"
+    },
+    {
+      "path": "docs/ASSET-CATALOG-PLAN.md",
+      "bytes": 6965,
+      "sha256": "7fcf34db3366e172b0a50bcf0e82fa47b8575926e97c155dbe7ab342e6cb700e"
+    },
+    {
+      "path": "docs/ASSET-SOURCES.md",
+      "bytes": 3030,
+      "sha256": "582c512c8f8cc5bcbceb1905810288d467958247be2b66d094e9d70343ca2883"
+    },
+    {
+      "path": "docs/ASSETS-ACCEPTANCE.md",
+      "bytes": 2707,
+      "sha256": "61cea76eca976743b1e6ba63b3d3d311f4952c79ae2644e07366cb96b6adbe66"
+    },
+    {
+      "path": "docs/ASSETS-NAMING.md",
+      "bytes": 5837,
+      "sha256": "5578e0aa0e5dcfcfbfdd56e26ce4e6a480621d44db7de4f23cac43a0d5e84fc7"
+    },
+    {
+      "path": "prompts/INTEGRATE-VISUAL-ASSETS.md",
+      "bytes": 3248,
+      "sha256": "fc34046743d293fffc3e5e13ba576ba396b020432af466868843fe9bcf5716c1"
+    },
+    {
+      "path": "scripts/verify-visual-assets.py",
+      "bytes": 8486,
+      "sha256": "1b4ba55e8defc225f4a1b2cc123020f26d7f847f4983b525805f14ffd39ee541"
+    }
+  ],
+  "exclusions": [
+    "assets-source/asset-manifest.json",
+    "assets-source/packaging-checks.json"
+  ],
+  "no_overwrites": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "README.md",
+    "docs/STATUS.md",
+    "tasks.json",
+    ".xcodeproj",
+    "existing Swift source",
+    "existing Assets.xcassets"
+  ]
+}

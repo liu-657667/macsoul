@@ -2,7 +2,15 @@
 
 **Your Mac knows what you're building.**
 
-macOS 原生 SwiftUI 开发者伴侣。当前仓库已经完成 Phase A 的工程、Mock 数据契约与任务账本实现；主窗口和 Menu Bar 的人工验收仍待完成。最初的合并包与历史审查材料保留在仓库中，不代表后续功能已经完成。
+MacSoul 是一款原生 SwiftUI macOS 开发者伴侣，计划在主窗口和菜单栏汇集系统状态、网络线索、开发环境及 AI Coding 配额，并用 Soul 角色表达需要关注的状态。配额只显示账户实际提供的 5h / Week 窗口及其已用量、重置时间和数据新鲜度。
+
+![MacSoul 产品概念主视觉：展示未来可能的界面，非当前 App 截图](assets-source/reference/macsoul-product-hero.png)
+
+> 产品概念图，**不是当前 App 截图或功能验收证据**。图中的实时指标、VPN、服务延迟和清理按钮等尚未实现；当前可运行版本仅使用 Mock 数据，Cleaner 不执行删除。
+
+## 当前阶段
+
+仓库已有可重复构建的 macOS 工程、Mock App、测试入口与任务账本。主窗口和 Menu Bar 共用一份演示数据；Soul 六种状态及品牌资源已接入。真实系统采样、网络探测和 AI 账户配额尚未接入。各项验收以 [`docs/STATUS.md`](docs/STATUS.md)、[`tasks.json`](tasks.json) 和当次验证报告为准；初始化包与历史审查材料不代表功能已完成。
 
 ## 开发入口
 
@@ -11,15 +19,17 @@ macOS 原生 SwiftUI 开发者伴侣。当前仓库已经完成 Phase A 的工�
 ```sh
 ./scripts/doctor.sh
 ./scripts/verify.sh
+./scripts/run-mock.sh
 ```
 
 `./scripts/verify.sh` 运行 doctor、Debug build、XCTest 和任务账本检查；日志、测试结果及验证摘要写入被 Git 忽略的 `.artifacts/`。首次克隆或源码变更后都需重新运行。可用 `open MacSoul.xcodeproj` 在 Xcode 中查看工程。
+`./scripts/run-mock.sh` 需先退出正在运行的 MacSoul，再构建并从被 Git 忽略的可见 `build-preview/` 目录打开 Mock App；直接从隐藏的 `.artifacts/DerivedData` 启动可能让 macOS 在 Dock 显示通用图标。
 
 ## 当前实现
 
-仓库包含 `MacSoul.xcodeproj`、共享 scheme、App 和 XCTest target。主窗口与 Menu Bar 使用同一份 Mock Snapshot；Codex 和 Claude Code 各有 5h 与 Week 两个额度窗口，展示已用比例和可用的重置时间。当前没有真实系统采样、网络或 AI 配额接入。Mock、缺失及过期状态应按状态显示，不能当作实时数据。
+仓库包含 `MacSoul.xcodeproj`、共享 scheme、App 和 XCTest target。主窗口与 Menu Bar 使用同一份 Mock Snapshot；Codex 和 Claude Code 支持 5h 与 Week，按实际适用窗口动态展示已用比例和可用的重置时间。当前没有真实系统采样、网络或 AI 配额接入。Mock、未报告、请求失败及过期状态应明确显示，不能当作实时数据。
 
-Phase A 的本机 build/unit 曾通过；菜单栏弹出层与完整手工 UI 验收尚未完成，性能和真实 Provider 检查为 NOT_RUN。当前进度以 `docs/STATUS.md` 和 `tasks.json` 为准，既有报告记录其生成时的证据。
+Phase A 的本机 build/unit 曾通过；界面仍在按实际截图修正，性能和真实 Provider 检查为 NOT_RUN。当前进度以 `docs/STATUS.md` 和 `tasks.json` 为准，既有报告记录其生成时的证据。
 
 ## 文件导航
 
@@ -42,7 +52,7 @@ Phase A 的本机 build/unit 曾通过；菜单栏弹出层与完整手工 UI �
 
 ## 产品边界
 
-Menu Bar + 主窗口；System、Network、Dev、Codex/Claude 各自 **5h + Week**、本地 Soul。
+Menu Bar + 主窗口；System、Network、Dev、Codex/Claude 动态展示适用的 **5h / Week** 配额、本地 Soul。菜单栏与 Overview 展示同一份 CPU、内存、磁盘和电池 Mock 指标。
 AI 模块不做 Token、成本或 Agent Session。Cleaner 当前只允许只读扫描设计，Notch 不进入首次加固。
 所有数字是演示数据，直到真实 provider 接入并验收。概念图不是已实现功能或安全保证。
 

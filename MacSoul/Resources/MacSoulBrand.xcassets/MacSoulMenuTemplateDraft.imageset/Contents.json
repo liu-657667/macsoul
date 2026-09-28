@@ -1,0 +1,21 @@
+{
+  "images": [
+    {
+      "idiom": "mac",
+      "scale": "1x",
+      "filename": "macsoul-menu-template-draft.png"
+    },
+    {
+      "idiom": "mac",
+      "scale": "2x",
+      "filename": "macsoul-menu-template-draft@2x.png"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  },
+  "properties": {
+    "template-rendering-intent": "template"
+  }
+}

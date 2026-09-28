@@ -7,10 +7,11 @@ mkdir -p .artifacts
 ./scripts/build.sh; build_code=$?
 ./scripts/test.sh; test_code=$?
 python3 scripts/test_progress.py > .artifacts/progress-tests.log 2>&1; progress_code=$?
+python3 scripts/verify-visual-assets.py > .artifacts/visual-assets-check.json 2>&1; visual_assets_code=$?
 
 # The ledger's committed evidence refers to this local manifest. Write fresh
 # command results before checking the ledger, so verification works in a clone.
-python3 - "$doctor_code" "$build_code" "$test_code" "$progress_code" <<'PY'
+python3 - "$doctor_code" "$build_code" "$test_code" "$progress_code" "$visual_assets_code" <<'PY'
 import datetime
 import json
 import pathlib
@@ -29,10 +30,10 @@ def output(args):
 fingerprint = output([sys.executable, 'scripts/fingerprint.py'])
 checks = {}
 for key, command, code, log in zip(
-    ('doctor', 'build', 'unit', 'progress_tests'),
-    ('./scripts/doctor.sh', './scripts/build.sh', './scripts/test.sh', 'python3 scripts/test_progress.py'),
+    ('doctor', 'build', 'unit', 'progress_tests', 'visual_assets'),
+    ('./scripts/doctor.sh', './scripts/build.sh', './scripts/test.sh', 'python3 scripts/test_progress.py', 'python3 scripts/verify-visual-assets.py'),
     sys.argv[1:],
-    ('doctor.log', 'build.log', 'test.log', 'progress-tests.log'),
+    ('doctor.log', 'build.log', 'test.log', 'progress-tests.log', 'visual-assets-check.json'),
 ):
     checks[key] = {
         'command': command,
@@ -75,4 +76,4 @@ if path.is_file():
     print(json.dumps(result, indent=2))
 PY
 
-if (( doctor_code || build_code || test_code || progress_code || manifest_code || ledger_code )); then exit 1; fi
+if (( doctor_code || build_code || test_code || progress_code || visual_assets_code || manifest_code || ledger_code )); then exit 1; fi

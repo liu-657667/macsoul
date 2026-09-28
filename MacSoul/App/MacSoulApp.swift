@@ -12,7 +12,7 @@ struct MacSoulApp: App {
         }
         .defaultSize(width: 1120, height: 760)
 
-        MenuBarExtra("MacSoul", systemImage: "brain.head.profile") {
+        MenuBarExtra("MacSoul", image: "MacSoulMenuTemplateDraft") {
             MenuBarContentView()
                 .environmentObject(store)
         }
