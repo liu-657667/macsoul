@@ -39,9 +39,9 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
-          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
-          "checked_at": "2026-09-28T07:15:48.925141+00:00"
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
         },
         {
           "acceptance_id": "A4-NEGATIVE",
@@ -51,9 +51,9 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
-          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
-          "checked_at": "2026-09-28T07:15:48.925141+00:00"
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
         }
       ],
       "blocker": null,
@@ -81,10 +81,36 @@
           "kind": "manual-ui"
         }
       ],
-      "status": "verifying",
-      "evidence": [],
+      "status": "done",
+      "evidence": [
+        {
+          "acceptance_id": "A3-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+        },
+        {
+          "acceptance_id": "A3-UI",
+          "path": "reports/phase-a-owner-acceptance.md",
+          "log": "reports/phase-a-owner-acceptance.md",
+          "check": "manual_ui",
+          "command": "owner manual UI confirmation in this chat, 2026-09-28",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+        }
+      ],
       "blocker": null,
-      "scope_change_approval": null
+      "scope_change_approval": null,
+      "human_ui_confirmation": "Owner confirmed Mock quota display and single Menu Bar entry, 2026-09-28; non-default fixtures covered by unit tests"
     },
     {
       "id": "A2",
@@ -118,9 +144,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
-          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
-          "checked_at": "2026-09-28T07:15:48.925141+00:00"
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
         },
         {
           "acceptance_id": "A2-UNIT",
@@ -130,9 +156,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
-          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
-          "checked_at": "2026-09-28T07:15:48.925141+00:00"
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
         }
       ],
       "blocker": null,
@@ -160,10 +186,36 @@
           "kind": "manual-ui"
         }
       ],
-      "status": "verifying",
-      "evidence": [],
+      "status": "done",
+      "evidence": [
+        {
+          "acceptance_id": "A1-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+        },
+        {
+          "acceptance_id": "A1-UI",
+          "path": "reports/phase-a-owner-acceptance.md",
+          "log": "reports/phase-a-owner-acceptance.md",
+          "check": "manual_ui",
+          "command": "owner manual UI confirmation in this chat, 2026-09-28",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+        }
+      ],
       "blocker": null,
-      "scope_change_approval": null
+      "scope_change_approval": null,
+      "human_ui_confirmation": "Owner confirmed main window and Menu Bar quotas after duplicate test app exited, 2026-09-28"
     },
     {
       "id": "D1-01",
@@ -192,9 +244,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
-          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
-          "checked_at": "2026-09-28T07:15:48.925141+00:00"
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
         },
         {
           "acceptance_id": "D1-01-A",
@@ -204,9 +256,9 @@
           "command": "./scripts/doctor.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
-          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
-          "checked_at": "2026-09-28T07:15:48.925141+00:00"
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
         },
         {
           "acceptance_id": "D1-01-A",
@@ -216,9 +268,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
-          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
-          "checked_at": "2026-09-28T07:15:48.925141+00:00"
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
         }
       ],
       "blocker": null,
@@ -241,10 +293,24 @@
           "kind": "implementation"
         }
       ],
-      "status": "verifying",
-      "evidence": [],
+      "status": "done",
+      "evidence": [
+        {
+          "acceptance_id": "D1-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+        }
+      ],
       "blocker": null,
-      "scope_change_approval": null
+      "scope_change_approval": null,
+      "human_ui_confirmation": "Owner confirmed main window and Menu Bar after duplicate test app exited, 2026-09-28"
     },
     {
       "id": "D1-03",
@@ -273,9 +339,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
-          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
-          "checked_at": "2026-09-28T07:15:48.925141+00:00"
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
         }
       ],
       "blocker": null,
@@ -298,10 +364,24 @@
           "kind": "implementation"
         }
       ],
-      "status": "verifying",
-      "evidence": [],
+      "status": "done",
+      "evidence": [
+        {
+          "acceptance_id": "D1-04-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
+          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
+          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+        }
+      ],
       "blocker": null,
-      "scope_change_approval": null
+      "scope_change_approval": null,
+      "human_ui_confirmation": "Owner confirmed requested Mock UI; agent inspected Overview, AI Coding, Network, Dev and System pages, 2026-09-28"
     },
     {
       "id": "D1-05",

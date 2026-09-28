@@ -12,9 +12,9 @@ lines=['# MacSoul 当前状态','', '> 此页由 `python3 scripts/generate_statu
        f'- Phase A: '+', '.join(f"{t['id']}={t['status']}" for t in data['tasks'] if t['id'].startswith('A')),
        f'- 原始计划验收：{points}/76 点（{points/76:.1%}）',
        f'- 已批准调整计划验收：{current_done}/{current} 点（{current_done/current if current else 0:.1%}）；当前无批准范围变更',
-       '- 后续产品任务：待 Phase A 人工验收后启动；真实 Provider 未接入',
+       '- 后续产品任务：' + ('Phase A 已获负责人界面验收；按账本依赖继续，真实 Provider 未接入' if all(t['status']=='done' for t in data['tasks'] if t['id'].startswith('A')) else '待 Phase A 人工验收后启动；真实 Provider 未接入'),
        '- Build/Unit：见 `reports/phase-a.md` 与 `.artifacts/verification.json`',
-       '- Manual UI：待负责人确认；Performance/Live Provider：NOT_RUN','',
+       '- Manual UI：' + ('负责人已确认 Phase A Mock 双入口，见 `reports/phase-a-owner-acceptance.md`' if all(t.get('human_ui_confirmation') for t in data['tasks'] if t['id'] in ('A1','A3')) else '待负责人确认') + '；Performance/Live Provider：NOT_RUN','',
        '## 未完成任务','', '| ID | 原始日 | 点数 | 状态 | 任务 |','|---|---:|---:|---|---|']
 for t in original:
     if t['status']!='done': lines.append(f"| {t['id']} | {t['original_day']} | {t['original_points']} | {t['status']} | {t['title'].replace('|','/')} |")

@@ -2,19 +2,17 @@
 
 > 此页由 `python3 scripts/generate_status.py` 从 `tasks.json` 生成；只编辑账本。
 
-- Phase A: A4=done, A3=verifying, A2=done, A1=verifying
-- 原始计划验收：4/76 点（5.3%）
-- 已批准调整计划验收：4/76 点（5.3%）；当前无批准范围变更
-- 后续产品任务：待 Phase A 人工验收后启动；真实 Provider 未接入
+- Phase A: A4=done, A3=done, A2=done, A1=done
+- 原始计划验收：8/76 点（10.5%）
+- 已批准调整计划验收：8/76 点（10.5%）；当前无批准范围变更
+- 后续产品任务：Phase A 已获负责人界面验收；按账本依赖继续，真实 Provider 未接入
 - Build/Unit：见 `reports/phase-a.md` 与 `.artifacts/verification.json`
-- Manual UI：待负责人确认；Performance/Live Provider：NOT_RUN
+- Manual UI：负责人已确认 Phase A Mock 双入口，见 `reports/phase-a-owner-acceptance.md`；Performance/Live Provider：NOT_RUN
 
 ## 未完成任务
 
 | ID | 原始日 | 点数 | 状态 | 任务 |
 |---|---:|---:|---|---|
-| D1-02 | 1 | 2 | verifying | Implement Menu Bar shell + main window + navigation. |
-| D1-04 | 1 | 2 | verifying | Build complete mock Overview + AI/Network/Dev/System pages matching `DESIGN.md`. |
 | D1-05 | 1 | 1 | todo | Define reusable design tokens/components and Soul vector placeholder. |
 | D1-06 | 1 | 1 | todo | Build/tests pass; capture screenshot(s) for review. |
 | D2-01 | 2 | 2 | todo | Central SensorHub / lifecycle-aware scheduling. |
