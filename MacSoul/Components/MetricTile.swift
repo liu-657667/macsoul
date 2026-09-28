@@ -4,7 +4,7 @@ struct MetricTile: View {
     let name: String
     let metric: PercentMetric
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
             HStack {
                 Text(name).foregroundStyle(.secondary)
                 Spacer()
@@ -13,7 +13,8 @@ struct MetricTile: View {
             if let progress = metric.progress { ProgressView(value: progress).progressViewStyle(.linear) }
             else { Text("Unavailable").font(.caption).foregroundStyle(.secondary) }
         }
-        .padding(12).background(Color.primary.opacity(0.035))
-        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .padding(MacSoulTheme.Spacing.regular)
+        .background(Color.primary.opacity(0.035))
+        .clipShape(RoundedRectangle(cornerRadius: MacSoulTheme.Radius.tile, style: .continuous))
     }
 }

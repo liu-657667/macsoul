@@ -4,15 +4,15 @@ struct OverviewView: View {
     @EnvironmentObject private var store: AppStore
 
     private let columns = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
+        GridItem(.flexible(), spacing: MacSoulTheme.Spacing.card),
+        GridItem(.flexible(), spacing: MacSoulTheme.Spacing.card)
     ]
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.section) {
                 header
-                LazyVGrid(columns: columns, spacing: 16) {
+                LazyVGrid(columns: columns, spacing: MacSoulTheme.Spacing.card) {
                     soulCard
                     systemCard
                     aiCard
@@ -21,13 +21,13 @@ struct OverviewView: View {
                     cleanerCard
                 }
             }
-            .padding(24)
+            .padding(MacSoulTheme.Spacing.section)
         }
         .navigationTitle("Overview")
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
             Text("MacSoul")
                 .font(.system(size: 32, weight: .bold, design: .rounded))
             Text("MOCK DATA · No live sampling or quota provider")
@@ -37,10 +37,9 @@ struct OverviewView: View {
 
     private var soulCard: some View {
         CardContainer(title: "Soul", systemImage: "brain.head.profile") {
-            HStack(spacing: 16) {
-                Text("◉﹏◉")
-                    .font(.system(size: 38, weight: .medium, design: .monospaced))
-                VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: MacSoulTheme.Spacing.card) {
+                SoulGlyph()
+                VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                     Text(store.snapshot.soulMood)
                         .font(.title3.bold())
                     Text(store.snapshot.soulMessage)

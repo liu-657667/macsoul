@@ -39,9 +39,9 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         },
         {
           "acceptance_id": "A4-NEGATIVE",
@@ -51,9 +51,9 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         }
       ],
       "blocker": null,
@@ -91,9 +91,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         },
         {
           "acceptance_id": "A3-UI",
@@ -103,9 +103,9 @@
           "command": "owner manual UI confirmation in this chat, 2026-09-28",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         }
       ],
       "blocker": null,
@@ -144,9 +144,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         },
         {
           "acceptance_id": "A2-UNIT",
@@ -156,9 +156,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         }
       ],
       "blocker": null,
@@ -196,9 +196,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         },
         {
           "acceptance_id": "A1-UI",
@@ -208,9 +208,9 @@
           "command": "owner manual UI confirmation in this chat, 2026-09-28",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         }
       ],
       "blocker": null,
@@ -244,9 +244,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         },
         {
           "acceptance_id": "D1-01-A",
@@ -256,9 +256,9 @@
           "command": "./scripts/doctor.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         },
         {
           "acceptance_id": "D1-01-A",
@@ -268,9 +268,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         }
       ],
       "blocker": null,
@@ -303,9 +303,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         }
       ],
       "blocker": null,
@@ -339,9 +339,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         }
       ],
       "blocker": null,
@@ -374,9 +374,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "12f0ade69c896a7046d0306d64fb7e16ad8a8cc0",
-          "fingerprint": "013935c3121b318e8a50c0f83e9165f61460007f04e69ee58009b46ea6583833",
-          "checked_at": "2026-09-28T07:32:25.181481+00:00"
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
         }
       ],
       "blocker": null,
@@ -400,8 +400,21 @@
           "kind": "implementation"
         }
       ],
-      "status": "todo",
-      "evidence": [],
+      "status": "done",
+      "evidence": [
+        {
+          "acceptance_id": "D1-05-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:36:43.999287+00:00"
+        }
+      ],
       "blocker": null,
       "scope_change_approval": null
     },
@@ -422,8 +435,33 @@
           "kind": "implementation"
         }
       ],
-      "status": "todo",
-      "evidence": [],
+      "status": "verifying",
+      "evidence": [
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:37:59.393318+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "426e11bed9879eb81710a505e57ef6d5f8f0de4e",
+          "fingerprint": "fadf94a37b1b883dde2cf36670e33e70a796e9b5922aa87d6f75f85fe9708c4c",
+          "checked_at": "2026-09-28T07:37:59.393318+00:00"
+        }
+      ],
       "blocker": null,
       "scope_change_approval": null
     },

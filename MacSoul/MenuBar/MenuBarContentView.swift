@@ -6,7 +6,7 @@ struct MenuBarContentView: View {
     @Environment(\.openWindow) private var openWindow
     private var snapshot: AppSnapshot { store.snapshot }
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.regular) {
             HStack {
                 Text("MacSoul").fontWeight(.semibold)
                 Spacer()
@@ -28,6 +28,8 @@ struct MenuBarContentView: View {
             Divider()
             Button("Open MacSoul") { openWindow(id: "main"); NSApplication.shared.activate(ignoringOtherApps: true) }
             Button("Quit MacSoul") { NSApplication.shared.terminate(nil) }
-        }.padding(14).frame(width: 390)
+        }
+        .padding(MacSoulTheme.Spacing.card)
+        .frame(width: 390)
     }
 }

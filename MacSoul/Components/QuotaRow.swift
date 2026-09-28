@@ -4,7 +4,7 @@ struct QuotaRow: View {
     let quota: QuotaItem
     let now: Date
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
             HStack {
                 Text(quota.provider.rawValue).font(.headline)
                 Spacer()
@@ -24,7 +24,7 @@ struct QuotaWindowView: View {
     let window: QuotaWindow?
     let now: Date
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
+        VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.compact) {
             HStack {
                 Text(label).foregroundStyle(.secondary)
                 Spacer()
