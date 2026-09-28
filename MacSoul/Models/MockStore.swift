@@ -50,6 +50,17 @@ struct MockProvider: SnapshotProvider {
             default: "Calm · Mock"
             }
         }
+        var soulMessage: String {
+            switch self {
+            case .busy: "我开始认真工作了。"
+            case .cpuCritical: "我的脑子要爆炸了。"
+            case .cpuRecovery: "呼……终于安静了。"
+            case .memoryPressure: "我的胃快撑爆了。"
+            case .lowBattery: "我只剩一点力气了……"
+            case .sleeping: "让我安静待一会儿。"
+            default: "今天挺轻松。"
+            }
+        }
     }
     let fixture: Fixture
     func snapshot(now: Date) -> AppSnapshot {
@@ -98,7 +109,7 @@ struct MockProvider: SnapshotProvider {
         default: 78
         }
         return AppSnapshot(mode: .mock, soulVisual: fixture.soulVisual, soulMood: fixture.soulMood,
-            soulMessage: "演示数据，未连接系统采样", cpu: PercentMetric(usedPercent: cpu),
+            soulMessage: fixture.soulMessage, cpu: PercentMetric(usedPercent: cpu),
             memoryUsed: PercentMetric(usedPercent: 54), memoryPressure: fixture == .memoryPressure ? "Critical · Mock" : "Normal · Mock",
             disk: PercentMetric(usedPercent: 67), battery: PercentMetric(usedPercent: battery),
             publicIP: stale ? nil : "203.0.113.42", region: stale ? nil : "Example region",
@@ -120,13 +131,25 @@ struct UnavailableProvider: SnapshotProvider {
 @MainActor final class AppStore: ObservableObject {
     @Published private(set) var snapshot: AppSnapshot
     @Published private(set) var previewFixture: MockProvider.Fixture?
+    @Published private(set) var displayNow: Date
     private var provider: any SnapshotProvider
+    private var clockSubscription: AnyCancellable?
     init(provider: any SnapshotProvider = MockProvider(fixture: .healthy), now: Date = Date()) {
         self.provider = provider
         previewFixture = (provider as? MockProvider)?.fixture
+        displayNow = now
         snapshot = provider.snapshot(now: now)
+        clockSubscription = Timer.publish(every: 30, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] date in
+                Task { @MainActor in self?.advanceDisplayClock(now: date) }
+            }
     }
-    func refresh(now: Date = Date()) { snapshot = provider.snapshot(now: now) }
+    func advanceDisplayClock(now: Date) { displayNow = now }
+    func refresh(now: Date = Date()) {
+        snapshot = provider.snapshot(now: now)
+        displayNow = now
+    }
     #if DEBUG
     func selectPreviewFixture(_ fixture: MockProvider.Fixture, now: Date = Date()) {
         guard previewFixture != nil else { return }

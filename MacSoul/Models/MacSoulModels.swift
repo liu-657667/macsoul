@@ -122,7 +122,13 @@ struct CleanerItem: Identifiable, Hashable {
     let name: String; let size: String; let risk: Risk
     var id: String { name }
 }
-struct PortItem: Identifiable, Hashable { let port: Int; let process: String; var id: Int { port } }
+struct PortItem: Identifiable, Hashable {
+    let port: Int
+    let process: String
+    var id: Int { port }
+    // Ports are identifiers, so locale-aware number grouping must not apply.
+    var displayPort: String { String(port) }
+}
 struct AppSnapshot {
     let mode: DataMode
     let soulVisual: SoulVisual?

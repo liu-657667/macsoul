@@ -1,5 +1,7 @@
 # Phase A UI 修订与当前验收
 
+> 后续 VIS-01 至 VIS-04 的代码修订和当前验证见 `reports/phase-a-visual-closeout-2026-09-28.md`。下文为此前 UI 修订的历史记录，其中 `TimelineView` 时钟描述已由后续共享 `AppStore.displayNow` 实现取代。
+
 日期：2026-09-28（Asia/Shanghai）。本报告记录当前 Mock App 的增量 UI 修订；历史验收记录保留在 `reports/phase-a-owner-acceptance.md`。负责人已将本轮总体视觉验收定为 **PARTIAL**。
 
 当前自动证据：`./scripts/verify.sh` 退出 0，UTC 检查时间 `2026-09-28T14:28:02Z`；Git revision `36627134446cd8895d8b17397ce3ae848418ddd7`，工作树指纹 `e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe`。本机 macOS 27.0 / Xcode 27.0 (27A266a)。工作树仍有未提交修改，以上 revision 不能单独代表本轮源码。

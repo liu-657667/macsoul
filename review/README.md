@@ -1,5 +1,7 @@
 # MacSoul Harness 加固审查包
 
+> 以下是初始化时的审查说明。原 Day 1 包入口已归档到 `docs/archive/bootstrap/`；当前任务状态以根目录 `tasks.json` 和 `docs/STATUS.md` 为准。
+
 本包是审查结果和后续执行输入，不是新的完整 Harness，不包含编译好的 App，不会覆盖你的原包。
 
 - `AUDIT.md`：具体问题、原始路径/行号、建议修法和验收。

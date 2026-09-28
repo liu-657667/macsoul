@@ -20,7 +20,7 @@ struct MenuBarContentView: View {
                 SoulArtwork(visual: snapshot.soulVisual, size: MacSoulTheme.Size.soulPopover)
                 VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.compact) {
                     Text(language.text(snapshot.soulMood)).fontWeight(.semibold)
-                    Text(language.text(snapshot.soulMessage)).font(.caption).foregroundStyle(.secondary)
+                    Text(language.text(snapshot.soulMessage)).font(.caption).foregroundStyle(MacSoulTheme.supportingText)
                 }
             }
             Divider()
@@ -28,12 +28,10 @@ struct MenuBarContentView: View {
                 MetricTile(name: "CPU", metric: snapshot.cpu, compact: true)
                 MetricTile(name: "Memory used", metric: snapshot.memoryUsed, compact: true)
                 MetricTile(name: "Disk", metric: snapshot.disk, compact: true)
-                MetricTile(name: "Battery", metric: snapshot.battery, compact: true)
+                MetricTile(name: "Battery", metric: snapshot.battery, compact: true,
+                           attentionText: snapshot.battery.usedPercent.map { $0 <= 10 ? "Low battery" : nil } ?? nil)
             }
-            Text(language == .english
-                 ? "Pressure: \(language.text(snapshot.memoryPressure))"
-                 : "内存压力：\(language.text(snapshot.memoryPressure))")
-                .font(.caption).foregroundStyle(.secondary)
+            MemoryPressureLabel(pressure: snapshot.memoryPressure)
             Divider()
             ForEach(snapshot.quotas) { quota in
                 QuotaRow(quota: quota, presentation: .summary)

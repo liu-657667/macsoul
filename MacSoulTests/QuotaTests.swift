@@ -42,6 +42,15 @@ final class QuotaTests: XCTestCase {
         }
         XCTAssertNil(MockProvider(fixture: .noBattery).snapshot(now: now).battery.progress)
     }
+    func testPortIdentifiersNeverUseLocaleGrouping() {
+        for language in MacSoulLanguage.allCases {
+            for port in [8080, 3000, 3306, 65535] {
+                let item = PortItem(port: port, process: "Example process · Mock")
+                XCTAssertEqual(item.displayPort, String(port), language.rawValue)
+                XCTAssertFalse(item.displayPort.contains(","), language.rawValue)
+            }
+        }
+    }
     @MainActor func testStoreUsesInjectedProvider() {
         let store = AppStore(provider: MockProvider(fixture: .cpuRecovery), now: now)
         XCTAssertEqual(store.snapshot.cpu.label, "20%")
@@ -66,6 +75,18 @@ final class QuotaTests: XCTestCase {
         }
         XCTAssertEqual(MockProvider(fixture: .memoryPressure).snapshot(now: now).memoryPressure, "Critical · Mock")
         XCTAssertEqual(MockProvider(fixture: .lowBattery).snapshot(now: now).battery.label, "4%")
+    }
+    func testSoulMockCopyMatchesFixtureAndHasEnglishTranslation() {
+        let expected: [(MockProvider.Fixture, String)] = [
+            (.healthy, "今天挺轻松。"), (.busy, "我开始认真工作了。"),
+            (.cpuCritical, "我的脑子要爆炸了。"), (.cpuRecovery, "呼……终于安静了。"),
+            (.memoryPressure, "我的胃快撑爆了。"), (.lowBattery, "我只剩一点力气了……"),
+            (.sleeping, "让我安静待一会儿。")
+        ]
+        for (fixture, message) in expected {
+            XCTAssertEqual(MockProvider(fixture: fixture).snapshot(now: now).soulMessage, message)
+            XCTAssertNotEqual(MacSoulLanguage.english.text(message), message)
+        }
     }
     func testMenuBarDraftAssetLoadsAsTemplate() {
         let image = NSImage(named: NSImage.Name("MacSoulMenuTemplateDraft"))
@@ -173,5 +194,39 @@ final class QuotaTests: XCTestCase {
         XCTAssertEqual(QuotaWindowView.shortResetLabel(reset: now.addingTimeInterval(25), now: now),
                        "reset in 1m")
         XCTAssertEqual(QuotaWindowView.shortResetLabel(reset: now, now: now), "refresh pending")
+    }
+    @MainActor func testSharedDisplayClockDoesNotRecreateMockDeadline() {
+        let store = AppStore(now: now)
+        let first = store.snapshot.quotas[0]
+        let reset = first.displayWindows(now: store.displayNow)[1].state.value!.resetsAt!
+        let sampledAt = first.sampledAt
+        let window = first.displayWindows(now: store.displayNow)[1]
+        let main = QuotaWindowView.statusLabel(for: window, now: store.displayNow,
+                                               language: .english, presentation: .summary)
+        let menu = QuotaWindowView.statusLabel(for: window, now: store.displayNow,
+                                               language: .english, presentation: .summary)
+        XCTAssertEqual(main, menu)
+        XCTAssertTrue(main.contains("reset in 4d 6h"))
+
+        store.advanceDisplayClock(now: now.addingTimeInterval(1))
+        XCTAssertEqual(store.snapshot.quotas[0].displayWindows(now: store.displayNow)[1].state.value?.resetsAt, reset)
+        XCTAssertEqual(store.snapshot.quotas[0].sampledAt, sampledAt)
+        let next = first.displayWindows(now: store.displayNow)[1]
+        XCTAssertTrue(QuotaWindowView.statusLabel(for: next, now: store.displayNow,
+                     language: .english, presentation: .summary).contains("reset in 4d 5h"))
+
+        store.advanceDisplayClock(now: reset)
+        let expired = first.displayWindows(now: store.displayNow)[1]
+        XCTAssertEqual(expired.state.value?.usedPercent, 31)
+        XCTAssertTrue(QuotaWindowView.statusLabel(for: expired, now: store.displayNow,
+                      language: .english, presentation: .summary).contains("Stale"))
+    }
+    func testCriticalQuotaHasTextAndSymbolEligibleState() {
+        let item = MockProvider(fixture: .quota95).snapshot(now: now).quotas[0]
+        let window = item.displayWindows(now: now)[0]
+        XCTAssertTrue(QuotaWindowView.statusLabel(for: window, now: now,
+                      language: .english, presentation: .summary).contains("Near limit"))
+        XCTAssertTrue(QuotaWindowView.statusLabel(for: window, now: now,
+                      language: .chinese, presentation: .summary).contains("接近上限"))
     }
 }

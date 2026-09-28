@@ -8,5 +8,6 @@
 - `./scripts/verify.sh`: all fixed checks plus `.artifacts/verification.json`; regenerates local command evidence before checking the ledger, including on a fresh clone.
 - `python3 scripts/verify_progress.py`: ledger invariants/current evidence.
 - `python3 scripts/generate_status.py`: regenerate STATUS from `tasks.json`.
+- `python3 scripts/check_bundle.py`: historical starter-package check. It resolves moved files under `docs/archive/bootstrap/` but intentionally keeps the original manifest and reports changed source bytes or the missing original `.codex/config.toml`; it is not a current build gate.
 
 No script installs tools, contacts providers, or changes global configuration. Logs and DerivedData stay in ignored `.artifacts/`.

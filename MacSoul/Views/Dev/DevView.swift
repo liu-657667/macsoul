@@ -12,7 +12,7 @@ struct DevView: View {
             }
             Section(language.text("Listening Ports — Mock")) {
                 ForEach(store.snapshot.ports) { item in
-                    LabeledContent("\(item.port)", value: language.text(item.process))
+                    LabeledContent(item.displayPort, value: language.text(item.process))
                 }
             }
         }

@@ -20,7 +20,7 @@
       "depends_on": [],
       "allowed_paths": [
         "docs/DESIGN.md",
-        "DAY1-DESIGN-LOCK.md",
+        "docs/archive/bootstrap/DAY1-DESIGN-LOCK.md",
         "MacSoul/MenuBar/**"
       ],
       "acceptance": [

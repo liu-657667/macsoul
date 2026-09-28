@@ -5,6 +5,7 @@ struct MetricTile: View {
     let name: String
     let metric: PercentMetric
     var compact = false
+    var attentionText: String? = nil
 
     @ViewBuilder var body: some View {
         if compact {
@@ -21,7 +22,7 @@ struct MetricTile: View {
         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
             HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.tight) {
                 Text(language.text(name))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(MacSoulTheme.supportingText)
                     .lineLimit(1)
                     .minimumScaleFactor(0.85)
                 Spacer(minLength: MacSoulTheme.Spacing.tight)
@@ -32,6 +33,33 @@ struct MetricTile: View {
             }
             if let progress = metric.progress { ProgressView(value: progress).progressViewStyle(.linear) }
             else { Text(language.text("Unavailable")).font(.caption).foregroundStyle(.secondary) }
+            if let attentionText {
+                Label(language.text(attentionText), systemImage: "exclamationmark.triangle.fill")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.orange)
+            }
         }
+    }
+}
+
+struct MemoryPressureLabel: View {
+    @Environment(\.macSoulLanguage) private var language
+    let pressure: String
+
+    private var text: String {
+        language == .english ? "Pressure: \(language.text(pressure))" : "内存压力：\(language.text(pressure))"
+    }
+
+    var body: some View {
+        Group {
+            if pressure == "Critical · Mock" {
+                Label(text, systemImage: "exclamationmark.triangle.fill")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.orange)
+            } else {
+                Text(text).foregroundStyle(MacSoulTheme.supportingText)
+            }
+        }
+        .font(.caption)
     }
 }

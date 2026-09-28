@@ -26,7 +26,7 @@
 
 **证据**
 - Harness `docs/DESIGN.md:9-18` 要求 Menu Bar 显示 Codex 与 Claude 各自的 5h + Week。
-- Day 1 `DAY1-DESIGN-LOCK.md:98-109` 只列 Codex 5h、Claude 5h。
+- Day 1 原文 `reference/originals/day1/DAY1-DESIGN-LOCK.md:98-109` 只列 Codex 5h、Claude 5h。
 - Day 1 `MacSoul/MenuBar/MenuBarContentView.swift:29-30` 实际也只画两行 5h。
 - Harness `AGENTS.md` / `7-DAY-PLAN.md` 把第 5 天设为功能冻结，但 Day 6 仍保留 Notch prototype。
 
@@ -68,7 +68,7 @@ MetricTile(name: "CPU", value: "96%", progress: store.cpu)
 ## H03 — 优先修复：缺少可重复构建和命令化质量门禁
 
 **证据**
-- `CODEX-DAY1-PROMPT.md:8-9` 要求后续 Agent 创建或修复 Xcode 工程并构建。
+- 原文 `reference/originals/day1/CODEX-DAY1-PROMPT.md:8-9` 要求后续 Agent 创建或修复 Xcode 工程并构建。
 - ZIP 清单中没有工程文件、测试 target 或构建脚本。
 - `docs/QUALITY-GATES.md` 有“build/tests pass”等规则，没有固定命令、退出码、证据目录和 CI 配置。
 

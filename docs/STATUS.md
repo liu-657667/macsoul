@@ -5,10 +5,10 @@
 - Phase A: A4=done, A3=verifying, A2=done, A1=verifying
 - 原始计划验收：10/76 点（13.2%）
 - 已批准调整计划验收：10/76 点（13.2%）；当前无批准范围变更
-- 增量任务：VA-01=verifying, QC-01=verifying, UI-01=verifying
+- 增量任务：VA-01=verifying, QC-01=verifying, UI-01=verifying, VIS-01=done, VIS-02=verifying, VIS-03=verifying, VIS-04=verifying
 - 后续产品任务：Phase A 截图仅部分通过；当前 UI 可读性和外观仍待复核，真实 Provider 未接入
-- Build/Unit：见 `reports/phase-a-ui-review.md` 与 `.artifacts/verification.json`
-- Manual UI：浅色 Week-only 与深色中文菜单栏已截图复核；Dock、其余五种 Soul、完整交互仍待人工验收，见 `reports/phase-a-ui-review.md`；Performance/Live Provider：NOT_RUN
+- Build/Unit：见 `reports/phase-a-visual-closeout-2026-09-28.md` 与 `.artifacts/verification.json`
+- Manual UI：浅色 Week-only 与深色中文菜单栏已截图复核；Dock 已由负责人通过；本轮修订版与其余 Soul、完整交互仍待人工验收，见 `reports/phase-a-visual-closeout-2026-09-28.md`；Performance/Live Provider：NOT_RUN
 
 ## 未完成任务
 

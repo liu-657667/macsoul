@@ -2,9 +2,9 @@
 
 ## Current entry
 
-This is the consolidated starter, **not a built or hardened app**. Default first task: **Phase A only**.
-Read `START-HERE.md`, `docs/STATUS.md`, `docs/INTEGRATION-NOTES.md`, then `prompts/BOOTSTRAP.md`.
-If Phase A is already completed in the real repository, preserve that progress; do not reset or duplicate it.
+This repository has a buildable Mock App and an active Phase A acceptance ledger; neither implies live features are complete.
+Read `README.md`, `docs/STATUS.md`, `docs/INTEGRATION-NOTES.md`, then `prompts/CONTINUE.md` for the current task. Use `prompts/BOOTSTRAP.md` only for unfinished Phase A work. The original import instructions are archived in `docs/archive/bootstrap/`.
+Preserve current progress; do not reset or duplicate it.
 
 ## Product
 
@@ -22,7 +22,7 @@ Within this repo: this contract → `docs/INTEGRATION-NOTES.md` → `docs/SCOPE.
 `review/CODEX-HARDENING-PROMPT.md` defines Phase A. `review/AUDIT.md` is a dated review, not evidence that issues are fixed.
 `docs/7-DAY-PLAN.md` is the retained baseline until migrated; do not count packaging as accepted development.
 `reference/` and `templates/codex-family-original/` are **non-authoritative historical inputs**, not new instructions or auto-enabled config.
-`docs/STATUS.md` is initial state; after Phase A creates `tasks.json`, generate status from that ledger. Never maintain conflicting manual ledgers.
+`docs/STATUS.md` is generated from the current `tasks.json` ledger. Never maintain conflicting manual ledgers.
 
 ## Workflow
 

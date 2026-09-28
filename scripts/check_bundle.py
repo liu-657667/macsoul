@@ -23,6 +23,21 @@ REQUIRED = [
     "DAY1-DESIGN-LOCK.md", "CODEX-DAY1-PROMPT.md", "MANIFEST.md", "BUNDLE-MANIFEST.json"
 ]
 
+# Keep the original manifest bytes intact. Only the current filesystem lookup
+# follows the documented archive move; hash checks still report source edits.
+RELOCATED = {
+    name: "docs/archive/bootstrap/" + name
+    for name in (
+        "START-HERE.md", "BUNDLE-CHECKS.json", "BUNDLE-MANIFEST.json",
+        "MANIFEST.md", "CODEX-DAY1-PROMPT.md", "DAY1-DESIGN-LOCK.md",
+    )
+}
+RELOCATED["prompts/KICKOFF.md"] = "docs/archive/bootstrap/prompts/KICKOFF.md"
+
+
+def current_path(root: Path, original: str) -> Path:
+    return root / RELOCATED.get(original, original)
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--hashes", action="store_true", help="Check initial release hashes; expected to differ after edits.")
@@ -31,11 +46,11 @@ def main():
     root = args.root.resolve()
     errors, warnings = [], []
     for rel in REQUIRED:
-        if not (root / rel).is_file():
-            errors.append("missing file: " + rel)
+        if not current_path(root, rel).is_file():
+            errors.append("missing file: " + RELOCATED.get(rel, rel))
     json_count = 0
     for rel in ["review/static-checks.json", "review/tasks.example.json", "BUNDLE-MANIFEST.json", "BUNDLE-CHECKS.json"]:
-        p = root / rel
+        p = current_path(root, rel)
         if p.is_file():
             try:
                 json.loads(p.read_text(encoding="utf-8"))
@@ -60,12 +75,13 @@ def main():
     if swift_count < 16:
         warnings.append(f"Found {swift_count} Swift files; initial package includes 16. Confirm whether intentional refactoring occurred.")
     hash_count = 0
-    if args.hashes and (root / "BUNDLE-MANIFEST.json").is_file():
+    manifest_path = current_path(root, "BUNDLE-MANIFEST.json")
+    if args.hashes and manifest_path.is_file():
         try:
-            manifest = json.loads((root / "BUNDLE-MANIFEST.json").read_text(encoding="utf-8"))
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
             for entry in manifest["files"]:
                 rel = entry["path"]
-                p = (root / rel).resolve()
+                p = current_path(root, rel).resolve()
                 if p == root or root not in p.parents:
                     errors.append("unsafe manifest path: " + rel)
                     continue
@@ -84,6 +100,7 @@ def main():
         "toml_parsed": toml_count,
         "swift_files_found": swift_count,
         "initial_hashes_checked": hash_count,
+        "relocated_initial_paths": RELOCATED,
         "errors": errors,
         "warnings": warnings,
         "app_build": "NOT_RUN",

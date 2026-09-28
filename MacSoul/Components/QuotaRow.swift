@@ -6,13 +6,12 @@ enum QuotaPresentation: Equatable {
 
 struct QuotaRow: View {
     @Environment(\.macSoulLanguage) private var language
+    @EnvironmentObject private var store: AppStore
     let quota: QuotaItem
     var presentation: QuotaPresentation = .detail
 
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 60)) { context in
-            content(now: context.date)
-        }
+        content(now: store.displayNow)
     }
 
     private func content(now: Date) -> some View {
@@ -53,13 +52,15 @@ struct QuotaWindowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.compact) {
             HStack {
-                Text(language.text(window.kind.label)).foregroundStyle(.secondary)
+                Text(language.text(window.kind.label)).foregroundStyle(MacSoulTheme.supportingText)
                 Spacer()
                 if isAbnormal {
                     Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
                         .accessibilityHidden(true)
                 }
-                Text(statusLabel).fontWeight(isAbnormal ? .semibold : .regular)
+                Text(Self.statusLabel(for: window, now: now, language: language, presentation: presentation))
+                    .fontWeight(isAbnormal ? .semibold : .regular)
                 if presentation == .detail, let value = window.state.value {
                     Text(fullResetLabel(for: value)).foregroundStyle(.secondary)
                 }
@@ -73,18 +74,21 @@ struct QuotaWindowView: View {
     private var isAbnormal: Bool {
         switch window.state {
         case .stale, .requestFailed, .providerUnavailable: true
+        case .fresh(let value): value.usedPercent >= 95
         default: false
         }
     }
 
-    private var statusLabel: String {
+    static func statusLabel(for window: QuotaDisplayWindow, now: Date, language: MacSoulLanguage,
+                            presentation: QuotaPresentation) -> String {
         switch window.state {
         case .fresh(let value):
             let used = language.used(Int(value.usedPercent.rounded()))
+            let valueLabel = value.usedPercent >= 95 ? "\(language.text("Near limit")) · \(used)" : used
             if presentation == .summary, let reset = value.resetsAt {
-                return "\(used) · \(Self.shortResetLabel(reset: reset, now: now, language: language))"
+                return "\(valueLabel) · \(Self.shortResetLabel(reset: reset, now: now, language: language))"
             }
-            return presentation == .detail ? "\(used) · \(language.text("Fresh"))" : used
+            return presentation == .detail ? "\(valueLabel) · \(language.text("Fresh"))" : valueLabel
         case .stale(let value): return "\(language.used(Int(value.usedPercent.rounded()))) · \(language.text("Stale"))"
         case .unreported: return language.text("Not reported")
         case .requestFailed: return language.text("Request failed")

@@ -16,7 +16,7 @@ Settings 可切换 MacSoul 自身的浅色/深色外观及简体中文/英文界
 
 ## 开发入口
 
-先读 `START-HERE.md` 了解项目规则；继续开发时读 `prompts/CONTINUE.md` 和由 `tasks.json` 生成的 `docs/STATUS.md`。本机需安装 Xcode；工程最低部署目标为 macOS 13，当前实测环境见 `reports/phase-a.md`。
+先读 `AGENTS.md` 和由 `tasks.json` 生成的 `docs/STATUS.md`；继续开发时读 `prompts/CONTINUE.md`。原首次导入说明保存在 `docs/archive/bootstrap/START-HERE.md`，不再作为当前任务入口。本机需安装 Xcode；工程最低部署目标为 macOS 13，当前实测环境见 `reports/phase-a-visual-closeout-2026-09-28.md`。
 
 ```sh
 ./scripts/doctor.sh
@@ -37,20 +37,20 @@ Phase A 的本机 build/unit 曾通过；界面仍在按实际截图修正，性
 
 | 路径 | 用途 |
 |---|---|
-| `START-HERE.md` | 放文件、启动、验收及继续开发的说明 |
+| `docs/archive/bootstrap/START-HERE.md` | 原首次导入说明，仅作历史参考 |
 | `AGENTS.md` / `CLAUDE.md` | 共用工作规则与 Claude 导入入口 |
 | `docs/PRD.md` / `docs/SCOPE.md` / `docs/DESIGN.md` | 产品概述、范围、界面契约 |
 | `docs/ARCHITECTURE.md` / 专题文档 | 共享 Snapshot、Soul、网络与配额设计 |
-| `docs/7-DAY-PLAN.md` | 旧七天基线，先加固再迁移，不自动重置进度 |
+| `docs/7-DAY-PLAN.md` | 原七天基线；已迁移到 `tasks.json`，不自动重置进度 |
 | `docs/PROGRESS-PROTOCOL.md` / `docs/STATUS.md` | 证据驱动汇报、追赶机制和当前状态 |
 | `MacSoul/` / `MacSoulTests/` / `MacSoul.xcodeproj` | App 源码、XCTest 与 Xcode 工程 |
-| `prompts/` | 首次入口、继续、审查与追赶任务 |
-| `review/` | 完整 5 个审查文件，原样保留 |
+| `prompts/` | 当前继续、未完成 Phase A、审查与追赶任务 |
+| `review/` | 审查与验收材料；历史结论不等于当前验证 |
 | `templates/` | 原模型配置，仅作参考，不会在本包中自动启用 |
 | `reference/` | 历史原文与概念效果图，不覆盖当前规范 |
 | `scripts/verify.sh` | 本机 build、unit 和账本的固定验证入口 |
-| `scripts/check_bundle.py` | 仅检查原合并包完整性，不是 App 编译/测试 |
-| `MANIFEST.md` / `BUNDLE-MANIFEST.json` | 文件说明及初始校验清单 |
+| `scripts/check_bundle.py` | 历史包检查；原路径已归档，缺失或改动仍如实报告 |
+| `docs/archive/bootstrap/` | 原清单、包校验、首次导入与旧 Day 1 入口 |
 
 ## 产品边界
 
@@ -60,7 +60,9 @@ AI 模块不做 Token、成本或 Agent Session。Cleaner 当前只允许只读�
 
 ## 验证状态
 
-查看 [`reports/phase-a-ui-review.md`](reports/phase-a-ui-review.md) 中的当前 UI 修订与验收限制，以及本机 `.artifacts/verification.json` 中的实际命令和退出码。`reports/phase-a.md` 是历史证据，源码或工具链变化后须重跑。`BUNDLE-CHECKS.json` 仅验证最初合并包，不是 App 验收结果。
+查看 [`reports/phase-a-visual-closeout-2026-09-28.md`](reports/phase-a-visual-closeout-2026-09-28.md) 中的当前 UI 修订与验收限制，以及本机 `.artifacts/verification.json` 中的实际命令和退出码。`reports/phase-a.md` 是历史证据，源码或工具链变化后须重跑。[`BUNDLE-CHECKS.json`](docs/archive/bootstrap/BUNDLE-CHECKS.json) 仅记录最初合并包的校验，不是 App 验收结果。
+
+初始化材料的归档路径、忽略范围和干净克隆验证见 [`reports/repository-hygiene-2026-09-28.md`](reports/repository-hygiene-2026-09-28.md)。
 
 [GitHub Actions](https://github.com/liu-657667/macsoul/actions) 在每次推送和 pull request 上运行相同的 `./scripts/verify.sh`；远端结果以对应提交的工作流运行记录为准。
 

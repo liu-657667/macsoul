@@ -28,6 +28,8 @@ enum MacSoulTheme {
         Color(nsColor: .windowBackgroundColor)
     }
 
+    static var supportingText: Color { Color.primary.opacity(0.72) }
+
     static func windowBackgroundColor(for scheme: ColorScheme) -> NSColor {
         let name: NSAppearance.Name = scheme == .dark ? .darkAqua : .aqua
         guard let appearance = NSAppearance(named: name) else {
@@ -108,7 +110,14 @@ enum MacSoulLanguage: String, CaseIterable, Identifiable {
     }
 
     private static let englishOverrides = [
-        "演示数据，未连接系统采样": "Demo data; no system sampler connected"
+        "演示数据，未连接系统采样": "Demo data; no system sampler connected",
+        "今天挺轻松。": "Taking it easy today.",
+        "我开始认真工作了。": "Time to get to work.",
+        "我的脑子要爆炸了。": "My brain is about to explode.",
+        "呼……终于安静了。": "Phew… finally quiet again.",
+        "我的胃快撑爆了。": "My stomach is about to burst.",
+        "我只剩一点力气了……": "I'm almost out of energy…",
+        "让我安静待一会儿。": "Let me rest a little."
     ]
 
     private static let chineseText: [String: String] = [
@@ -130,6 +139,7 @@ enum MacSoulLanguage: String, CaseIterable, Identifiable {
         "Calm · Mock": "平静 · 模拟", "Busy · Mock": "忙碌 · 模拟",
         "Overload · Mock": "过载 · 模拟", "Memory pressure · Mock": "内存压力 · 模拟",
         "Low battery · Mock": "低电量 · 模拟", "Resting · Mock": "休息 · 模拟",
+        "Near limit": "接近上限",
         "Recovering · Mock": "恢复中 · 模拟", "演示数据，未连接系统采样": "演示数据，未连接系统采样",
         "No live provider": "未连接实时服务", "No system sampler is connected.": "未连接系统采样器。",
         "No external probe is connected.": "未连接外部探测。",

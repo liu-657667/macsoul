@@ -52,7 +52,7 @@ struct OverviewView: View {
                     Text(language.text(store.snapshot.soulMood))
                         .font(.title3.bold())
                     Text(language.text(store.snapshot.soulMessage))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(MacSoulTheme.supportingText)
                 }
             }
         }
@@ -65,12 +65,10 @@ struct OverviewView: View {
                     MetricTile(name: "CPU", metric: store.snapshot.cpu, compact: true)
                     MetricTile(name: "Memory used", metric: store.snapshot.memoryUsed, compact: true)
                     MetricTile(name: "Disk", metric: store.snapshot.disk, compact: true)
-                    MetricTile(name: "Battery", metric: store.snapshot.battery, compact: true)
+                    MetricTile(name: "Battery", metric: store.snapshot.battery, compact: true,
+                               attentionText: store.snapshot.battery.usedPercent.map { $0 <= 10 ? "Low battery" : nil } ?? nil)
                 }
-                Text(language == .english
-                     ? "Pressure: \(language.text(store.snapshot.memoryPressure))"
-                     : "内存压力：\(language.text(store.snapshot.memoryPressure))")
-                    .font(.caption).foregroundStyle(.secondary)
+                MemoryPressureLabel(pressure: store.snapshot.memoryPressure)
             }
         }
     }
@@ -153,7 +151,7 @@ private struct FlowPortsView: View {
     var body: some View {
         HStack(spacing: 8) {
             ForEach(ports) { item in
-                Text("\(item.port) · \(language.text(item.process))")
+                Text("\(item.displayPort) · \(language.text(item.process))")
                     .font(.caption.monospaced())
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
