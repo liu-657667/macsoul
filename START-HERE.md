@@ -1,5 +1,7 @@
 # 从这里开始
 
+> 此页保留了初始化包的首次导入说明。当前仓库已有 Git、Xcode 工程和 Phase A 验证入口；实际进度以由 `tasks.json` 生成的 `docs/STATUS.md` 为准。继续开发请读 `prompts/CONTINUE.md`，不要重复导入初始化包。
+
 本次是完整合并包，不用再找之前的三个 ZIP。
 
 ## 1. 放到本地 macsoul 项目

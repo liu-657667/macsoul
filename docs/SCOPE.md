@@ -58,3 +58,7 @@ No token dashboard, costs, session analytics, model routing, or agent history.
 - cloud sync/accounts
 - Windows/Linux
 - Notch implementation during bootstrap or after Day 5 freeze
+
+## License decision
+
+MacSoul original code that the project has the right to license is released under the MIT License, with `Copyright (c) 2026 liu-657667` in the root `LICENSE`. Third-party code, dependencies, and assets retain their original licenses and required notices; the MacSoul license does not relicense them. Historical inputs and concept assets under `reference/` are not automatically covered by the root license.

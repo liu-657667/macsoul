@@ -21,12 +21,12 @@
 - 明确初始状态 NOT_STARTED，不假报 GREEN、build pass 或任务完成。
 - review 中的历史静态检查与本包内容检查分开；两者都不是本机验证。
 
-## 仍需 Phase A 实现
+## Phase A 当前状态
 
 - Phase A 已创建 Xcode 工程、共享 scheme、测试 target 和固定 build/test/verify 入口；当前结果见 `reports/phase-a.md`。
 - Phase A 已实现 SwiftUI 数字同源、窗口独立可空、稳定 ID、Snapshot/Provider 数据契约；人工 UI 验收待负责人确认。
 - Menu Bar Swift 代码已补 Week 行；菜单栏弹出层人工验收待负责人确认。
-- `tasks.json` 已迁入 76 点原计划与 A1–A4；无 Git 仓库，证据用工作树 SHA-256 指纹绑定。实测 build/unit 已记录；人工 UI 尚未验收。
+- `tasks.json` 已迁入 76 点原计划与 A1–A4。2026-09-28 已创建 Git 仓库并将 Phase A 起点推送至 GitHub `main`；验证证据仍用工作树 SHA-256 指纹绑定，跨克隆须重跑。实测 build/unit 已记录；人工 UI 尚未验收。
 
 原始源码已按 Phase A 增量修改；以当前构建、测试与人工验收证据判断结果，不能仅因文档要求已修正就声称代码已修复。
 

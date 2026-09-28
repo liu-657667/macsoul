@@ -39,9 +39,9 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": null,
-          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
-          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
+          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
+          "checked_at": "2026-09-28T07:15:48.925141+00:00"
         },
         {
           "acceptance_id": "A4-NEGATIVE",
@@ -51,9 +51,9 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": null,
-          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
-          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
+          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
+          "checked_at": "2026-09-28T07:15:48.925141+00:00"
         }
       ],
       "blocker": null,
@@ -118,9 +118,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": null,
-          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
-          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
+          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
+          "checked_at": "2026-09-28T07:15:48.925141+00:00"
         },
         {
           "acceptance_id": "A2-UNIT",
@@ -130,9 +130,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": null,
-          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
-          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
+          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
+          "checked_at": "2026-09-28T07:15:48.925141+00:00"
         }
       ],
       "blocker": null,
@@ -192,9 +192,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": null,
-          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
-          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
+          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
+          "checked_at": "2026-09-28T07:15:48.925141+00:00"
         },
         {
           "acceptance_id": "D1-01-A",
@@ -204,9 +204,9 @@
           "command": "./scripts/doctor.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": null,
-          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
-          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
+          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
+          "checked_at": "2026-09-28T07:15:48.925141+00:00"
         },
         {
           "acceptance_id": "D1-01-A",
@@ -216,9 +216,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": null,
-          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
-          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
+          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
+          "checked_at": "2026-09-28T07:15:48.925141+00:00"
         }
       ],
       "blocker": null,
@@ -273,9 +273,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": null,
-          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
-          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+          "source_revision": "d12ff5ce1329296a11a4db8790a52b3be1e0acd3",
+          "fingerprint": "7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be",
+          "checked_at": "2026-09-28T07:15:48.925141+00:00"
         }
       ],
       "blocker": null,

@@ -3,7 +3,7 @@
 - `./scripts/doctor.sh`: local toolchain and project inventory.
 - `./scripts/build.sh`: Debug macOS app build.
 - `./scripts/test.sh`: XCTest suite and local xcresult.
-- `./scripts/verify.sh`: all fixed checks plus `.artifacts/verification.json`.
+- `./scripts/verify.sh`: all fixed checks plus `.artifacts/verification.json`; regenerates local command evidence before checking the ledger, including on a fresh clone.
 - `python3 scripts/verify_progress.py`: ledger invariants/current evidence.
 - `python3 scripts/generate_status.py`: regenerate STATUS from `tasks.json`.
 
