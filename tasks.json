@@ -39,6 +39,34 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        },
+        {
+          "acceptance_id": "A4-NEGATIVE",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        }
+      ],
+      "blocker": null,
+      "scope_change_approval": null,
+      "evidence_history": [
+        {
+          "acceptance_id": "A4-LEDGER",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
           "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
           "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
           "checked_at": "2026-09-28T09:13:09.934799+00:00"
@@ -54,10 +82,104 @@
           "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
           "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
           "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        },
+        {
+          "acceptance_id": "A4-LEDGER",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "A4-NEGATIVE",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "A4-LEDGER",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "A4-NEGATIVE",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "A4-LEDGER",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "A4-NEGATIVE",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "A4-LEDGER",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
+        },
+        {
+          "acceptance_id": "A4-NEGATIVE",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
         }
-      ],
-      "blocker": null,
-      "scope_change_approval": null
+      ]
     },
     {
       "id": "A3",
@@ -91,9 +213,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
-          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
-          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
         },
         {
           "acceptance_id": "A3-UI",
@@ -112,7 +234,69 @@
       "scope_change_approval": null,
       "human_ui_confirmation": "Owner confirmed Mock quota display and single Menu Bar entry, 2026-09-28; non-default fixtures covered by unit tests",
       "revalidation_note": "2026-09-28 owner corrected fixed-window rule; historical four-window approval retained. Owner confirmed 0%/failed/stale fixtures; dynamic Week-only Menu Bar UI remains for current acceptance.",
-      "owner_feedback": "2026-09-28: Owner confirmed shared-snapshot Week-only Overview/Menu Bar screenshots and 0%/failure/stale fixtures; owner accepted prior menu icon/background/quota presentation. New 2×2 system metrics layout awaits current visual review."
+      "owner_feedback": "2026-09-28: Owner rated current visual acceptance PARTIAL. Light Week-only screenshots confirm shared snapshot numbers across Overview/Menu Bar and absence of fabricated 5h; interactive and dark checks remain pending.",
+      "evidence_history": [
+        {
+          "acceptance_id": "A3-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        },
+        {
+          "acceptance_id": "A3-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "A3-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "A3-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "A3-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:57:55.181691+00:00"
+        }
+      ]
     },
     {
       "id": "A2",
@@ -146,6 +330,34 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        },
+        {
+          "acceptance_id": "A2-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        }
+      ],
+      "blocker": null,
+      "scope_change_approval": null,
+      "evidence_history": [
+        {
+          "acceptance_id": "A2-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
           "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
           "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
           "checked_at": "2026-09-28T09:13:09.934799+00:00"
@@ -161,10 +373,104 @@
           "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
           "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
           "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        },
+        {
+          "acceptance_id": "A2-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "A2-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "A2-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "A2-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "A2-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "A2-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "A2-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
+        },
+        {
+          "acceptance_id": "A2-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
         }
-      ],
-      "blocker": null,
-      "scope_change_approval": null
+      ]
     },
     {
       "id": "A1",
@@ -184,7 +490,7 @@
         },
         {
           "id": "A1-UI",
-          "description": "负责人复核双窗口与仅 Week 的 Mock 界面、来源和重置信息；旧四窗口截图不是本次验收。",
+          "description": "负责人复核双窗口与仅 Week 的 Mock 摘要；Overview/Menu Bar 显示已用量与短重置，AI Coding 详情保留来源及完整时间；旧四窗口截图不是本次验收。",
           "kind": "manual-ui"
         }
       ],
@@ -198,9 +504,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
-          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
-          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
         },
         {
           "acceptance_id": "A1-UI",
@@ -220,7 +526,69 @@
       "human_ui_confirmation": "Owner confirmed main window and Menu Bar quotas after duplicate test app exited, 2026-09-28",
       "previous_title": "统一产品设计和双入口四窗口显示",
       "revalidation_note": "2026-09-28 owner corrected fixed-window rule; historical four-window approval retained. Owner confirmed 0%/failed/stale fixtures; Week-only Menu Bar UI remains for current acceptance.",
-      "owner_feedback": "2026-09-28: Owner confirmed Week-only Overview/Menu Bar screenshots and 0%/failure/stale fixtures; owner also accepted menu icon, opaque background and quota text. New 2×2 CPU/Memory/Disk/Battery menu layout awaits current visual review."
+      "owner_feedback": "2026-09-28: Owner rated Phase A visual acceptance PARTIAL. Light Week-only screenshots confirm dynamic rows and matching Overview/Menu Bar values. Dark Chinese Menu Bar appearance fix was screenshot-confirmed, but full interaction, Dock and five other Soul visuals remain pending.",
+      "evidence_history": [
+        {
+          "acceptance_id": "A1-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        },
+        {
+          "acceptance_id": "A1-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "A1-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "A1-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "A1-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:57:55.181691+00:00"
+        }
+      ]
     },
     {
       "id": "D1-01",
@@ -241,6 +609,46 @@
       ],
       "status": "done",
       "evidence": [
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/doctor.log",
+          "check": "doctor",
+          "command": "./scripts/doctor.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        }
+      ],
+      "blocker": null,
+      "scope_change_approval": null,
+      "evidence_history": [
         {
           "acceptance_id": "D1-01-A",
           "path": ".artifacts/verification.json",
@@ -276,10 +684,152 @@
           "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
           "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
           "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/doctor.log",
+          "check": "doctor",
+          "command": "./scripts/doctor.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/doctor.log",
+          "check": "doctor",
+          "command": "./scripts/doctor.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/doctor.log",
+          "check": "doctor",
+          "command": "./scripts/doctor.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/doctor.log",
+          "check": "doctor",
+          "command": "./scripts/doctor.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
         }
-      ],
-      "blocker": null,
-      "scope_change_approval": null
+      ]
     },
     {
       "id": "D1-02",
@@ -308,14 +858,76 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
-          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
-          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
         }
       ],
       "blocker": null,
       "scope_change_approval": null,
-      "human_ui_confirmation": "Owner confirmed main window and Menu Bar after duplicate test app exited, 2026-09-28"
+      "human_ui_confirmation": "Owner confirmed main window and Menu Bar after duplicate test app exited, 2026-09-28",
+      "evidence_history": [
+        {
+          "acceptance_id": "D1-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        },
+        {
+          "acceptance_id": "D1-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "D1-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "D1-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "D1-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
+        }
+      ]
     },
     {
       "id": "D1-03",
@@ -344,13 +956,75 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
-          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
-          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
         }
       ],
       "blocker": null,
-      "scope_change_approval": null
+      "scope_change_approval": null,
+      "evidence_history": [
+        {
+          "acceptance_id": "D1-03-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        },
+        {
+          "acceptance_id": "D1-03-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "D1-03-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "D1-03-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "D1-03-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
+        }
+      ]
     },
     {
       "id": "D1-04",
@@ -379,14 +1053,76 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
-          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
-          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
         }
       ],
       "blocker": null,
       "scope_change_approval": null,
-      "human_ui_confirmation": "Owner confirmed requested Mock UI; agent inspected Overview, AI Coding, Network, Dev and System pages, 2026-09-28"
+      "human_ui_confirmation": "Owner confirmed requested Mock UI; agent inspected Overview, AI Coding, Network, Dev and System pages, 2026-09-28",
+      "evidence_history": [
+        {
+          "acceptance_id": "D1-04-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        },
+        {
+          "acceptance_id": "D1-04-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "D1-04-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "D1-04-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "D1-04-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
+        }
+      ]
     },
     {
       "id": "D1-05",
@@ -415,13 +1151,75 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
-          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
-          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
         }
       ],
       "blocker": null,
-      "scope_change_approval": null
+      "scope_change_approval": null,
+      "evidence_history": [
+        {
+          "acceptance_id": "D1-05-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        },
+        {
+          "acceptance_id": "D1-05-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "D1-05-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "D1-05-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "D1-05-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
+        }
+      ]
     },
     {
       "id": "D1-06",
@@ -450,6 +1248,42 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        }
+      ],
+      "blocker": null,
+      "scope_change_approval": null,
+      "review_screenshots": [
+        {
+          "path": "reports/screenshots/day-1-soul-overview.png",
+          "sha256": "88ec02673ae79d9ea523f09619f0c5f47fa8421752bc2f7307cedc0ad706d130",
+          "provided_by": "owner",
+          "review_note": "Owner supplied updated Soul screenshot for review; visual approval not explicitly stated."
+        }
+      ],
+      "evidence_history": [
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
           "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
           "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
           "checked_at": "2026-09-28T09:13:09.934799+00:00"
@@ -465,16 +1299,102 @@
           "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
           "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
           "checked_at": "2026-09-28T09:13:09.934799+00:00"
-        }
-      ],
-      "blocker": null,
-      "scope_change_approval": null,
-      "review_screenshots": [
+        },
         {
-          "path": "reports/screenshots/day-1-soul-overview.png",
-          "sha256": "88ec02673ae79d9ea523f09619f0c5f47fa8421752bc2f7307cedc0ad706d130",
-          "provided_by": "owner",
-          "review_note": "Owner supplied updated Soul screenshot for review; visual approval not explicitly stated."
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:56:59.967672+00:00"
         }
       ]
     },
@@ -1532,6 +2452,47 @@
           "command": "python3 scripts/verify-visual-assets.py",
           "exit_code": 0,
           "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        }
+      ],
+      "blocker": null,
+      "scope_change_approval": null,
+      "owner_feedback": "2026-09-28: Owner confirms normal Soul artwork on Overview and Menu Bar. Despite prior preliminary feedback, current acceptance explicitly leaves Dock and the other five Soul images for manual review; menu artwork remains DRAFT.",
+      "evidence_history": [
+        {
+          "acceptance_id": "VA-01-STATIC",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/visual-assets-check.json",
+          "check": "visual_assets",
+          "command": "python3 scripts/verify-visual-assets.py",
+          "exit_code": 0,
+          "status": "PASS",
           "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
           "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
           "checked_at": "2026-09-28T09:13:09.934799+00:00"
@@ -1559,11 +2520,152 @@
           "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
           "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
           "checked_at": "2026-09-28T09:13:09.934799+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-STATIC",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/visual-assets-check.json",
+          "check": "visual_assets",
+          "command": "python3 scripts/verify-visual-assets.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-STATIC",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/visual-assets-check.json",
+          "check": "visual_assets",
+          "command": "python3 scripts/verify-visual-assets.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-STATIC",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/visual-assets-check.json",
+          "check": "visual_assets",
+          "command": "python3 scripts/verify-visual-assets.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-STATIC",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/visual-assets-check.json",
+          "check": "visual_assets",
+          "command": "python3 scripts/verify-visual-assets.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:57:55.181691+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:57:55.181691+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:57:55.181691+00:00"
         }
-      ],
-      "blocker": null,
-      "scope_change_approval": null,
-      "owner_feedback": "2026-09-28: Owner confirmed Cleaner icon, six Soul states, Dock icon and Soul title artwork; accepted current menu icon/background/quota text. New Disk/Battery menu layout awaits current visual review."
+      ]
     },
     {
       "id": "QC-01",
@@ -1605,16 +2707,232 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
-          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
-          "checked_at": "2026-09-28T09:13:09.934799+00:00",
-          "note": "12 XCTest cases, zero failures."
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
         }
       ],
       "blocker": null,
       "scope_change_approval": null,
       "requirement_update": "Owner instruction on 2026-09-28 supersedes fixed four-window acceptance; no original plan points changed.",
-      "owner_feedback": "2026-09-28: Owner confirmed 0%/failure/stale fixtures, Week-only screens, and menu icon/background/quota text. New 2×2 system metrics layout awaits current visual review."
+      "owner_feedback": "2026-09-28: Owner rated current visual acceptance PARTIAL. Light Week-only and dark Chinese Menu Bar screenshots reviewed; latest Menu Bar dark appearance fix confirmed “ok 了”. Full interaction and remaining visual checks still pending.",
+      "evidence_history": [
+        {
+          "acceptance_id": "QC-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "76c95dcecac24d11545c271c20ad9bba0aa7337b",
+          "fingerprint": "258cede7d8bb0e9901a6640f23712940c77750f72f251ec006ac9ad5720a7171",
+          "checked_at": "2026-09-28T09:13:09.934799+00:00",
+          "note": "12 XCTest cases, zero failures."
+        },
+        {
+          "acceptance_id": "QC-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "QC-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "QC-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "QC-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:57:55.181691+00:00"
+        }
+      ]
+    },
+    {
+      "id": "UI-01",
+      "title": "Phase A 菜单栏与 Overview 可读性、局部外观和中英界面修订",
+      "priority": "P0",
+      "original_day": null,
+      "planned_day": 1,
+      "original_points": 0,
+      "current_points": 0,
+      "scope": "Owner-requested Phase A UI refinement; zero additional baseline points",
+      "depends_on": [
+        "A2"
+      ],
+      "acceptance": [
+        {
+          "id": "UI-01-BUILD",
+          "description": "当前 Mock 工程与相关单测通过；动态窗口与可注入时钟语义不变。",
+          "kind": "command"
+        },
+        {
+          "id": "UI-01-MANUAL",
+          "description": "同一 Week-only 场景下复核 Overview/Menu Bar、Settings 的浅色与应用内深色/中文界面，复杂壁纸不干扰正文；静态截图不等于交互全通过。",
+          "kind": "manual-ui"
+        }
+      ],
+      "status": "verifying",
+      "evidence": [
+        {
+          "acceptance_id": "UI-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        },
+        {
+          "acceptance_id": "UI-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e4fa9b0e21802c45b1dc4136570710d563c49960fb5f097f9ba84c50158dbbbe",
+          "checked_at": "2026-09-28T14:27:25.694299+00:00"
+        }
+      ],
+      "blocker": null,
+      "scope_change_approval": null,
+      "owner_feedback": "2026-09-28: Light Week-only Overview/Menu Bar screenshots supplied. Dark Chinese Overview revealed cramped battery text and a light Menu Bar popover; local fixes built and relaunched with owner permission. Owner supplied new dark Chinese Menu Bar screenshot and replied “ok 了”. This confirms that popover appearance and text are now readable in the default two-window fixture; full interaction, post-fix Overview screenshot, Dock and other five Soul visuals remain pending. Later owner confirmed the app-level appearance regression is resolved after dark→follow macOS retest (“现在正常了”); no new complete screenshot was supplied. Owner confirmed the four compact system labels are complete on both Overview and Menu Bar after the current MetricTile fix (“两处文字都完整”).",
+      "evidence_history": [
+        {
+          "acceptance_id": "UI-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "UI-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "cffa663b22296631abff193867a435d90f4c49fddbd1c0a73197ca16539a713d",
+          "checked_at": "2026-09-28T09:33:42.648316+00:00"
+        },
+        {
+          "acceptance_id": "UI-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "UI-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "e7956499a0078138c4dfc915105b5f83964de99874275a6c1d9f5fffca5bc170",
+          "checked_at": "2026-09-28T09:36:00.110143+00:00"
+        },
+        {
+          "acceptance_id": "UI-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "UI-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "376c8b9a240aa92b3d5f73560c92848ce98ab1f5460d323560010dcbc89e68c4",
+          "checked_at": "2026-09-28T09:47:19.346131+00:00"
+        },
+        {
+          "acceptance_id": "UI-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:57:55.181691+00:00"
+        },
+        {
+          "acceptance_id": "UI-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "36627134446cd8895d8b17397ce3ae848418ddd7",
+          "fingerprint": "7547cea6361ac4e7bc9f91f24670c531d2ae44a8e45d7713965ace279c836592",
+          "checked_at": "2026-09-28T13:57:55.181691+00:00"
+        }
+      ],
+      "revalidation_note": "2026-09-28: Owner screenshots identified clipped upper-left strokes in compact Overview/Menu Bar system labels. MetricTile compact mode no longer applies rounded clipping. Owner then confirmed all four labels render fully on both surfaces. Overall manual UI remains PARTIAL for other outstanding checks."
     }
   ],
   "change_log": []

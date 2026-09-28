@@ -2,36 +2,45 @@ import SwiftUI
 
 struct OverviewView: View {
     @EnvironmentObject private var store: AppStore
+    @Environment(\.macSoulLanguage) private var language
 
-    private let columns = [
+    private let metricColumns = [
         GridItem(.flexible(), spacing: MacSoulTheme.Spacing.card),
         GridItem(.flexible(), spacing: MacSoulTheme.Spacing.card)
     ]
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.section) {
-                header
-                LazyVGrid(columns: columns, spacing: MacSoulTheme.Spacing.card) {
-                    soulCard
-                    systemCard
-                    aiCard
-                    networkCard
-                    devCard
-                    cleanerCard
+        VStack(alignment: .leading, spacing: 0) {
+            header
+                .padding(.horizontal, MacSoulTheme.Spacing.card)
+                .padding(.vertical, MacSoulTheme.Spacing.regular)
+            Divider()
+            ScrollView {
+                HStack(alignment: .top, spacing: MacSoulTheme.Spacing.card) {
+                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.card) {
+                        soulCard
+                        aiCard
+                        devCard
+                    }
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.card) {
+                        systemCard
+                        networkCard
+                        cleanerCard
+                    }
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
+                .padding(MacSoulTheme.Spacing.card)
             }
-            .padding(MacSoulTheme.Spacing.section)
         }
-        .navigationTitle("Overview")
+        .navigationTitle(language.text("Overview"))
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
-            Text("MacSoul")
-                .font(.system(size: 32, weight: .bold, design: .rounded))
-            Text("MOCK DATA · No live sampling or quota provider")
-                .foregroundStyle(.secondary)
+        HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.regular) {
+            Text("MacSoul").font(.title2.bold())
+            Text(language.text("MOCK DATA · No live sampling or quota provider"))
+                .font(.caption).foregroundStyle(.secondary)
         }
     }
 
@@ -40,9 +49,9 @@ struct OverviewView: View {
             HStack(spacing: MacSoulTheme.Spacing.card) {
                 SoulArtwork(visual: store.snapshot.soulVisual, size: MacSoulTheme.Size.soulArtwork)
                 VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
-                    Text(store.snapshot.soulMood)
+                    Text(language.text(store.snapshot.soulMood))
                         .font(.title3.bold())
-                    Text(store.snapshot.soulMessage)
+                    Text(language.text(store.snapshot.soulMessage))
                         .foregroundStyle(.secondary)
                 }
             }
@@ -51,11 +60,17 @@ struct OverviewView: View {
 
     private var systemCard: some View {
         CardContainer(title: "System", systemImage: "gauge.with.dots.needle.50percent") {
-            VStack(spacing: 10) {
-                MetricTile(name: "CPU", metric: store.snapshot.cpu)
-                MetricTile(name: "Memory used", metric: store.snapshot.memoryUsed)
-                MetricTile(name: "Disk", metric: store.snapshot.disk)
-                MetricTile(name: "Battery", metric: store.snapshot.battery)
+            VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+                LazyVGrid(columns: metricColumns, spacing: MacSoulTheme.Spacing.regular) {
+                    MetricTile(name: "CPU", metric: store.snapshot.cpu, compact: true)
+                    MetricTile(name: "Memory used", metric: store.snapshot.memoryUsed, compact: true)
+                    MetricTile(name: "Disk", metric: store.snapshot.disk, compact: true)
+                    MetricTile(name: "Battery", metric: store.snapshot.battery, compact: true)
+                }
+                Text(language == .english
+                     ? "Pressure: \(language.text(store.snapshot.memoryPressure))"
+                     : "内存压力：\(language.text(store.snapshot.memoryPressure))")
+                    .font(.caption).foregroundStyle(.secondary)
             }
         }
     }
@@ -64,7 +79,7 @@ struct OverviewView: View {
         CardContainer(title: "AI Coding", systemImage: "sparkles") {
             VStack(alignment: .leading, spacing: 16) {
                 ForEach(store.snapshot.quotas) { quota in
-                    QuotaRow(quota: quota)
+                    QuotaRow(quota: quota, presentation: .summary)
                     if quota.id != store.snapshot.quotas.last?.id { Divider() }
                 }
             }
@@ -74,13 +89,13 @@ struct OverviewView: View {
     private var networkCard: some View {
         CardContainer(title: "Network", systemImage: "network") {
             VStack(alignment: .leading, spacing: 10) {
-                LabeledContent("Public IP", value: (store.snapshot.publicIP ?? "Unavailable"))
-                LabeledContent("Region", value: (store.snapshot.region ?? "Unavailable"))
-                LabeledContent("Proxy", value: store.snapshot.proxyHint)
-                LabeledContent("Tunnel hint", value: store.snapshot.tunnelHint)
+                LabeledContent(language.text("Public IP"), value: language.text(store.snapshot.publicIP ?? "Unavailable"))
+                LabeledContent(language.text("Region"), value: language.text(store.snapshot.region ?? "Unavailable"))
+                LabeledContent(language.text("Proxy"), value: language.text(store.snapshot.proxyHint))
+                LabeledContent(language.text("Tunnel hint"), value: language.text(store.snapshot.tunnelHint))
                 Divider()
                 ForEach(store.snapshot.serviceLatency, id: \.0) { item in
-                    LabeledContent(item.0, value: item.1)
+                    LabeledContent(language.text(item.0), value: language.text(item.1))
                 }
             }
         }
@@ -93,13 +108,13 @@ struct OverviewView: View {
                     ForEach(store.snapshot.runtimes) { runtime in
                         VStack(alignment: .leading, spacing: 4) {
                             Text(runtime.name).foregroundStyle(.secondary)
-                            Text(runtime.version).fontWeight(.semibold)
+                            Text(language.text(runtime.version)).fontWeight(.semibold)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
                 Divider()
-                Text("Listening Ports")
+                Text(language.text("Listening Ports"))
                     .foregroundStyle(.secondary)
                 FlowPortsView(ports: store.snapshot.ports)
             }
@@ -107,13 +122,13 @@ struct OverviewView: View {
     }
 
     private var cleanerCard: some View {
-        CardContainer(title: "Cleaner", systemImage: "magnifyingglass") {
+        CardContainer(title: "Cleaner", assetImage: "CleanerBroom") {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text("Read-only scan")
+                    Text(language.text("Read-only scan"))
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Text("Not run")
+                    Text(language.text("Not run"))
                         .font(.title3.bold())
                 }
                 ForEach(store.snapshot.cleanerItems) { item in
@@ -133,11 +148,12 @@ struct OverviewView: View {
 }
 
 private struct FlowPortsView: View {
+    @Environment(\.macSoulLanguage) private var language
     let ports: [PortItem]
     var body: some View {
         HStack(spacing: 8) {
             ForEach(ports) { item in
-                Text("\(item.port) · \(item.process)")
+                Text("\(item.port) · \(language.text(item.process))")
                     .font(.caption.monospaced())
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)

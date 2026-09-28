@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct CardContainer<Content: View>: View {
+    @Environment(\.macSoulLanguage) private var language
     let title: String
     private let systemImage: String?
     private let assetImage: String?
@@ -23,7 +24,7 @@ struct CardContainer<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.card) {
             Label {
-                Text(title)
+                Text(language.text(title))
             } icon: {
                 if let systemImage {
                     Image(systemName: systemImage)
@@ -38,7 +39,7 @@ struct CardContainer<Content: View>: View {
                 .font(.headline)
             content()
         }
-        .padding(MacSoulTheme.Spacing.section)
+        .padding(MacSoulTheme.Spacing.card)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(MacSoulTheme.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: MacSoulTheme.Radius.card, style: .continuous))

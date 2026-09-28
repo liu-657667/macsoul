@@ -2,43 +2,80 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject private var store: AppStore
+    @Environment(\.macSoulLanguage) private var language
+    @AppStorage("macsoul.appearance") private var appearance = MacSoulAppearance.system.rawValue
+    @AppStorage("macsoul.language") private var selectedLanguage = MacSoulLanguage.english.rawValue
 
     var body: some View {
-        Form {
-            Section("Phase A · MOCK DATA") {
-                LabeledContent("Live sampling", value: "Unavailable")
-                LabeledContent("Quota providers", value: "Unavailable")
-                LabeledContent("Cleaner actions", value: "Disabled")
-            }
-            #if DEBUG
-            if let currentFixture = store.previewFixture {
-                Section("Developer Preview · MOCK DATA") {
-                    Picker("Fixture", selection: Binding(
-                        get: { store.previewFixture ?? currentFixture },
-                        set: { store.selectPreviewFixture($0) }
-                    )) {
-                        ForEach(MockProvider.Fixture.allCases) { fixture in
-                            Text(fixture.label).tag(fixture)
+        ScrollView {
+            VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.section) {
+                GroupBox(language.text("Current build capabilities")) {
+                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+                        LabeledContent(language.text("Data mode"), value: language.text("Bundled Mock"))
+                        LabeledContent(language.text("Live system sampling"), value: language.text("Not connected"))
+                        LabeledContent(language.text("Live quota providers"), value: language.text("Not connected"))
+                        LabeledContent(language.text("Cleaner deletion"), value: language.text("Not available"))
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                GroupBox(language.text("App appearance")) {
+                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+                        Picker(language.text("Appearance"), selection: $appearance) {
+                            ForEach(MacSoulAppearance.allCases) { option in
+                                Text(language.text(option.label)).tag(option.rawValue)
+                            }
+                        }
+                        .frame(maxWidth: 440, alignment: .leading)
+                        Text(language.text("Changes MacSoul windows only; the macOS appearance stays as it is."))
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                GroupBox(language == .english ? "Language" : "语言") {
+                    Picker(language == .english ? "Language" : "语言", selection: $selectedLanguage) {
+                        ForEach(MacSoulLanguage.allCases) { option in
+                            Text(option.label).tag(option.rawValue)
                         }
                     }
-                    Text("Changes the bundled mock snapshot only; no system or quota provider runs.")
-                        .foregroundStyle(.secondary)
+                    .frame(maxWidth: 440, alignment: .leading)
                 }
-            }
-            Section("Menu Bar artwork · DRAFT") {
-                HStack(spacing: 12) {
-                    Image("MacSoulMenuTemplateDraft")
-                        .renderingMode(.template)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 18, height: 18)
-                        .accessibilityLabel("MacSoul menu icon draft at 18 points")
-                    Text("18 pt draft is active in the menu bar; small-size review is pending.")
+                #if DEBUG
+                if let currentFixture = store.previewFixture {
+                    GroupBox(language.text("Developer preview scenarios")) {
+                        VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+                            Picker(language.text("Fixture"), selection: Binding(
+                                get: { store.previewFixture ?? currentFixture },
+                                set: { store.selectPreviewFixture($0) }
+                            )) {
+                                ForEach(MockProvider.Fixture.allCases) { fixture in
+                                    Text(language.text(fixture.label)).tag(fixture)
+                                }
+                            }
+                            .frame(maxWidth: 440, alignment: .leading)
+                            Text(language.text("The fixture selector changes local demo data. It does not enable live collection or account access."))
+                                .font(.caption).foregroundStyle(.secondary)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
+                GroupBox(language.text("Menu Bar artwork · DRAFT")) {
+                    HStack(spacing: MacSoulTheme.Spacing.regular) {
+                        Image("MacSoulMenuTemplateDraft")
+                            .renderingMode(.template)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 18, height: 18)
+                            .accessibilityLabel("MacSoul menu icon draft at 18 points")
+                        Text(language.text("18 pt template candidate is active; small-size artwork remains DRAFT."))
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                #endif
             }
-            #endif
-            Text("This build is a mock preview. Settings are not active.")
-                .foregroundStyle(.secondary)
-        }.padding().navigationTitle("Settings")
+            .frame(maxWidth: 680, alignment: .topLeading)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .padding(MacSoulTheme.Spacing.section)
+        }
+        .navigationTitle(language.text("Settings"))
     }
 }

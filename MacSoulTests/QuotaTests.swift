@@ -1,5 +1,6 @@
 import XCTest
 import AppKit
+import SwiftUI
 @testable import MacSoul
 
 final class QuotaTests: XCTestCase {
@@ -71,6 +72,61 @@ final class QuotaTests: XCTestCase {
         XCTAssertNotNil(image)
         XCTAssertTrue(image?.isTemplate == true)
     }
+    func testCleanerBroomAssetLoadsAsTemplate() {
+        let image = NSImage(named: NSImage.Name("CleanerBroom"))
+        XCTAssertNotNil(image)
+        XCTAssertTrue(image?.isTemplate == true)
+    }
+    func testMenuBackgroundIsOpaqueInLightAndDarkAppearances() {
+        for name in [NSAppearance.Name.aqua, .darkAqua] {
+            guard let appearance = NSAppearance(named: name) else {
+                XCTFail("Missing \(name) appearance")
+                continue
+            }
+            appearance.performAsCurrentDrawingAppearance {
+                let scheme: ColorScheme = name == .darkAqua ? .dark : .light
+                guard let background = MacSoulTheme.windowBackgroundColor(for: scheme).usingColorSpace(.deviceRGB) else {
+                    XCTFail("Cannot resolve background for \(name)")
+                    return
+                }
+                guard let foreground = NSColor.labelColor.usingColorSpace(.deviceRGB) else {
+                    XCTFail("Cannot resolve label color for \(name)")
+                    return
+                }
+                XCTAssertEqual(background.alphaComponent, 1, accuracy: 0.001)
+                let light = max(luminance(background), luminance(foreground))
+                let dark = min(luminance(background), luminance(foreground))
+                XCTAssertGreaterThanOrEqual((light + 0.05) / (dark + 0.05), 4.5)
+            }
+        }
+    }
+    func testAppearanceChoiceMapsToColorScheme() {
+        XCTAssertNil(MacSoulAppearance.system.colorScheme)
+        XCTAssertEqual(MacSoulAppearance.light.colorScheme, .light)
+        XCTAssertEqual(MacSoulAppearance.dark.colorScheme, .dark)
+        XCTAssertNil(MacSoulAppearance.system.appAppearance)
+        XCTAssertEqual(MacSoulAppearance.light.appAppearance?.name, .aqua)
+        XCTAssertEqual(MacSoulAppearance.dark.appAppearance?.name, .darkAqua)
+    }
+    func testLanguageChoiceKeepsQuotaValuesAndTranslatesSummary() {
+        let quota = MockProvider(fixture: .codexWeeklyOnly).snapshot(now: now).quotas[0]
+        XCTAssertEqual(quota.displayWindows(now: now).map(\.kind), [.weekly])
+        XCTAssertEqual(MacSoulLanguage.chinese.text("1 week"), "1 周")
+        XCTAssertEqual(MacSoulLanguage.chinese.used(31), "已用 31%")
+        XCTAssertEqual(QuotaWindowView.shortResetLabel(reset: now.addingTimeInterval(367_200),
+                                                       now: now, language: .chinese), "4天6小时后重置")
+        XCTAssertEqual(MacSoulLanguage.english.text("演示数据，未连接系统采样"),
+                       "Demo data; no system sampler connected")
+    }
+    private func luminance(_ color: NSColor) -> Double {
+        func linear(_ component: CGFloat) -> Double {
+            let value = Double(component)
+            return value <= 0.04045 ? value / 12.92 : pow((value + 0.055) / 1.055, 2.4)
+        }
+        return 0.2126 * linear(color.redComponent)
+            + 0.7152 * linear(color.greenComponent)
+            + 0.0722 * linear(color.blueComponent)
+    }
     @MainActor func testPreviewFixtureReplacesSharedMockSnapshot() {
         let store = AppStore(now: now)
         store.selectPreviewFixture(.codexWeeklyOnly, now: now)
@@ -108,5 +164,14 @@ final class QuotaTests: XCTestCase {
         XCTAssertEqual(states[0].state.value?.usedPercent, 96)
         XCTAssertEqual(states[1].state, .fresh(weekly))
         XCTAssertTrue(item.alertEligibleWindows(now: now.addingTimeInterval(31)).isEmpty)
+    }
+    func testShortResetTextUsesSuppliedClock() {
+        XCTAssertEqual(QuotaWindowView.shortResetLabel(reset: now.addingTimeInterval(367_200), now: now),
+                       "reset in 4d 6h")
+        XCTAssertEqual(QuotaWindowView.shortResetLabel(reset: now.addingTimeInterval(3_960), now: now),
+                       "reset in 1h 6m")
+        XCTAssertEqual(QuotaWindowView.shortResetLabel(reset: now.addingTimeInterval(25), now: now),
+                       "reset in 1m")
+        XCTAssertEqual(QuotaWindowView.shortResetLabel(reset: now, now: now), "refresh pending")
     }
 }

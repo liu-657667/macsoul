@@ -28,7 +28,7 @@ QuotaWindow
 - resetsAt
 ```
 
-Presentation derives `fresh` or `stale` for each available window from the sample age, Provider freshness and that window's reset time. `notApplicable` gets a brief note but no quota row; `unreported`, `requestFailed` and `providerUnavailable` get distinct status rows with no progress. Overview, AI Coding and Menu Bar reuse this same presentation model and `QuotaRow`.
+Presentation derives `fresh` or `stale` for each available window from the sample age, Provider freshness and that window's reset time. `notApplicable` has no summary row or progress in Overview and Menu Bar; AI Coding detail may explain it. `unreported`, `requestFailed` and `providerUnavailable` get distinct status rows with no progress. Overview, AI Coding and Menu Bar reuse this same presentation model and `QuotaRow`, with summary and detail variants.
 The shared row reevaluates time-based freshness every 60 seconds while visible; this is a UI clock, not a Provider polling schedule.
 
 ## Codex
@@ -50,7 +50,7 @@ Preferred: a stable local/documented mechanism such as status-line data that exp
 - Never scrape private credential endpoints to make the UI look complete.
 
 ## Freshness UI
-Always expose last-updated/source in details.
+Expose last-updated/source and full reset timestamps in AI Coding details. Overview and Menu Bar show short reset hints for fresh values; their relative time is computed from the supplied UI clock. Abnormal states remain explicit in summaries.
 - fresh available window: used % (including 0%) and available reset
 - stale threshold or reset expiry: last used % marked `Stale`, with last update; no automatic reset to 0%
 - not applicable: no numeric row or countdown

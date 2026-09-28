@@ -12,6 +12,8 @@ MacSoul 是一款原生 SwiftUI macOS 开发者伴侣，计划在主窗口和菜
 
 仓库已有可重复构建的 macOS 工程、Mock App、测试入口与任务账本。主窗口和 Menu Bar 共用一份演示数据；Soul 六种状态及品牌资源已接入。真实系统采样、网络探测和 AI 账户配额尚未接入。各项验收以 [`docs/STATUS.md`](docs/STATUS.md)、[`tasks.json`](tasks.json) 和当次验证报告为准；初始化包与历史审查材料不代表功能已完成。
 
+Settings 可切换 MacSoul 自身的浅色/深色外观及简体中文/英文界面，不会修改 macOS 的全局外观。当前界面仍按人工截图逐项验收，截图中的静态呈现不代表所有交互已通过。
+
 ## 开发入口
 
 先读 `START-HERE.md` 了解项目规则；继续开发时读 `prompts/CONTINUE.md` 和由 `tasks.json` 生成的 `docs/STATUS.md`。本机需安装 Xcode；工程最低部署目标为 macOS 13，当前实测环境见 `reports/phase-a.md`。
@@ -58,10 +60,10 @@ AI 模块不做 Token、成本或 Agent Session。Cleaner 当前只允许只读�
 
 ## 验证状态
 
-查看 `reports/phase-a.md` 中的实际命令、退出码和当次环境；它是历史证据，源码或工具链变化后须重跑。`BUNDLE-CHECKS.json` 仅验证最初合并包，不是 App 验收结果。
+查看 [`reports/phase-a-ui-review.md`](reports/phase-a-ui-review.md) 中的当前 UI 修订与验收限制，以及本机 `.artifacts/verification.json` 中的实际命令和退出码。`reports/phase-a.md` 是历史证据，源码或工具链变化后须重跑。`BUNDLE-CHECKS.json` 仅验证最初合并包，不是 App 验收结果。
 
 [GitHub Actions](https://github.com/liu-657667/macsoul/actions) 在每次推送和 pull request 上运行相同的 `./scripts/verify.sh`；远端结果以对应提交的工作流运行记录为准。
 
 ## License
 
-MacSoul 有权授权的自有代码采用 [MIT License](LICENSE)，版权声明为 `Copyright (c) 2026 liu-657667`。第三方代码、依赖和素材保留各自的许可证、版权归属及必要声明，不因本项目采用 MIT 而被重新授权。`reference/` 中的历史输入和概念素材也不因根目录的 `LICENSE` 自动获得新的授权。
+MacSoul 有权授权的自有代码采用 [MIT License](LICENSE)，版权声明为 `Copyright (c) 2026 liu-657667`。Cleaner 扫把图标来自 Phosphor Icons，原始版权与 MIT 许可全文随 App 收录于 [ThirdPartyNotices.txt](MacSoul/Resources/ThirdPartyNotices.txt)。其他第三方代码、依赖和素材保留各自的许可证、版权归属及必要声明，不因本项目采用 MIT 而被重新授权。`reference/` 中的历史输入和概念素材也不因根目录的 `LICENSE` 自动获得新的授权。

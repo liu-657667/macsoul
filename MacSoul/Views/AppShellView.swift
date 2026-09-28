@@ -18,7 +18,7 @@ enum AppSection: String, CaseIterable, Identifiable {
         case .network: "network"
         case .ai: "sparkles"
         case .dev: "terminal"
-        case .cleaner: "magnifyingglass"
+        case .cleaner: "CleanerBroom"
         case .settings: "gearshape"
         }
     }
@@ -26,11 +26,24 @@ enum AppSection: String, CaseIterable, Identifiable {
 
 struct AppShellView: View {
     @State private var selection: AppSection? = .overview
+    @Environment(\.macSoulLanguage) private var language
 
     var body: some View {
         NavigationSplitView {
             List(AppSection.allCases, selection: $selection) { item in
-                Label(item.rawValue, systemImage: item.icon)
+                Label {
+                    Text(language.text(item.rawValue))
+                } icon: {
+                    if item == .cleaner {
+                        Image(item.icon)
+                            .renderingMode(.template)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 18, height: 18)
+                    } else {
+                        Image(systemName: item.icon)
+                    }
+                }
                     .tag(item)
             }
             .navigationSplitViewColumnWidth(min: 180, ideal: 200, max: 220)

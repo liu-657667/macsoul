@@ -2,11 +2,12 @@ import SwiftUI
 
 struct CleanerView: View {
     @EnvironmentObject private var store: AppStore
+    @Environment(\.macSoulLanguage) private var language
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Cleaner scan not run")
+            Text(language.text("Cleaner scan not run"))
                 .font(.title2.bold())
-            Text("Day 1 uses mock values. Real scanning is intentionally disabled.")
+            Text(language.text("Day 1 uses mock values. Real scanning is intentionally disabled."))
                 .foregroundStyle(.secondary)
             List(store.snapshot.cleanerItems) { item in
                 HStack {
@@ -22,6 +23,6 @@ struct CleanerView: View {
             }
         }
         .padding(24)
-        .navigationTitle("Cleaner")
+        .navigationTitle(language.text("Cleaner"))
     }
 }

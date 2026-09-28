@@ -21,7 +21,7 @@ MacSoul 是本地优先的原生 macOS 开发者控制中心：专业数据帮�
 ## 两个展示入口
 
 主窗口：Overview / System / Network / AI Coding / Dev / Cleaner / Settings。
-Menu Bar：Soul 一句话、CPU/内存、Codex / Claude Code 实际适用的 5h / Week 窗口、网络简要状态。
+Menu Bar：Soul 一句话、CPU/内存/磁盘/电池的紧凑摘要、Codex / Claude Code 实际适用的 5h / Week 窗口、网络简要状态。
 两个入口共享相同 Snapshot；数据缺失显示 —，不混用假数据、真实数据和估算。
 概念效果图在 reference，仅作视觉气质参考；以具体设计规则为准。
 

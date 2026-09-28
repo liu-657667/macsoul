@@ -9,7 +9,7 @@ If Phase A is already completed in the real repository, preserve that progress; 
 ## Product
 
 Native Swift/SwiftUI macOS developer companion: System, Network, Dev, quota-only AI Coding and deterministic Soul.
-- Main window and Menu Bar support Codex / Claude Code 5h and Week windows, showing only windows actually applicable to the current account. Never infer availability from plan names or fabricate a missing 5h bar. Show used %, available resets, freshness and source for reported windows.
+- Main window and Menu Bar support Codex / Claude Code 5h and Week windows, showing only windows actually applicable to the current account. Never infer availability from plan names or fabricate a missing 5h bar. Summaries show used % and short available resets; normal freshness, source and full times remain in details, while stale/error/unavailable stay explicit in summaries.
 - No Token/cost/session analytics. No LLM dependency for Soul. No root requirement.
 - CPU = brain; memory pressure = stomach. Use sustained thresholds, hysteresis, cooldown and recovery.
 - Cleaner is read-only in this bootstrap. No destructive cleanup; no Notch implementation during Phase A or after freeze.

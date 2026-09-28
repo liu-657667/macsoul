@@ -2,20 +2,21 @@ import SwiftUI
 
 struct DevView: View {
     @EnvironmentObject private var store: AppStore
+    @Environment(\.macSoulLanguage) private var language
     var body: some View {
         Form {
-            Section("Runtimes — Mock") {
+            Section(language.text("Runtimes — Mock")) {
                 ForEach(store.snapshot.runtimes) { runtime in
-                    LabeledContent(runtime.name, value: runtime.version)
+                    LabeledContent(runtime.name, value: language.text(runtime.version))
                 }
             }
-            Section("Listening Ports — Mock") {
+            Section(language.text("Listening Ports — Mock")) {
                 ForEach(store.snapshot.ports) { item in
-                    LabeledContent("\(item.port)", value: item.process)
+                    LabeledContent("\(item.port)", value: language.text(item.process))
                 }
             }
         }
         .padding()
-        .navigationTitle("Dev")
+        .navigationTitle(language.text("Dev"))
     }
 }
