@@ -11,7 +11,7 @@
 ## 初始化续办
 
 - 修正 `scripts/verify.sh` 的顺序：先生成本机命令证据，再检查 `tasks.json`。因此空的 `.artifacts/` 也可运行固定入口。
-- 已准备 `.github/workflows/verify.yml` 草案，在 GitHub 的 macOS runner 上执行同一入口；当前 PAT 推送工作流时被 GitHub 拒绝，原因是缺少 `workflow` 权限。草案仅留在本机，未纳入本次远端提交；远端 CI：NOT_RUN。
+- 已准备 `.github/workflows/verify.yml` 草案，在 GitHub 的 macOS runner 上执行同一入口。首次推送因 PAT 缺少 `workflow` 权限被 GitHub 拒绝；负责人补齐权限后，以提交 `3d9466a` 推送成功。
 - 更新 README、启动页和合并说明中的仓库现状，避免把已建立的 Xcode 工程称为尚不存在。历史 Phase A 报告保留其当时的事实。
 
 ## 本机验证
@@ -25,5 +25,7 @@
 | manual UI | NOT_RUN | 本次仅维护仓库与验证入口；负责人 Phase A 验收仍待进行 |
 | performance | NOT_RUN | 未进行 Release 性能测量 |
 | live provider | NOT_RUN | 仍为 Mock App |
+
+后续远端验证：提交 `3d9466a` 的 [GitHub Actions 首轮运行](https://github.com/liu-657667/macsoul/actions/runs/36393204231) 于 2026-09-28 07:45 UTC 完成，macOS job 及 `Verify MacSoul` 步骤均为 success。此结果只证明该提交的远端验证，不替代人工 UI、性能或真实 Provider 验收。
 
 本次验证对应的工作树指纹为 `7ae2a06230961aa763cea7d9e41a51b453b69b77ae178e0ff832f375df9131be`，记录在 `.artifacts/verification.json` 与 `tasks.json`。本机 `.artifacts/` 被 Git 忽略；其他机器及 GitHub CI 必须重新运行验证。

@@ -20,4 +20,4 @@
 | performance | NOT_RUN | 未做 Release 及持续采样测量 |
 | live provider | NOT_RUN | 仍是 Mock App |
 
-当前工作树指纹见 `.artifacts/verification.json`；证据仅对应当前源码。下一项为 D1-06 的可复核截图和视觉确认，然后按账本依赖选择下一项。GitHub CI 工作流草案仍未推送，原因见 [仓库初始化记录](repository-setup.md)。
+当前工作树指纹见 `.artifacts/verification.json`；证据仅对应当前源码。下一项为 D1-06 的可复核截图和视觉确认，然后按账本依赖选择下一项。GitHub CI 已启用，首轮远端 macOS job 与 `Verify MacSoul` 步骤均成功，详见 [运行记录](https://github.com/liu-657667/macsoul/actions/runs/36393204231)。

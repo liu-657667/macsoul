@@ -50,6 +50,8 @@ AI 模块不做 Token、成本或 Agent Session。Cleaner 当前只允许只读�
 
 查看 `reports/phase-a.md` 中的实际命令、退出码和当次环境；它是历史证据，源码或工具链变化后须重跑。`BUNDLE-CHECKS.json` 仅验证最初合并包，不是 App 验收结果。
 
+[GitHub Actions](https://github.com/liu-657667/macsoul/actions) 在每次推送和 pull request 上运行相同的 `./scripts/verify.sh`；远端结果以对应提交的工作流运行记录为准。
+
 ## License
 
 MacSoul 有权授权的自有代码采用 [MIT License](LICENSE)，版权声明为 `Copyright (c) 2026 liu-657667`。第三方代码、依赖和素材保留各自的许可证、版权归属及必要声明，不因本项目采用 MIT 而被重新授权。`reference/` 中的历史输入和概念素材也不因根目录的 `LICENSE` 自动获得新的授权。
