@@ -1,0 +1,8 @@
+name = "explorer"
+description = "Fast read-only codebase explorer for MacSoul."
+model = "gpt-6-luna"
+model_reasoning_effort = "medium"
+sandbox_mode = "read-only"
+developer_instructions = """
+Map only the code and docs relevant to the parent task. Identify files, symbols, dependencies, tests, and existing patterns. Return a concise implementation map with file references. Do not edit code and do not broaden scope.
+"""

@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "example_only": true,
+  "note": "Illustrative contract, not a migration of the existing plan. All work below is NOT_STARTED.",
+  "baseline": {
+    "id": "example-A",
+    "immutable_after_approval": true,
+    "original_points": 6,
+    "owner_approved": false
+  },
+  "tasks": [
+    {
+      "id": "HARD-001",
+      "title": "统一设计并补齐 Menu Bar 周额度",
+      "priority": "P0",
+      "baseline_day": 1,
+      "scheduled_day": 1,
+      "points": 2,
+      "status": "todo",
+      "depends_on": [],
+      "allowed_paths": [
+        "docs/DESIGN.md",
+        "DAY1-DESIGN-LOCK.md",
+        "MacSoul/MenuBar/**"
+      ],
+      "acceptance": [
+        {
+          "id": "MENU-FOUR",
+          "description": "同一 fixture 驱动两家 Provider 的 5h+Week，主窗口/菜单栏一致",
+          "kind": "manual-ui"
+        }
+      ],
+      "evidence": [],
+      "review": {
+        "status": "not-reviewed"
+      },
+      "blocker": null
+    },
+    {
+      "id": "HARD-002",
+      "title": "建立确定性构建和测试入口",
+      "priority": "P0",
+      "baseline_day": 1,
+      "scheduled_day": 1,
+      "points": 2,
+      "status": "todo",
+      "depends_on": [],
+      "allowed_paths": [
+        "MacSoul.xcodeproj/**",
+        "MacSoulTests/**",
+        "scripts/**"
+      ],
+      "acceptance": [
+        {
+          "id": "BUILD-CLEAN",
+          "description": "固定环境新工作目录构建成功",
+          "kind": "command"
+        },
+        {
+          "id": "UNIT",
+          "description": "至少一个有意义的纯逻辑测试运行成功",
+          "kind": "command"
+        }
+      ],
+      "evidence": [],
+      "review": {
+        "status": "not-reviewed"
+      },
+      "blocker": null
+    },
+    {
+      "id": "HARD-003",
+      "title": "移除 Mock 常量与强耦合",
+      "priority": "P0",
+      "baseline_day": 1,
+      "scheduled_day": 1,
+      "points": 2,
+      "status": "todo",
+      "depends_on": [
+        "HARD-002"
+      ],
+      "allowed_paths": [
+        "MacSoul/Models/**",
+        "MacSoul/Views/**",
+        "MacSoul/Components/**",
+        "MacSoul/MenuBar/**",
+        "MacSoul/App/**",
+        "MacSoulTests/**"
+      ],
+      "acceptance": [
+        {
+          "id": "QUOTA-PARTIAL",
+          "description": "5h 缺失而 Week 有值时不把缺失画为 0%",
+          "kind": "unit"
+        },
+        {
+          "id": "CPU-TEXT",
+          "description": "CPU fixture 为20%时文字与进度均为20%",
+          "kind": "manual-ui"
+        }
+      ],
+      "evidence": [],
+      "review": {
+        "status": "not-reviewed"
+      },
+      "blocker": null
+    }
+  ],
+  "evidence_record_example": {
+    "example_only": true,
+    "task_id": "HARD-002",
+    "acceptance_id": "BUILD-CLEAN",
+    "kind": "command",
+    "source_revision": "REPLACE_WITH_ACTUAL_GIT_SHA",
+    "working_tree_fingerprint": "REPLACE_WITH_ACTUAL_DIGEST",
+    "toolchain_record": "artifacts/doctor.json",
+    "command": "./scripts/build.sh",
+    "exit_code": null,
+    "status": "NOT_RUN",
+    "started_at": null,
+    "finished_at": null,
+    "log_path": null,
+    "reviewer": null
+  },
+  "change_log": []
+}

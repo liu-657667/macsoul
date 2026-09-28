@@ -1,0 +1,610 @@
+{
+  "bundle": "MacSoul-All-in-One",
+  "version": "1.0",
+  "packaged_on": "2026-09-28",
+  "package_root": "macsoul",
+  "purpose": "consolidated development inputs, not a compiled application",
+  "manifest_excludes": [
+    "BUNDLE-MANIFEST.json",
+    "BUNDLE-CHECKS.json"
+  ],
+  "source_archives": [
+    {
+      "name": "MacSoul-GPT6-Family-Harness.zip",
+      "sha256": "fa28106a95955e4e70279e9ffd9306c1e81101d17a8e98e7b023b552e970de03"
+    },
+    {
+      "name": "MacSoul-Day1-Starter.zip",
+      "sha256": "89c89d1f4f4a04383d4af29d75e4d86b79e505f98b115b901c251dceaf3a977c"
+    },
+    {
+      "name": "MacSoul-Harness-Review.zip",
+      "sha256": "9fee337e031f5d88a04a813e2bc8acbf83375a422f58f15342a9425264247ce0"
+    },
+    {
+      "name": "MacSoul-Agent-Starter.zip",
+      "sha256": "74a052c9d266b22adc275e77537bd2c1d28b9ab9d696840514b9d25f91d56d70"
+    }
+  ],
+  "preserved_originals": {
+    "swift_files": 16,
+    "review_files": 5
+  },
+  "files": [
+    {
+      "path": ".codex/README.md",
+      "bytes": 639,
+      "sha256": "29c411277c2a900790ae29b4f01c035bd03c7c2d4b5bf99aabcd077f4d6cc909"
+    },
+    {
+      "path": ".codex/config.toml",
+      "bytes": 254,
+      "sha256": "d591560bc4fe60fd98866a04a818d3db2e3dec6d8ff5dabe0deecd0aab7be262"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 176,
+      "sha256": "03b952a371b9c52a0a82f2c36e7f3367184a6943c348e2333b885938d147b72e"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 4627,
+      "sha256": "87d5f65e09ba71e802f15cdc5280c1457ee9f7311810f3b8130534b00fb82826"
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 442,
+      "sha256": "9a1e0b76e15d59514e98745a922fe2515e0f5d713f55a05c10e82503cb979a82"
+    },
+    {
+      "path": "CODEX-DAY1-PROMPT.md",
+      "bytes": 323,
+      "sha256": "2b0325d211758e7d65becde846f070395177c3240c4e7f3b7593abe3566cbcb5"
+    },
+    {
+      "path": "DAY1-DESIGN-LOCK.md",
+      "bytes": 773,
+      "sha256": "76e5983977e59b71ccaa3acf6eb7697676ce49bd8db4a36bf88895f57215362d"
+    },
+    {
+      "path": "MANIFEST.md",
+      "bytes": 4789,
+      "sha256": "82e1617be4f5f69968785784b6c634aff3ebea0f2af86996e32f585d36f02885"
+    },
+    {
+      "path": "MacSoul/App/MacSoulApp.swift",
+      "bytes": 537,
+      "sha256": "0226a58e4641405a08c6d78f5c42573e384f661fdf21e54b4771f7417666b5ee"
+    },
+    {
+      "path": "MacSoul/Components/CardContainer.swift",
+      "bytes": 579,
+      "sha256": "64d18504320855c83f3b7f6e01e5594cd7d5efb9f1ed36b3a7b7218930e3c788"
+    },
+    {
+      "path": "MacSoul/Components/MetricTile.swift",
+      "bytes": 644,
+      "sha256": "d79f8d83b662baeefffda46d80f4bece889363b574561fc8985c6c11ffa1e0fc"
+    },
+    {
+      "path": "MacSoul/Components/QuotaRow.swift",
+      "bytes": 884,
+      "sha256": "ac2aa64c7861cb5a742f46a1bbae6969110fecd3f9170112c4346a15ecac82e7"
+    },
+    {
+      "path": "MacSoul/MenuBar/MenuBarContentView.swift",
+      "bytes": 2136,
+      "sha256": "eb23462dc46a780b0f599a4e095ea1a5813692081a783f4decb08cb076b3057d"
+    },
+    {
+      "path": "MacSoul/Models/MacSoulModels.swift",
+      "bytes": 861,
+      "sha256": "ad589ed74c3e9f5546a99af5e92b27b1d198a5c4d325ed6a61f8bfc9b3a9a2a5"
+    },
+    {
+      "path": "MacSoul/Models/MockStore.swift",
+      "bytes": 1697,
+      "sha256": "e4886f66d132ac3ead9348827c8cc5a9b4d572684c9cc2438a0ce9d3292bc461"
+    },
+    {
+      "path": "MacSoul/Theme/MacSoulTheme.swift",
+      "bytes": 364,
+      "sha256": "38bc1a8a8059ce5a7e0ff4cd8015cc47edb86736e7bc2e28ad92dc1f83447067"
+    },
+    {
+      "path": "MacSoul/Views/AI/AICodingView.swift",
+      "bytes": 723,
+      "sha256": "32f43e49b53df70ee21fb9ed6951cd29ac7783fb538e8e69c5971e681cab0ba9"
+    },
+    {
+      "path": "MacSoul/Views/AppShellView.swift",
+      "bytes": 1459,
+      "sha256": "2ef79cc9433371ad5e1ce0e4f3e00df2bf908042a3255abbd31bd454c9348460"
+    },
+    {
+      "path": "MacSoul/Views/Cleaner/CleanerView.swift",
+      "bytes": 899,
+      "sha256": "9530105e3a9f4c5c992cd655d1d8f8345cf1e56ed415ca4caaac4d4bcb7c7523"
+    },
+    {
+      "path": "MacSoul/Views/Dev/DevView.swift",
+      "bytes": 603,
+      "sha256": "793b0b53f2badbab76cebb1b69aca7072acc0b584ea9ba8d76a879918f4fd5cd"
+    },
+    {
+      "path": "MacSoul/Views/Network/NetworkView.swift",
+      "bytes": 785,
+      "sha256": "e29906e355ce3e674aa7f0eee6449a58397f62685ac63e29c54824815a19ff1b"
+    },
+    {
+      "path": "MacSoul/Views/Overview/OverviewView.swift",
+      "bytes": 5308,
+      "sha256": "558140966252fca23c14de647de9c0a70da8d44fc26865e768a38c0c3f6fc3f1"
+    },
+    {
+      "path": "MacSoul/Views/Settings/SettingsView.swift",
+      "bytes": 450,
+      "sha256": "b6e437d575ba405f91d0cecbff35c6e96a6433610ab16a8b6b88cd980ea9331f"
+    },
+    {
+      "path": "MacSoul/Views/System/SystemView.swift",
+      "bytes": 750,
+      "sha256": "9e3c41fa31b3f47cfde03e78eae508736d2caf361642314a232335f46413999e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2710,
+      "sha256": "f1a8b441b053d9c283ad9e108d8a7573e9156ea18b7ae4116ff41fecca671c42"
+    },
+    {
+      "path": "START-HERE.md",
+      "bytes": 3346,
+      "sha256": "e71169547236df1d5f661fe4469874d9bae725c73ffb893b148ae156d1f2cbea"
+    },
+    {
+      "path": "docs/7-DAY-PLAN.md",
+      "bytes": 5527,
+      "sha256": "8ff8e8a11f973933f8f5179ca6c48d8669ddfddeee0ea0d10e27bee19a61401d"
+    },
+    {
+      "path": "docs/AI-QUOTA.md",
+      "bytes": 2474,
+      "sha256": "d286e447307e74ee734977f2180ed235565d6e632a88a459fac774394e043181"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "bytes": 3494,
+      "sha256": "15e10f20ef3c39ce3f4e635dcef38bb7a447bf3dbbd2737261f3cc099a832593"
+    },
+    {
+      "path": "docs/DESIGN.md",
+      "bytes": 3029,
+      "sha256": "a3da6273e05651ad71b4a0842a2458cf91845441a8275bc58d19140a58a9d43d"
+    },
+    {
+      "path": "docs/GPT6-FAMILY-MIGRATION.md",
+      "bytes": 383,
+      "sha256": "23a231af375f0153b43189ff99ff0d0dd1ef8a0eb8976ae3c7e2be5419ee8e5c"
+    },
+    {
+      "path": "docs/INTEGRATION-NOTES.md",
+      "bytes": 2994,
+      "sha256": "5b5f8e009607d981052b62192d4dbce4387d215fb1127d5622e6a06e7ea77882"
+    },
+    {
+      "path": "docs/MODEL-STRATEGY.md",
+      "bytes": 2486,
+      "sha256": "11dbf61ac963aa61ce0ce5d524a97a25bc12955dbdb20b9eb835870988f7db84"
+    },
+    {
+      "path": "docs/PERFORMANCE.md",
+      "bytes": 893,
+      "sha256": "70700c5d0c0cf5b405cd4807215584644dcf9aaddd34dbe8256568e8d2801326"
+    },
+    {
+      "path": "docs/PRD.md",
+      "bytes": 2750,
+      "sha256": "6e82b50fd2051f4c2c536f20a1c88725697f2b0681fe378b0b9e1f2aede0f4d4"
+    },
+    {
+      "path": "docs/PROGRESS-PROTOCOL.md",
+      "bytes": 2862,
+      "sha256": "a758acd61d16025d91307c765eea3a9ea54a82b33f9195521763c38cef93a90a"
+    },
+    {
+      "path": "docs/QUALITY-GATES.md",
+      "bytes": 1336,
+      "sha256": "0d86647a19a3b776446905d22d329793d0323e29e76e9dd83001acabe44611a2"
+    },
+    {
+      "path": "docs/SCOPE.md",
+      "bytes": 2008,
+      "sha256": "8aa2d9dd005ddded26ed26bd959d061acfa905bf7da511bdec80841795165d59"
+    },
+    {
+      "path": "docs/SOUL-ENGINE.md",
+      "bytes": 1834,
+      "sha256": "90184c573a777f2e454117036c282a1425af64a257a7cad1d57bba5756b6ccb0"
+    },
+    {
+      "path": "docs/STATUS.md",
+      "bytes": 1286,
+      "sha256": "3ad46014149605153d66811c800f0c7d2428bc0b39676fd0c7ce1a7d95e5d3c9"
+    },
+    {
+      "path": "prompts/BOOTSTRAP.md",
+      "bytes": 1767,
+      "sha256": "02dd84e7845e846b4ded0f45b96785f11a7b0839032fb4bda08011bb73a1ab0a"
+    },
+    {
+      "path": "prompts/CONTINUE.md",
+      "bytes": 801,
+      "sha256": "c79ad692f09f5d9210b2d8a7eea0f1eadee0e61c87d5cd2f5b679e4cb392de35"
+    },
+    {
+      "path": "prompts/DAILY-REVIEW.md",
+      "bytes": 820,
+      "sha256": "25939a09bc63f2ab7a6dc3118db39cba1650e20ef18b8e94deaae3b6db551daf"
+    },
+    {
+      "path": "prompts/DAY-02.md",
+      "bytes": 1404,
+      "sha256": "2dc5299f51ef5ebe831e91a7f942088fc61c19348444e564f065ca2f17235ec9"
+    },
+    {
+      "path": "prompts/DAY-03.md",
+      "bytes": 1405,
+      "sha256": "aa6b2df8667941f4a2f5ccf973ba83a0e3e752d032bcc1905ee07a83abf73fa8"
+    },
+    {
+      "path": "prompts/DAY-04.md",
+      "bytes": 1411,
+      "sha256": "45fd99b8f53b91bd7008c55460582d820849d816e996a4375ad494a7a46bda26"
+    },
+    {
+      "path": "prompts/DAY-05.md",
+      "bytes": 1425,
+      "sha256": "2bd6880e2cb4dee5a71c88db9efc160c794801dfe1f5561c92f1d6b5111258b5"
+    },
+    {
+      "path": "prompts/DAY-06.md",
+      "bytes": 1423,
+      "sha256": "418b987935a22efb482d5da02174203725c72c7d4d64c5b9692a201cdbe1b4d4"
+    },
+    {
+      "path": "prompts/DAY-07.md",
+      "bytes": 1401,
+      "sha256": "d7fca798ff52dfc58cd1cd754cb5302386a0679fadac06240734b4bd5b54bb12"
+    },
+    {
+      "path": "prompts/KICKOFF.md",
+      "bytes": 303,
+      "sha256": "4a10272a6df1e60398c742d1368d9c074a903757a45b2020fb83523125c7a2cc"
+    },
+    {
+      "path": "prompts/RECOVERY.md",
+      "bytes": 648,
+      "sha256": "a26b1e9574050762f4406cbf1a1d8b63b2b26f7b2f52319641e0cbb5a3e766c8"
+    },
+    {
+      "path": "reference/ORIGIN-MAP.md",
+      "bytes": 2082,
+      "sha256": "ad3d23d7926896cf215a95ecc9aa436cf15722fdc30a249bead72d9d1a2f0f20"
+    },
+    {
+      "path": "reference/README.md",
+      "bytes": 762,
+      "sha256": "b37cc8612730b8a9bee9236730e9dafa0d0156f19e4deaf6797f875f14443b48"
+    },
+    {
+      "path": "reference/early-product-docs/ACCEPTANCE.md",
+      "bytes": 3017,
+      "sha256": "d0fe16fd5a63bb85fc6f70ffabd7a45bd536af4bb2a38d1e3b6dd2251b7817e9"
+    },
+    {
+      "path": "reference/early-product-docs/AI-QUOTA.md",
+      "bytes": 3204,
+      "sha256": "31fad0adfeaf2385a68ce30c91eda8f1bf30a17684c5e60732bd2f7560ceb830"
+    },
+    {
+      "path": "reference/early-product-docs/ARCHITECTURE.md",
+      "bytes": 6220,
+      "sha256": "fad9860db6f3e37c2795140b2123d62c1e71d5098bdc752b889088c51a0b374f"
+    },
+    {
+      "path": "reference/early-product-docs/NETWORK.md",
+      "bytes": 1600,
+      "sha256": "0c29d20caf427599da59f0bdc8108199dbe40c22269122e5dbfcee4344f306d1"
+    },
+    {
+      "path": "reference/early-product-docs/PRD.md",
+      "bytes": 7030,
+      "sha256": "83e6c85a2bd23f70adeadbd868b9043cee2dae1698ce66191115bd121cd25d3e"
+    },
+    {
+      "path": "reference/early-product-docs/PRODUCT-DECISIONS.md",
+      "bytes": 1646,
+      "sha256": "b3ee7452740d35dd991b7b1e0e405b6c4b8d46550832120f114251ca96971557"
+    },
+    {
+      "path": "reference/early-product-docs/SOUL-ENGINE.md",
+      "bytes": 3944,
+      "sha256": "0fde5354d033692ae02cf185751a94e9e171956d12ee893cd653705f4b40eb8d"
+    },
+    {
+      "path": "reference/early-product-docs/TEST-STRATEGY.md",
+      "bytes": 1099,
+      "sha256": "2c86cf0a12c7d39bb80c82fa5ab85438569fb712a7e5d0bd9706fc84a67c109b"
+    },
+    {
+      "path": "reference/early-product-docs/UI-SPEC.md",
+      "bytes": 2726,
+      "sha256": "4c17f43a028d30de1df264a2f934350098ee80dbb032212d966906593d6eaaf4"
+    },
+    {
+      "path": "reference/early-product-docs/adr/0001-core-architecture.md",
+      "bytes": 826,
+      "sha256": "dfb75435a570b45d551cbf894f13293410d46b003e8b836f2c64305a0cfbd2ce"
+    },
+    {
+      "path": "reference/early-product-docs/exec-plans/MVP.md",
+      "bytes": 3726,
+      "sha256": "7d7a84d6ae1e61dee821e580283201c8fb494c5f4a42765def7fe6ecd369f267"
+    },
+    {
+      "path": "reference/macsoul-concept.png",
+      "bytes": 1669419,
+      "sha256": "cc68a29ccc4bff777560708953164f5a0b6693927c583f32800a25b9eb8aa44c"
+    },
+    {
+      "path": "reference/originals/day1/CODEX-DAY1-PROMPT.md",
+      "bytes": 797,
+      "sha256": "4e8b116df2a6470e2fde8922096d7a01a4a7f52a6e7b37905908eb14011b4085"
+    },
+    {
+      "path": "reference/originals/day1/DAY1-DESIGN-LOCK.md",
+      "bytes": 2485,
+      "sha256": "4107bf89ef799f09235987d3d4bf6289fd30e7e5d9bc667149a74292771066cb"
+    },
+    {
+      "path": "reference/originals/day1/README.md",
+      "bytes": 1125,
+      "sha256": "63e243bbc485b9e53a591ea6a94374cca3dbbd500485d26b0454f8158c1fb9cf"
+    },
+    {
+      "path": "reference/originals/harness/AGENTS.original.md",
+      "bytes": 3590,
+      "sha256": "5139525387034d39f93b2cf5390763d38651823152b14e0ef02d138af67212b3"
+    },
+    {
+      "path": "reference/originals/harness/CLAUDE.original.md",
+      "bytes": 400,
+      "sha256": "fb6e2c9d36673e22f2369c88ae6120b43c7ba9df1d5673794e48b057bbb740b7"
+    },
+    {
+      "path": "reference/originals/harness/MANIFEST.md",
+      "bytes": 1362,
+      "sha256": "a9ff9ddf58f41acad0cee27cc0851abd94c6c41d8df90f54fe31fa5cd4bc7a4a"
+    },
+    {
+      "path": "reference/originals/harness/README.md",
+      "bytes": 939,
+      "sha256": "cad869224430b32637a4e9000b6fb2425f212656da7bde6b7618fe68b2f441b9"
+    },
+    {
+      "path": "reference/originals/harness/START-HERE.md",
+      "bytes": 1515,
+      "sha256": "613026f918cb74404d606582eecc39f68990e3f23a3b1338e0fafc1b9b8ab64a"
+    },
+    {
+      "path": "reference/originals/harness/docs/7-DAY-PLAN.md",
+      "bytes": 5139,
+      "sha256": "17701420dfe81a1f995e7449bf5ecd68ef70e886bfdfa4a4a912f10ff3e15b0a"
+    },
+    {
+      "path": "reference/originals/harness/docs/AI-QUOTA.md",
+      "bytes": 1652,
+      "sha256": "362eb984097d34414d8bd515dc5d43b822e2969722658dafa62b29eb34789c15"
+    },
+    {
+      "path": "reference/originals/harness/docs/DESIGN.md",
+      "bytes": 2487,
+      "sha256": "64114652d45b3716cc6fbfeb1f219230c2b7d2a141368cebfb5fd6bf8a7db867"
+    },
+    {
+      "path": "reference/originals/harness/docs/GPT6-FAMILY-MIGRATION.md",
+      "bytes": 1189,
+      "sha256": "4a229a1fd6f2231438d76e4fd88f449c5456247345bde9873cefb937bb17f426"
+    },
+    {
+      "path": "reference/originals/harness/docs/MODEL-STRATEGY.md",
+      "bytes": 6127,
+      "sha256": "bddee28eb6b86f3cd234fcddf2391fa0d0af3be2f1e73f8ed5426747b53ca590"
+    },
+    {
+      "path": "reference/originals/harness/docs/PROGRESS-PROTOCOL.md",
+      "bytes": 2959,
+      "sha256": "bb1b904e0108658391ff01cbe17e1bbef47eb9b8d4146f2fa7a38552534bb0c0"
+    },
+    {
+      "path": "reference/originals/harness/docs/QUALITY-GATES.md",
+      "bytes": 1023,
+      "sha256": "bc36ae87c91d8898b992ac63030e27fa303c0386f40f8bc891fdb75cc701c26a"
+    },
+    {
+      "path": "reference/originals/harness/docs/SCOPE.md",
+      "bytes": 1624,
+      "sha256": "724c5ddc3e843f073c1cf12678016ac5c68fca54d847b841e5072f45bc3800b7"
+    },
+    {
+      "path": "reference/originals/harness/docs/SOUL-ENGINE.md",
+      "bytes": 1620,
+      "sha256": "9458980f234e92af256b52522850232ad307766c44b1f437bf8b1d176b7906e4"
+    },
+    {
+      "path": "reference/originals/harness/docs/STATUS.md",
+      "bytes": 1087,
+      "sha256": "cc3aed7d012c469cd527f30bb8fdea093e09f69bcc46387b5683fe67a2967ff1"
+    },
+    {
+      "path": "reference/originals/harness/prompts/CONTINUE.md",
+      "bytes": 473,
+      "sha256": "06050bf9867d9b0330be8f953834dd2c28f01c459853a87805f35723dcb4e84d"
+    },
+    {
+      "path": "reference/originals/harness/prompts/DAILY-REVIEW.md",
+      "bytes": 620,
+      "sha256": "314c953d1e76a2365e556cb1b2ccadc1b9be1777570a2421b982e7c255d1b392"
+    },
+    {
+      "path": "reference/originals/harness/prompts/DAY-02.md",
+      "bytes": 1078,
+      "sha256": "25bb94b7e8484943bd42c98a49ac5f0146d3ed0da0e20062b002f57bf515aa3b"
+    },
+    {
+      "path": "reference/originals/harness/prompts/DAY-03.md",
+      "bytes": 1079,
+      "sha256": "63f675a5d1a220caa3ec8b6d17797a0172eb7ac724f1b1e217b6a8e879250071"
+    },
+    {
+      "path": "reference/originals/harness/prompts/DAY-04.md",
+      "bytes": 1085,
+      "sha256": "f858b51ae919b58576ee59bbd52fd5046df93c16326a181dde9f540db1dfa277"
+    },
+    {
+      "path": "reference/originals/harness/prompts/DAY-05.md",
+      "bytes": 1099,
+      "sha256": "866052fae6f20449a9d607e6956e10f66c2992ae3866975252b023a5eaa1de8e"
+    },
+    {
+      "path": "reference/originals/harness/prompts/DAY-06.md",
+      "bytes": 1097,
+      "sha256": "40e1a75ac10ffcee5052b31547f590d74a294f5eaac4e5ee129cf821df6951d6"
+    },
+    {
+      "path": "reference/originals/harness/prompts/DAY-07.md",
+      "bytes": 1075,
+      "sha256": "d51fea7b36b312b19abecb55d8975f919b1141b871201ce2cb42dea7e6aeb92b"
+    },
+    {
+      "path": "reference/originals/harness/prompts/KICKOFF.md",
+      "bytes": 850,
+      "sha256": "20f926ece77611bdd999de9f820fe95b333b30d35b0317f0faf9f2414c23ed29"
+    },
+    {
+      "path": "reference/originals/harness/prompts/RECOVERY.md",
+      "bytes": 666,
+      "sha256": "71a3601ed158ad33dd8c148eb951f6afa1b62f6e4c333caff1a3baaec0ec25c3"
+    },
+    {
+      "path": "reports/README.md",
+      "bytes": 643,
+      "sha256": "5b415ac8151f1b1bb4231b4a9794e88cea9c90dc8ae6352436ca89ebaf131206"
+    },
+    {
+      "path": "reports/day-1.md",
+      "bytes": 515,
+      "sha256": "c53a9f37907d20b6bfc2d2c260a5db5b8f46e0c84a3b8f21396961eed71fc05a"
+    },
+    {
+      "path": "reports/day-2.md",
+      "bytes": 515,
+      "sha256": "17421ca137a135bfdd6dd3d42474a87557cdcd45abec97a051f2afbbcf2f3514"
+    },
+    {
+      "path": "reports/day-3.md",
+      "bytes": 515,
+      "sha256": "bc7244fbc3356d351154f97394a0715d51a8ec079cb97cfa0f93161ee6c4d7e1"
+    },
+    {
+      "path": "reports/day-4.md",
+      "bytes": 515,
+      "sha256": "e13270a7d2ba91871b1b553405fd9aea99c7896b197ad148cb338e7ada2db968"
+    },
+    {
+      "path": "reports/day-5.md",
+      "bytes": 515,
+      "sha256": "1be7e830f44c6f0a2ffcb22137cf9e7243706620752943adbf15d6c3b2f49ee2"
+    },
+    {
+      "path": "reports/day-6.md",
+      "bytes": 515,
+      "sha256": "2bde96ce89cb594128445e42259a94eb191ec7b525ee81cef70f8c2536e027c9"
+    },
+    {
+      "path": "reports/day-7.md",
+      "bytes": 515,
+      "sha256": "90ef14d9789e066f451361bb1dbc1a3c5e4df3ba24ac493d3fea2dab5a5c5336"
+    },
+    {
+      "path": "review/AUDIT.md",
+      "bytes": 18149,
+      "sha256": "b87415ae7f35f93535e6089bbe5b071ffccacd61627378fccec8deb9843eef56"
+    },
+    {
+      "path": "review/CODEX-HARDENING-PROMPT.md",
+      "bytes": 5185,
+      "sha256": "036bffbcde6996d7f955ed15f010ac7d0eee515925e6870124e240b42ad04dd9"
+    },
+    {
+      "path": "review/README.md",
+      "bytes": 868,
+      "sha256": "8b036b8f68e03a9aecf48768cb01e6380b00e06e3cfa958e6a3e6dc6a5029aad"
+    },
+    {
+      "path": "review/static-checks.json",
+      "bytes": 1407,
+      "sha256": "65ac937d02cd30ecd3cec7aa66587840325b68541d2620a5d54bc82647ccb5c7"
+    },
+    {
+      "path": "review/tasks.example.json",
+      "bytes": 3180,
+      "sha256": "19fd042bf47641a2943711f6cd89085bf4e9d17884ac72053a7706ce0c15660e"
+    },
+    {
+      "path": "scripts/README.md",
+      "bytes": 368,
+      "sha256": "17bbcb6465cd3da809dd7d1893d607d8ac3acc79f82da24df5166974ee5bc76c"
+    },
+    {
+      "path": "scripts/check_bundle.py",
+      "bytes": 4224,
+      "sha256": "0a4a9e1a99f61f8839ccffd889196589ae97bb909a24a1cad0097287fca1e81a"
+    },
+    {
+      "path": "templates/README.md",
+      "bytes": 480,
+      "sha256": "79954874f8054d676cc73526e43a50084f7183d59eae9955704f90dd9ea46afa"
+    },
+    {
+      "path": "templates/codex-family-original/agents/architect.toml",
+      "bytes": 543,
+      "sha256": "15e1f86d0853edf9fb649d35a8048c3eb66e845a79b4e7a88656f34c84bb44f6"
+    },
+    {
+      "path": "templates/codex-family-original/agents/explorer.toml",
+      "bytes": 421,
+      "sha256": "c99b1892e2f0b2ab9a3ef49cdc450fb008b7a907ff1a0d6a34a9bea06e4d6015"
+    },
+    {
+      "path": "templates/codex-family-original/agents/reporter.toml",
+      "bytes": 620,
+      "sha256": "510f9242783d7ee9c789992ab75b2cc0360d6ff9ccda1c1cd7b2d1a523676d10"
+    },
+    {
+      "path": "templates/codex-family-original/agents/reviewer.toml",
+      "bytes": 654,
+      "sha256": "b5c988cbaa77df3df7ebc2b91713ca7c16343d40229bf66776d04071fa5cc1f0"
+    },
+    {
+      "path": "templates/codex-family-original/agents/tester.toml",
+      "bytes": 430,
+      "sha256": "2ca2b61ac6547f8f7e47fda461e817d04ec48fa0aec1247f4c8f1ee041e74916"
+    },
+    {
+      "path": "templates/codex-family-original/config.toml",
+      "bytes": 1432,
+      "sha256": "0a1af50f799c0ab5d5b35e38feb62b43447d929409cfdfed98d9da9f41c91ec1"
+    }
+  ]
+}

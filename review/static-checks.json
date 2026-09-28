@@ -1,0 +1,61 @@
+{
+  "review_type": "static source/configuration review; no macOS execution",
+  "archives": {
+    "MacSoul-GPT6-Family-Harness": {
+      "sha256": "fa28106a95955e4e70279e9ffd9306c1e81101d17a8e98e7b023b552e970de03"
+    },
+    "MacSoul-Day1-Starter": {
+      "sha256": "89c89d1f4f4a04383d4af29d75e4d86b79e505f98b115b901c251dceaf3a977c"
+    }
+  },
+  "counts": {
+    "harness_files": 42,
+    "day1_swift_files": 16
+  },
+  "config_checks": {
+    "toml_parse": "PASS: 6 TOML files",
+    "project_config_current_official_schema": "NOT VERIFIED: <urlopen error [Errno -3] Temporary failure in name resolution>"
+  },
+  "day_weights": {
+    "1": {
+      "P0": 10
+    },
+    "2": {
+      "P0": 12
+    },
+    "3": {
+      "P0": 12
+    },
+    "4": {
+      "P0": 11
+    },
+    "5": {
+      "P0": 11
+    },
+    "6": {
+      "P0": 10
+    },
+    "7": {
+      "P0": 10
+    }
+  },
+  "attachment_matches": {
+    "AGENTS.md": true,
+    "CLAUDE.md": true,
+    "docs/MODEL-STRATEGY.md": true,
+    "docs/7-DAY-PLAN.md": true,
+    "docs/PROGRESS-PROTOCOL.md": true
+  },
+  "build_entrypoints": {
+    "xcodeproj_count": 0,
+    "Package.swift_count": 0,
+    "github_workflow_files": 0,
+    "scripts_files": 0
+  },
+  "runtime_validations": {
+    "Xcode_build": "NOT RUN (Linux environment)",
+    "SwiftUI_runtime": "NOT RUN",
+    "quota_providers": "NOT RUN (no user account connected for quota test)",
+    "Instruments": "NOT RUN"
+  }
+}

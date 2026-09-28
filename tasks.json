@@ -1,0 +1,1360 @@
+{
+  "schema_version": 1,
+  "baseline": {
+    "source": "docs/7-DAY-PLAN.md",
+    "sha256": "8ff8e8a11f973933f8f5179ca6c48d8669ddfddeee0ea0d10e27bee19a61401d",
+    "original_points": 76,
+    "owner_approved_change": false
+  },
+  "tasks": [
+    {
+      "id": "A4",
+      "title": "任务账本与证据验证",
+      "priority": "P0",
+      "original_day": null,
+      "planned_day": 1,
+      "original_points": 0,
+      "current_points": 0,
+      "scope": "Phase A hardening; zero additional baseline points",
+      "depends_on": [],
+      "acceptance": [
+        {
+          "id": "A4-LEDGER",
+          "description": "A4-LEDGER",
+          "kind": "command"
+        },
+        {
+          "id": "A4-NEGATIVE",
+          "description": "A4-NEGATIVE",
+          "kind": "command"
+        }
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "acceptance_id": "A4-LEDGER",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": null,
+          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
+          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+        },
+        {
+          "acceptance_id": "A4-NEGATIVE",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": null,
+          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
+          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+        }
+      ],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "A3",
+      "title": "共享 Snapshot、Mock fixture 与状态契约",
+      "priority": "P0",
+      "original_day": null,
+      "planned_day": 1,
+      "original_points": 0,
+      "current_points": 0,
+      "scope": "Phase A hardening; zero additional baseline points",
+      "depends_on": [],
+      "acceptance": [
+        {
+          "id": "A3-CONTRACT",
+          "description": "A3-CONTRACT",
+          "kind": "command"
+        },
+        {
+          "id": "A3-UI",
+          "description": "A3-UI",
+          "kind": "manual-ui"
+        }
+      ],
+      "status": "verifying",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "A2",
+      "title": "可重复 Xcode 工程、构建和测试入口",
+      "priority": "P0",
+      "original_day": null,
+      "planned_day": 1,
+      "original_points": 0,
+      "current_points": 0,
+      "scope": "Phase A hardening; zero additional baseline points",
+      "depends_on": [],
+      "acceptance": [
+        {
+          "id": "A2-BUILD",
+          "description": "A2-BUILD",
+          "kind": "command"
+        },
+        {
+          "id": "A2-UNIT",
+          "description": "A2-UNIT",
+          "kind": "command"
+        }
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "acceptance_id": "A2-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": null,
+          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
+          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+        },
+        {
+          "acceptance_id": "A2-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": null,
+          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
+          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+        }
+      ],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "A1",
+      "title": "统一产品设计和双入口四窗口显示",
+      "priority": "P0",
+      "original_day": null,
+      "planned_day": 1,
+      "original_points": 0,
+      "current_points": 0,
+      "scope": "Phase A hardening; zero additional baseline points",
+      "depends_on": [],
+      "acceptance": [
+        {
+          "id": "A1-CONTRACT",
+          "description": "A1-CONTRACT",
+          "kind": "command"
+        },
+        {
+          "id": "A1-UI",
+          "description": "A1-UI",
+          "kind": "manual-ui"
+        }
+      ],
+      "status": "verifying",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D1-01",
+      "title": "Create/open native SwiftUI macOS project + test target.",
+      "priority": "P0",
+      "original_day": 1,
+      "planned_day": 1,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [],
+      "acceptance": [
+        {
+          "id": "D1-01-A",
+          "description": "Create/open native SwiftUI macOS project + test target.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": null,
+          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
+          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/doctor.log",
+          "check": "doctor",
+          "command": "./scripts/doctor.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": null,
+          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
+          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": null,
+          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
+          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+        }
+      ],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D1-02",
+      "title": "Implement Menu Bar shell + main window + navigation.",
+      "priority": "P0",
+      "original_day": 1,
+      "planned_day": 1,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [],
+      "acceptance": [
+        {
+          "id": "D1-02-A",
+          "description": "Implement Menu Bar shell + main window + navigation.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "verifying",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D1-03",
+      "title": "Implement typed mock snapshots and dependency injection.",
+      "priority": "P0",
+      "original_day": 1,
+      "planned_day": 1,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [],
+      "acceptance": [
+        {
+          "id": "D1-03-A",
+          "description": "Implement typed mock snapshots and dependency injection.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "done",
+      "evidence": [
+        {
+          "acceptance_id": "D1-03-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": null,
+          "fingerprint": "ee74551082f780a87b5332a0ce1fdb2db3b731b40ad55684011337291f64b5c9",
+          "checked_at": "2026-09-28T06:46:59.599995+00:00"
+        }
+      ],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D1-04",
+      "title": "Build complete mock Overview + AI/Network/Dev/System pages matching `DESIGN.md`.",
+      "priority": "P0",
+      "original_day": 1,
+      "planned_day": 1,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [],
+      "acceptance": [
+        {
+          "id": "D1-04-A",
+          "description": "Build complete mock Overview + AI/Network/Dev/System pages matching `DESIGN.md`.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "verifying",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D1-05",
+      "title": "Define reusable design tokens/components and Soul vector placeholder.",
+      "priority": "P0",
+      "original_day": 1,
+      "planned_day": 1,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [],
+      "acceptance": [
+        {
+          "id": "D1-05-A",
+          "description": "Define reusable design tokens/components and Soul vector placeholder.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D1-06",
+      "title": "Build/tests pass; capture screenshot(s) for review.",
+      "priority": "P0",
+      "original_day": 1,
+      "planned_day": 1,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [],
+      "acceptance": [
+        {
+          "id": "D1-06-A",
+          "description": "Build/tests pass; capture screenshot(s) for review.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D2-01",
+      "title": "Central SensorHub / lifecycle-aware scheduling.",
+      "priority": "P0",
+      "original_day": 2,
+      "planned_day": 2,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D1-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D2-01-A",
+          "description": "Central SensorHub / lifecycle-aware scheduling.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D2-02",
+      "title": "CPU native provider + shared snapshot.",
+      "priority": "P0",
+      "original_day": 2,
+      "planned_day": 2,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D1-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D2-02-A",
+          "description": "CPU native provider + shared snapshot.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D2-03",
+      "title": "Memory + pressure provider.",
+      "priority": "P0",
+      "original_day": 2,
+      "planned_day": 2,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D1-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D2-03-A",
+          "description": "Memory + pressure provider.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D2-04",
+      "title": "Disk + battery provider.",
+      "priority": "P0",
+      "original_day": 2,
+      "planned_day": 2,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D1-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D2-04-A",
+          "description": "Disk + battery provider.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D2-05",
+      "title": "Top developer process summary.",
+      "priority": "P0",
+      "original_day": 2,
+      "planned_day": 2,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D1-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D2-05-A",
+          "description": "Top developer process summary.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D2-06",
+      "title": "Soul state machine: CPU/memory thresholds, hysteresis, cooldown, recovery.",
+      "priority": "P0",
+      "original_day": 2,
+      "planned_day": 2,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D1-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D2-06-A",
+          "description": "Soul state machine: CPU/memory thresholds, hysteresis, cooldown, recovery.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D2-07",
+      "title": "Unit tests + real System/Overview/Menu Bar wiring.",
+      "priority": "P0",
+      "original_day": 2,
+      "planned_day": 2,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D1-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D2-07-A",
+          "description": "Unit tests + real System/Overview/Menu Bar wiring.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D3-01",
+      "title": "Safe cancellable ShellRunner.",
+      "priority": "P0",
+      "original_day": 3,
+      "planned_day": 3,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D2-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D3-01-A",
+          "description": "Safe cancellable ShellRunner.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D3-02",
+      "title": "Java/Node/Python/Go detection + cache.",
+      "priority": "P0",
+      "original_day": 3,
+      "planned_day": 3,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D2-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D3-02-A",
+          "description": "Java/Node/Python/Go detection + cache.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D3-03",
+      "title": "Listening ports + process/PID mapping.",
+      "priority": "P0",
+      "original_day": 3,
+      "planned_day": 3,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D2-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D3-03-A",
+          "description": "Listening ports + process/PID mapping.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D3-04",
+      "title": "Network path + public IP adapter.",
+      "priority": "P0",
+      "original_day": 3,
+      "planned_day": 3,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D2-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D3-04-A",
+          "description": "Network path + public IP adapter.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D3-05",
+      "title": "shell/system proxy + tunnel/VPN hints.",
+      "priority": "P0",
+      "original_day": 3,
+      "planned_day": 3,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D2-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D3-05-A",
+          "description": "shell/system proxy + tunnel/VPN hints.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D3-06",
+      "title": "connectivity probes with backoff/disable.",
+      "priority": "P0",
+      "original_day": 3,
+      "planned_day": 3,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D2-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D3-06-A",
+          "description": "connectivity probes with backoff/disable.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D3-07",
+      "title": "tests/fixtures + Overview wiring.",
+      "priority": "P0",
+      "original_day": 3,
+      "planned_day": 3,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D2-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D3-07-A",
+          "description": "tests/fixtures + Overview wiring.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D4-01",
+      "title": "Codex app-server quota adapter: initial read + update path, 5h/week mapping.",
+      "priority": "P0",
+      "original_day": 4,
+      "planned_day": 4,
+      "original_points": 3,
+      "current_points": 3,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D3-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D4-01-A",
+          "description": "Codex app-server quota adapter: initial read + update path, 5h/week mapping.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D4-02",
+      "title": "Codex reconnect/stale/unavailable handling + fixtures.",
+      "priority": "P0",
+      "original_day": 4,
+      "planned_day": 4,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D3-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D4-02-A",
+          "description": "Codex reconnect/stale/unavailable handling + fixtures.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D4-03",
+      "title": "Claude Code stable-source spike and adapter boundary.",
+      "priority": "P0",
+      "original_day": 4,
+      "planned_day": 4,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D3-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D4-03-A",
+          "description": "Claude Code stable-source spike and adapter boundary.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D4-04",
+      "title": "If supported source exists: 5h/week parser/bridge; otherwise honest unavailable state.",
+      "priority": "P0",
+      "original_day": 4,
+      "planned_day": 4,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D3-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D4-04-A",
+          "description": "If supported source exists: 5h/week parser/bridge; otherwise honest unavailable state.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D4-05",
+      "title": "AI Coding page + Menu Bar live quota summary.",
+      "priority": "P0",
+      "original_day": 4,
+      "planned_day": 4,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D3-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D4-05-A",
+          "description": "AI Coding page + Menu Bar live quota summary.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D4-06",
+      "title": "95% deduplicated notifications/Soul events.",
+      "priority": "P0",
+      "original_day": 4,
+      "planned_day": 4,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D3-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D4-06-A",
+          "description": "95% deduplicated notifications/Soul events.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D4-07",
+      "title": "provider tests.",
+      "priority": "P0",
+      "original_day": 4,
+      "planned_day": 4,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D3-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D4-07-A",
+          "description": "provider tests.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D5-01",
+      "title": "On-demand Cleaner scan framework; no background recursive scans.",
+      "priority": "P0",
+      "original_day": 5,
+      "planned_day": 5,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D4-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D5-01-A",
+          "description": "On-demand Cleaner scan framework; no background recursive scans.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D5-02",
+      "title": "At least 3 useful developer cache categories with size/risk/explanation.",
+      "priority": "P0",
+      "original_day": 5,
+      "planned_day": 5,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D4-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D5-02-A",
+          "description": "At least 3 useful developer cache categories with size/risk/explanation.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D5-03",
+      "title": "Adaptive sampling: menu-bar-only vs visible page rates.",
+      "priority": "P0",
+      "original_day": 5,
+      "planned_day": 5,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D4-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D5-03-A",
+          "description": "Adaptive sampling: menu-bar-only vs visible page rates.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D5-04",
+      "title": "sleep/wake/network lifecycle cancellation/restart review.",
+      "priority": "P0",
+      "original_day": 5,
+      "planned_day": 5,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D4-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D5-04-A",
+          "description": "sleep/wake/network lifecycle cancellation/restart review.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D5-05",
+      "title": "first Instruments/performance pass and fixes.",
+      "priority": "P0",
+      "original_day": 5,
+      "planned_day": 5,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D4-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D5-05-A",
+          "description": "first Instruments/performance pass and fixes.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D5-06",
+      "title": "integration tests / manual failure-state checklist.",
+      "priority": "P0",
+      "original_day": 5,
+      "planned_day": 5,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D4-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D5-06-A",
+          "description": "integration tests / manual failure-state checklist.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D6-01",
+      "title": "Run reviewer across architecture/privacy/performance/tests.",
+      "priority": "P0",
+      "original_day": 6,
+      "planned_day": 6,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D5-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D6-01-A",
+          "description": "Run reviewer across architecture/privacy/performance/tests.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D6-02",
+      "title": "Fix all critical/high findings.",
+      "priority": "P0",
+      "original_day": 6,
+      "planned_day": 6,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D5-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D6-02-A",
+          "description": "Fix all critical/high findings.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D6-03",
+      "title": "accessibility + Reduce Motion + keyboard pass.",
+      "priority": "P0",
+      "original_day": 6,
+      "planned_day": 6,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D5-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D6-03-A",
+          "description": "accessibility + Reduce Motion + keyboard pass.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D6-04",
+      "title": "offline, provider unavailable, malformed data validation.",
+      "priority": "P0",
+      "original_day": 6,
+      "planned_day": 6,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D5-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D6-04-A",
+          "description": "offline, provider unavailable, malformed data validation.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D6-05",
+      "title": "Launch at Login/settings polish.",
+      "priority": "P0",
+      "original_day": 6,
+      "planned_day": 6,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D5-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D6-05-A",
+          "description": "Launch at Login/settings polish.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D6-06",
+      "title": "sustained idle/menu-bar performance validation.",
+      "priority": "P0",
+      "original_day": 6,
+      "planned_day": 6,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D5-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D6-06-A",
+          "description": "sustained idle/menu-bar performance validation.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D6-07",
+      "title": "README/install/privacy/limitations/screenshots draft.",
+      "priority": "P0",
+      "original_day": 6,
+      "planned_day": 6,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D5-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D6-07-A",
+          "description": "README/install/privacy/limitations/screenshots draft.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D7-01",
+      "title": "full clean build + tests.",
+      "priority": "P0",
+      "original_day": 7,
+      "planned_day": 7,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D6-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D7-01-A",
+          "description": "full clean build + tests.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D7-02",
+      "title": "regression pass on System/Soul/Network/Dev/AI/Cleaner.",
+      "priority": "P0",
+      "original_day": 7,
+      "planned_day": 7,
+      "original_points": 2,
+      "current_points": 2,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D6-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D7-02-A",
+          "description": "regression pass on System/Soul/Network/Dev/AI/Cleaner.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D7-03",
+      "title": "final performance sanity check.",
+      "priority": "P0",
+      "original_day": 7,
+      "planned_day": 7,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D6-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D7-03-A",
+          "description": "final performance sanity check.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D7-04",
+      "title": "final privacy/log scan.",
+      "priority": "P0",
+      "original_day": 7,
+      "planned_day": 7,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D6-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D7-04-A",
+          "description": "final privacy/log scan.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D7-05",
+      "title": "version/license/changelog/contributing.",
+      "priority": "P0",
+      "original_day": 7,
+      "planned_day": 7,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D6-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D7-05-A",
+          "description": "version/license/changelog/contributing.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D7-06",
+      "title": "release build packaging/signing/notarization plan or completed path available to the owner.",
+      "priority": "P0",
+      "original_day": 7,
+      "planned_day": 7,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D6-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D7-06-A",
+          "description": "release build packaging/signing/notarization plan or completed path available to the owner.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D7-07",
+      "title": "final README/GIF/screenshots.",
+      "priority": "P0",
+      "original_day": 7,
+      "planned_day": 7,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D6-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D7-07-A",
+          "description": "final README/GIF/screenshots.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    },
+    {
+      "id": "D7-08",
+      "title": "write `reports/FINAL.md` with shipped/deferred/known limitations/next v0.2 items.",
+      "priority": "P0",
+      "original_day": 7,
+      "planned_day": 7,
+      "original_points": 1,
+      "current_points": 1,
+      "scope": "original seven-day plan",
+      "depends_on": [
+        "D6-01"
+      ],
+      "acceptance": [
+        {
+          "id": "D7-08-A",
+          "description": "write `reports/FINAL.md` with shipped/deferred/known limitations/next v0.2 items.",
+          "kind": "implementation"
+        }
+      ],
+      "status": "todo",
+      "evidence": [],
+      "blocker": null,
+      "scope_change_approval": null
+    }
+  ],
+  "change_log": []
+}
