@@ -435,7 +435,7 @@
           "kind": "implementation"
         }
       ],
-      "status": "verifying",
+      "status": "done",
       "evidence": [
         {
           "acceptance_id": "D1-06-A",
@@ -463,7 +463,15 @@
         }
       ],
       "blocker": null,
-      "scope_change_approval": null
+      "scope_change_approval": null,
+      "review_screenshots": [
+        {
+          "path": "reports/screenshots/day-1-soul-overview.png",
+          "sha256": "88ec02673ae79d9ea523f09619f0c5f47fa8421752bc2f7307cedc0ad706d130",
+          "provided_by": "owner",
+          "review_note": "Owner supplied updated Soul screenshot for review; visual approval not explicitly stated."
+        }
+      ]
     },
     {
       "id": "D2-01",

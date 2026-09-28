@@ -3,8 +3,8 @@
 > 此页由 `python3 scripts/generate_status.py` 从 `tasks.json` 生成；只编辑账本。
 
 - Phase A: A4=done, A3=done, A2=done, A1=done
-- 原始计划验收：9/76 点（11.8%）
-- 已批准调整计划验收：9/76 点（11.8%）；当前无批准范围变更
+- 原始计划验收：10/76 点（13.2%）
+- 已批准调整计划验收：10/76 点（13.2%）；当前无批准范围变更
 - 后续产品任务：Phase A 已获负责人界面验收；按账本依赖继续，真实 Provider 未接入
 - Build/Unit：见 `reports/phase-a.md` 与 `.artifacts/verification.json`
 - Manual UI：负责人已确认 Phase A Mock 双入口，见 `reports/phase-a-owner-acceptance.md`；Performance/Live Provider：NOT_RUN
@@ -13,7 +13,6 @@
 
 | ID | 原始日 | 点数 | 状态 | 任务 |
 |---|---:|---:|---|---|
-| D1-06 | 1 | 1 | verifying | Build/tests pass; capture screenshot(s) for review. |
 | D2-01 | 2 | 2 | todo | Central SensorHub / lifecycle-aware scheduling. |
 | D2-02 | 2 | 2 | todo | CPU native provider + shared snapshot. |
 | D2-03 | 2 | 2 | todo | Memory + pressure provider. |
