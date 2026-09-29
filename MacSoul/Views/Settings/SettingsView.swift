@@ -12,7 +12,7 @@ struct SettingsView: View {
                 GroupBox(language.text("Current build capabilities")) {
                     VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                         LabeledContent(language.text("Data mode"), value: language.text(store.systemMode == .live ? "Partial Live + Mock" : "Bundled Mock"))
-                        LabeledContent(language.text("Live system sampling"), value: language.text(store.systemMode == .live ? "CPU and memory only" : "Not connected"))
+                        LabeledContent(language.text("Live system sampling"), value: language.text(store.systemMode == .live ? "CPU, memory, disk, battery, processes" : "Not connected"))
                         LabeledContent(language.text("Live quota providers"), value: language.text("Not connected"))
                         LabeledContent(language.text("Cleaner deletion"), value: language.text("Not available"))
                     }
@@ -29,7 +29,7 @@ struct SettingsView: View {
                             }
                         }
                         .frame(maxWidth: 440, alignment: .leading)
-                        Text(language.text("Live System uses native CPU and memory only. Other sections keep Mock data."))
+                        Text(language.text("Live System uses native system metrics. AI, Network and Dev keep Mock data."))
                             .font(.caption).foregroundStyle(.secondary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)

@@ -141,16 +141,19 @@ struct UnavailableProvider: SnapshotProvider {
     private var visibleSystemWindows: Set<UUID> = []
     private var sleeping = false
     private let sensorSampler: any SystemSampling
-    private lazy var sensorHub = SensorHub(sampler: sensorSampler) { [weak self] reading, soul in
-        self?.applyLive(reading: reading, soul: soul)
-    }
+    private let detailSampler: any SystemDetailSampling
+    private lazy var sensorHub = SensorHub(sampler: sensorSampler, details: detailSampler,
+        onReading: { [weak self] reading, soul in self?.applyLive(reading: reading, soul: soul) },
+        onDetails: { [weak self] update in self?.applyDetail(update) })
     var sensorStarts: Int { sensorHub.starts }
     var sensorInterval: TimeInterval { sensorHub.samplingInterval }
 
     init(provider: any SnapshotProvider = MockProvider(fixture: .healthy),
-         sampler: any SystemSampling = NativeSystemSampler(), now: Date = Date()) {
+         sampler: any SystemSampling = NativeSystemSampler(),
+         details: any SystemDetailSampling = NativeSystemDetailSampler(), now: Date = Date()) {
         self.provider = provider
         sensorSampler = sampler
+        detailSampler = details
         previewFixture = (provider as? MockProvider)?.fixture
         displayNow = now
         snapshot = provider.snapshot(now: now)
@@ -174,6 +177,11 @@ struct UnavailableProvider: SnapshotProvider {
             replacement.cpu = PercentMetric(usedPercent: nil)
             replacement.memoryUsed = PercentMetric(usedPercent: nil)
             replacement.memoryPressure = MemoryPressureLevel.unknown.liveLabel
+            replacement.disk = PercentMetric(usedPercent: nil)
+            replacement.battery = PercentMetric(usedPercent: nil)
+            replacement.diskReading = .unknown
+            replacement.batteryReading = .unknown
+            replacement.processReading = .unknown
             replacement.soulVisual = .normal
             replacement.soulMood = "Observing · Live"
             replacement.soulMessage = "Waiting for a valid system sample."
@@ -218,6 +226,30 @@ struct UnavailableProvider: SnapshotProvider {
         current.soulVisual = soul.visual
         current.soulMood = soul.mood
         current.soulMessage = soul.message
+        snapshot = current
+    }
+
+    private func applyDetail(_ update: SystemDetailUpdate) {
+        guard systemMode == .live && !sleeping else { return }
+        var current = snapshot
+        switch update {
+        case .disk(let reading):
+            current.diskReading = reading
+            if case .available(let usage, _) = reading {
+                current.disk = PercentMetric(usedPercent: usage.usedPercent)
+            } else {
+                current.disk = PercentMetric(usedPercent: nil)
+            }
+        case .battery(let reading):
+            current.batteryReading = reading
+            if case .present(let status, _) = reading {
+                current.battery = PercentMetric(usedPercent: Double(status.chargePercent))
+            } else {
+                current.battery = PercentMetric(usedPercent: nil)
+            }
+        case .processes(let reading):
+            current.processReading = reading
+        }
         snapshot = current
     }
 

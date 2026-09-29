@@ -7,7 +7,8 @@ sources = sorted(Path('MacSoul').rglob('*.swift'))
 tests = sorted(Path('MacSoulTests').rglob('*.swift'))
 asset_catalogs = [Path('MacSoul/Resources/MacSoulBrand.xcassets'),
                   Path('MacSoul/Resources/MacSoulCleaner.xcassets')]
-resource_files = [Path('MacSoul/Resources/ThirdPartyNotices.txt')]
+resource_files = [Path('MacSoul/Resources/ThirdPartyNotices.txt'),
+                  Path('MacSoul/Resources/PrivacyInfo.xcprivacy')]
 resources = asset_catalogs + resource_files
 def oid(key): return hashlib.sha1(key.encode()).hexdigest()[:24].upper()
 def obj(key, body): return f'{oid(key)} /* {key} */ = {{ {body} }};'
@@ -17,7 +18,8 @@ for path in sources+tests:
     objects.append(obj('file:'+key, f'isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "{path}"; sourceTree = SOURCE_ROOT;'))
     objects.append(obj('build:'+key, f'isa = PBXBuildFile; fileRef = {oid("file:"+key)};'))
 for resource in resources:
-    file_type = 'folder.assetcatalog' if resource in asset_catalogs else 'text'
+    file_type = ('folder.assetcatalog' if resource in asset_catalogs else
+                 'text.xml' if resource.suffix == '.xcprivacy' else 'text')
     objects.append(obj('file:'+str(resource), f'isa = PBXFileReference; lastKnownFileType = {file_type}; path = "{resource}"; sourceTree = SOURCE_ROOT;'))
     objects.append(obj('build:'+str(resource), f'isa = PBXBuildFile; fileRef = {oid("file:"+str(resource))};'))
 for folder, files in [('MacSoul',sources),('MacSoulTests',tests)]:

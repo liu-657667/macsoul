@@ -224,8 +224,18 @@ final class SystemSoulTests: XCTestCase {
 
     @MainActor func testOneHubForRepeatedWindowAndMenuAppearances() async {
         let sampler = StubSystemSampler()
-        let store = AppStore(sampler: sampler)
+        let details = StubDetailSampler()
+        let store = AppStore(sampler: sampler, details: details)
+        let received = expectation(description: "first live disk and CPU sample")
+        var didFulfill = false
+        let subscription = store.$snapshot.sink { value in
+            if !didFulfill && value.cpu.usedPercent == 25 && value.disk.usedPercent == 60 {
+                didFulfill = true
+                received.fulfill()
+            }
+        }
         store.setSystemMode(.live)
+        await fulfillment(of: [received], timeout: 2)
         let first = UUID(), second = UUID()
         store.setWindow(first, visible: true, section: .overview)
         store.setWindow(first, visible: true, section: .overview)
@@ -234,15 +244,26 @@ final class SystemSoulTests: XCTestCase {
         store.setWindow(second, visible: false, section: .system)
         XCTAssertEqual(store.sensorInterval, 5)
         XCTAssertEqual(store.sensorStarts, 1)
+        let detailStarts = await details.starts
+        let diskReads = await details.diskReads
+        let processReads = await details.processReads
+        XCTAssertEqual(detailStarts, 1)
+        XCTAssertEqual(diskReads, 1)
+        XCTAssertLessThanOrEqual(processReads, 1)
         store.setSystemMode(.preview)
+        subscription.cancel()
     }
 
-    @MainActor func testSharedStorePublishesOnlyCPUAndMemoryAsLive() async {
+    @MainActor func testSharedStorePublishesLiveSystemDetailsWithoutReplacingMockModules() async {
         let sampler = StubSystemSampler()
-        let store = AppStore(sampler: sampler)
+        let details = StubDetailSampler()
+        let store = AppStore(sampler: sampler, details: details)
         let received = expectation(description: "shared live snapshot")
+        var didFulfill = false
         var subscription: AnyCancellable? = store.$snapshot.sink { value in
-            if value.systemMode == .live && value.cpu.usedPercent == 25 {
+            if !didFulfill && value.systemMode == .live && value.cpu.usedPercent == 25 &&
+                value.disk.usedPercent == 60 && value.batterySummaryOverride == "No battery" {
+                didFulfill = true
                 received.fulfill()
             }
         }
@@ -251,24 +272,56 @@ final class SystemSoulTests: XCTestCase {
         XCTAssertEqual(store.snapshot.cpu.usedPercent, 25)
         XCTAssertEqual(store.snapshot.memoryUsed.usedPercent, 50)
         XCTAssertEqual(store.snapshot.memoryPressure, "Normal · Live")
-        XCTAssertEqual(store.snapshot.disk.usedPercent, 67)
-        XCTAssertEqual(store.snapshot.battery.usedPercent, 78)
+        XCTAssertEqual(store.snapshot.disk.usedPercent, 60)
+        XCTAssertNil(store.snapshot.battery.usedPercent)
+        XCTAssertEqual(store.snapshot.batterySummaryOverride, "No battery")
         XCTAssertEqual(store.snapshot.quotas.first?.mode, .mock)
+        XCTAssertEqual(store.snapshot.publicIP, "203.0.113.42")
+        XCTAssertEqual(store.snapshot.runtimes.first?.name, "Java")
         XCTAssertEqual(store.snapshot.mode, .mock)
         let startCalls = await sampler.startCalls
         XCTAssertEqual(startCalls, 1)
         store.setSystemMode(.preview)
+        XCTAssertEqual(store.snapshot.disk.usedPercent, 67)
+        XCTAssertEqual(store.snapshot.battery.usedPercent, 78)
         subscription?.cancel()
         subscription = nil
+    }
+
+    @MainActor func testLiveDetailFailuresNeverReuseMockDiskOrBattery() async {
+        let details = StubDetailSampler()
+        let sampleTime = Date(timeIntervalSince1970: 123)
+        await details.setDisk(.unavailable(sampledAt: sampleTime))
+        await details.setBattery(.unavailable(sampledAt: sampleTime))
+        let store = AppStore(sampler: StubSystemSampler(), details: details)
+        let received = expectation(description: "detail failures in shared snapshot")
+        var didFulfill = false
+        let subscription = store.$snapshot.sink { value in
+            if !didFulfill, case .unavailable = value.diskReading,
+               case .unavailable = value.batteryReading {
+                didFulfill = true
+                received.fulfill()
+            }
+        }
+        store.setSystemMode(.live)
+        await fulfillment(of: [received], timeout: 2)
+        XCTAssertNil(store.snapshot.disk.usedPercent)
+        XCTAssertNil(store.snapshot.battery.usedPercent)
+        XCTAssertEqual(store.snapshot.diskEmptyState, "Unavailable")
+        XCTAssertEqual(store.snapshot.batteryEmptyState, "Unavailable")
+        XCTAssertEqual(store.snapshot.quotas.first?.mode, .mock)
+        store.setSystemMode(.preview)
+        subscription.cancel()
     }
 
     @MainActor func testHubStartStopAreIdempotentAndReleaseSampler() async {
         let sampler = StubSystemSampler()
         let received = expectation(description: "first sample")
-        let hub = SensorHub(sampler: sampler) { reading, _ in
+        let details = StubDetailSampler()
+        let hub = SensorHub(sampler: sampler, details: details, onReading: { reading, _ in
             XCTAssertEqual(reading.cpuPercent, 25)
             received.fulfill()
-        }
+        })
         hub.start()
         hub.start()
         await fulfillment(of: [received], timeout: 2)
@@ -278,7 +331,11 @@ final class SystemSoulTests: XCTestCase {
         await hub.waitForStop()
         let startCalls = await sampler.startCalls
         let stopCalls = await sampler.stopCalls
+        let detailStarts = await details.starts
+        let detailStops = await details.stops
         XCTAssertEqual(startCalls, 1)
         XCTAssertEqual(stopCalls, 1)
+        XCTAssertEqual(detailStarts, 1)
+        XCTAssertEqual(detailStops, 1)
     }
 }
