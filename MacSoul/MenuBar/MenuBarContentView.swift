@@ -14,7 +14,8 @@ struct MenuBarContentView: View {
             HStack {
                 Text("MacSoul").fontWeight(.semibold)
                 Spacer()
-                Text(language.text("MOCK DATA")).font(.caption.bold()).foregroundStyle(.orange)
+                Text(language.text(store.systemMode == .live ? "CPU / MEMORY LIVE · OTHER MOCK" : "MOCK DATA"))
+                    .font(.caption.bold()).foregroundStyle(.orange)
             }
             HStack(spacing: MacSoulTheme.Spacing.regular) {
                 SoulArtwork(visual: snapshot.soulVisual, size: MacSoulTheme.Size.soulPopover)
@@ -32,6 +33,10 @@ struct MenuBarContentView: View {
                            attentionText: snapshot.battery.usedPercent.map { $0 <= 10 ? "Low battery" : nil } ?? nil)
             }
             MemoryPressureLabel(pressure: snapshot.memoryPressure)
+            if store.systemMode == .live {
+                Text(language.text("CPU and memory: Live · Disk and battery: Mock"))
+                    .font(.caption2).foregroundStyle(MacSoulTheme.supportingText)
+            }
             Divider()
             ForEach(snapshot.quotas) { quota in
                 QuotaRow(quota: quota, presentation: .summary)

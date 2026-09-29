@@ -5,7 +5,10 @@ import hashlib
 import sys
 sources = sorted(Path('MacSoul').rglob('*.swift'))
 tests = sorted(Path('MacSoulTests').rglob('*.swift'))
-brand_catalog = Path('MacSoul/Resources/MacSoulBrand.xcassets')
+asset_catalogs = [Path('MacSoul/Resources/MacSoulBrand.xcassets'),
+                  Path('MacSoul/Resources/MacSoulCleaner.xcassets')]
+resource_files = [Path('MacSoul/Resources/ThirdPartyNotices.txt')]
+resources = asset_catalogs + resource_files
 def oid(key): return hashlib.sha1(key.encode()).hexdigest()[:24].upper()
 def obj(key, body): return f'{oid(key)} /* {key} */ = {{ {body} }};'
 objects=[]
@@ -13,16 +16,19 @@ for path in sources+tests:
     key=str(path)
     objects.append(obj('file:'+key, f'isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "{path}"; sourceTree = SOURCE_ROOT;'))
     objects.append(obj('build:'+key, f'isa = PBXBuildFile; fileRef = {oid("file:"+key)};'))
-objects.append(obj('file:'+str(brand_catalog), f'isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "{brand_catalog}"; sourceTree = SOURCE_ROOT;'))
-objects.append(obj('build:'+str(brand_catalog), f'isa = PBXBuildFile; fileRef = {oid("file:"+str(brand_catalog))};'))
+for resource in resources:
+    file_type = 'folder.assetcatalog' if resource in asset_catalogs else 'text'
+    objects.append(obj('file:'+str(resource), f'isa = PBXFileReference; lastKnownFileType = {file_type}; path = "{resource}"; sourceTree = SOURCE_ROOT;'))
+    objects.append(obj('build:'+str(resource), f'isa = PBXBuildFile; fileRef = {oid("file:"+str(resource))};'))
 for folder, files in [('MacSoul',sources),('MacSoulTests',tests)]:
     refs=' '.join(f'{oid("file:"+str(p))},' for p in files)
-    if folder == 'MacSoul': refs += f' {oid("file:"+str(brand_catalog))},'
+    if folder == 'MacSoul': refs += ' ' + ' '.join(f'{oid("file:"+str(resource))},' for resource in resources)
     objects.append(obj('group:'+folder, f'isa = PBXGroup; children = ({refs}); path = {folder}; sourceTree = "<group>";'))
 objects.append(obj('group:root',f'isa = PBXGroup; children = ({oid("group:MacSoul")}, {oid("group:MacSoulTests")}, {oid("product:app")}, {oid("product:tests")},); sourceTree = "<group>";'))
 objects.append(obj('product:app','isa = PBXFileReference; explicitFileType = wrapper.application; path = MacSoul.app; sourceTree = BUILT_PRODUCTS_DIR;'))
 objects.append(obj('product:tests','isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = MacSoulTests.xctest; sourceTree = BUILT_PRODUCTS_DIR;'))
-objects.append(obj('phase:app:resources',f'isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ({oid("build:"+str(brand_catalog))},); runOnlyForDeploymentPostprocessing = 0;'))
+resource_refs = ' '.join(f'{oid("build:"+str(resource))},' for resource in resources)
+objects.append(obj('phase:app:resources',f'isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ({resource_refs}); runOnlyForDeploymentPostprocessing = 0;'))
 for name,files in [('app',sources),('tests',tests)]:
     refs=' '.join(f'{oid("build:"+str(p))},' for p in files)
     objects.append(obj('phase:'+name,f'isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ({refs}); runOnlyForDeploymentPostprocessing = 0;'))

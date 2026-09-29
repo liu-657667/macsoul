@@ -18,18 +18,18 @@ MacSoul aims to bring system health, AI coding quotas, network information and y
 
 **Personality gets your attention. Clear, trustworthy information is the point.**
 
-> **Developer preview.** The default branch runs a Mock App with bundled sample data. You can explore the main window, menu bar, Soul artwork, appearance settings and quota scenarios. Live system metrics, account quotas, network probes and environment detection are not connected yet. This is not a daily-use monitoring tool. The table below separates the preview from planned work.
+> **Developer preview.** The app starts with bundled sample data. Select **Live System** in Settings to use native macOS CPU and memory used/total data; real CPU and memory state can drive Soul. Memory pressure has a native event source, but real warning/critical events have not yet been observed. Disk, battery and processes remain mock or planned; AI quotas, network and developer environment have no live providers. Formal performance measurement has not run, so this is not a completed daily-use monitoring tool. The table below separates live features from previews.
 
 ![MacSoul product concept artwork, not a screenshot of the current app](assets-source/reference/macsoul-product-hero.png)
 
-> This is early product artwork, **not a current app screenshot or acceptance evidence**. Its live metrics, VPN status, latency and cleanup buttons are not implemented.
+> This is early product artwork, **not a current app screenshot or acceptance evidence**. Its VPN status, latency and cleanup buttons are not implemented; the pictured metric layout does not represent the current live UI.
 
 ## Features and implementation status
 
 | Module | Intended use | Current default branch |
 |---|---|---|
-| **Soul** | React to machine state with expressions and concise messages, including recovery, without repeated interruptions | Six character images and scenario copy are integrated; live state transitions are planned |
-| **System** | CPU, memory pressure, disk, battery and resource-consuming processes | Metric UI uses sample data; native collection and process analysis are planned |
+| **Soul** | React to machine state with expressions and concise messages, including recovery, without repeated interruptions | Six character images and mock scenarios are integrated; live CPU/memory state drives Soul, while natural memory-pressure warning/critical events await observation |
+| **System** | CPU, memory pressure, disk, battery and resource-consuming processes | CPU and memory used/total are live; memory pressure uses native events and stays unknown until reported; disk and battery remain mock, while process analysis is planned |
 | **AI quotas** | Codex / Claude Code usage and reset times for applicable 5h / Week windows | Dynamic windows, Week-only, 0%, missing, failed and stale scenarios are previewable; live accounts are not connected |
 | **Network** | Public IP, proxy hints and service connectivity | UI preview; real detection is planned |
 | **Dev environment** | Runtime versions, executable paths and listening ports | UI and sample ports; real detection is planned |
@@ -56,9 +56,9 @@ Settings can switch MacSoul between Follow macOS, Light and Dark, and between Si
 
 Normal, busy, overloaded, too full, low energy and resting are expressions of the same spirit. Their images and copy can currently be explored through mock scenarios.
 
-The live design uses local rules, sustained thresholds, cooldowns and recovery events rather than an LLM generating comments. A momentary CPU spike should not produce a stream of alerts.
+Live Soul behavior uses local rules, sustained thresholds, cooldowns and recovery rather than an LLM generating comments. A momentary CPU spike does not directly change Soul state.
 
-## Run the Mock App from source
+## Run the developer preview from source
 
 You need macOS, full Xcode and Python 3. The project's deployment target is macOS 13; that is not a claim that every macOS / Xcode combination has been tested. See the [development guide](docs/DEVELOPMENT.md) for tooling and verification records. Codex, Claude Code and AI API keys are not required to try the preview.
 
@@ -77,13 +77,13 @@ Or open the project in Xcode:
 open MacSoul.xcodeproj
 ```
 
-Quit any running MacSoul instance before using the preview script. In the app's **Settings → developer preview** section, try `Codex: Week only`, high CPU and memory-pressure scenarios. These controls neither alter a real subscription nor place the machine under load.
+Quit any running MacSoul instance before using the preview script. The app starts with mock data. Choose **Settings → System data source → Live System** for local CPU and memory readings. Back in Developer Preview, try `Codex: Week only`, high CPU and memory-pressure scenarios. These fixtures neither alter a real subscription nor place the machine under load.
 
 These instructions are for a source preview, not a promise of an available production installer.
 
 ## Privacy and boundaries
 
-Local-first is a design principle. The current preview uses bundled samples, with no live account or system integration. Future network checks must distinguish local inspection from external requests: a public-IP lookup contacts an external service and is not “offline.”
+Local-first is a design principle. The current preview starts with bundled samples; selecting Live System collects CPU and memory locally without accessing AI accounts. Network and developer environment still have no live providers. Future network checks must distinguish local inspection from external requests: a public-IP lookup contacts an external service and is not “offline.”
 
 MacSoul does not write code, provide antivirus or firewall protection, or equate occupied storage with safely reclaimable storage. The current app has no automatic cleanup and does not delete real development data.
 
@@ -91,14 +91,14 @@ MacSoul does not write code, provide antivirus or firewall protection, or equate
 
 | Stage | Focus |
 |---|---|
-| **Now: runnable preview** | Native window and menu bar, Soul assets, mock scenarios, build and test entry points |
-| **Next: live system** | CPU / memory → shared snapshot → UI and Soul; then disk, battery and processes |
+| **Now: partial live preview** | Native window and menu bar, Soul assets, mock scenarios, live CPU/memory through a shared snapshot to UI and Soul, build and test entry points |
+| **Next: other system metrics** | Evaluate disk, battery and processes through the task ledger; continue observing natural memory-pressure events |
 | **Later: live integrations** | Codex / Claude Code quotas, network, runtimes and ports |
 | **Later: expansion and distribution** | Read-only storage analysis, performance validation and packaging according to the task ledger |
 
 This is direction, not a completed-feature checklist or a delivery-date promise. [Task status](docs/STATUS.md) tracks development. Visual acceptance, real-data validation and performance remain separate checks.
 
-Phase A visual acceptance is still partial. The small menu bar icon remains DRAFT; full interaction of the revised UI, performance and live providers have not been accepted. See the [phase report](reports/phase-a-visual-closeout-2026-09-28.md) for completed checks and open items.
+Historical Phase A visual acceptance remains partial, and the small menu bar icon remains DRAFT. Live CPU and memory values and main-window/menu-bar synchronization passed manual acceptance; natural memory-pressure events, formal performance measurement and live AI providers remain unverified or not run. See the [System/Soul report](reports/day-2-system-soul-2026-09-29.md) and [task status](docs/STATUS.md).
 
 ## Contributing
 

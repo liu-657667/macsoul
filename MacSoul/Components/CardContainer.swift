@@ -3,19 +3,22 @@ import SwiftUI
 struct CardContainer<Content: View>: View {
     @Environment(\.macSoulLanguage) private var language
     let title: String
+    private let badge: String?
     private let systemImage: String?
     private let assetImage: String?
     private let content: () -> Content
 
-    init(title: String, systemImage: String, @ViewBuilder content: @escaping () -> Content) {
+    init(title: String, systemImage: String, badge: String? = nil, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
+        self.badge = badge
         self.systemImage = systemImage
         self.assetImage = nil
         self.content = content
     }
 
-    init(title: String, assetImage: String, @ViewBuilder content: @escaping () -> Content) {
+    init(title: String, assetImage: String, badge: String? = nil, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
+        self.badge = badge
         self.systemImage = nil
         self.assetImage = assetImage
         self.content = content
@@ -23,20 +26,30 @@ struct CardContainer<Content: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.card) {
-            Label {
-                Text(language.text(title))
-            } icon: {
-                if let systemImage {
-                    Image(systemName: systemImage)
-                } else if let assetImage {
-                    Image(assetImage)
-                        .renderingMode(.template)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 18, height: 18)
+            HStack(spacing: MacSoulTheme.Spacing.tight) {
+                Label {
+                    Text(language.text(title))
+                } icon: {
+                    if let systemImage {
+                        Image(systemName: systemImage)
+                    } else if let assetImage {
+                        Image(assetImage)
+                            .renderingMode(.template)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 18, height: 18)
+                    }
+                }
+                .font(.headline)
+                if let badge {
+                    Text(language.text(badge))
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(MacSoulTheme.supportingText)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Color.primary.opacity(0.06), in: Capsule())
                 }
             }
-                .font(.headline)
             content()
         }
         .padding(MacSoulTheme.Spacing.card)

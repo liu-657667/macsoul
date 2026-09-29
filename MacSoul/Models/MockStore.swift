@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import AppKit
 
 protocol SnapshotProvider { func snapshot(now: Date) -> AppSnapshot }
 struct MockProvider: SnapshotProvider {
@@ -131,11 +132,25 @@ struct UnavailableProvider: SnapshotProvider {
 @MainActor final class AppStore: ObservableObject {
     @Published private(set) var snapshot: AppSnapshot
     @Published private(set) var previewFixture: MockProvider.Fixture?
+    @Published private(set) var systemMode: SystemMode = .preview
     @Published private(set) var displayNow: Date
     private var provider: any SnapshotProvider
     private var clockSubscription: AnyCancellable?
-    init(provider: any SnapshotProvider = MockProvider(fixture: .healthy), now: Date = Date()) {
+    private var lifecycleSubscriptions: Set<AnyCancellable> = []
+    private var visibleWindows: Set<UUID> = []
+    private var visibleSystemWindows: Set<UUID> = []
+    private var sleeping = false
+    private let sensorSampler: any SystemSampling
+    private lazy var sensorHub = SensorHub(sampler: sensorSampler) { [weak self] reading, soul in
+        self?.applyLive(reading: reading, soul: soul)
+    }
+    var sensorStarts: Int { sensorHub.starts }
+    var sensorInterval: TimeInterval { sensorHub.samplingInterval }
+
+    init(provider: any SnapshotProvider = MockProvider(fixture: .healthy),
+         sampler: any SystemSampling = NativeSystemSampler(), now: Date = Date()) {
         self.provider = provider
+        sensorSampler = sampler
         previewFixture = (provider as? MockProvider)?.fixture
         displayNow = now
         snapshot = provider.snapshot(now: now)
@@ -144,11 +159,77 @@ struct UnavailableProvider: SnapshotProvider {
             .sink { [weak self] date in
                 Task { @MainActor in self?.advanceDisplayClock(now: date) }
             }
+        NSWorkspace.shared.notificationCenter.publisher(for: NSWorkspace.willSleepNotification)
+            .sink { [weak self] _ in Task { @MainActor in self?.suspendForSleep() } }
+            .store(in: &lifecycleSubscriptions)
+        NSWorkspace.shared.notificationCenter.publisher(for: NSWorkspace.didWakeNotification)
+            .sink { [weak self] _ in Task { @MainActor in self?.resumeAfterWake() } }
+            .store(in: &lifecycleSubscriptions)
     }
     func advanceDisplayClock(now: Date) { displayNow = now }
     func refresh(now: Date = Date()) {
-        snapshot = provider.snapshot(now: now)
+        var replacement = provider.snapshot(now: now)
+        if systemMode == .live {
+            replacement.systemMode = .live
+            replacement.cpu = PercentMetric(usedPercent: nil)
+            replacement.memoryUsed = PercentMetric(usedPercent: nil)
+            replacement.memoryPressure = MemoryPressureLevel.unknown.liveLabel
+            replacement.soulVisual = .normal
+            replacement.soulMood = "Observing · Live"
+            replacement.soulMessage = "Waiting for a valid system sample."
+        }
+        snapshot = replacement
         displayNow = now
+    }
+
+    func setSystemMode(_ mode: SystemMode) {
+        guard mode != systemMode else { return }
+        systemMode = mode
+        refresh()
+        if mode == .live && !sleeping { sensorHub.start() }
+        else { sensorHub.stop() }
+    }
+
+    func setWindow(_ id: UUID, visible: Bool, section: AppSection) {
+        if visible {
+            visibleWindows.insert(id)
+            if section == .system { visibleSystemWindows.insert(id) }
+        } else {
+            visibleWindows.remove(id)
+            visibleSystemWindows.remove(id)
+        }
+        sensorHub.systemPageVisible = !visibleSystemWindows.isEmpty
+    }
+
+    func setWindowSection(_ id: UUID, section: AppSection) {
+        guard visibleWindows.contains(id) else { return }
+        if section == .system { visibleSystemWindows.insert(id) }
+        else { visibleSystemWindows.remove(id) }
+        sensorHub.systemPageVisible = !visibleSystemWindows.isEmpty
+    }
+
+    private func applyLive(reading: SystemReading, soul: SoulStatus) {
+        guard systemMode == .live && !sleeping else { return }
+        var current = snapshot
+        current.cpu = PercentMetric(usedPercent: reading.cpuPercent)
+        current.memoryUsed = PercentMetric(usedPercent: reading.memory?.usedPercent)
+        current.memoryBytes = reading.memory
+        current.memoryPressure = reading.pressure.liveLabel
+        current.soulVisual = soul.visual
+        current.soulMood = soul.mood
+        current.soulMessage = soul.message
+        snapshot = current
+    }
+
+    private func suspendForSleep() {
+        sleeping = true
+        sensorHub.stop()
+        if systemMode == .live { refresh() }
+    }
+
+    private func resumeAfterWake() {
+        sleeping = false
+        if systemMode == .live { sensorHub.start() }
     }
     #if DEBUG
     func selectPreviewFixture(_ fixture: MockProvider.Fixture, now: Date = Date()) {

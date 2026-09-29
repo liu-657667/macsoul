@@ -3,24 +3,21 @@
 > 此页由 `python3 scripts/generate_status.py` 从 `tasks.json` 生成；只编辑账本。
 
 - Phase A: A4=done, A3=verifying, A2=done, A1=verifying
-- 原始计划验收：10/76 点（13.2%）
-- 已批准调整计划验收：10/76 点（13.2%）；当前无批准范围变更
+- 原始计划验收：17/76 点（22.4%）
+- 已批准调整计划验收：17/76 点（22.4%）；当前无批准范围变更
 - 增量任务：VA-01=verifying, QC-01=verifying, UI-01=verifying, VIS-01=done, VIS-02=verifying, VIS-03=verifying, VIS-04=verifying
-- 后续产品任务：Phase A 截图仅部分通过；当前 UI 可读性和外观仍待复核，真实 Provider 未接入
-- Build/Unit：见 `reports/phase-a-visual-closeout-2026-09-28.md` 与 `.artifacts/verification.json`
-- Manual UI：浅色 Week-only 与深色中文菜单栏已截图复核；Dock 已由负责人通过；本轮修订版与其余 Soul、完整交互仍待人工验收，见 `reports/phase-a-visual-closeout-2026-09-28.md`；Performance/Live Provider：NOT_RUN
+- 后续产品任务：Phase A 历史验收保持原状态；D2 已按负责人授权开始 CPU/内存实时接入，其他 Provider 仍未接入
+- D2 本轮：D2-01=done, D2-02=done, D2-03=verifying, D2-06=done, D2-07=done
+- Build/Unit：见 `reports/day-2-system-soul-memory-closeout-2026-09-29.md` 与 `.artifacts/verification.json`
+- Manual UI：负责人已确认实时 CPU、内存数值、Overview/System/Menu Bar 同步、窗口开关 5 次、菜单栏反复打开及 Live/Mock 边界；Memory Pressure 自然事件仍 VERIFYING；Performance/真实 AI Provider：NOT_RUN
 
 ## 未完成任务
 
 | ID | 原始日 | 点数 | 状态 | 任务 |
 |---|---:|---:|---|---|
-| D2-01 | 2 | 2 | todo | Central SensorHub / lifecycle-aware scheduling. |
-| D2-02 | 2 | 2 | todo | CPU native provider + shared snapshot. |
-| D2-03 | 2 | 2 | todo | Memory + pressure provider. |
+| D2-03 | 2 | 2 | verifying | Memory + pressure provider. |
 | D2-04 | 2 | 1 | todo | Disk + battery provider. |
 | D2-05 | 2 | 2 | todo | Top developer process summary. |
-| D2-06 | 2 | 2 | todo | Soul state machine: CPU/memory thresholds, hysteresis, cooldown, recovery. |
-| D2-07 | 2 | 1 | todo | Unit tests + real System/Overview/Menu Bar wiring. |
 | D3-01 | 3 | 2 | todo | Safe cancellable ShellRunner. |
 | D3-02 | 3 | 2 | todo | Java/Node/Python/Go detection + cache. |
 | D3-03 | 3 | 2 | todo | Listening ports + process/PID mapping. |
