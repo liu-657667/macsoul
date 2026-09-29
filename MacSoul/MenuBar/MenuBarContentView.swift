@@ -14,7 +14,7 @@ struct MenuBarContentView: View {
             HStack {
                 Text("MacSoul").fontWeight(.semibold)
                 Spacer()
-                Text(language.text(store.systemMode == .live ? "CPU / MEMORY LIVE · OTHER MOCK" : "MOCK DATA"))
+                Text(language.text(store.systemMode == .live ? "SYSTEM LIVE · OTHER MOCK" : "MOCK DATA"))
                     .font(.caption.bold()).foregroundStyle(.orange)
             }
             HStack(spacing: MacSoulTheme.Spacing.regular) {
@@ -28,13 +28,16 @@ struct MenuBarContentView: View {
             LazyVGrid(columns: metricColumns, spacing: MacSoulTheme.Spacing.regular) {
                 MetricTile(name: "CPU", metric: snapshot.cpu, compact: true)
                 MetricTile(name: "Memory used", metric: snapshot.memoryUsed, compact: true)
-                MetricTile(name: "Disk", metric: snapshot.disk, compact: true)
+                MetricTile(name: "Disk", metric: snapshot.disk, compact: true,
+                           emptyStateText: snapshot.diskEmptyState)
                 MetricTile(name: "Battery", metric: snapshot.battery, compact: true,
-                           attentionText: snapshot.battery.usedPercent.map { $0 <= 10 ? "Low battery" : nil } ?? nil)
+                           attentionText: snapshot.battery.usedPercent.map { $0 <= 10 ? "Low battery" : nil } ?? nil,
+                           overrideLabel: snapshot.batterySummaryOverride,
+                           emptyStateText: snapshot.batteryEmptyState)
             }
             MemoryPressureLabel(pressure: snapshot.memoryPressure)
             if store.systemMode == .live {
-                Text(language.text("CPU and memory: Live · Disk and battery: Mock"))
+                Text(language.text("System metrics: Live · AI, Network, Dev: Mock"))
                     .font(.caption2).foregroundStyle(MacSoulTheme.supportingText)
             }
             Divider()

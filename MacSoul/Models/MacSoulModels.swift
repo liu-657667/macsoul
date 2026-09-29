@@ -155,8 +155,11 @@ struct AppSnapshot {
     var memoryUsed: PercentMetric
     var memoryBytes: MemoryUsage? = nil
     var memoryPressure: String
-    let disk: PercentMetric
-    let battery: PercentMetric
+    var disk: PercentMetric
+    var battery: PercentMetric
+    var diskReading: DiskReading = .unknown
+    var batteryReading: BatteryReading = .unknown
+    var processReading: ProcessReading = .unknown
     let publicIP: String?
     let region: String?
     let proxyHint: String
@@ -166,4 +169,19 @@ struct AppSnapshot {
     let ports: [PortItem]
     let cleanerItems: [CleanerItem]
     let serviceLatency: [(String, String)]
+
+    var batterySummaryOverride: String? {
+        if case .notPresent = batteryReading { return "No battery" }
+        return nil
+    }
+
+    var diskEmptyState: String {
+        if systemMode == .live, case .unknown = diskReading { return "Sampling…" }
+        return "Unavailable"
+    }
+
+    var batteryEmptyState: String {
+        if systemMode == .live, case .unknown = batteryReading { return "Sampling…" }
+        return "Unavailable"
+    }
 }

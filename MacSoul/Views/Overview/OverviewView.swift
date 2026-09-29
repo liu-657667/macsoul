@@ -40,7 +40,7 @@ struct OverviewView: View {
         HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.regular) {
             Text("MacSoul").font(.title2.bold())
             Text(language.text(store.systemMode == .live
-                ? "CPU / Memory LIVE · other data MOCK"
+                ? "System metrics LIVE · other sections MOCK"
                 : "MOCK DATA · No live sampling or quota provider"))
                 .font(.caption).foregroundStyle(.secondary)
         }
@@ -66,13 +66,16 @@ struct OverviewView: View {
                 LazyVGrid(columns: metricColumns, spacing: MacSoulTheme.Spacing.regular) {
                     MetricTile(name: "CPU", metric: store.snapshot.cpu, compact: true)
                     MetricTile(name: "Memory used", metric: store.snapshot.memoryUsed, compact: true)
-                    MetricTile(name: "Disk", metric: store.snapshot.disk, compact: true)
+                    MetricTile(name: "Disk", metric: store.snapshot.disk, compact: true,
+                               emptyStateText: store.snapshot.diskEmptyState)
                     MetricTile(name: "Battery", metric: store.snapshot.battery, compact: true,
-                               attentionText: store.snapshot.battery.usedPercent.map { $0 <= 10 ? "Low battery" : nil } ?? nil)
+                               attentionText: store.snapshot.battery.usedPercent.map { $0 <= 10 ? "Low battery" : nil } ?? nil,
+                               overrideLabel: store.snapshot.batterySummaryOverride,
+                               emptyStateText: store.snapshot.batteryEmptyState)
                 }
                 MemoryPressureLabel(pressure: store.snapshot.memoryPressure)
                 if store.systemMode == .live {
-                    Text(language.text("CPU and memory: Live · Disk and battery: Mock"))
+                    Text(language.text("System metrics: Live · AI, Network, Dev: Mock"))
                         .font(.caption2).foregroundStyle(MacSoulTheme.supportingText)
                 }
             }

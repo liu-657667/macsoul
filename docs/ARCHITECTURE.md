@@ -48,6 +48,14 @@ Native APIs / Provider Adapters
 ## Adaptive sampling
 When the main window is closed, reduce polling. When the relevant page is visible, temporarily increase freshness. A UI appearance change must update sampling policy rather than spawn a second monitor.
 
+### Current Day 2 System implementation
+- One `SensorHub` publishes CPU, memory, Disk, battery and developer-process readings into the shared `AppSnapshot`; Overview, System and Menu Bar only read that snapshot.
+- CPU and memory sample about every 1 second while System is visible and about every 5 seconds otherwise. Disk reads the root volume on Live entry and about every 60 seconds thereafter. Developer processes are sampled about every 3 seconds on System and 15 seconds in the background; their first CPU delta is unknown.
+- Battery uses IOKit Power Sources for an initial read and power-source change notifications. If notification registration fails, it falls back to a 60-second refresh. An absent internal battery and an API failure have separate states.
+- Disk reports root-volume `total − available` bytes and derives used percent from raw bytes; displayed capacities use GiB. APFS purgeable/shared-container behavior may differ from Storage Settings.
+- A process CPU percentage is the difference in cumulative user + system CPU nanoseconds divided by elapsed wall-clock nanoseconds, multiplied by 100. One busy logical CPU is 100%; a multithreaded process can exceed 100%.
+- These additional metrics do not drive Soul. AI quota, Network and Dev Environment still use Mock data in Live System mode.
+
 ## Modules
 ```text
 MacSoul/

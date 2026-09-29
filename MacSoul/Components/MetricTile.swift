@@ -6,6 +6,8 @@ struct MetricTile: View {
     let metric: PercentMetric
     var compact = false
     var attentionText: String? = nil
+    var overrideLabel: String? = nil
+    var emptyStateText = "Unavailable"
 
     @ViewBuilder var body: some View {
         if compact {
@@ -26,13 +28,15 @@ struct MetricTile: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.85)
                 Spacer(minLength: MacSoulTheme.Spacing.tight)
-                Text(metric.label)
+                Text(language.text(overrideLabel ?? metric.label))
                     .fontWeight(.semibold)
                     .fixedSize(horizontal: true, vertical: false)
                     .layoutPriority(1)
             }
             if let progress = metric.progress { ProgressView(value: progress).progressViewStyle(.linear) }
-            else { Text(language.text("Unavailable")).font(.caption).foregroundStyle(.secondary) }
+            else if overrideLabel == nil {
+                Text(language.text(emptyStateText)).font(.caption).foregroundStyle(.secondary)
+            }
             if let attentionText {
                 Label(language.text(attentionText), systemImage: "exclamationmark.triangle.fill")
                     .font(.caption2.weight(.semibold))
