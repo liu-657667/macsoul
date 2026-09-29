@@ -35,6 +35,8 @@ final class SoulEngine {
         criticalSince = nil
         safeSince = nil
         lastSample = nil
+        state = .observing
+        current = presentation(for: .observing, announce: false, pressure: .unknown)
     }
 
     func evaluate(cpu: Double?, pressure: MemoryPressureLevel) -> SoulStatus {

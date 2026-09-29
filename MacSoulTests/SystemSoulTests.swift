@@ -83,7 +83,7 @@ final class SystemSoulTests: XCTestCase {
         XCTAssertEqual(sample(116, 86).message, "CPU load remains high.")
     }
 
-    func testSoulMemoryPriorityUnknownAndSuspend() {
+    func testSoulMemoryPriorityAndRecovery() {
         let clock = TestSoulClock()
         let soul = SoulEngine(clock: clock)
         XCTAssertEqual(soul.evaluate(cpu: nil, pressure: .unknown).state, .observing)
@@ -91,14 +91,52 @@ final class SystemSoulTests: XCTestCase {
         XCTAssertEqual(soul.evaluate(cpu: 10, pressure: .warning).state, .memoryWarning)
         clock.uptime = 2
         XCTAssertEqual(soul.evaluate(cpu: 99, pressure: .critical).state, .memoryCritical)
-        soul.suspend()
-        clock.uptime = 100
-        XCTAssertEqual(soul.evaluate(cpu: 20, pressure: .unknown).state, .memoryCritical)
-        for second in stride(from: 101, through: 131, by: 5) {
+        for second in stride(from: 3, through: 33, by: 5) {
             clock.uptime = Double(second)
             _ = soul.evaluate(cpu: 20, pressure: .normal)
         }
         XCTAssertEqual(soul.state, .recovering)
+    }
+
+    func testSuspendDiscardsOldMemoryCriticalWhenPressureIsUnknown() {
+        let clock = TestSoulClock()
+        let soul = SoulEngine(clock: clock)
+        XCTAssertEqual(soul.evaluate(cpu: 20, pressure: .critical).state, .memoryCritical)
+
+        soul.suspend()
+        XCTAssertEqual(soul.state, .observing)
+        clock.uptime = 100
+        let first = soul.evaluate(cpu: nil, pressure: .unknown)
+        XCTAssertEqual(first.state, .observing)
+        clock.uptime = 101
+        let next = soul.evaluate(cpu: 20, pressure: .unknown)
+        XCTAssertEqual(next.state, .calm)
+        XCTAssertEqual(next.mood, "CPU calm · Live")
+        for second in stride(from: 106, through: 136, by: 5) {
+            clock.uptime = Double(second)
+            XCTAssertNotEqual(soul.evaluate(cpu: 20, pressure: .unknown).state, .memoryCritical)
+        }
+    }
+
+    func testSuspendDiscardsOldStressedAndBrainOverloadStates() {
+        for oldState in [SoulState.stressed, .brainOverload] {
+            let clock = TestSoulClock()
+            let soul = SoulEngine(clock: clock)
+            let highCPU = oldState == .stressed ? 86.0 : 96.0
+            let duration = oldState == .stressed ? 15 : 20
+            for second in stride(from: 0, through: duration, by: 5) {
+                clock.uptime = Double(second)
+                _ = soul.evaluate(cpu: highCPU, pressure: .normal)
+            }
+            XCTAssertEqual(soul.state, oldState)
+
+            soul.suspend()
+            XCTAssertEqual(soul.state, .observing)
+            clock.uptime = 100
+            XCTAssertEqual(soul.evaluate(cpu: nil, pressure: .unknown).state, .observing)
+            clock.uptime = 101
+            XCTAssertEqual(soul.evaluate(cpu: 20, pressure: .unknown).state, .calm)
+        }
     }
 
     func testSoulCalmCopyDoesNotClaimKnownMemoryPressure() {

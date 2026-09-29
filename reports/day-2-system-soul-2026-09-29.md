@@ -51,3 +51,11 @@
 原生观察使用 1.1 秒间隔；应用实际间隔随页面在约 1 秒与约 5 秒之间切换。本轮未打开 Activity Monitor 做同时间窗口对照；瞬时数字不应要求相同，尤其不能拿其单进程 CPU 口径直接比较全机 CPU。未执行长时间满载或内存耗尽测试。
 
 首次供人工验收时，桌面随后运行了 `docs-project-intro` 工作树的旧构建（PID 48574），其设置页没有实时模式入口。经负责人明确允许，仅对该旧进程发送 SIGTERM；确认退出后重新启动本分支构建。新 App 的 `MacSoul.debug.dylib` 与本分支 Debug 产物 SHA-256 相同，负责人已确认新的设置入口可见。此项只证明入口显示，未替代实时数据与交互验收。
+
+## PR #2 审查后修复（2026-09-29）
+
+- `SoulEngine.suspend()` 现在清除持续阈值计时并把瞬时状态及展示重置为 `observing`；保留公告冷却历史。唤醒后只由新 CPU / 内存压力样本建立状态，未知压力不恢复旧 `memoryCritical`。
+- 使用可注入时钟补测 `memoryCritical`、`stressed`、`brainOverload` 跨 suspend 后的状态；没有执行真实睡眠、CPU 满载或内存耗尽测试。
+- 合并 `origin/main` 时仅两份 README 冲突，沿用 main 的项目介绍结构，并保留本分支已验证的部分实时状态；`docs/DEVELOPMENT.md` 原样来自 main。
+- 本轮 `./scripts/build.sh` exit 0；`./scripts/test.sh` exit 0，32 个测试、0 失败；`./scripts/verify.sh` 最终 exit 0，doctor/build/unit/progress tests/visual assets/ledger 均 PASS。证据在 `.artifacts/build.log`、`.artifacts/test.log`、`.artifacts/verification.json`，源码与验证输入指纹为 `b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f`。首次 verify 的 ledger 因旧指纹失败；保留旧证据于 `evidence_history` 后，按已通过的实际命令刷新当前证据并重跑通过。
+- 上述原有人工验收记录保持不变。Memory Pressure 的自然 warning/critical 事件继续 VERIFYING；正式 Performance 测量和真实 AI Provider 仍为 NOT_RUN。本轮未新增人工 UI 验收。
