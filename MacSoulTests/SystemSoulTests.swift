@@ -83,6 +83,74 @@ final class SystemSoulTests: XCTestCase {
         XCTAssertEqual(sample(116, 86).message, "CPU load remains high.")
     }
 
+    func testCPUSeverityUpgradeSharesAnnouncementCooldown() {
+        let clock = TestSoulClock()
+        let soul = SoulEngine(clock: clock)
+        func sample(_ time: TimeInterval, _ cpu: Double) -> SoulStatus {
+            clock.uptime = time
+            return soul.evaluate(cpu: cpu, pressure: .normal)
+        }
+        for second in stride(from: 0, through: 10, by: 5) { _ = sample(Double(second), 86) }
+        let stressed = sample(15, 86)
+        XCTAssertEqual(stressed.state, .stressed)
+        XCTAssertEqual(stressed.message, "我开始认真工作了。")
+
+        for second in stride(from: 20, through: 35, by: 5) { _ = sample(Double(second), 96) }
+        let overload = sample(40, 96)
+        XCTAssertEqual(overload.state, .brainOverload)
+        XCTAssertEqual(overload.visual, .overload)
+        XCTAssertEqual(overload.mood, "Overload · Live")
+        XCTAssertEqual(overload.message, "CPU load remains critical.")
+
+        soul.suspend()
+        for second in stride(from: 1800, through: 1810, by: 5) { _ = sample(Double(second), 86) }
+        XCTAssertEqual(sample(1815, 86).message, "我开始认真工作了。")
+    }
+
+    func testMemorySeverityUpgradeSharesAnnouncementCooldownAcrossSuspend() {
+        let clock = TestSoulClock()
+        let soul = SoulEngine(clock: clock)
+        let warning = soul.evaluate(cpu: 20, pressure: .warning)
+        XCTAssertEqual(warning.state, .memoryWarning)
+        XCTAssertEqual(warning.message, "我的胃快撑爆了。")
+
+        clock.uptime = 1
+        let critical = soul.evaluate(cpu: 20, pressure: .critical)
+        XCTAssertEqual(critical.state, .memoryCritical)
+        XCTAssertEqual(critical.visual, .bloated)
+        XCTAssertEqual(critical.mood, "Memory critical · Live")
+        XCTAssertEqual(critical.message, "Memory pressure remains critical.")
+
+        soul.suspend()
+        clock.uptime = 100
+        XCTAssertEqual(soul.evaluate(cpu: 20, pressure: .warning).message,
+                       "Memory pressure remains elevated.")
+        soul.suspend()
+        clock.uptime = 1800
+        XCTAssertEqual(soul.evaluate(cpu: 20, pressure: .critical).message, "我的胃快撑爆了。")
+    }
+
+    func testRecoveryAnnouncesOncePerCooldown() {
+        let clock = TestSoulClock()
+        let soul = SoulEngine(clock: clock)
+        func sample(_ time: TimeInterval, _ pressure: MemoryPressureLevel) -> SoulStatus {
+            clock.uptime = time
+            return soul.evaluate(cpu: 20, pressure: pressure)
+        }
+        _ = sample(0, .critical)
+        for second in stride(from: 1, through: 26, by: 5) { _ = sample(Double(second), .normal) }
+        let firstRecovery = sample(31, .normal)
+        XCTAssertEqual(firstRecovery.state, .recovering)
+        XCTAssertEqual(firstRecovery.message, "呼……终于安静了。")
+        XCTAssertEqual(sample(32, .normal).state, .calm)
+
+        _ = sample(33, .critical)
+        for second in stride(from: 34, through: 59, by: 5) { _ = sample(Double(second), .normal) }
+        let secondRecovery = sample(64, .normal)
+        XCTAssertEqual(secondRecovery.state, .recovering)
+        XCTAssertEqual(secondRecovery.message, "System load is recovering.")
+    }
+
     func testSoulMemoryPriorityAndRecovery() {
         let clock = TestSoulClock()
         let soul = SoulEngine(clock: clock)

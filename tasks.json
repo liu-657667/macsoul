@@ -39,9 +39,9 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         },
         {
           "acceptance_id": "A4-NEGATIVE",
@@ -51,9 +51,9 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -370,6 +370,30 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "A4-LEDGER",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+        },
+        {
+          "acceptance_id": "A4-NEGATIVE",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ]
     },
@@ -582,9 +606,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         },
         {
           "acceptance_id": "A2-UNIT",
@@ -594,9 +618,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -913,6 +937,30 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "A2-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+        },
+        {
+          "acceptance_id": "A2-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ]
     },
@@ -1121,9 +1169,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         },
         {
           "acceptance_id": "D1-01-A",
@@ -1133,9 +1181,9 @@
           "command": "./scripts/doctor.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         },
         {
           "acceptance_id": "D1-01-A",
@@ -1145,9 +1193,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -1620,6 +1668,42 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/doctor.log",
+          "check": "doctor",
+          "command": "./scripts/doctor.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ]
     },
@@ -1650,9 +1734,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -1814,6 +1898,18 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "D1-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ]
     },
@@ -1844,9 +1940,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -2007,6 +2103,18 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "D1-03-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ]
     },
@@ -2037,9 +2145,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -2201,6 +2309,18 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "D1-04-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ]
     },
@@ -2231,9 +2351,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -2394,6 +2514,18 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "D1-05-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ]
     },
@@ -2424,9 +2556,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         },
         {
           "acceptance_id": "D1-06-A",
@@ -2436,9 +2568,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -2763,6 +2895,30 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ]
     },
@@ -2795,9 +2951,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -2839,6 +2995,18 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "D2-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ],
       "human_ui_confirmation": "2026-09-29: Owner confirmed live collection continues with the main window closed; closing and reopening the main window 5 times and repeatedly opening the Menu Bar worked. Real sleep/wake observation remains NOT_RUN."
@@ -2872,9 +3040,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -2928,6 +3096,18 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "D2-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ],
       "human_ui_confirmation": "2026-09-29: Owner accepted live CPU at about 30–32% versus Activity Monitor aggregate User + System about 27% during the same period."
@@ -3074,9 +3254,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -3130,6 +3310,18 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "D2-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ],
       "human_ui_confirmation": "2026-09-29: Owner confirmed Soul uses real CPU state. Pressure-driven states remain covered by deterministic unit tests; natural warning/critical events were not observed."
@@ -3163,9 +3355,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -3207,6 +3399,18 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "D2-07-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ],
       "human_ui_confirmation": "2026-09-29: Owner confirmed Overview, System and Menu Bar share live state; repeated main-window and Menu Bar opening, cross-surface synchronization, and Live/Mock boundaries all passed."
@@ -4969,9 +5173,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
-          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
-          "checked_at": "2026-09-29T03:09:13.940584+00:00"
+          "source_revision": "3ecd09df1d61220efc4f094728cd68c12f87b38c",
+          "fingerprint": "94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0",
+          "checked_at": "2026-09-29T05:36:33.669113+00:00"
         }
       ],
       "blocker": null,
@@ -5061,6 +5265,18 @@
           "source_revision": "a5e4a21af0507e26cfb807b985e7b37d88832e99",
           "fingerprint": "80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954",
           "checked_at": "2026-09-29T02:40:25.871891+00:00"
+        },
+        {
+          "acceptance_id": "VIS-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "16a6651df809d902e0519c8dd73d9fe30d7652c7",
+          "fingerprint": "b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f",
+          "checked_at": "2026-09-29T03:09:13.940584+00:00"
         }
       ]
     },

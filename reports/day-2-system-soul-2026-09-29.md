@@ -59,3 +59,10 @@
 - 合并 `origin/main` 时仅两份 README 冲突，沿用 main 的项目介绍结构，并保留本分支已验证的部分实时状态；`docs/DEVELOPMENT.md` 原样来自 main。
 - 本轮 `./scripts/build.sh` exit 0；`./scripts/test.sh` exit 0，32 个测试、0 失败；`./scripts/verify.sh` 最终 exit 0，doctor/build/unit/progress tests/visual assets/ledger 均 PASS。证据在 `.artifacts/build.log`、`.artifacts/test.log`、`.artifacts/verification.json`，源码与验证输入指纹为 `b2f87dd4b0755290d7dccdf7979e7563b21949e3b2f4a404433d5763b91e9e6f`。首次 verify 的 ledger 因旧指纹失败；保留旧证据于 `evidence_history` 后，按已通过的实际命令刷新当前证据并重跑通过。
 - 上述原有人工验收记录保持不变。Memory Pressure 的自然 warning/critical 事件继续 VERIFYING；正式 Performance 测量和真实 AI Provider 仍为 NOT_RUN。本轮未新增人工 UI 验收。
+
+## PR #2 Soul 公告冷却修正（2026-09-29）
+
+- 根据 `docs/SOUL-ENGINE.md` 的同事件类别 30 分钟冷却规则，公告键改为 CPU、Memory、Recovery；原状态优先级和 15/20/30 秒阈值保持不变。严重程度升级时状态、图像和 mood 立即更新，同类别公告文案不重复。`suspend()` 保留冷却历史。
+- 注入时钟的单测覆盖 stressed → brainOverload、memoryWarning → memoryCritical、同类别冷却到期后再次公告，以及 recovery 的首次和冷却内再次进入；没有进行真实睡眠或压力试验。
+- 本轮 `./scripts/build.sh` exit 0；`./scripts/test.sh` exit 0，35 个测试、0 失败；`./scripts/verify.sh` 最终 exit 0，doctor/build/unit/progress tests/visual assets/ledger 均 PASS。证据在 `.artifacts/build.log`、`.artifacts/test.log`、`.artifacts/verification.json`，源码与验证输入指纹为 `94eab9948ad76b1382f833d068f00d1adb53e16a3ba7e90fc97471f9348f89f0`。首次 verify 的 ledger 仅因旧指纹失败；旧证据保留于 `evidence_history`，当前证据按本轮实际通过的命令更新后复跑通过。
+- 既有人工验收结论不变。Memory Pressure 的自然 warning/critical 事件继续 VERIFYING；正式 Performance 测量与真实 AI Provider 仍为 NOT_RUN；本轮人工 UI 为 NOT_RUN。

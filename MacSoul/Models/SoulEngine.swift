@@ -7,6 +7,10 @@ enum SoulState: Equatable {
     case observing, calm, stressed, brainOverload, memoryWarning, memoryCritical, recovering
 }
 
+private enum SoulEventCategory: Hashable {
+    case cpu, memory, recovery
+}
+
 struct SoulStatus: Equatable {
     let state: SoulState
     let visual: SoulVisual?
@@ -25,7 +29,7 @@ final class SoulEngine {
     private var criticalSince: TimeInterval?
     private var safeSince: TimeInterval?
     private var lastSample: TimeInterval?
-    private var lastAnnouncement: [SoulState: TimeInterval] = [:]
+    private var lastAnnouncement: [SoulEventCategory: TimeInterval] = [:]
     private let cooldown: TimeInterval = 1800
 
     init(clock: any SoulClock = UptimeSoulClock()) { self.clock = clock }
@@ -83,10 +87,22 @@ final class SoulEngine {
             return current
         }
         state = next
-        let canAnnounce = changed && (lastAnnouncement[next].map { now - $0 >= cooldown } ?? true)
-        if canAnnounce { lastAnnouncement[next] = now }
+        let category = announcementCategory(for: next)
+        let canAnnounce = category.map { event in
+            lastAnnouncement[event].map { now - $0 >= cooldown } ?? true
+        } ?? false
+        if let category, canAnnounce { lastAnnouncement[category] = now }
         current = presentation(for: next, announce: canAnnounce, pressure: pressure)
         return current
+    }
+
+    private func announcementCategory(for state: SoulState) -> SoulEventCategory? {
+        switch state {
+        case .stressed, .brainOverload: .cpu
+        case .memoryWarning, .memoryCritical: .memory
+        case .recovering: .recovery
+        case .observing, .calm: nil
+        }
     }
 
     private func presentation(for state: SoulState, announce: Bool,
