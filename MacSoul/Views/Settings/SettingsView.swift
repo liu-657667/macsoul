@@ -11,10 +11,26 @@ struct SettingsView: View {
             VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.section) {
                 GroupBox(language.text("Current build capabilities")) {
                     VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
-                        LabeledContent(language.text("Data mode"), value: language.text("Bundled Mock"))
-                        LabeledContent(language.text("Live system sampling"), value: language.text("Not connected"))
+                        LabeledContent(language.text("Data mode"), value: language.text(store.systemMode == .live ? "Partial Live + Mock" : "Bundled Mock"))
+                        LabeledContent(language.text("Live system sampling"), value: language.text(store.systemMode == .live ? "CPU and memory only" : "Not connected"))
                         LabeledContent(language.text("Live quota providers"), value: language.text("Not connected"))
                         LabeledContent(language.text("Cleaner deletion"), value: language.text("Not available"))
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                GroupBox(language.text("System data source")) {
+                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+                        Picker(language.text("Mode"), selection: Binding(
+                            get: { store.systemMode },
+                            set: { store.setSystemMode($0) }
+                        )) {
+                            ForEach(SystemMode.allCases) { option in
+                                Text(language.text(option.label)).tag(option)
+                            }
+                        }
+                        .frame(maxWidth: 440, alignment: .leading)
+                        Text(language.text("Live System uses native CPU and memory only. Other sections keep Mock data."))
+                            .font(.caption).foregroundStyle(.secondary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -40,7 +56,7 @@ struct SettingsView: View {
                     .frame(maxWidth: 440, alignment: .leading)
                 }
                 #if DEBUG
-                if let currentFixture = store.previewFixture {
+                if store.systemMode == .preview, let currentFixture = store.previewFixture {
                     GroupBox(language.text("Developer preview scenarios")) {
                         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                             Picker(language.text("Fixture"), selection: Binding(

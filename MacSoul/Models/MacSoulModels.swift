@@ -1,6 +1,22 @@
 import Foundation
 
 enum DataMode: String { case mock = "MOCK", live = "LIVE" }
+enum SystemMode: String, CaseIterable, Identifiable {
+    case preview, live
+    var id: Self { self }
+    var label: String { self == .preview ? "Developer Preview" : "Live System" }
+}
+enum MemoryPressureLevel: Equatable {
+    case unknown, normal, warning, critical
+    var liveLabel: String {
+        switch self {
+        case .unknown: "Unknown · Live"
+        case .normal: "Normal · Live"
+        case .warning: "Warning · Live"
+        case .critical: "Critical · Live"
+        }
+    }
+}
 enum Freshness: String { case fresh = "Fresh", stale = "Stale", unavailable = "Unavailable" }
 enum SoulVisual: String, CaseIterable {
     case normal, busy, overload, bloated, lowBattery, sleeping
@@ -131,12 +147,14 @@ struct PortItem: Identifiable, Hashable {
 }
 struct AppSnapshot {
     let mode: DataMode
-    let soulVisual: SoulVisual?
-    let soulMood: String
-    let soulMessage: String
-    let cpu: PercentMetric
-    let memoryUsed: PercentMetric
-    let memoryPressure: String
+    var systemMode: SystemMode = .preview
+    var soulVisual: SoulVisual?
+    var soulMood: String
+    var soulMessage: String
+    var cpu: PercentMetric
+    var memoryUsed: PercentMetric
+    var memoryBytes: MemoryUsage? = nil
+    var memoryPressure: String
     let disk: PercentMetric
     let battery: PercentMetric
     let publicIP: String?

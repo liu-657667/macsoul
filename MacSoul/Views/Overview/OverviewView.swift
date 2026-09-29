@@ -39,7 +39,9 @@ struct OverviewView: View {
     private var header: some View {
         HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.regular) {
             Text("MacSoul").font(.title2.bold())
-            Text(language.text("MOCK DATA · No live sampling or quota provider"))
+            Text(language.text(store.systemMode == .live
+                ? "CPU / Memory LIVE · other data MOCK"
+                : "MOCK DATA · No live sampling or quota provider"))
                 .font(.caption).foregroundStyle(.secondary)
         }
     }
@@ -69,12 +71,16 @@ struct OverviewView: View {
                                attentionText: store.snapshot.battery.usedPercent.map { $0 <= 10 ? "Low battery" : nil } ?? nil)
                 }
                 MemoryPressureLabel(pressure: store.snapshot.memoryPressure)
+                if store.systemMode == .live {
+                    Text(language.text("CPU and memory: Live · Disk and battery: Mock"))
+                        .font(.caption2).foregroundStyle(MacSoulTheme.supportingText)
+                }
             }
         }
     }
 
     private var aiCard: some View {
-        CardContainer(title: "AI Coding", systemImage: "sparkles") {
+        CardContainer(title: "AI Coding", systemImage: "sparkles", badge: "MOCK") {
             VStack(alignment: .leading, spacing: 16) {
                 ForEach(store.snapshot.quotas) { quota in
                     QuotaRow(quota: quota, presentation: .summary)

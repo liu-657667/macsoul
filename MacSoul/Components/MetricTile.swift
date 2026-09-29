@@ -47,12 +47,13 @@ struct MemoryPressureLabel: View {
     let pressure: String
 
     private var text: String {
-        language == .english ? "Pressure: \(language.text(pressure))" : "内存压力：\(language.text(pressure))"
+        let summary = pressure == "Unknown · Live" ? "Monitoring · Live" : pressure
+        return language == .english ? "Pressure: \(language.text(summary))" : "内存压力：\(language.text(summary))"
     }
 
     var body: some View {
         Group {
-            if pressure == "Critical · Mock" {
+            if pressure == "Critical · Mock" || pressure == "Critical · Live" || pressure == "Warning · Live" {
                 Label(text, systemImage: "exclamationmark.triangle.fill")
                     .fontWeight(.semibold)
                     .foregroundStyle(.orange)

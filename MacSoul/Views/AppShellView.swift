@@ -26,6 +26,8 @@ enum AppSection: String, CaseIterable, Identifiable {
 
 struct AppShellView: View {
     @State private var selection: AppSection? = .overview
+    @State private var windowID = UUID()
+    @EnvironmentObject private var store: AppStore
     @Environment(\.macSoulLanguage) private var language
 
     var body: some View {
@@ -60,5 +62,8 @@ struct AppShellView: View {
                 }
             }
         }
+        .onAppear { store.setWindow(windowID, visible: true, section: selection ?? .overview) }
+        .onDisappear { store.setWindow(windowID, visible: false, section: selection ?? .overview) }
+        .onChange(of: selection) { store.setWindowSection(windowID, section: $0 ?? .overview) }
     }
 }
