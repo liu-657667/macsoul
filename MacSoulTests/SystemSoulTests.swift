@@ -225,7 +225,7 @@ final class SystemSoulTests: XCTestCase {
     @MainActor func testOneHubForRepeatedWindowAndMenuAppearances() async {
         let sampler = StubSystemSampler()
         let details = StubDetailSampler()
-        let store = AppStore(sampler: sampler, details: details)
+        let store = AppStore(sampler: sampler, details: details, networkPath: FakeNetworkPath())
         let received = expectation(description: "first live disk and CPU sample")
         var didFulfill = false
         let subscription = store.$snapshot.sink { value in
@@ -257,7 +257,7 @@ final class SystemSoulTests: XCTestCase {
     @MainActor func testSharedStorePublishesLiveSystemDetailsWithoutReplacingMockModules() async {
         let sampler = StubSystemSampler()
         let details = StubDetailSampler()
-        let store = AppStore(sampler: sampler, details: details)
+        let store = AppStore(sampler: sampler, details: details, networkPath: FakeNetworkPath())
         let received = expectation(description: "shared live snapshot")
         var didFulfill = false
         var subscription: AnyCancellable? = store.$snapshot.sink { value in
@@ -276,7 +276,7 @@ final class SystemSoulTests: XCTestCase {
         XCTAssertNil(store.snapshot.battery.usedPercent)
         XCTAssertEqual(store.snapshot.batterySummaryOverride, "No battery")
         XCTAssertEqual(store.snapshot.quotas.first?.mode, .mock)
-        XCTAssertEqual(store.snapshot.publicIP, "203.0.113.42")
+        XCTAssertNil(store.snapshot.publicIP) // Live Network never reuses a Mock IP.
         XCTAssertEqual(store.snapshot.devMode, .live)
         XCTAssertTrue(store.snapshot.runtimes.isEmpty) // No old Mock runtime in Live mode.
         XCTAssertEqual(store.snapshot.mode, .mock)
@@ -294,7 +294,7 @@ final class SystemSoulTests: XCTestCase {
         let sampleTime = Date(timeIntervalSince1970: 123)
         await details.setDisk(.unavailable(sampledAt: sampleTime))
         await details.setBattery(.unavailable(sampledAt: sampleTime))
-        let store = AppStore(sampler: StubSystemSampler(), details: details)
+        let store = AppStore(sampler: StubSystemSampler(), details: details, networkPath: FakeNetworkPath())
         let received = expectation(description: "detail failures in shared snapshot")
         var didFulfill = false
         let subscription = store.$snapshot.sink { value in

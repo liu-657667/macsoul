@@ -375,7 +375,7 @@ final class DevEnvironmentTests: XCTestCase {
         cadence.markPortsSampled(at: 75)
         XCTAssertFalse(cadence.portsDue(at: 80, visible: true))
         await MainActor.run {
-            let store = AppStore()
+            let store = AppStore(networkPath: FakeNetworkPath())
             XCTAssertEqual(store.snapshot.devMode, .mock)
             XCTAssertFalse(store.snapshot.runtimes.isEmpty)
             store.setSystemMode(.live)

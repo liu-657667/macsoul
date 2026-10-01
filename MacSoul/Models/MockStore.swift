@@ -141,6 +141,18 @@ struct UnavailableProvider: SnapshotProvider {
     private var visibleSystemWindows: Set<UUID> = []
     private var visibleDevWindows: Set<UUID> = []
     private var sleeping = false
+    @Published private(set) var connectivityEnabled: Bool
+    private let networkPath: (any NetworkPathProviding)?
+    private let networkHTTP: any NetworkHTTPClient
+    private let networkLocal: any LocalNetworkProviding
+    private lazy var networkMonitor = NetworkMonitor(path: networkPath, client: networkHTTP, local: networkLocal,
+        onSnapshot: { [weak self] value in
+            guard let self, self.systemMode == .live else { return }
+            var current = self.snapshot
+            current.network = value
+            self.snapshot = current
+        })
+    var networkStarts: Int { networkMonitor.starts }
     private let sensorSampler: any SystemSampling
     private let detailSampler: any SystemDetailSampling
     private lazy var sensorHub = SensorHub(sampler: sensorSampler, details: detailSampler,
@@ -156,8 +168,13 @@ struct UnavailableProvider: SnapshotProvider {
 
     init(provider: any SnapshotProvider = MockProvider(fixture: .healthy),
          sampler: any SystemSampling = NativeSystemSampler(),
-         details: any SystemDetailSampling = NativeSystemDetailSampler(), now: Date = Date()) {
+         details: any SystemDetailSampling = NativeSystemDetailSampler(),
+         networkPath: (any NetworkPathProviding)? = nil,
+         networkHTTP: any NetworkHTTPClient = EphemeralNetworkHTTPClient(),
+         networkLocal: any LocalNetworkProviding = NativeLocalNetworkProvider(), now: Date = Date()) {
         self.provider = provider
+        self.networkPath = networkPath; self.networkHTTP = networkHTTP; self.networkLocal = networkLocal
+        connectivityEnabled = UserDefaults.standard.object(forKey: "macsoul.connectivityEnabled") as? Bool ?? true
         sensorSampler = sampler
         detailSampler = details
         previewFixture = (provider as? MockProvider)?.fixture
@@ -181,6 +198,14 @@ struct UnavailableProvider: SnapshotProvider {
         if systemMode == .live {
             replacement.systemMode = .live
             replacement.devMode = .live
+            replacement.networkMode = .live
+            replacement.publicIP = nil; replacement.region = nil
+            replacement.proxyHint = "Unavailable"; replacement.tunnelHint = "Unavailable"
+            replacement.network = NetworkSnapshot()
+            replacement.network.probesEnabled = connectivityEnabled
+            replacement.network.probes = ProbeService.allCases.map {
+                ProbeReading(service: $0, state: connectivityEnabled ? .checking : .disabled)
+            }
             replacement.runtimes = []
             replacement.ports = []
             replacement.runtimeReading = .sampling
@@ -205,8 +230,8 @@ struct UnavailableProvider: SnapshotProvider {
         guard mode != systemMode else { return }
         systemMode = mode
         refresh()
-        if mode == .live && !sleeping { sensorHub.start(); devMonitor.start() }
-        else { sensorHub.stop(); devMonitor.stop() }
+        if mode == .live && !sleeping { sensorHub.start(); devMonitor.start(); networkMonitor.start(probesEnabled: connectivityEnabled) }
+        else { sensorHub.stop(); devMonitor.stop(); networkMonitor.stop() }
     }
 
     func setWindow(_ id: UUID, visible: Bool, section: AppSection) {
@@ -232,6 +257,14 @@ struct UnavailableProvider: SnapshotProvider {
         sensorHub.systemPageVisible = !visibleSystemWindows.isEmpty
         devMonitor.devPageVisible = !visibleDevWindows.isEmpty
     }
+
+    func setConnectivityEnabled(_ enabled: Bool) {
+        guard enabled != connectivityEnabled else { return }
+        connectivityEnabled = enabled
+        UserDefaults.standard.set(enabled, forKey: "macsoul.connectivityEnabled")
+        networkMonitor.setProbesEnabled(enabled)
+    }
+    func refreshNetwork() { if systemMode == .live && !sleeping { networkMonitor.refresh() } }
 
     func refreshDev() { if systemMode == .live && !sleeping { devMonitor.refresh() } }
 
@@ -290,12 +323,13 @@ struct UnavailableProvider: SnapshotProvider {
         sleeping = true
         sensorHub.stop()
         devMonitor.stop()
+        networkMonitor.stop()
         if systemMode == .live { refresh() }
     }
 
     private func resumeAfterWake() {
         sleeping = false
-        if systemMode == .live { sensorHub.start(); devMonitor.start() }
+        if systemMode == .live { sensorHub.start(); devMonitor.start(); networkMonitor.start(probesEnabled: connectivityEnabled) }
     }
     #if DEBUG
     func selectPreviewFixture(_ fixture: MockProvider.Fixture, now: Date = Date()) {

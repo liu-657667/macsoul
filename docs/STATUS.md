@@ -3,23 +3,19 @@
 > 此页由 `python3 scripts/generate_status.py` 从 `tasks.json` 生成；只编辑账本。
 
 - Phase A: A4=done, A3=verifying, A2=done, A1=verifying
-- 原始计划验收：28/76 点（36.8%）
-- 已批准调整计划验收：28/76 点（36.8%）；当前无批准范围变更
+- 原始计划验收：34/76 点（44.7%）
+- 已批准调整计划验收：34/76 点（44.7%）；当前无批准范围变更
 - 增量任务：VA-01=verifying, QC-01=verifying, UI-01=verifying, VIS-01=done, VIS-02=verifying, VIS-03=verifying, VIS-04=verifying
-- 后续产品任务：Phase A 历史验收保持原状态；D2 系统监测与 D3 开发环境已验收；D3-07 的 Network wiring 待完成；AI 与网络 Provider 未接入
+- 后续产品任务：Phase A 历史验收保持原状态；D2 系统与 D3 开发环境/网络已验收；AI Provider 未接入
 - D2 本轮：D2-01=done, D2-02=done, D2-03=done, D2-04=done, D2-05=done, D2-06=done, D2-07=done
-- D3 本轮：D3-01=done, D3-02=done, D3-03=done, D3-04=todo, D3-05=todo, D3-06=todo, D3-07=verifying
-- Build/Unit：见 `reports/day-3-dev-environment-2026-09-29.md` 与 `.artifacts/verification.json`
-- Manual UI：负责人已确认实时 CPU、内存数值、Overview/System/Menu Bar 同步、窗口开关 5 次、菜单栏反复打开及 Live/Mock 边界；Memory Pressure 自然 Warning 已观察，Critical 未观察但不阻塞本轮验收；磁盘与电池已验收；开发进程已验收；D3 runtime contexts、开发端口过滤/聚合、native Table 与复制操作已由负责人验收；停止命令仅复制、不执行；Performance/真实 AI Provider：NOT_RUN
+- D3 本轮：D3-01=done, D3-02=done, D3-03=done, D3-04=done, D3-05=done, D3-06=done, D3-07=done
+- Build/Unit：见 `reports/day-3-network-2026-10-02.md` 与 `.artifacts/verification.json`
+- Manual UI：负责人已确认实时 CPU、内存数值、Overview/System/Menu Bar 同步、窗口开关 5 次、菜单栏反复打开及 Live/Mock 边界；Memory Pressure 自然 Warning 已观察，Critical 未观察但不阻塞本轮验收；磁盘与电池已验收；开发进程已验收；D3 runtime contexts、开发端口过滤/聚合、native Table 与复制操作已由负责人验收；停止命令仅复制、不执行；D3 Network 人工 UI 已验收；Performance/真实 AI Provider：NOT_RUN
 
 ## 未完成任务
 
 | ID | 原始日 | 点数 | 状态 | 任务 |
 |---|---:|---:|---|---|
-| D3-04 | 3 | 2 | todo | Network path + public IP adapter. |
-| D3-05 | 3 | 2 | todo | shell/system proxy + tunnel/VPN hints. |
-| D3-06 | 3 | 1 | todo | connectivity probes with backoff/disable. |
-| D3-07 | 3 | 1 | verifying | tests/fixtures + Overview wiring. |
 | D4-01 | 4 | 3 | todo | Codex app-server quota adapter: initial read + update path, 5h/week mapping. |
 | D4-02 | 4 | 1 | todo | Codex reconnect/stale/unavailable handling + fixtures. |
 | D4-03 | 4 | 2 | todo | Claude Code stable-source spike and adapter boundary. |

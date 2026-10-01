@@ -149,6 +149,8 @@ struct AppSnapshot {
     let mode: DataMode
     var systemMode: SystemMode = .preview
     var devMode: DataMode = .mock
+    var networkMode: DataMode = .mock
+    var network = NetworkSnapshot()
     var soulVisual: SoulVisual?
     var soulMood: String
     var soulMessage: String
@@ -161,10 +163,10 @@ struct AppSnapshot {
     var diskReading: DiskReading = .unknown
     var batteryReading: BatteryReading = .unknown
     var processReading: ProcessReading = .unknown
-    let publicIP: String?
-    let region: String?
-    let proxyHint: String
-    let tunnelHint: String
+    var publicIP: String?
+    var region: String?
+    var proxyHint: String
+    var tunnelHint: String
     let quotas: [QuotaItem]
     var runtimes: [RuntimeItem]
     var ports: [PortItem]

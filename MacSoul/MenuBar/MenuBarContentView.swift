@@ -14,7 +14,7 @@ struct MenuBarContentView: View {
             HStack {
                 Text("MacSoul").fontWeight(.semibold)
                 Spacer()
-                Text(language.text(store.systemMode == .live ? "SYSTEM + DEV LIVE · AI / NETWORK MOCK" : "MOCK DATA"))
+                Text(language.text(store.systemMode == .live ? "SYSTEM + DEV + NETWORK LIVE · AI MOCK" : "MOCK DATA"))
                     .font(.caption.bold()).foregroundStyle(.orange)
             }
             HStack(spacing: MacSoulTheme.Spacing.regular) {
@@ -37,7 +37,7 @@ struct MenuBarContentView: View {
             }
             MemoryPressureLabel(pressure: snapshot.memoryPressure)
             if store.systemMode == .live {
-                Text(language.text("System and Dev: Live · AI and Network: Mock"))
+                Text(language.text("System, Dev and Network: Live · AI: Mock"))
                     .font(.caption2).foregroundStyle(MacSoulTheme.supportingText)
             }
             Divider()
@@ -45,9 +45,13 @@ struct MenuBarContentView: View {
                 QuotaRow(quota: quota, presentation: .summary)
             }
             Divider()
-            LabeledContent(language.text("IP"), value: language.text(snapshot.publicIP ?? "Unavailable")).font(.caption)
-            LabeledContent(language.text("Proxy"), value: language.text(snapshot.proxyHint)).font(.caption)
-            LabeledContent(language.text("Tunnel"), value: language.text(snapshot.tunnelHint)).font(.caption)
+            if snapshot.networkMode == .live {
+                NetworkSummary(snapshot: snapshot.network, now: store.displayNow, compact: true).font(.caption)
+            } else {
+                LabeledContent(language.text("IP"), value: language.text(snapshot.publicIP ?? "Unavailable")).font(.caption)
+                LabeledContent(language.text("Proxy"), value: language.text(snapshot.proxyHint)).font(.caption)
+                LabeledContent(language.text("Tunnel"), value: language.text(snapshot.tunnelHint)).font(.caption)
+            }
             Divider()
             HStack {
                 Button(language.text("Open MacSoul")) { openWindow(id: "main"); NSApplication.shared.activate(ignoringOtherApps: true) }
