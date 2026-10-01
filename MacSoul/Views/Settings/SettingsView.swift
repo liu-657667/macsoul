@@ -14,6 +14,7 @@ struct SettingsView: View {
                         LabeledContent(language.text("Data mode"), value: language.text(store.systemMode == .live ? "Partial Live + Mock" : "Bundled Mock"))
                         LabeledContent(language.text("Live system sampling"), value: language.text(store.systemMode == .live ? "CPU, memory, disk, battery, processes" : "Not connected"))
                         LabeledContent(language.text("Live developer environment"), value: language.text(store.systemMode == .live ? "Runtimes and TCP listeners" : "Not connected"))
+                        LabeledContent(language.text("Live network monitoring"), value: language.text(store.systemMode == .live ? "Path, public IP, proxy, tunnel hints, connectivity" : "Not connected"))
                         LabeledContent(language.text("Live quota providers"), value: language.text("Not connected"))
                         LabeledContent(language.text("Cleaner deletion"), value: language.text("Not available"))
                     }
@@ -30,10 +31,27 @@ struct SettingsView: View {
                             }
                         }
                         .frame(maxWidth: 440, alignment: .leading)
-                        Text(language.text("Live System includes System and Dev Environment. AI and Network remain Mock."))
+                        Text(language.text("Live mode includes System, Dev Environment and Network. AI remains Mock."))
                             .font(.caption).foregroundStyle(.secondary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                GroupBox(language.text("Network external requests")) {
+                    HStack(alignment: .top, spacing: MacSoulTheme.Spacing.card) {
+                        VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+                            Text(language.text("Connectivity probes"))
+                            Text(language.text("In Live mode, probes send minimal HTTPS requests to GitHub, OpenAI and Anthropic. No account credentials or project data are sent. Turning probes off cancels pending probes."))
+                                .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
+                            Text(language.text("Live mode also queries ipify for public IPv4/IPv6. Developer Preview sends no external network requests."))
+                                .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
+                        }.frame(maxWidth: .infinity, alignment: .leading)
+                        Toggle(language.text("Connectivity probes"), isOn: Binding(
+                            get: { store.connectivityEnabled }, set: { store.setConnectivityEnabled($0) }))
+                            .labelsHidden()
+                            .toggleStyle(.switch)
+                            .accessibilityLabel(language.text("Connectivity probes"))
+                            .accessibilityHint(language.text("Turning probes off cancels pending connectivity probes."))
+                    }.frame(maxWidth: .infinity, alignment: .leading)
                 }
                 GroupBox(language.text("App appearance")) {
                     VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {

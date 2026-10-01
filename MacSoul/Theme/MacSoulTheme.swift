@@ -105,6 +105,17 @@ enum MacSoulLanguage: String, CaseIterable, Identifiable {
         return Self.chineseText[key] ?? key
     }
 
+    // App language is explicit; the system locale never selects the date language.
+    func dateTime(_ date: Date, timeZone: TimeZone = .current) -> String {
+        let style = Date.FormatStyle(date: .abbreviated, time: .standard,
+            locale: locale, timeZone: timeZone)
+        return date.formatted(self == .chinese ? style.hour(.twoDigits(amPM: .omitted)) : style)
+    }
+
+    func sampledTime(_ date: Date?, timeZone: TimeZone = .current) -> String {
+        date.map { dateTime($0, timeZone: timeZone) } ?? text("Not sampled")
+    }
+
     func used(_ percent: Int) -> String {
         self == .english ? "\(percent)% used" : "已用 \(percent)%"
     }
@@ -121,6 +132,67 @@ enum MacSoulLanguage: String, CaseIterable, Identifiable {
     ]
 
     private static let chineseText: [String: String] = [
+        "SYSTEM + DEV + NETWORK LIVE · AI MOCK": "系统 / 开发环境 / 网络实时 · AI 模拟",
+        "System, Dev and Network: Live · AI: Mock": "系统、开发环境和网络：实时 · AI：模拟",
+        "Live mode includes System, Dev Environment and Network. AI remains Mock.": "实时模式包括系统、开发环境和网络，AI 继续使用模拟数据。",
+        "Live network monitoring": "实时网络监测",
+        "Path, public IP, proxy, tunnel hints, connectivity": "路径、公网 IP、代理、隧道提示、连通性",
+        "Network external requests": "网络外部请求",
+        "Connectivity probes": "连通性探测",
+        "In Live mode, probes send minimal HTTPS requests to GitHub, OpenAI and Anthropic. No account credentials or project data are sent. Turning probes off cancels pending probes.": "实时模式会向 GitHub、OpenAI 和 Anthropic 发送最小 HTTPS 探测请求，不发送账户凭据或项目数据。关闭后立即取消待完成的探测。",
+        "Live mode also queries ipify for public IPv4/IPv6. Developer Preview sends no external network requests.": "实时模式也会向 ipify 查询公网 IPv4/IPv6。开发预览不发送外部网络请求。",
+        "Network path · LIVE": "网络路径 · 实时",
+        "Status": "状态",
+        "Context": "上下文",
+        "Monitoring…": "监测中…",
+        "Interfaces": "接口",
+        "Ethernet": "有线以太网",
+        "Cellular": "蜂窝网络",
+        "Loopback": "回环",
+        "Other": "其他",
+        "Connection required": "需要建立连接",
+        "Offline": "离线",
+        "Expensive network": "高流量成本网络",
+        "Low Data Mode": "低数据模式",
+        "Yes": "是",
+        "No": "否",
+        "Public exit IP": "公网出口",
+        "Public IPv4": "公网 IPv4",
+        "IPv4 updated": "IPv4 更新时间",
+        "IPv6 updated": "IPv6 更新时间",
+        "Not collected": "未采集",
+        "Not sampled": "未采样",
+        "Public IP requests go to ipify; this is the provider-observed exit, not a device location.": "公网 IP 查询发送至 ipify，表示服务观察到的出口地址，不是设备物理位置。",
+        "App environment proxy": "MacSoul 环境代理",
+        "macOS system proxy": "macOS 系统代理",
+        "System proxy": "系统代理",
+        "No proxy": "无代理",
+        "No system proxy": "无系统代理",
+        "No tunnel hints": "未发现类隧道接口",
+        "Last updated": "上次更新时间",
+        "Turning probes off cancels pending connectivity probes.": "关闭后取消待完成的连通性探测。",
+        "Invalid proxy setting": "代理配置无效",
+        "Upper/lowercase proxy mismatch": "代理大小写变量不一致",
+        "App environment is MacSoul's process environment, not the current Terminal shell. Uppercase keys take precedence; differences are reported.": "应用环境是 MacSoul 进程的环境，不是当前终端 Shell。大写变量优先；不同值会明确提示。",
+        "Same proxy contexts": "代理上下文一致",
+        "Different proxy contexts": "代理上下文不同",
+        "Tunnel hints": "隧道提示",
+        "None observed": "未观察到",
+        "Tunnel interfaces are hints, not proof of VPN routing.": "隧道接口仅作为提示，不代表当前流量一定通过 VPN。",
+        "Connectivity": "连通性",
+        "Probes disabled": "探测已关闭",
+        "Checking…": "正在探测…",
+        "Reachable": "网络可达",
+        "Timeout": "探测超时",
+        "Transport failed": "传输失败",
+        "HTTP failed": "HTTP 请求失败",
+        "Invalid response": "响应格式无效",
+        "Response too large": "响应超出限制",
+        "HTTP/TLS transport only. Authentication not tested; an HTTP response does not prove full service health.": "仅检查 HTTP/TLS 通路，未验证账号。收到 HTTP 响应不代表服务功能完全正常。",
+        "Refresh network": "刷新网络",
+        "Refresh updates IP, proxy, tunnel and probes; it does not restart path or System/Dev monitoring.": "刷新仅更新 IP、代理、隧道提示和探测，不重启网络路径或系统/开发环境监测。",
+        "Auto discovery": "自动发现",
+        "Network path": "网络路径",
         "Overview": "总览", "System": "系统", "Network": "网络", "AI Coding": "AI 编程",
         "Dev": "开发环境", "Cleaner": "清理", "Settings": "设置", "Soul": "灵魂",
         "MOCK DATA": "模拟数据", "MOCK DATA · No live sampling or quota provider": "模拟数据 · 未连接实时采样或配额服务",

@@ -40,7 +40,7 @@ struct OverviewView: View {
         HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.regular) {
             Text("MacSoul").font(.title2.bold())
             Text(language.text(store.systemMode == .live
-                ? "SYSTEM + DEV LIVE · AI / NETWORK MOCK"
+                ? "SYSTEM + DEV + NETWORK LIVE · AI MOCK"
                 : "MOCK DATA · No live sampling or quota provider"))
                 .font(.caption).foregroundStyle(.secondary)
         }
@@ -75,7 +75,7 @@ struct OverviewView: View {
                 }
                 MemoryPressureLabel(pressure: store.snapshot.memoryPressure)
                 if store.systemMode == .live {
-                    Text(language.text("System and Dev: Live · AI and Network: Mock"))
+                    Text(language.text("System, Dev and Network: Live · AI: Mock"))
                         .font(.caption2).foregroundStyle(MacSoulTheme.supportingText)
                 }
             }
@@ -94,15 +94,19 @@ struct OverviewView: View {
     }
 
     private var networkCard: some View {
-        CardContainer(title: "Network", systemImage: "network", badge: "MOCK") {
-            VStack(alignment: .leading, spacing: 10) {
-                LabeledContent(language.text("Public IP"), value: language.text(store.snapshot.publicIP ?? "Unavailable"))
-                LabeledContent(language.text("Region"), value: language.text(store.snapshot.region ?? "Unavailable"))
-                LabeledContent(language.text("Proxy"), value: language.text(store.snapshot.proxyHint))
-                LabeledContent(language.text("Tunnel hint"), value: language.text(store.snapshot.tunnelHint))
-                Divider()
-                ForEach(store.snapshot.serviceLatency, id: \.0) { item in
-                    LabeledContent(language.text(item.0), value: language.text(item.1))
+        CardContainer(title: "Network", systemImage: "network", badge: store.snapshot.networkMode == .live ? "LIVE" : "MOCK") {
+            if store.snapshot.networkMode == .live {
+                NetworkSummary(snapshot: store.snapshot.network, now: store.displayNow)
+            } else {
+                VStack(alignment: .leading, spacing: 10) {
+                    LabeledContent(language.text("Public IP"), value: language.text(store.snapshot.publicIP ?? "Unavailable"))
+                    LabeledContent(language.text("Region"), value: language.text(store.snapshot.region ?? "Unavailable"))
+                    LabeledContent(language.text("Proxy"), value: language.text(store.snapshot.proxyHint))
+                    LabeledContent(language.text("Tunnel hint"), value: language.text(store.snapshot.tunnelHint))
+                    Divider()
+                    ForEach(store.snapshot.serviceLatency, id: \.0) { item in
+                        LabeledContent(language.text(item.0), value: language.text(item.1))
+                    }
                 }
             }
         }
