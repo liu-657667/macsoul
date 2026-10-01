@@ -114,7 +114,9 @@ enum DeveloperProcessClassifier {
         "xcode", "xcodebuild", "swift", "swiftc", "clang", "clang++",
         "gradle", "mvn", "java", "node", "python", "python3", "go",
         "rustc", "cargo", "bun", "deno", "npm", "pnpm", "yarn", "git",
-        "docker", "postgres", "mysqld", "redis-server"
+        "docker", "docker desktop", "postgres", "mysql", "mysqld", "redis-server", "nginx",
+        "idea", "idea64", "intellij idea", "com.jetbrains.intellij", "apifox",
+        "apifoxappagent", "lingma"
     ]
 
     static func isDeveloperProcess(_ name: String) -> Bool {

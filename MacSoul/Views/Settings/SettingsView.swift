@@ -13,6 +13,7 @@ struct SettingsView: View {
                     VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                         LabeledContent(language.text("Data mode"), value: language.text(store.systemMode == .live ? "Partial Live + Mock" : "Bundled Mock"))
                         LabeledContent(language.text("Live system sampling"), value: language.text(store.systemMode == .live ? "CPU, memory, disk, battery, processes" : "Not connected"))
+                        LabeledContent(language.text("Live developer environment"), value: language.text(store.systemMode == .live ? "Runtimes and TCP listeners" : "Not connected"))
                         LabeledContent(language.text("Live quota providers"), value: language.text("Not connected"))
                         LabeledContent(language.text("Cleaner deletion"), value: language.text("Not available"))
                     }
@@ -29,7 +30,7 @@ struct SettingsView: View {
                             }
                         }
                         .frame(maxWidth: 440, alignment: .leading)
-                        Text(language.text("Live System uses native system metrics. AI, Network and Dev keep Mock data."))
+                        Text(language.text("Live System includes System and Dev Environment. AI and Network remain Mock."))
                             .font(.caption).foregroundStyle(.secondary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)

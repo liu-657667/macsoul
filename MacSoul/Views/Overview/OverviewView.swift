@@ -40,7 +40,7 @@ struct OverviewView: View {
         HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.regular) {
             Text("MacSoul").font(.title2.bold())
             Text(language.text(store.systemMode == .live
-                ? "System metrics LIVE · other sections MOCK"
+                ? "SYSTEM + DEV LIVE · AI / NETWORK MOCK"
                 : "MOCK DATA · No live sampling or quota provider"))
                 .font(.caption).foregroundStyle(.secondary)
         }
@@ -75,7 +75,7 @@ struct OverviewView: View {
                 }
                 MemoryPressureLabel(pressure: store.snapshot.memoryPressure)
                 if store.systemMode == .live {
-                    Text(language.text("System metrics: Live · AI, Network, Dev: Mock"))
+                    Text(language.text("System and Dev: Live · AI and Network: Mock"))
                         .font(.caption2).foregroundStyle(MacSoulTheme.supportingText)
                 }
             }
@@ -94,7 +94,7 @@ struct OverviewView: View {
     }
 
     private var networkCard: some View {
-        CardContainer(title: "Network", systemImage: "network") {
+        CardContainer(title: "Network", systemImage: "network", badge: "MOCK") {
             VStack(alignment: .leading, spacing: 10) {
                 LabeledContent(language.text("Public IP"), value: language.text(store.snapshot.publicIP ?? "Unavailable"))
                 LabeledContent(language.text("Region"), value: language.text(store.snapshot.region ?? "Unavailable"))
@@ -109,21 +109,57 @@ struct OverviewView: View {
     }
 
     private var devCard: some View {
-        CardContainer(title: "Dev Environment", systemImage: "terminal") {
+        CardContainer(title: "Dev Environment", systemImage: "terminal",
+                      badge: store.snapshot.devMode == .live ? "LIVE" : "MOCK") {
             VStack(alignment: .leading, spacing: 12) {
-                HStack(spacing: 10) {
-                    ForEach(store.snapshot.runtimes) { runtime in
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(runtime.name).foregroundStyle(.secondary)
-                            Text(language.text(runtime.version)).fontWeight(.semibold)
+                if store.snapshot.devMode == .live, let reading = store.snapshot.runtimeReading {
+                    if reading.state == .sampling {
+                        Text(language.text("Sampling…"))
+                    } else {
+                        LazyVGrid(columns: metricColumns, alignment: .leading, spacing: 8) {
+                            ForEach(reading.records) { runtime in
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(runtime.name).foregroundStyle(.secondary)
+                                    Text(language.text(runtime.primary?.version ?? runtime.status.label)).fontWeight(.semibold)
+                                    Text(runtime.primary?.source ?? language.text("Current detection context"))
+                                        .font(.caption2).foregroundStyle(MacSoulTheme.supportingText)
+                                        .help(runtime.primary?.path ?? "")
+                                }.frame(maxWidth: .infinity, alignment: .leading)
+                            }
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                } else {
+                    HStack(spacing: 10) {
+                        ForEach(store.snapshot.runtimes) { runtime in
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(runtime.name).foregroundStyle(.secondary)
+                                Text(language.text(runtime.version)).fontWeight(.semibold)
+                            }.frame(maxWidth: .infinity, alignment: .leading)
+                        }
                     }
                 }
                 Divider()
-                Text(language.text("Listening Ports"))
+                Text(language.text(store.snapshot.devMode == .live
+                    ? "Developer TCP Listeners" : "Listening Ports"))
                     .foregroundStyle(.secondary)
-                FlowPortsView(ports: store.snapshot.ports)
+                if store.snapshot.devMode == .live, let reading = store.snapshot.portReading {
+                    if reading.state == .available || reading.state == .empty {
+                        if reading.developerListeners.isEmpty {
+                            Text(language.text("No developer TCP listeners found"))
+                                .font(.caption).foregroundStyle(.secondary)
+                        }
+                        ForEach(reading.overviewListeners) { item in
+                            Text(item.overviewSummary)
+                                .font(.caption.monospaced()).lineLimit(1)
+                        }
+                        if reading.developerListeners.count > 3 {
+                            Text(language.text("More in Dev"))
+                                .font(.caption2).foregroundStyle(.secondary)
+                        }
+                    } else {
+                        Text(language.text(reading.state.label)).font(.caption).foregroundStyle(.secondary)
+                    }
+                } else { FlowPortsView(ports: store.snapshot.ports) }
             }
         }
     }

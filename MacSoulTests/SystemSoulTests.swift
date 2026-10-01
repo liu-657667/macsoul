@@ -277,7 +277,8 @@ final class SystemSoulTests: XCTestCase {
         XCTAssertEqual(store.snapshot.batterySummaryOverride, "No battery")
         XCTAssertEqual(store.snapshot.quotas.first?.mode, .mock)
         XCTAssertEqual(store.snapshot.publicIP, "203.0.113.42")
-        XCTAssertEqual(store.snapshot.runtimes.first?.name, "Java")
+        XCTAssertEqual(store.snapshot.devMode, .live)
+        XCTAssertTrue(store.snapshot.runtimes.isEmpty) // No old Mock runtime in Live mode.
         XCTAssertEqual(store.snapshot.mode, .mock)
         let startCalls = await sampler.startCalls
         XCTAssertEqual(startCalls, 1)
