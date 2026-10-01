@@ -198,9 +198,12 @@ private extension String {
 // Presentation only: mirrors the existing summary states without changing the snapshot.
 extension NetworkSnapshot {
     func connectivityDisplay(_ language: MacSoulLanguage) -> String {
+        if language == .english { return connectivitySummary }
         if !probesEnabled { return language.text("Probes disabled") }
         if path.state == .unsatisfied || path.state == .requiresConnection { return language.text("Offline") }
+        let checking = probes.contains { $0.state == .checking }
+        if checking && probes.allSatisfy({ $0.state == .checking }) { return language.text("Checking…") }
         let count = probes.filter { $0.state == .reachable }.count
-        return language == .english ? "\(count)/\(probes.count) reachable" : "\(count)/\(probes.count) 可达"
+        return "\(count)/\(probes.count) 可达" + (checking ? " · 正在探测" : "")
     }
 }

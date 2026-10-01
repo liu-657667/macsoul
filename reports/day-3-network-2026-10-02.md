@@ -318,3 +318,31 @@ Final build/test/verify, privacy and staging results are recorded below once com
 Formal Performance / Live AI Provider remain NOT_RUN; Region NOT_COLLECTED; IPv6 transport failed in this environment; HTTP 401/405 transport-only semantics remain explicit. Network UI PASS above is the owner's explicit approval of the listed scope, not formal performance or all possible interactions.
 
 Staging-check history: first `git diff --cached --check` returned exit 2 for four Markdown hard-break trailing-space lines at the historical report header. Removed only those trailing spaces; historical values/evidence retained. Rechecked staged diff after this document-only correction. Product source fingerprint and passing build/test/verify results are unchanged.
+
+
+## PR #5 review correction: preserve checking in summaries — 2026-10-02
+
+The prior unknown-path summary test incorrectly accepted `0/3 可达` while all probes were still checking. Corrected the expectation and presentation; the historical first-round expectations are superseded for this summary behavior.
+
+- Disabled takes priority: 探测已关闭 / Probes disabled.
+- Offline/requiresConnection: 离线 / Offline.
+- All checking: 正在探测… / Checking….
+- One reachable + two checking: `1/3 可达 · 正在探测` / `1/3 reachable · Checking…`.
+- Only after no checking remains: final `3/3`, `2/3` or `0/3` reachable count.
+- English display reuses `NetworkSnapshot.connectivitySummary`; Chinese retains matching localized semantics. Overview already consumes the shared helper automatically. Network detail states and Menu Bar scope are unchanged.
+
+Tests: corrected `testConnectivitySummaryUnknownPathAlsoLocalized`; added two tests for final 3/2/0 results and partial failure with probes still checking. Both Chinese and English, disabled and both offline path states are covered. **124 tests / 0 failures** (previous 122 + 2), with no test removed.
+
+- `./scripts/build.sh`: PASS, exit 0.
+- `./scripts/test.sh`: PASS, exit 0; 124 tests / 0 failures.
+- `./scripts/verify.sh`: PASS, exit 0; doctor/build/unit/progress/assets/ledger.
+- `git diff --check`: PASS, exit 0.
+- `git diff origin/main...HEAD --check`: PASS, exit 0; repeated after committing the fix.
+- Verified `2026-10-02T02:20:26.439043+08:00` (Asia/Shanghai), base revision `e9c96bc28a16ebc0ab722367bb9c91ffb84e974e`, source fingerprint `84282de07fbbda100d08b4b105ccc418435d26a3b74e7fee0a62f7a9f6b09138`.
+- Evidence: `.artifacts/verification.json`, `.artifacts/build.log`, `.artifacts/test.log`, `.artifacts/MacSoulTests.xcresult`.
+
+Protection checks: NetworkMonitor/NetworkProviders/MockStore hashes unchanged (baseline `.artifacts/connectivity-summary-before.json`); NetworkSnapshot fields and the endpoint/schedule portion unchanged; Network detail code before the summary extension unchanged. No provider, endpoint, NWPathMonitor, timeout, cache, scheduler, backoff, cadence or refresh change.
+
+Day 2 and D3 done states/historical owner approvals remain unchanged; current regression evidence is refreshed and old evidence preserved. This small summary fix is unit-tested; revised summary visual acceptance is NOT_RUN, not inferred from the prior manual approval. Formal Performance / Live AI Provider remain NOT_RUN, Region NOT_COLLECTED, real IPv6 transport failed, HTTP 401/405 transport-only semantics retained. No App restart, network disruption, stress test or configuration edit for this fix.
+
+Owner authorized commit `fix: preserve checking state in connectivity summary` and normal push to existing feature/network; no force push or PR merge.

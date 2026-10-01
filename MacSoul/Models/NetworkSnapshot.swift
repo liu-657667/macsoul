@@ -129,8 +129,10 @@ struct NetworkSnapshot: Equatable {
     var connectivitySummary: String {
         if !probesEnabled { return "Probes disabled" }
         if path.state == .unsatisfied || path.state == .requiresConnection { return "Offline" }
+        let checking = probes.contains { $0.state == .checking }
+        if checking && probes.allSatisfy({ $0.state == .checking }) { return "Checking…" }
         let reachable = probes.filter { $0.state == .reachable }.count
-        return "\(reachable)/\(probes.count) reachable"
+        return "\(reachable)/\(probes.count) reachable" + (checking ? " · Checking…" : "")
     }
 }
 

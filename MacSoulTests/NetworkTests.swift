@@ -507,14 +507,43 @@ final class NetworkPresentationTests: XCTestCase {
     }
     func testConnectivitySummaryUnknownPathAlsoLocalized() {
         var snapshot = NetworkSnapshot()
-        XCTAssertEqual(snapshot.connectivityDisplay(chinese), "0/3 可达")
+        XCTAssertEqual(snapshot.connectivityDisplay(chinese), "正在探测…")
+        XCTAssertEqual(snapshot.connectivityDisplay(english), "Checking…")
+        XCTAssertEqual(snapshot.connectivitySummary, "Checking…")
         snapshot.probes[0].state = .reachable
-        XCTAssertEqual(snapshot.connectivityDisplay(chinese), "1/3 可达")
-        XCTAssertEqual(snapshot.connectivityDisplay(english), snapshot.connectivitySummary)
+        XCTAssertEqual(snapshot.connectivityDisplay(chinese), "1/3 可达 · 正在探测")
+        XCTAssertEqual(snapshot.connectivityDisplay(english), "1/3 reachable · Checking…")
+        XCTAssertEqual(snapshot.connectivitySummary, "1/3 reachable · Checking…")
         snapshot.probesEnabled = false
         XCTAssertEqual(snapshot.connectivityDisplay(chinese), "探测已关闭")
-        snapshot.probesEnabled = true; snapshot.path.state = .unsatisfied
-        XCTAssertEqual(snapshot.connectivityDisplay(chinese), "离线")
+        XCTAssertEqual(snapshot.connectivityDisplay(english), "Probes disabled")
+        XCTAssertEqual(snapshot.connectivitySummary, "Probes disabled")
+        snapshot.probesEnabled = true
+        for state in [NetworkPathState.unsatisfied, .requiresConnection] {
+            snapshot.path.state = state
+            XCTAssertEqual(snapshot.connectivityDisplay(chinese), "离线")
+            XCTAssertEqual(snapshot.connectivityDisplay(english), "Offline")
+            XCTAssertEqual(snapshot.connectivitySummary, "Offline")
+        }
+    }
+    func testConnectivityFinalReachableCountsBothLanguages() {
+        for count in [3, 2, 0] {
+            var snapshot = NetworkSnapshot()
+            snapshot.path.state = .satisfied
+            snapshot.probes = ProbeService.allCases.enumerated().map { index, service in
+                ProbeReading(service: service, state: index < count ? .reachable : .timeout)
+            }
+            XCTAssertEqual(snapshot.connectivityDisplay(chinese), "\(count)/3 可达")
+            XCTAssertEqual(snapshot.connectivityDisplay(english), "\(count)/3 reachable")
+            XCTAssertEqual(snapshot.connectivitySummary, "\(count)/3 reachable")
+        }
+    }
+    func testConnectivityPartialFailureStillCheckingBothLanguages() {
+        var snapshot = NetworkSnapshot()
+        snapshot.probes[0].state = .timeout
+        XCTAssertEqual(snapshot.connectivityDisplay(chinese), "0/3 可达 · 正在探测")
+        XCTAssertEqual(snapshot.connectivityDisplay(english), "0/3 reachable · Checking…")
+        XCTAssertEqual(snapshot.connectivitySummary, "0/3 reachable · Checking…")
     }
     func testTunnelPresentationKeepsInterfaceNames() {
         let reading = TunnelReading(names: ["utun0", "utun1"])
