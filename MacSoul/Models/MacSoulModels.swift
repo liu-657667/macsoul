@@ -148,6 +148,7 @@ struct PortItem: Identifiable, Hashable {
 struct AppSnapshot {
     let mode: DataMode
     var systemMode: SystemMode = .preview
+    var devMode: DataMode = .mock
     var soulVisual: SoulVisual?
     var soulMood: String
     var soulMessage: String
@@ -165,8 +166,10 @@ struct AppSnapshot {
     let proxyHint: String
     let tunnelHint: String
     let quotas: [QuotaItem]
-    let runtimes: [RuntimeItem]
-    let ports: [PortItem]
+    var runtimes: [RuntimeItem]
+    var ports: [PortItem]
+    var runtimeReading: RuntimeReading? = nil
+    var portReading: PortReading? = nil
     let cleanerItems: [CleanerItem]
     let serviceLatency: [(String, String)]
 

@@ -139,14 +139,20 @@ struct UnavailableProvider: SnapshotProvider {
     private var lifecycleSubscriptions: Set<AnyCancellable> = []
     private var visibleWindows: Set<UUID> = []
     private var visibleSystemWindows: Set<UUID> = []
+    private var visibleDevWindows: Set<UUID> = []
     private var sleeping = false
     private let sensorSampler: any SystemSampling
     private let detailSampler: any SystemDetailSampling
     private lazy var sensorHub = SensorHub(sampler: sensorSampler, details: detailSampler,
         onReading: { [weak self] reading, soul in self?.applyLive(reading: reading, soul: soul) },
         onDetails: { [weak self] update in self?.applyDetail(update) })
+    private lazy var devMonitor = DevMonitor(
+        onRuntimes: { [weak self] reading in self?.applyDevRuntimes(reading) },
+        onPorts: { [weak self] reading in self?.applyDevPorts(reading) })
     var sensorStarts: Int { sensorHub.starts }
     var sensorInterval: TimeInterval { sensorHub.samplingInterval }
+    var devStarts: Int { devMonitor.starts }
+    var devPortInterval: TimeInterval { devMonitor.portInterval }
 
     init(provider: any SnapshotProvider = MockProvider(fixture: .healthy),
          sampler: any SystemSampling = NativeSystemSampler(),
@@ -174,6 +180,11 @@ struct UnavailableProvider: SnapshotProvider {
         var replacement = provider.snapshot(now: now)
         if systemMode == .live {
             replacement.systemMode = .live
+            replacement.devMode = .live
+            replacement.runtimes = []
+            replacement.ports = []
+            replacement.runtimeReading = .sampling
+            replacement.portReading = .sampling
             replacement.cpu = PercentMetric(usedPercent: nil)
             replacement.memoryUsed = PercentMetric(usedPercent: nil)
             replacement.memoryPressure = MemoryPressureLevel.unknown.liveLabel
@@ -194,26 +205,48 @@ struct UnavailableProvider: SnapshotProvider {
         guard mode != systemMode else { return }
         systemMode = mode
         refresh()
-        if mode == .live && !sleeping { sensorHub.start() }
-        else { sensorHub.stop() }
+        if mode == .live && !sleeping { sensorHub.start(); devMonitor.start() }
+        else { sensorHub.stop(); devMonitor.stop() }
     }
 
     func setWindow(_ id: UUID, visible: Bool, section: AppSection) {
         if visible {
             visibleWindows.insert(id)
             if section == .system { visibleSystemWindows.insert(id) }
+            if section == .dev { visibleDevWindows.insert(id) }
         } else {
             visibleWindows.remove(id)
             visibleSystemWindows.remove(id)
+            visibleDevWindows.remove(id)
         }
         sensorHub.systemPageVisible = !visibleSystemWindows.isEmpty
+        devMonitor.devPageVisible = !visibleDevWindows.isEmpty
     }
 
     func setWindowSection(_ id: UUID, section: AppSection) {
         guard visibleWindows.contains(id) else { return }
         if section == .system { visibleSystemWindows.insert(id) }
         else { visibleSystemWindows.remove(id) }
+        if section == .dev { visibleDevWindows.insert(id) }
+        else { visibleDevWindows.remove(id) }
         sensorHub.systemPageVisible = !visibleSystemWindows.isEmpty
+        devMonitor.devPageVisible = !visibleDevWindows.isEmpty
+    }
+
+    func refreshDev() { if systemMode == .live && !sleeping { devMonitor.refresh() } }
+
+    private func applyDevRuntimes(_ reading: RuntimeReading) {
+        guard systemMode == .live && !sleeping else { return }
+        var current = snapshot
+        current.runtimeReading = reading
+        snapshot = current
+    }
+
+    private func applyDevPorts(_ reading: PortReading) {
+        guard systemMode == .live && !sleeping else { return }
+        var current = snapshot
+        current.portReading = reading
+        snapshot = current
     }
 
     private func applyLive(reading: SystemReading, soul: SoulStatus) {
@@ -256,12 +289,13 @@ struct UnavailableProvider: SnapshotProvider {
     private func suspendForSleep() {
         sleeping = true
         sensorHub.stop()
+        devMonitor.stop()
         if systemMode == .live { refresh() }
     }
 
     private func resumeAfterWake() {
         sleeping = false
-        if systemMode == .live { sensorHub.start() }
+        if systemMode == .live { sensorHub.start(); devMonitor.start() }
     }
     #if DEBUG
     func selectPreviewFixture(_ fixture: MockProvider.Fixture, now: Date = Date()) {
