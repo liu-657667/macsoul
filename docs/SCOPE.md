@@ -45,7 +45,9 @@ No token dashboard, costs, session analytics, model routing, or agent history.
 - On-demand scan only
 - Maven/Gradle/npm/pnpm/Playwright/Docker/Xcode categories where safely measurable
 - Size, location, risk, explanation
-- This bundle permits only read-only scan/explain work when scheduled. No deletion implementation in Phase A.
+- Owner-approved v0.1.0 boundary (2026-10-03): Discovery + read-only Scan + Explain + Content Preview. No cleanup, deletion selection or Trash actions. Existing cache locators remain groundwork; Maven/Gradle Build Tool analysis is deferred.
+- v0.2.0 roadmap: separately design Cleaner cleanup (selection, Trash, confirmation, recoverability, policy/dry run), Maven/Gradle Build Tools and Docker cleanup/storage extensions. These are plans, not current implementation or acceptance.
+- This roadmap clarification does not change original task IDs, baseline points, dependencies or historical acceptance. D5-01/02 still require owner Preview UI and owner-authorized real scan evidence.
 - Scanned storage size is not guaranteed safe/reclaimable; do not label all downloaded artifacts safe.
 - Priority and schedule remain to be reconciled against the original plan; do not silently drop core requirements.
 

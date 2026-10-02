@@ -171,18 +171,17 @@ struct OverviewView: View {
     private var cleanerCard: some View {
         CardContainer(title: "Cleaner", assetImage: "CleanerBroom") {
             VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    Text(language.text("Read-only scan"))
-                        .foregroundStyle(.secondary)
-                    Spacer()
-                    Text(language.text("Not run"))
-                        .font(.title3.bold())
+                Text(language.cleanerText("Read only")).foregroundStyle(.secondary)
+                if store.snapshot.cleaner.mode == .live {
+                    Text(language.cleanerSummary(store.snapshot.cleaner)).font(.headline)
+                } else {
+                    Text(language.text("MOCK") + " · " + language.cleanerText("Not scanned"))
                 }
-                ForEach(store.snapshot.cleanerItems) { item in
+                ForEach(store.snapshot.cleaner.mode == .mock ? store.snapshot.cleanerItems : []) { item in
                     HStack {
                         Text(item.name)
                         Spacer()
-                        Text(item.risk.rawValue)
+                        Text(language.cleanerText(item.risk == .safe ? "Low risk" : item.risk == .caution ? "Caution" : "High risk"))
                             .font(.caption.monospaced())
                             .foregroundStyle(.secondary)
                         Text(item.size)

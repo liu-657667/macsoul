@@ -152,6 +152,48 @@ struct UnavailableProvider: SnapshotProvider {
             current.network = value
             self.snapshot = current
         })
+    private let cleanerScanner: CleanerScanner
+    private let cleanerDescriptors: [CleanerDescriptor]
+    private lazy var cleanerSession = CleanerSession(scanner: cleanerScanner, descriptors: cleanerDescriptors) { [weak self] value in
+        guard let self, self.systemMode == .live else { return }
+        var current = self.snapshot
+        current.cleaner = value
+        self.snapshot = current
+    }
+    @Published private(set) var cleanerPreviewDestination: CleanerPreviewDestination?
+    @Published private(set) var cleanerPreview: CleanerPreviewSnapshot?
+    private let cleanerPreviewScanner: CleanerPreviewScanner
+    private lazy var cleanerPreviewSession = CleanerPreviewSession(scanner: cleanerPreviewScanner) { [weak self] value in
+        guard let self, self.cleanerPreviewDestination != nil, self.systemMode == .live else { return }
+        self.cleanerPreview = value
+    }
+    var cleanerPreviewRunning: Bool { cleanerPreviewSession.isRunning }
+    var cleanerRunning: Bool { cleanerSession.isRunning }
+    func scanCleaner() {
+        if systemMode == .live && !sleeping && !cleanerPreviewRunning && cleanerPreviewDestination == nil { cleanerSession.start() }
+    }
+    func openCleanerPreview(_ category: CleanerCategory) {
+        guard systemMode == .live, !sleeping, !cleanerRunning,
+              snapshot.cleaner.categories.contains(category), CleanerPreviewBoundary.resolvedRoot(for: category) != nil else { return }
+        cleanerPreviewDestination = .directory(category)
+        cleanerPreviewSession.open(category)
+    }
+    func openDockerPreview() {
+        guard systemMode == .live, !sleeping, !cleanerRunning, let value = snapshot.cleaner.docker else { return }
+        cleanerPreviewSession.close(); cleanerPreview = nil
+        cleanerPreviewDestination = .docker(value) // shared logical rows only, never a filesystem/CLI query
+    }
+    func enterCleanerPreview(_ item: CleanerPreviewItem) { cleanerPreviewSession.enter(item) }
+    func backCleanerPreview(to depth: Int? = nil) { cleanerPreviewSession.back(to: depth) }
+    func sortCleanerPreview(_ order: CleanerPreviewSort) { cleanerPreviewSession.sort(order) }
+    func cancelCleanerPreview() { cleanerPreviewSession.cancel() }
+    func closeCleanerPreview() {
+        cleanerPreviewSession.close(); cleanerPreviewDestination = nil; cleanerPreview = nil
+    }
+    func waitForCleanerPreviewStop() async { await cleanerPreviewSession.waitForStop() }
+    func cancelCleaner() { cleanerSession.cancel() }
+    func waitForCleanerStop() async { await cleanerSession.waitForStop() }
+
     var networkStarts: Int { networkMonitor.starts }
     private let sensorSampler: any SystemSampling
     private let detailSampler: any SystemDetailSampling
@@ -171,7 +213,12 @@ struct UnavailableProvider: SnapshotProvider {
          details: any SystemDetailSampling = NativeSystemDetailSampler(),
          networkPath: (any NetworkPathProviding)? = nil,
          networkHTTP: any NetworkHTTPClient = EphemeralNetworkHTTPClient(),
-         networkLocal: any LocalNetworkProviding = NativeLocalNetworkProvider(), now: Date = Date()) {
+         networkLocal: any LocalNetworkProviding = NativeLocalNetworkProvider(),
+         cleanerScanner: CleanerScanner = CleanerScanner(locator: CleanerLocator(), docker: DockerCleanerAdapter()),
+         cleanerCategories: [CleanerDescriptor] = CleanerCatalog.categories(),
+         cleanerPreviewScanner: CleanerPreviewScanner = CleanerPreviewScanner(), now: Date = Date()) {
+        self.cleanerPreviewScanner = cleanerPreviewScanner
+        self.cleanerScanner = cleanerScanner; self.cleanerDescriptors = cleanerCategories
         self.provider = provider
         self.networkPath = networkPath; self.networkHTTP = networkHTTP; self.networkLocal = networkLocal
         connectivityEnabled = UserDefaults.standard.object(forKey: "macsoul.connectivityEnabled") as? Bool ?? true
@@ -191,11 +238,15 @@ struct UnavailableProvider: SnapshotProvider {
         NSWorkspace.shared.notificationCenter.publisher(for: NSWorkspace.didWakeNotification)
             .sink { [weak self] _ in Task { @MainActor in self?.resumeAfterWake() } }
             .store(in: &lifecycleSubscriptions)
+        NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
+            .sink { [weak self] _ in Task { @MainActor in self?.cancelCleaner(); self?.closeCleanerPreview() } }
+            .store(in: &lifecycleSubscriptions)
     }
     func advanceDisplayClock(now: Date) { displayNow = now }
     func refresh(now: Date = Date()) {
         var replacement = provider.snapshot(now: now)
         if systemMode == .live {
+            replacement.cleaner = snapshot.cleaner.mode == .live ? snapshot.cleaner : .live(categories: cleanerDescriptors)
             replacement.systemMode = .live
             replacement.devMode = .live
             replacement.networkMode = .live
@@ -228,6 +279,7 @@ struct UnavailableProvider: SnapshotProvider {
 
     func setSystemMode(_ mode: SystemMode) {
         guard mode != systemMode else { return }
+        if mode == .preview { cleanerSession.resetForPreview(); closeCleanerPreview() }
         systemMode = mode
         refresh()
         if mode == .live && !sleeping { sensorHub.start(); devMonitor.start(); networkMonitor.start(probesEnabled: connectivityEnabled) }
@@ -319,7 +371,9 @@ struct UnavailableProvider: SnapshotProvider {
         snapshot = current
     }
 
-    private func suspendForSleep() {
+    func suspendForSleep() {
+        closeCleanerPreview()
+        cleanerSession.cancel()
         sleeping = true
         sensorHub.stop()
         devMonitor.stop()
@@ -327,7 +381,7 @@ struct UnavailableProvider: SnapshotProvider {
         if systemMode == .live { refresh() }
     }
 
-    private func resumeAfterWake() {
+    func resumeAfterWake() {
         sleeping = false
         if systemMode == .live { sensorHub.start(); devMonitor.start(); networkMonitor.start(probesEnabled: connectivityEnabled) }
     }

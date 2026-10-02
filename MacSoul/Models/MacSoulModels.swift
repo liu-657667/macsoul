@@ -1,6 +1,6 @@
 import Foundation
 
-enum DataMode: String { case mock = "MOCK", live = "LIVE" }
+enum DataMode: String, Sendable { case mock = "MOCK", live = "LIVE" }
 enum SystemMode: String, CaseIterable, Identifiable {
     case preview, live
     var id: Self { self }
@@ -151,6 +151,7 @@ struct AppSnapshot {
     var devMode: DataMode = .mock
     var networkMode: DataMode = .mock
     var network = NetworkSnapshot()
+    var cleaner = CleanerSnapshot()
     var soulVisual: SoulVisual?
     var soulMood: String
     var soulMessage: String
