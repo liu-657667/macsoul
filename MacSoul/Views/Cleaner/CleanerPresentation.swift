@@ -27,6 +27,26 @@ extension MacSoulLanguage {
         let label = switch state { case .resolved: "Resolved"; case .notFound: "Not found"; case .unresolved: "Unresolved"; case .unavailable: "Unavailable" }
         return cleanerText(label)
     }
+    func cleanerResolutionDescription(_ resolution: ResolvedCleanerTarget) -> String {
+        let source = text("Source") + ": " + cleanerText(resolution.source.label)
+        var components: [String] = [source]
+        if resolution.source.isFallback {
+            components.append(cleanerText("Default / fallback"))
+        }
+        components.append(cleanerLocationState(resolution.state))
+        return components.joined(separator: " · ")
+    }
+    func cleanerMavenLocationDescription(_ location: MavenRepositoryLocation) -> String {
+        let stateKey: String
+        switch location.state {
+        case .resolved: stateKey = "Resolved"
+        case .notFound: stateKey = "Not found"
+        case .unresolved: stateKey = "Unresolved"
+        case .unavailable: stateKey = "Unavailable"
+        }
+        let source = text("Source") + ": " + cleanerText(location.source.label)
+        return [source, cleanerText(stateKey)].joined(separator: " · ")
+    }
     func cleanerCounts(_ counts: CleanerCounters) -> String {
         self == .chinese
             ? "\(counts.fileCount) 个文件 · \(counts.directoryCount) 个目录 · 跳过 \(counts.skippedSymlinkCount) 个链接 · \(counts.inaccessibleCount) 项无法访问 · \(counts.fallbackFileCount) 项逻辑大小回退"

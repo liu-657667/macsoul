@@ -89,13 +89,10 @@ private struct CleanerCategoryCard: View {
                         .help(category.rootURL.path)
                 } else { Text(language.cleanerText("Repository path unresolved")).font(.caption) }
                 if let resolution = descriptor.resolution {
-                    Text(language.text("Source") + ": " + language.cleanerText(resolution.source.label)
-                        + (resolution.source.isFallback ? " · " + language.cleanerText("Default / fallback") : "")
-                        + " · " + language.cleanerLocationState(resolution.state))
+                    Text(language.cleanerResolutionDescription(resolution))
                         .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
                 } else if let location = descriptor.mavenLocation {
-                    Text(language.text("Source") + ": " + language.cleanerText(location.source.label)
-                        + " · " + language.cleanerText(location.state == .resolved ? "Resolved" : location.state == .notFound ? "Not found" : location.state == .unresolved ? "Unresolved" : "Unavailable"))
+                    Text(language.cleanerMavenLocationDescription(location))
                         .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
                 } else {
                     Text(language.text("Source") + ": " + language.cleanerText("Default candidate · discovery not run"))

@@ -39,9 +39,9 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         },
         {
           "acceptance_id": "A4-NEGATIVE",
@@ -51,9 +51,9 @@
           "command": "python3 scripts/test_progress.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -946,6 +946,30 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "A4-LEDGER",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+        },
+        {
+          "acceptance_id": "A4-NEGATIVE",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/progress-tests.log",
+          "check": "progress_tests",
+          "command": "python3 scripts/test_progress.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "regression_revalidation": "2026-10-02: existing acceptance retained; current Network worktree passed build and 105-test regression. No new UI or performance approval inferred.",
@@ -986,9 +1010,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         },
         {
           "acceptance_id": "A3-UI",
@@ -1176,6 +1200,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "A3-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ]
     },
@@ -1211,9 +1247,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         },
         {
           "acceptance_id": "A2-UNIT",
@@ -1223,9 +1259,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -2118,6 +2154,30 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "A2-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+        },
+        {
+          "acceptance_id": "A2-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "regression_revalidation": "2026-10-02: existing acceptance retained; current Network worktree passed build and 105-test regression. No new UI or performance approval inferred.",
@@ -2158,9 +2218,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         },
         {
           "acceptance_id": "A1-UI",
@@ -2349,6 +2409,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "A1-CONTRACT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ]
     },
@@ -2379,9 +2451,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         },
         {
           "acceptance_id": "D1-01-A",
@@ -2391,9 +2463,9 @@
           "command": "./scripts/doctor.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         },
         {
           "acceptance_id": "D1-01-A",
@@ -2403,9 +2475,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -3742,6 +3814,42 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/doctor.log",
+          "check": "doctor",
+          "command": "./scripts/doctor.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+        },
+        {
+          "acceptance_id": "D1-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "regression_revalidation": "2026-10-02: existing acceptance retained; current Network worktree passed build and 105-test regression. No new UI or performance approval inferred.",
@@ -3777,9 +3885,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -4229,6 +4337,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D1-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "regression_revalidation": "2026-10-02: existing acceptance retained; current Network worktree passed build and 105-test regression. No new UI or performance approval inferred.",
@@ -4264,9 +4384,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -4715,6 +4835,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D1-03-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "regression_revalidation": "2026-10-02: existing acceptance retained; current Network worktree passed build and 105-test regression. No new UI or performance approval inferred.",
@@ -4750,9 +4882,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -5202,6 +5334,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D1-04-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "regression_revalidation": "2026-10-02: existing acceptance retained; current Network worktree passed build and 105-test regression. No new UI or performance approval inferred.",
@@ -5237,9 +5381,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -5688,6 +5832,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D1-05-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "regression_revalidation": "2026-10-02: existing acceptance retained; current Network worktree passed build and 105-test regression. No new UI or performance approval inferred.",
@@ -5723,9 +5879,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         },
         {
           "acceptance_id": "D1-06-A",
@@ -5735,9 +5891,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -6638,6 +6794,30 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+        },
+        {
+          "acceptance_id": "D1-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "regression_revalidation": "2026-10-02: existing acceptance retained; current Network worktree passed build and 105-test regression. No new UI or performance approval inferred.",
@@ -6675,9 +6855,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -7007,6 +7187,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D2-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "human_ui_confirmation": "2026-09-29: Owner confirmed live collection continues with the main window closed; closing and reopening the main window 5 times and repeatedly opening the Menu Bar worked. Real sleep/wake observation remains NOT_RUN.",
@@ -7045,9 +7237,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -7389,6 +7581,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D2-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "human_ui_confirmation": "2026-09-29: Owner accepted live CPU at about 30–32% versus Activity Monitor aggregate User + System about 27% during the same period.",
@@ -7427,9 +7631,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -7735,6 +7939,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D2-03-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "human_ui_confirmation": "2026-09-29: Owner accepted Memory Used numeric value, distinct unknown/normal states and a naturally observed macOS Memory Pressure Warning · Live event. Native mapping unit tests passed. Critical was not observed; no artificial memory exhaustion was performed or required for this acceptance.",
@@ -7773,9 +7989,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -8046,6 +8262,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D2-04-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "regression_revalidation": "2026-10-02: existing acceptance retained; current Network worktree passed build and 105-test regression. No new UI or performance approval inferred.",
@@ -8083,9 +8311,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -8356,6 +8584,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D2-05-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "regression_revalidation": "2026-10-02: existing acceptance retained; current Network worktree passed build and 105-test regression. No new UI or performance approval inferred.",
@@ -8393,9 +8633,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -8737,6 +8977,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D2-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "human_ui_confirmation": "2026-09-29: Owner confirmed Soul uses real CPU state. Pressure-driven states remain covered by deterministic unit tests; natural warning/critical events were not observed.",
@@ -8775,9 +9027,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -9107,6 +9359,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D2-07-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "human_ui_confirmation": "2026-09-29: Owner confirmed Overview, System and Menu Bar share live state; repeated main-window and Menu Bar opening, cross-surface synchronization, and Live/Mock boundaries all passed.",
@@ -9145,9 +9409,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -9357,6 +9621,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D3-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "human_ui_confirmation": "2026-10-02: Owner accepted the Developer Environment round and safety boundaries; executable + literal argument arrays, bounded output, timeout/cancellation and no shell rc sourcing are covered by automated tests. Only runner-owned helper children are cancelled; no listed user process is terminated.",
@@ -9395,9 +9671,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -9607,6 +9883,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D3-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "human_ui_confirmation": "2026-10-02: Owner accepted Java/SDKMAN/JAVA_HOME, Node/NVM default, Python/pyenv global and Go/goenv global/GOROOT context display. Unresolved shim/default remains explicit, source/context semantics are clear; no manager or PATH configuration was changed.",
@@ -9645,9 +9933,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -9857,6 +10145,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D3-03-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "human_ui_confirmation": "2026-10-02: Owner accepted developer-only defaults, all-listener disclosure, conservative filtering, logical-listener bind grouping, native Table alignment/density/widths, Copy Port/PID and clipboard-only kill -TERM command with copied feedback. No user process termination or port-conflict claim.",
@@ -9895,9 +10195,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -9999,6 +10299,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D3-04-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "presentation_revalidation": "2026-10-02: Network presentation-only localization follow-up; build and 117 tests passed. Retained historical acceptance; new Network bilingual manual UI remains pending. Collector/Snapshot hashes unchanged.",
@@ -10040,9 +10352,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -10144,6 +10456,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D3-05-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "presentation_revalidation": "2026-10-02: Network presentation-only localization follow-up; build and 117 tests passed. Retained historical acceptance; new Network bilingual manual UI remains pending. Collector/Snapshot hashes unchanged.",
@@ -10185,9 +10509,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -10289,6 +10613,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D3-06-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "presentation_revalidation": "2026-10-02: Network presentation-only localization follow-up; build and 117 tests passed. Retained historical acceptance; new Network bilingual manual UI remains pending. Collector/Snapshot hashes unchanged.",
@@ -10330,9 +10666,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -10542,6 +10878,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "D3-07-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "presentation_revalidation": "2026-10-02: Network presentation-only localization follow-up; build and 117 tests passed. Retained historical acceptance; new Network bilingual manual UI remains pending. Collector/Snapshot hashes unchanged.",
@@ -10751,9 +11099,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00",
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00",
           "scope": "Automated regression only; real Scan/Preview/Docker Owner acceptance recorded separately in final acceptance section."
         },
         {
@@ -10764,9 +11112,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00",
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00",
           "scope": "Automated regression only; real Scan/Preview/Docker Owner acceptance recorded separately in final acceptance section."
         }
       ],
@@ -10858,6 +11206,32 @@
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00",
           "scope": "Automated only; real scan and owner UI NOT_RUN"
+        },
+        {
+          "acceptance_id": "D5-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00",
+          "scope": "Automated regression only; real Scan/Preview/Docker Owner acceptance recorded separately in final acceptance section."
+        },
+        {
+          "acceptance_id": "D5-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00",
+          "scope": "Automated regression only; real Scan/Preview/Docker Owner acceptance recorded separately in final acceptance section."
         }
       ],
       "human_ui_confirmation": "2026-10-03: Owner accepted real Cleaner Scan (7 categories, approximately 17.66 GiB), category/source/risk/explanation, Maven no-double-count, read-only in-app Content Preview/direct children/drill-down/root Back/sorting/types; Gradle/Maven/npm/Homebrew/Xcode and Docker logical detail PASS. Xcode zero-byte metadata sanity independently PASS (49 directories, no regular files).",
@@ -10907,9 +11281,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00",
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00",
           "scope": "Automated regression only; real Scan/Preview/Docker Owner acceptance recorded separately in final acceptance section."
         },
         {
@@ -10920,9 +11294,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00",
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00",
           "scope": "Automated regression only; real Scan/Preview/Docker Owner acceptance recorded separately in final acceptance section."
         }
       ],
@@ -11014,6 +11388,32 @@
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00",
           "scope": "Automated only; real scan and owner UI NOT_RUN"
+        },
+        {
+          "acceptance_id": "D5-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00",
+          "scope": "Automated regression only; real Scan/Preview/Docker Owner acceptance recorded separately in final acceptance section."
+        },
+        {
+          "acceptance_id": "D5-02-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00",
+          "scope": "Automated regression only; real Scan/Preview/Docker Owner acceptance recorded separately in final acceptance section."
         }
       ],
       "human_ui_confirmation": "2026-10-03: Owner accepted real Cleaner Scan (7 categories, approximately 17.66 GiB), category/source/risk/explanation, Maven no-double-count, read-only in-app Content Preview/direct children/drill-down/root Back/sorting/types; Gradle/Maven/npm/Homebrew/Xcode and Docker logical detail PASS. Xcode zero-byte metadata sanity independently PASS (49 directories, no regular files).",
@@ -11536,9 +11936,9 @@
           "command": "python3 scripts/verify-visual-assets.py",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         },
         {
           "acceptance_id": "VA-01-BUILD",
@@ -11548,9 +11948,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         },
         {
           "acceptance_id": "VA-01-UNIT",
@@ -11560,9 +11960,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -12072,6 +12472,42 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-STATIC",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/visual-assets-check.json",
+          "check": "visual_assets",
+          "command": "python3 scripts/verify-visual-assets.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+        },
+        {
+          "acceptance_id": "VA-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "dock_ui_confirmation": "2026-09-28: Owner explicitly confirmed the current Dock icon passes at actual size; recognizable, correctly sized and on brand. Optional later glow/border polish does not block this round."
@@ -12116,9 +12552,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -12294,6 +12730,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "QC-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ]
     },
@@ -12331,9 +12779,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         },
         {
           "acceptance_id": "UI-01-BUILD",
@@ -12343,9 +12791,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -12663,6 +13111,30 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "UI-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+        },
+        {
+          "acceptance_id": "UI-01-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "revalidation_note": "2026-09-28: 已收到并保留此前紧凑指标文字的人工确认。VIS-01..04 本轮源码修订自动验证通过；修订版主窗口和菜单栏尚未重启复核，整体人工 UI 仍为 PARTIAL。"
@@ -12696,9 +13168,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -13076,6 +13548,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "VIS-01-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ],
       "regression_revalidation": "2026-10-02: existing acceptance retained; current Network worktree passed build and 105-test regression. No new UI or performance approval inferred.",
@@ -13118,9 +13602,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -13222,6 +13706,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "VIS-02-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ]
     },
@@ -13259,9 +13755,9 @@
           "command": "./scripts/test.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -13363,6 +13859,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "VIS-03-UNIT",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "check": "unit",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ]
     },
@@ -13400,9 +13908,9 @@
           "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
-          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
-          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
-          "checked_at": "2026-10-02T18:48:16.122849+00:00"
+          "source_revision": "4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72",
+          "fingerprint": "acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594",
+          "checked_at": "2026-10-02T19:34:42.310323+00:00"
         }
       ],
       "blocker": null,
@@ -13504,6 +14012,18 @@
           "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
           "fingerprint": "3f36109c06bbcce39145cfea9a4184d2e1dc29f837c0c49a000c5ce3924d72e0",
           "checked_at": "2026-10-02T18:33:57.682457+00:00"
+        },
+        {
+          "acceptance_id": "VIS-04-BUILD",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "check": "build",
+          "command": "./scripts/build.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5",
+          "fingerprint": "8de83f956851a6dd5ce13a189d73a38dd898b47b3e002d9f5a3d54a51dfcf242",
+          "checked_at": "2026-10-02T18:48:16.122849+00:00"
         }
       ]
     }
@@ -13593,6 +14113,11 @@
       "date": "2026-10-03",
       "approved_by": "owner in this session",
       "description": "D5-01/02 done after explicit final real Scan/Preview/Docker acceptance, independent Xcode metadata-only sanity and passing automated regression. Earlier NOT_RUN checkpoints retained. Minimal Estimated Usage label correction only; unchanged size semantics. Original baseline/points/dependencies and D4/D5-03–06 todo preserved; Performance/Live AI NOT_RUN; Cleanup NOT_IMPLEMENTED BY DESIGN. No commit/push/PR."
+    },
+    {
+      "date": "2026-10-03",
+      "approved_by": "owner in this session",
+      "description": "PR #6 Xcode 26.6 compatibility: minimal Cleaner Source/Maven presentation helpers, unchanged exact text and UI styling. Actual local Xcode 27 clean build and 242 tests PASS; automated evidence refreshed with prior evidence preserved. All task states, Owner acceptance, original baseline and version boundary unchanged. Xcode 26.6 compatibility awaiting CI; failure-only diagnostic workflow retained."
     }
   ]
 }

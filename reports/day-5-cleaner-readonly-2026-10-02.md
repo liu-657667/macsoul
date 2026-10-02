@@ -5,7 +5,7 @@ Actual session: **2026-10-03, Asia/Shanghai**.
 Branch: `feature/cleaner-readonly`. Base/HEAD: `ed3e501f70c41bdaede0ac4fdb34dd20f1d2f0f5`.
 Previous Maven-round fingerprint: `acf32cdc15494107dac4b4ed6afec19308886959cf030b47beba7e3b3673e7e6`.
 
-**Current round:** see “Final Owner acceptance — 2026-10-03” below. Earlier Maven/discovery/Preview NOT_RUN checkpoints, paths and launch records remain historical evidence.
+**Current round:** see “Xcode 26.6 presentation compatibility — 2026-10-03” below. Final Owner acceptance and earlier Maven/discovery/Preview NOT_RUN checkpoints, paths and launch records remain historical evidence.
 No commit, push or PR made.
 
 **Owner-approved execution order adjustment:** Cleaner read-only work is intentionally executed before AI quota integration. Original plan/history remains intact. Task IDs, original days, points, acceptance criteria and D4 dependency history are unchanged.
@@ -325,3 +325,35 @@ Source audit confirms Cleaner Scanner/Discovery/Preview models, Docker/Maven ada
 Evidence (ignored local): `.artifacts/cleaner-closeout-build.log`, `.artifacts/cleaner-closeout-test.log`, `.artifacts/cleaner-closeout-verify-first.log`, `.artifacts/cleaner-closeout-verify-final.log`, `.artifacts/cleaner-closeout-audit.json`, `.artifacts/cleaner-xcode-sanity.json`, `.artifacts/verification.json` and standard build/test/progress logs. The earlier NOT_RUN checkpoint evidence files remain unchanged.
 
 Worktree: `feature/cleaner-readonly`, **11 modified tracked + 13 untracked files**, all within retained Cleaner implementation/tests/wiring/project registration and documentation/ledger. Index empty; no commit, push or PR. No App restart, real process termination, resource stress test, additional Docker query or v0.2.0 work in closeout. Stop for code review.
+
+
+## Xcode 26.6 presentation compatibility — 2026-10-03
+
+### Confirmed CI error / narrow repair
+
+The original PR #6 CI (`553a19d`) and diagnostic-only follow-up (`4ad353e`) failed build/test with exit 65 on **macOS 26.6.2 / Xcode 26.6, build 17F113**. The retained failure-only workflow step exposed the real error in `CleanerView.swift:92:21`: “the compiler is unable to type-check this expression in reasonable time; try breaking up the expression into distinct sub-expressions”. Ledger failure followed failed build/unit and was not bypassed. Diagnostic CI: https://github.com/liu-657667/macsoul/actions/runs/37054247733 .
+
+Minimal presentation-only refactor adds `cleanerResolutionDescription(_:) -> String` and `cleanerMavenLocationDescription(_:) -> String` in CleanerPresentation. Resolution copy uses typed String components joined by the same ` · ` delimiter and includes fallback only for the same existing sources. Maven state mapping uses an exhaustive switch. CleanerView now passes each helper result into Text; fonts, colors, layout and exact localized strings are preserved. No changes to model/scanner/locator/discovery/Preview/Docker behavior, sampling, project/deployment target or version boundaries. The diagnostic workflow is retained unchanged; CI was not upgraded to Xcode 27.
+
+Five new exact-output tests cover fallback resolution in English/Chinese, non-fallback resolution in both languages/all states, Maven resolved, and Maven notFound/unresolved/unavailable in both languages. Existing tests were not edited or relaxed. **242 tests, 0 failures** (237 retained + 5 presentation tests).
+
+### Actual local clean verification
+
+Local: **macOS 27.0.1 / 26A434; Xcode 27.0 / 27A266a**. Developer directory `/Applications/Xcode.app/Contents/Developer`. Before build, only the explicitly authorized `.artifacts/DerivedData` and `.artifacts/MacSoulTests.xcresult` were removed. Build therefore did not reuse previous DerivedData; test started without the previous result bundle. No owner cache traversal or Docker query occurred.
+
+Verified at **2026-10-03T03:35:13.741078+08:00 (Asia/Shanghai)** against HEAD/base `4ad353e6438c8a0efb4d6ebaa7a1f5bf6d402a72` plus the unchanged-source content identified by fingerprint **`acc09a96fe842b6ee38c180ffb5be025ad5d29915772c5a26d11023f845eb594`**.
+
+| Command/check | Exit | Result |
+|---|---:|---|
+| `./scripts/build.sh` after DerivedData removal | 0 | PASS, local Xcode 27 |
+| `./scripts/test.sh` | 0 | 242 tests / 0 failures |
+| `./scripts/verify.sh` (final rerun) | 0 | PASS |
+| Progress tests / ledger / visual assets | 0 | PASS |
+| Packaged privacy manifest | 0 | PASS; existing three reasons unchanged |
+| `git diff --check` | 0 | PASS |
+
+First verify exited 1 only for stale ledger fingerprints after the authorized presentation/test edits; doctor/build/unit/progress-tests/assets passed. Forty-three automated evidence records were refreshed from actual passing checks, appending previous records to evidence_history. Every task field outside automated evidence/history remains unchanged, including Owner manual acceptance. A change-log entry records the compatibility checkpoint. D5-01/02 remain **done**, D4-01–07 and D5-03–06 remain **todo**, and STATUS was regenerated with no content change.
+
+**Local Xcode 27 PASS; Xcode 26.6 compatibility awaiting CI at this pre-push checkpoint.** Local success does not prove older-toolchain compatibility. Push and pull_request macos checks on the resulting commit are the required final evidence. If either still fails, inspect the diagnostic log before any further repair; no speculative changes are authorized here.
+
+Evidence: `.artifacts/cleaner-xcode-compat-verify-first.log`, `.artifacts/cleaner-xcode-compat-verify-final.log`, `.artifacts/cleaner-xcode-compat-audit.json`, `.artifacts/verification.json`, `.artifacts/build.log`, `.artifacts/test.log`. These remain ignored local outputs. Historical real Scan/Preview/Docker acceptance is retained, not repeated. **Cleanup NOT_IMPLEMENTED BY DESIGN; formal Performance / Live AI Provider / App Store Connect privacy validation NOT_RUN.** No PR merge, deployment-target change or scope expansion.

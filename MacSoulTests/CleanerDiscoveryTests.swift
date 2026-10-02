@@ -255,6 +255,49 @@ final class CleanerDiscoveryTests: XCTestCase {
         XCTAssertEqual(MacSoulLanguage.chinese.cleanerText(DockerCleanerState.cliNotFound.label), "未发现 Docker CLI")
         XCTAssertTrue(MacSoulLanguage.chinese.cleanerText(DockerCleanerState.remoteContext.label).contains("远程"))
     }
+    func testFallbackResolutionDescriptionEnglish() {
+        let resolution = ResolvedCleanerTarget(url: nil, source: .gradleDefault, state: .resolved)
+        XCTAssertEqual(MacSoulLanguage.english.cleanerResolutionDescription(resolution),
+                       "Source: Gradle default location · Default / fallback · Resolved")
+    }
+    func testFallbackResolutionDescriptionChinese() {
+        let resolution = ResolvedCleanerTarget(url: nil, source: .gradleDefault, state: .resolved)
+        XCTAssertEqual(MacSoulLanguage.chinese.cleanerResolutionDescription(resolution),
+                       "来源: Gradle 默认位置 · 默认／回退位置 · 已解析")
+    }
+    func testNonFallbackResolutionDescriptionBothLanguages() {
+        let states: [(CleanerLocationState, String, String)] = [
+            (.resolved, "Resolved", "已解析"), (.notFound, "Not found", "未找到"),
+            (.unresolved, "Unresolved", "未解析"), (.unavailable, "Unavailable", "不可用")
+        ]
+        for (state, english, chinese) in states {
+            let resolution = ResolvedCleanerTarget(url: nil, source: .mavenGlobal, state: state)
+            XCTAssertEqual(MacSoulLanguage.english.cleanerResolutionDescription(resolution),
+                           "Source: Global Maven settings · " + english)
+            XCTAssertEqual(MacSoulLanguage.chinese.cleanerResolutionDescription(resolution),
+                           "来源: Maven 全局配置 · " + chinese)
+        }
+    }
+    func testMavenResolvedDescriptionBothLanguages() {
+        let location = MavenRepositoryLocation(url: nil, source: .globalSettings, state: .resolved)
+        XCTAssertEqual(MacSoulLanguage.english.cleanerMavenLocationDescription(location),
+                       "Source: Global Maven settings · Resolved")
+        XCTAssertEqual(MacSoulLanguage.chinese.cleanerMavenLocationDescription(location),
+                       "来源: Maven 全局配置 · 已解析")
+    }
+    func testMavenNonResolvedDescriptionsBothLanguages() {
+        let states: [(MavenLocationState, String, String)] = [
+            (.notFound, "Not found", "未找到"), (.unresolved, "Unresolved", "未解析"),
+            (.unavailable, "Unavailable", "不可用")
+        ]
+        for (state, english, chinese) in states {
+            let location = MavenRepositoryLocation(url: nil, source: .globalSettings, state: state)
+            XCTAssertEqual(MacSoulLanguage.english.cleanerMavenLocationDescription(location),
+                           "Source: Global Maven settings · " + english)
+            XCTAssertEqual(MacSoulLanguage.chinese.cleanerMavenLocationDescription(location),
+                           "来源: Maven 全局配置 · " + chinese)
+        }
+    }
     func testScannerUsesResolvedGradleRootInsteadOfDefaultCandidate() async throws {
         let f = try LocatorFixture(); defer { f.cleanup() }; let root = try f.directory("custom/caches")
         try Data([1, 2, 3]).write(to: root.appendingPathComponent("fixture"))
