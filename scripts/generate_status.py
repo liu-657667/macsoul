@@ -52,6 +52,12 @@ if dev_started:
                     if dev_accepted else '；D3 开发环境运行时与监听端口界面待负责人验收')
 if network_started:
     manual_note += ('；D3 Network 人工 UI 已验收' if network_accepted else '；D3 Network 人工 UI 待负责人验收，实机只读观察不代替 UI 验收')
+cleaner_started = any(t['status'] != 'todo' for t in data['tasks'] if t['id'] in ('D5-01', 'D5-02'))
+cleaner_tasks = [t for t in data['tasks'] if t['id'] in ('D5-01', 'D5-02')]
+cleaner_accepted = len(cleaner_tasks) == 2 and all(t['status'] == 'done' and t.get('human_ui_confirmation') for t in cleaner_tasks)
+if cleaner_started:
+    manual_note += ('；Cleaner 真实只读扫描、内容预览与 Docker 只读查询已由负责人验收；Cleanup 未实现（设计边界）'
+                    if cleaner_accepted else '；Cleaner 只读扫描／内容预览待负责人 UI/真实扫描验收')
 lines=['# MacSoul 当前状态','', '> 此页由 `python3 scripts/generate_status.py` 从 `tasks.json` 生成；只编辑账本。','',
        f'- Phase A: '+', '.join(f"{t['id']}={t['status']}" for t in data['tasks'] if t['id'].startswith('A')),
        f'- 原始计划验收：{points}/76 点（{points/76:.1%}）',
@@ -60,7 +66,9 @@ lines=['# MacSoul 当前状态','', '> 此页由 `python3 scripts/generate_statu
        '- 后续产品任务：' + phase_a_note,
        '- D2 本轮：' + ', '.join(f"{t['id']}={t['status']}" for t in day2),
        '- D3 本轮：' + ', '.join(f"{t['id']}={t['status']}" for t in day3),
-       '- Build/Unit：' + ('见 `reports/day-3-network-2026-10-02.md` 与 `.artifacts/verification.json`' if network_started else '见 `reports/day-3-dev-environment-2026-09-29.md` 与 `.artifacts/verification.json`' if dev_started else '见 `reports/day-2-system-details-2026-09-29.md` 与 `.artifacts/verification.json`' if system_details_started else '见 `reports/day-2-system-soul-memory-closeout-2026-09-29.md` 与 `.artifacts/verification.json`' if day2_started else '见 `reports/phase-a-visual-closeout-2026-09-28.md` 与 `.artifacts/verification.json`'),
+       '- D5 本轮：' + ', '.join(f"{t['id']}={t['status']}" for t in data['tasks'] if t['id'].startswith('D5-')),
+       '- 执行顺序：' + ('负责人批准 Cleaner 只读扫描先于 AI 配额；原始计划、点数和依赖历史保留' if cleaner_started else '沿用原始计划；按负责人本轮授权执行'),
+       '- Build/Unit：' + ('见 `reports/day-5-cleaner-readonly-2026-10-02.md` 与 `.artifacts/verification.json`' if cleaner_started else '见 `reports/day-3-network-2026-10-02.md` 与 `.artifacts/verification.json`' if network_started else '见 `reports/day-3-dev-environment-2026-09-29.md` 与 `.artifacts/verification.json`' if dev_started else '见 `reports/day-2-system-details-2026-09-29.md` 与 `.artifacts/verification.json`' if system_details_started else '见 `reports/day-2-system-soul-memory-closeout-2026-09-29.md` 与 `.artifacts/verification.json`' if day2_started else '见 `reports/phase-a-visual-closeout-2026-09-28.md` 与 `.artifacts/verification.json`'),
        '- Manual UI：' + manual_note + '；Performance/真实 AI Provider：NOT_RUN','',
        '## 未完成任务','', '| ID | 原始日 | 点数 | 状态 | 任务 |','|---|---:|---:|---|---|']
 for t in original:

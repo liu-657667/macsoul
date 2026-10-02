@@ -16,6 +16,7 @@ struct SettingsView: View {
                         LabeledContent(language.text("Live developer environment"), value: language.text(store.systemMode == .live ? "Runtimes and TCP listeners" : "Not connected"))
                         LabeledContent(language.text("Live network monitoring"), value: language.text(store.systemMode == .live ? "Path, public IP, proxy, tunnel hints, connectivity" : "Not connected"))
                         LabeledContent(language.text("Live quota providers"), value: language.text("Not connected"))
+                        LabeledContent(language.text("Cleaner"), value: language.cleanerText(store.systemMode == .live ? "Read only" : "Preview uses Mock fixtures; no filesystem scan runs."))
                         LabeledContent(language.text("Cleaner deletion"), value: language.text("Not available"))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
