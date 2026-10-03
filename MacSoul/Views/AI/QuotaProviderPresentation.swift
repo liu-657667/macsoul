@@ -26,6 +26,15 @@ extension MacSoulLanguage {
 }
 
 extension QuotaItem {
+    func presentationSource(detail: QuotaProviderDetail?) -> String? {
+        guard provider == .claude, mode == .live else { return source }
+        guard !entirelyUnavailable else { return nil }
+        switch detail?.claudeCapability {
+        case .notInstalled, .noVerifiedSource, .unsupportedVersion: return nil
+        default: return source
+        }
+    }
+
     func presentationWindows(now: Date, presentation: QuotaPresentation) -> [QuotaDisplayWindow] {
         displayWindows(now: now).filter { row in
             if mode == .live && presentation == .summary, case .unreported = row.state { return false }

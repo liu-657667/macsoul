@@ -424,3 +424,40 @@ Owner separately authorized one cohesive feature commit, normal push of feature/
 - Protect main remains active, default-branch-only, no bypass actors, required GitHub Actions context macos / integration 15368 with strict status policy. PR is for review only.
 - Audit evidence: `.artifacts/ai-pr-handoff-audit.json`; automatic manifest remains separate from manual/provider acceptance.
 - Actual commit/push/PR/CI results will be reported in the handoff response and PR metadata. Xcode 27 local PASS does not substitute for Xcode 26.6 / 17F113 CI.
+
+
+## PR #7 review fixes — 2026-10-04
+
+Owner authorized only the Codex ambiguity edge case and Claude unavailable-source presentation, a separate fix commit and ordinary push. No merge or new feature work.
+
+### Changes and regression coverage
+
+- A keyed `codex` bucket validates its own `limitId`, then checks every other bucket for explicit `limitId == codex`. A second identity throws `ambiguousBucket`; a legacy view cannot override that ambiguity. No map-order/key-priority guessing.
+- Added `testCodexKeyAndSecondExplicitCodexIdentityAreAmbiguous`, covering explicit/null/absent keyed identity, plus contradictory-own-identity coverage. Existing unique explicit identity, duplicate identities, legacy fallback and unidentified-bucket tests remain.
+- Detail source presentation returns no source for Live Claude providerUnavailable, notInstalled, noVerifiedSource or unsupportedVersion. The shared detail row displays Source: —. Available Claude status-line source and Mock source remain unchanged; presentation tests cover those boundaries.
+- Five new tests: **331 tests / 0 failures**. The first test compile failed because the new Mock fixture test omitted its required fixture argument; that test setup was corrected, and the failure log retained at `.artifacts/ai-edge-initial-test-compile-failure.log`.
+
+### Actual automatic verification
+
+- `./scripts/build.sh`: PASS / exit 0.
+- `./scripts/test.sh`: PASS / exit 0, 331 tests / 0 failures.
+- `./scripts/verify.sh`: final PASS / exit 0, doctor/build/unit/progress_tests/visual_assets/ledger all PASS.
+- `python3 scripts/verify_progress.py`: PASS / exit 0, 59 tasks / original 76-point baseline retained.
+- `git diff --check`: PASS / exit 0; checked again before staging.
+- Pre-commit revision: `2f6b956a446c32c0e318b3618fdb074c4a5e5e44` plus the reviewed working-tree changes.
+- Source / verification-input fingerprint: `7c0e6808686689f14a3ab46a988e458bab2290d05e617d77f7a38508eb396064`.
+- Final manifest checked_at: `2026-10-03T18:26:04.704132+00:00`.
+- Evidence: `.artifacts/verification.json`, `.artifacts/build.log`, `.artifacts/test.log`, `.artifacts/progress-verify.log`, `.artifacts/ai-edge-final-verify.log`.
+- Initial full verify returned exit 1 solely for stale automated evidence fingerprints; all other checks passed. Preserved at `.artifacts/ai-edge-before-evidence-refresh-verification.json` and `.artifacts/ai-edge-before-evidence-refresh-progress-verify.log`. Refreshed 50 actual passing automated records, appended old entries to evidence_history, and reran full verify successfully.
+- Packaged privacy manifest equals unchanged source: DiskSpace/85F4.1, UserDefaults/CA92.1, SystemBootTime/35F9.1.
+- STATUS regenerated from tasks.json; generated content unchanged. All task statuses, points/day/dependencies, historical evidence and Owner acceptance retained; D4-01 through D4-07 remain done.
+
+### Scope and acceptance boundary
+
+Duration/plan mapping, 240s refresh, reconnect/backoff, remaining-percent semantics, alert thresholds and Preview/Live lifecycle are unchanged. No Provider/transport, Cleaner, Performance or later-day implementation changes. No raw account/profile/quota data retained.
+
+Owner Live acceptance was **not repeated**: the accepted Codex happy path is unchanged. New unavailable-source UI behavior has presentation-test evidence, not new manual UI approval. Automatic manual_ui/live_provider/performance fields remain NOT_RUN; prior Owner/provider PASS records above remain historical evidence.
+
+Still NOT_OBSERVED: natural quota-update notification and real 95% event. Still NOT_RUN: real sleep/wake, formal Performance, App Store Connect privacy validation, real Claude subscription quota and system notification delivery.
+
+Xcode 26.6 / 17F113 push and PR CI for the new fix commit will be checked after publication; final results belong in PR metadata and the handoff response. Local Xcode 27 verification does not substitute for CI. Stop after review handoff; do not merge.

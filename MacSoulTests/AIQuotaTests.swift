@@ -158,6 +158,27 @@ final class AIQuotaParserTests: XCTestCase {
             "a": ["limitId": "codex"], "b": ["limitId": "codex"]
         ]], now: quotaTestNow))
     }
+    func testCodexKeyAndSecondExplicitCodexIdentityAreAmbiguous() {
+        for identity: Any? in ["codex", NSNull(), nil] {
+            var payload = wirePayload() // A legacy view must not hide map ambiguity.
+            var keyed: [String: Any] = ["primary": wireWindow(7)]
+            if let identity { keyed["limitId"] = identity }
+            payload["rateLimitsByLimitId"] = [
+                "codex": keyed,
+                "alias": ["limitId": "codex", "primary": wireWindow(99)]
+            ]
+            XCTAssertThrowsError(try CodexQuotaParser.parse(payload, now: quotaTestNow)) {
+                XCTAssertEqual($0 as? QuotaParseError, .ambiguousBucket)
+            }
+        }
+    }
+    func testCodexKeyWithContradictoryOwnIdentityIsAmbiguous() {
+        XCTAssertThrowsError(try CodexQuotaParser.parse(["rateLimitsByLimitId": [
+            "codex": ["limitId": "other", "primary": wireWindow()]
+        ]], now: quotaTestNow)) {
+            XCTAssertEqual($0 as? QuotaParseError, .ambiguousBucket)
+        }
+    }
     private func planPayload(_ plan: Any, withFive: Bool = false) -> [String: Any] {
         var bucket: [String: Any] = ["planType": plan, "primary": wireWindow(35, minutes: 10080)]
         if withFive { bucket["secondary"] = wireWindow(19) }
@@ -276,6 +297,26 @@ final class AIQuotaParserTests: XCTestCase {
     func testProviderStatusLocalizesWithoutRawValues() {
         XCTAssertEqual(MacSoulLanguage.chinese.quotaStatus(QuotaProviderDetail(provider: .codex, connection: .malformed)), "配额响应格式无效")
         XCTAssertEqual(MacSoulLanguage.chinese.quotaStatus(QuotaProviderDetail(provider: .claude, connection: .unavailable, claudeCapability: .notInstalled)), "未检测到")
+    }
+    func testClaudeNotInstalledDoesNotDisplayVerifiedStatusLineSource() {
+        let detail = QuotaProviderDetail(provider: .claude, connection: .unavailable, claudeCapability: .notInstalled)
+        XCTAssertNil(QuotaItem.unavailable(.claude).presentationSource(detail: detail))
+    }
+    func testClaudeUnavailableSourcePresentationIsConservative() throws {
+        let item = try ClaudeQuotaParser.parse(["seven_day": ["used_percentage": 20]], sampledAt: quotaTestNow)
+        for capability: ClaudeQuotaCapability in [.notInstalled, .noVerifiedSource, .unsupportedVersion] {
+            let detail = QuotaProviderDetail(provider: .claude, connection: .unavailable, claudeCapability: capability)
+            XCTAssertNil(item.presentationSource(detail: detail))
+        }
+        XCTAssertNil(QuotaItem.unavailable(.claude).presentationSource(detail: nil))
+    }
+    func testClaudeAvailableAndPreviewSourcePresentationIsPreserved() throws {
+        let item = try ClaudeQuotaParser.parse(["seven_day": ["used_percentage": 20]], sampledAt: quotaTestNow)
+        let detail = QuotaProviderDetail(provider: .claude, connection: .available, claudeCapability: .available)
+        XCTAssertEqual(item.presentationSource(detail: detail), "Claude Code status line")
+        let preview = MockProvider(fixture: .healthy).snapshot(now: quotaTestNow).quotas.first { $0.provider == .claude }!
+        XCTAssertEqual(preview.presentationSource(detail: nil), preview.source)
+        XCTAssertEqual(QuotaItem.unavailable(.codex).presentationSource(detail: nil), "Codex App Server")
     }
 }
 

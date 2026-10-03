@@ -44,10 +44,15 @@ struct QuotaRow: View {
                     Text("\(language.text(label)): \(language.text("Not applicable"))")
                         .font(.caption2).foregroundStyle(.secondary)
                 }
-                Text("\(language.text("Source")): \(language.text(quota.source)) · \(language.text("Updated")): \(quota.sampledAt.map { fullTime($0) } ?? "—")")
+                Text("\(language.text("Source")): \(sourceLabel) · \(language.text("Updated")): \(quota.sampledAt.map { fullTime($0) } ?? "—")")
                     .font(.caption2).foregroundStyle(.secondary)
             }
         }
+    }
+
+    private var sourceLabel: String {
+        let detail = store.snapshot.quotaDetails.first { $0.provider == quota.provider }
+        return quota.presentationSource(detail: detail).map { language.text($0) } ?? "—"
     }
 
     private func fullTime(_ date: Date) -> String {

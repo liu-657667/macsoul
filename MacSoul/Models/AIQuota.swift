@@ -116,6 +116,11 @@ enum CodexQuotaParser {
             if let rawCodex = buckets["codex"] {
                 guard let codex = rawCodex as? [String: Any] else { throw QuotaParseError.malformed }
                 try validateID(codex)
+                let duplicateIdentity = buckets.contains { key, value in
+                    guard key != "codex", let other = value as? [String: Any] else { return false }
+                    return other["limitId"] as? String == "codex"
+                }
+                guard !duplicateIdentity else { throw QuotaParseError.ambiguousBucket }
                 return codex
             }
             let identified = buckets.values.compactMap { $0 as? [String: Any] }.filter { $0["limitId"] as? String == "codex" }
