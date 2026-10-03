@@ -20,12 +20,24 @@ struct QuotaRow: View {
                 Text(quota.provider.rawValue).font(.headline)
                 Spacer()
                 if presentation == .detail {
-                    Text(language.text(quota.mode.rawValue))
+                    Text(language.text(quota.badge))
                         .font(.caption).foregroundStyle(.secondary)
                 }
             }
-            ForEach(quota.displayWindows(now: now)) { window in
-                QuotaWindowView(window: window, now: now, presentation: presentation)
+            if quota.entirelyUnavailable {
+                Text(language.text("Quota unavailable")).font(.caption).foregroundStyle(MacSoulTheme.supportingText)
+            } else {
+                if presentation == .summary && quota.presentationWindows(now: now, presentation: presentation).isEmpty {
+                    Text(language.text("Not reported")).font(.caption).foregroundStyle(MacSoulTheme.supportingText)
+                }
+                ForEach(quota.presentationWindows(now: now, presentation: presentation)) { window in
+                    QuotaWindowView(window: window, now: now, presentation: presentation)
+                }
+            }
+            if presentation == .summary,
+               let detail = store.snapshot.quotaDetails.first(where: { $0.provider == quota.provider }),
+               detail.connection == .reconnecting || detail.connection == .malformed {
+                Text(language.quotaStatus(detail)).font(.caption).foregroundStyle(.orange)
             }
             if presentation == .detail {
                 ForEach(quota.notApplicableLabels(), id: \.self) { label in
@@ -39,7 +51,7 @@ struct QuotaRow: View {
     }
 
     private func fullTime(_ date: Date) -> String {
-        date.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened).locale(language.locale))
+        language.dateTime(date)
     }
 }
 
@@ -66,7 +78,7 @@ struct QuotaWindowView: View {
                 }
             }.font(.caption)
             if let value = window.state.value {
-                ProgressView(value: value.usedPercent / 100)
+                ProgressView(value: value.remainingProgress)
             }
         }
     }
@@ -83,13 +95,13 @@ struct QuotaWindowView: View {
                             presentation: QuotaPresentation) -> String {
         switch window.state {
         case .fresh(let value):
-            let used = language.used(Int(value.usedPercent.rounded()))
-            let valueLabel = value.usedPercent >= 95 ? "\(language.text("Near limit")) · \(used)" : used
+            let remaining = language.remaining(Int(value.remainingPercent.rounded()))
+            let valueLabel = value.usedPercent >= 95 ? "\(language.text("Near limit")) · \(remaining)" : remaining
             if presentation == .summary, let reset = value.resetsAt {
                 return "\(valueLabel) · \(Self.shortResetLabel(reset: reset, now: now, language: language))"
             }
             return presentation == .detail ? "\(valueLabel) · \(language.text("Fresh"))" : valueLabel
-        case .stale(let value): return "\(language.used(Int(value.usedPercent.rounded()))) · \(language.text("Stale"))"
+        case .stale(let value): return "\(language.remaining(Int(value.remainingPercent.rounded()))) · \(language.text("Stale"))"
         case .unreported: return language.text("Not reported")
         case .requestFailed: return language.text("Request failed")
         case .providerUnavailable: return language.text("Quota unavailable")

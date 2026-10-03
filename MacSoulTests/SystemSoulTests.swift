@@ -275,7 +275,8 @@ final class SystemSoulTests: XCTestCase {
         XCTAssertEqual(store.snapshot.disk.usedPercent, 60)
         XCTAssertNil(store.snapshot.battery.usedPercent)
         XCTAssertEqual(store.snapshot.batterySummaryOverride, "No battery")
-        XCTAssertEqual(store.snapshot.quotas.first?.mode, .mock)
+        XCTAssertEqual(store.snapshot.quotas.first?.mode, .live)
+        XCTAssertTrue(store.snapshot.quotas.allSatisfy(\.entirelyUnavailable)) // AI Live never reuses Mock quotas.
         XCTAssertNil(store.snapshot.publicIP) // Live Network never reuses a Mock IP.
         XCTAssertEqual(store.snapshot.devMode, .live)
         XCTAssertTrue(store.snapshot.runtimes.isEmpty) // No old Mock runtime in Live mode.
@@ -310,7 +311,8 @@ final class SystemSoulTests: XCTestCase {
         XCTAssertNil(store.snapshot.battery.usedPercent)
         XCTAssertEqual(store.snapshot.diskEmptyState, "Unavailable")
         XCTAssertEqual(store.snapshot.batteryEmptyState, "Unavailable")
-        XCTAssertEqual(store.snapshot.quotas.first?.mode, .mock)
+        XCTAssertEqual(store.snapshot.quotas.first?.mode, .live)
+        XCTAssertTrue(store.snapshot.quotas.allSatisfy(\.entirelyUnavailable)) // AI Live never reuses Mock quotas.
         store.setSystemMode(.preview)
         subscription.cancel()
     }

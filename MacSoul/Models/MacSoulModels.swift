@@ -168,7 +168,9 @@ struct AppSnapshot {
     var region: String?
     var proxyHint: String
     var tunnelHint: String
-    let quotas: [QuotaItem]
+    var quotas: [QuotaItem]
+    var quotaMode: DataMode = .mock
+    var quotaDetails: [QuotaProviderDetail] = []
     var runtimes: [RuntimeItem]
     var ports: [PortItem]
     var runtimeReading: RuntimeReading? = nil
