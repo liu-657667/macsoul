@@ -40,7 +40,7 @@ struct OverviewView: View {
         HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.regular) {
             Text("MacSoul").font(.title2.bold())
             Text(language.text(store.systemMode == .live
-                ? "SYSTEM + DEV + NETWORK LIVE · AI MOCK"
+                ? "SYSTEM + DEV + NETWORK LIVE · AI PROVIDERS"
                 : "MOCK DATA · No live sampling or quota provider"))
                 .font(.caption).foregroundStyle(.secondary)
         }
@@ -75,7 +75,7 @@ struct OverviewView: View {
                 }
                 MemoryPressureLabel(pressure: store.snapshot.memoryPressure)
                 if store.systemMode == .live {
-                    Text(language.text("System, Dev and Network: Live · AI: Mock"))
+                    Text(language.text("System, Dev and Network: Live · AI availability per provider"))
                         .font(.caption2).foregroundStyle(MacSoulTheme.supportingText)
                 }
             }
@@ -83,7 +83,7 @@ struct OverviewView: View {
     }
 
     private var aiCard: some View {
-        CardContainer(title: "AI Coding", systemImage: "sparkles", badge: "MOCK") {
+        CardContainer(title: "AI Coding", systemImage: "sparkles", badge: store.snapshot.quotaMode.rawValue) {
             VStack(alignment: .leading, spacing: 16) {
                 ForEach(store.snapshot.quotas) { quota in
                     QuotaRow(quota: quota, presentation: .summary)

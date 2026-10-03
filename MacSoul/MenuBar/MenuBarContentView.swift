@@ -14,7 +14,7 @@ struct MenuBarContentView: View {
             HStack {
                 Text("MacSoul").fontWeight(.semibold)
                 Spacer()
-                Text(language.text(store.systemMode == .live ? "SYSTEM + DEV + NETWORK LIVE · AI MOCK" : "MOCK DATA"))
+                Text(language.text(store.systemMode == .live ? "SYSTEM + DEV + NETWORK LIVE · AI PROVIDERS" : "MOCK DATA"))
                     .font(.caption.bold()).foregroundStyle(.orange)
             }
             HStack(spacing: MacSoulTheme.Spacing.regular) {
@@ -37,7 +37,7 @@ struct MenuBarContentView: View {
             }
             MemoryPressureLabel(pressure: snapshot.memoryPressure)
             if store.systemMode == .live {
-                Text(language.text("System, Dev and Network: Live · AI: Mock"))
+                Text(language.text("System, Dev and Network: Live · AI availability per provider"))
                     .font(.caption2).foregroundStyle(MacSoulTheme.supportingText)
             }
             Divider()

@@ -195,6 +195,26 @@ struct UnavailableProvider: SnapshotProvider {
     func waitForCleanerStop() async { await cleanerSession.waitForStop() }
 
     var networkStarts: Int { networkMonitor.starts }
+    private let codexQuota: any LiveQuotaProviding
+    private let claudeQuota: any LiveQuotaProviding
+    private let quotaClock: any QuotaClock
+    @Published private(set) var quotaAlertEvents: [QuotaAlertEvent] = []
+    private lazy var aiQuotaMonitor = AIQuotaMonitor(codex: codexQuota, claude: claudeQuota, clock: quotaClock) { [weak self] value, alerts in
+        guard let self, self.systemMode == .live, !self.sleeping else { return }
+        var current = self.snapshot
+        current.quotas = value.items
+        current.quotaDetails = value.details
+        current.quotaMode = .live
+        self.snapshot = current
+        self.quotaAlertEvents = Array((self.quotaAlertEvents + alerts).suffix(16)) // bounded event output; no notification permission requested
+    }
+    var quotaStarts: Int { aiQuotaMonitor.starts }
+    func waitForQuotaStop() async { await aiQuotaMonitor.waitForStop() }
+    func stopQuotaForTermination() async {
+        aiQuotaMonitor.stop()
+        await aiQuotaMonitor.waitForStop()
+    }
+
     private let sensorSampler: any SystemSampling
     private let detailSampler: any SystemDetailSampling
     private lazy var sensorHub = SensorHub(sampler: sensorSampler, details: detailSampler,
@@ -216,7 +236,12 @@ struct UnavailableProvider: SnapshotProvider {
          networkLocal: any LocalNetworkProviding = NativeLocalNetworkProvider(),
          cleanerScanner: CleanerScanner = CleanerScanner(locator: CleanerLocator(), docker: DockerCleanerAdapter()),
          cleanerCategories: [CleanerDescriptor] = CleanerCatalog.categories(),
-         cleanerPreviewScanner: CleanerPreviewScanner = CleanerPreviewScanner(), now: Date = Date()) {
+         cleanerPreviewScanner: CleanerPreviewScanner = CleanerPreviewScanner(),
+         codexQuota: (any LiveQuotaProviding)? = nil, claudeQuota: (any LiveQuotaProviding)? = nil,
+         quotaClock: any QuotaClock = SystemQuotaClock(), now: Date = Date()) {
+        self.codexQuota = codexQuota ?? CodexQuotaProvider()
+        self.claudeQuota = claudeQuota ?? ClaudeQuotaProvider()
+        self.quotaClock = quotaClock
         self.cleanerPreviewScanner = cleanerPreviewScanner
         self.cleanerScanner = cleanerScanner; self.cleanerDescriptors = cleanerCategories
         self.provider = provider
@@ -227,7 +252,7 @@ struct UnavailableProvider: SnapshotProvider {
         previewFixture = (provider as? MockProvider)?.fixture
         displayNow = now
         snapshot = provider.snapshot(now: now)
-        clockSubscription = Timer.publish(every: 30, on: .main, in: .common)
+        clockSubscription = Timer.publish(every: 60, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] date in
                 Task { @MainActor in self?.advanceDisplayClock(now: date) }
@@ -239,7 +264,7 @@ struct UnavailableProvider: SnapshotProvider {
             .sink { [weak self] _ in Task { @MainActor in self?.resumeAfterWake() } }
             .store(in: &lifecycleSubscriptions)
         NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
-            .sink { [weak self] _ in Task { @MainActor in self?.cancelCleaner(); self?.closeCleanerPreview() } }
+            .sink { [weak self] _ in Task { @MainActor in self?.cancelCleaner(); self?.closeCleanerPreview(); self?.aiQuotaMonitor.stop() } }
             .store(in: &lifecycleSubscriptions)
     }
     func advanceDisplayClock(now: Date) { displayNow = now }
@@ -247,6 +272,11 @@ struct UnavailableProvider: SnapshotProvider {
         var replacement = provider.snapshot(now: now)
         if systemMode == .live {
             replacement.cleaner = snapshot.cleaner.mode == .live ? snapshot.cleaner : .live(categories: cleanerDescriptors)
+            let quota = snapshot.quotaMode == .live && !sleeping
+                ? AIQuotaSnapshot(items: snapshot.quotas, details: snapshot.quotaDetails) : .stopped
+            replacement.quotaMode = .live
+            replacement.quotas = quota.items
+            replacement.quotaDetails = quota.details
             replacement.systemMode = .live
             replacement.devMode = .live
             replacement.networkMode = .live
@@ -279,10 +309,10 @@ struct UnavailableProvider: SnapshotProvider {
 
     func setSystemMode(_ mode: SystemMode) {
         guard mode != systemMode else { return }
-        if mode == .preview { cleanerSession.resetForPreview(); closeCleanerPreview() }
+        if mode == .preview { cleanerSession.resetForPreview(); closeCleanerPreview(); aiQuotaMonitor.stop(); quotaAlertEvents = [] }
         systemMode = mode
         refresh()
-        if mode == .live && !sleeping { sensorHub.start(); devMonitor.start(); networkMonitor.start(probesEnabled: connectivityEnabled) }
+        if mode == .live && !sleeping { sensorHub.start(); devMonitor.start(); networkMonitor.start(probesEnabled: connectivityEnabled); aiQuotaMonitor.start() }
         else { sensorHub.stop(); devMonitor.stop(); networkMonitor.stop() }
     }
 
@@ -378,12 +408,13 @@ struct UnavailableProvider: SnapshotProvider {
         sensorHub.stop()
         devMonitor.stop()
         networkMonitor.stop()
+        aiQuotaMonitor.stop(); quotaAlertEvents = []
         if systemMode == .live { refresh() }
     }
 
     func resumeAfterWake() {
         sleeping = false
-        if systemMode == .live { sensorHub.start(); devMonitor.start(); networkMonitor.start(probesEnabled: connectivityEnabled) }
+        if systemMode == .live { sensorHub.start(); devMonitor.start(); networkMonitor.start(probesEnabled: connectivityEnabled); aiQuotaMonitor.start() }
     }
     #if DEBUG
     func selectPreviewFixture(_ fixture: MockProvider.Fixture, now: Date = Date()) {

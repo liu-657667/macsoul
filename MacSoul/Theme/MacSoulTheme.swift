@@ -116,6 +116,10 @@ enum MacSoulLanguage: String, CaseIterable, Identifiable {
         date.map { dateTime($0, timeZone: timeZone) } ?? text("Not sampled")
     }
 
+    func remaining(_ percent: Int) -> String {
+        self == .english ? "\(percent)% remaining" : "剩余 \(percent)%"
+    }
+
     func used(_ percent: Int) -> String {
         self == .english ? "\(percent)% used" : "已用 \(percent)%"
     }
@@ -132,6 +136,24 @@ enum MacSoulLanguage: String, CaseIterable, Identifiable {
     ]
 
     private static let chineseText: [String: String] = [
+        "UNAVAILABLE": "不可用",
+        "AI Coding · LIVE": "AI 编程 · 实时来源",
+        "Codex App Server": "Codex App Server",
+        "Claude Code status line": "Claude Code 状态行",
+        "Availability per provider": "按提供方报告可用性",
+        "Observer authorization pending": "等待授权配额观察器",
+        "Not detected": "未检测到",
+        "Detected · Not authenticated": "已检测到 · 未认证",
+        "Subscription quota unavailable": "订阅配额不可用",
+        "Unsupported installed version": "安装版本尚不支持",
+        "Detected · No verified quota source": "已检测到 · 无已验证配额来源",
+        "Connecting…": "连接中…", "Reconnecting…": "重新连接中…",
+        "Malformed quota response": "配额响应格式无效", "Stopped": "已停止",
+        "AI partner energy is running low.": "AI 搭档的能量快用完了。",
+        "Only reported provider windows are shown. Unavailable providers have no simulated quota.": "仅展示提供方实际报告的窗口；不可用提供方不使用模拟配额。",
+        "SYSTEM + DEV + NETWORK LIVE · AI PROVIDERS": "系统 / 开发环境 / 网络实时 · AI 按来源显示",
+        "System, Dev and Network: Live · AI availability per provider": "系统、开发环境和网络：实时 · AI 可用性按提供方显示",
+        "Live mode includes System, Dev Environment and Network. AI availability is reported per provider.": "实时模式包含系统、开发环境和网络；AI 可用性按提供方报告。",
         "SYSTEM + DEV + NETWORK LIVE · AI MOCK": "系统 / 开发环境 / 网络实时 · AI 模拟",
         "System, Dev and Network: Live · AI: Mock": "系统、开发环境和网络：实时 · AI：模拟",
         "Live mode includes System, Dev Environment and Network. AI remains Mock.": "实时模式包括系统、开发环境和网络，AI 继续使用模拟数据。",
@@ -260,7 +282,7 @@ enum MacSoulLanguage: String, CaseIterable, Identifiable {
         "Runtimes and TCP listeners": "运行时与 TCP 监听端口",
         "Live System includes System and Dev Environment. AI and Network remain Mock.": "实时系统模式包含系统指标和开发环境；AI 与网络仍为模拟数据。",
         "Quota Monitor · MOCK DATA": "配额监视 · 模拟数据",
-        "Shows applicable 5-hour and 1-week used quota. No live provider is connected.": "显示适用的 5 小时与 1 周已用配额；未连接实时服务。",
+        "Shows applicable 5-hour and 1-week remaining quota. No live provider is connected.": "显示适用的 5 小时与 1 周剩余配额；未连接实时服务。",
         "System · MOCK DATA": "系统 · 模拟数据", "Network · MOCK DATA": "网络 · 模拟数据",
         "System · CPU / MEMORY LIVE": "系统 · 处理器 / 内存实时",
         "System · LIVE": "系统 · 实时",

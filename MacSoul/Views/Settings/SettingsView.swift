@@ -15,7 +15,7 @@ struct SettingsView: View {
                         LabeledContent(language.text("Live system sampling"), value: language.text(store.systemMode == .live ? "CPU, memory, disk, battery, processes" : "Not connected"))
                         LabeledContent(language.text("Live developer environment"), value: language.text(store.systemMode == .live ? "Runtimes and TCP listeners" : "Not connected"))
                         LabeledContent(language.text("Live network monitoring"), value: language.text(store.systemMode == .live ? "Path, public IP, proxy, tunnel hints, connectivity" : "Not connected"))
-                        LabeledContent(language.text("Live quota providers"), value: language.text("Not connected"))
+                        LabeledContent(language.text("Live quota providers"), value: language.text(store.systemMode == .live ? "Availability per provider" : "Not connected"))
                         LabeledContent(language.text("Cleaner"), value: language.cleanerText(store.systemMode == .live ? "Read only" : "Preview uses Mock fixtures; no filesystem scan runs."))
                         LabeledContent(language.text("Cleaner deletion"), value: language.text("Not available"))
                     }
@@ -32,7 +32,7 @@ struct SettingsView: View {
                             }
                         }
                         .frame(maxWidth: 440, alignment: .leading)
-                        Text(language.text("Live mode includes System, Dev Environment and Network. AI remains Mock."))
+                        Text(language.text("Live mode includes System, Dev Environment and Network. AI availability is reported per provider."))
                             .font(.caption).foregroundStyle(.secondary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)

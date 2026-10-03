@@ -52,6 +52,17 @@ if dev_started:
                     if dev_accepted else '；D3 开发环境运行时与监听端口界面待负责人验收')
 if network_started:
     manual_note += ('；D3 Network 人工 UI 已验收' if network_accepted else '；D3 Network 人工 UI 待负责人验收，实机只读观察不代替 UI 验收')
+day4 = [t for t in data['tasks'] if t['id'].startswith('D4-')]
+ai_started = any(t['status'] != 'todo' for t in day4)
+ai_accepted = len(day4) == 7 and all(t['status'] == 'done' and t.get('human_ui_confirmation') for t in day4)
+if ai_started:
+    codex_observed = any(t.get('capability_observation', {}).get('read_supported') for t in day4)
+    phase_a_note = ('Phase A 历史验收保持原状态；系统/开发环境/网络/Cleaner 已验收；D4 Codex Live 与 Claude honest unavailable 边界已由负责人验收；正式 Performance 未运行' if ai_accepted else
+                   'Phase A 历史验收保持原状态；系统/开发环境/网络/Cleaner 已验收；AI 配额第二阶段映射与集成已实现，真实 MacSoul AI UI 待负责人验收'
+                    if codex_observed else 'Phase A 历史验收保持原状态；系统/开发环境/网络/Cleaner 已验收；AI 配额架构与 fixtures 已实现，真实 Codex 观察待负责人授权')
+    manual_note += ('；D4 Codex Live、Week-only 剩余配额、三入口同步、277 秒刷新及 Preview/Live 回切已由负责人验收；Claude unavailable 已验收；自然 quota 更新通知与真实 95% 事件未观察' if ai_accepted else
+                   '；Codex 只读 capability 已观察，真实 MacSoul AI UI/跨客户端事件尚未验收'
+                    if codex_observed else '；AI Quota 首阶段仅自动验证，真实账户与 UI 尚未验收')
 cleaner_started = any(t['status'] != 'todo' for t in data['tasks'] if t['id'] in ('D5-01', 'D5-02'))
 cleaner_tasks = [t for t in data['tasks'] if t['id'] in ('D5-01', 'D5-02')]
 cleaner_accepted = len(cleaner_tasks) == 2 and all(t['status'] == 'done' and t.get('human_ui_confirmation') for t in cleaner_tasks)
@@ -66,10 +77,11 @@ lines=['# MacSoul 当前状态','', '> 此页由 `python3 scripts/generate_statu
        '- 后续产品任务：' + phase_a_note,
        '- D2 本轮：' + ', '.join(f"{t['id']}={t['status']}" for t in day2),
        '- D3 本轮：' + ', '.join(f"{t['id']}={t['status']}" for t in day3),
+       '- D4 本轮：' + ', '.join(f"{t['id']}={t['status']}" for t in day4),
        '- D5 本轮：' + ', '.join(f"{t['id']}={t['status']}" for t in data['tasks'] if t['id'].startswith('D5-')),
        '- 执行顺序：' + ('负责人批准 Cleaner 只读扫描先于 AI 配额；原始计划、点数和依赖历史保留' if cleaner_started else '沿用原始计划；按负责人本轮授权执行'),
-       '- Build/Unit：' + ('见 `reports/day-5-cleaner-readonly-2026-10-02.md` 与 `.artifacts/verification.json`' if cleaner_started else '见 `reports/day-3-network-2026-10-02.md` 与 `.artifacts/verification.json`' if network_started else '见 `reports/day-3-dev-environment-2026-09-29.md` 与 `.artifacts/verification.json`' if dev_started else '见 `reports/day-2-system-details-2026-09-29.md` 与 `.artifacts/verification.json`' if system_details_started else '见 `reports/day-2-system-soul-memory-closeout-2026-09-29.md` 与 `.artifacts/verification.json`' if day2_started else '见 `reports/phase-a-visual-closeout-2026-09-28.md` 与 `.artifacts/verification.json`'),
-       '- Manual UI：' + manual_note + '；Performance/真实 AI Provider：NOT_RUN','',
+       '- Build/Unit：' + ('见 `reports/day-4-ai-quota-2026-10-03.md` 与 `.artifacts/verification.json`' if ai_started else '见 `reports/day-5-cleaner-readonly-2026-10-02.md` 与 `.artifacts/verification.json`' if cleaner_started else '见 `reports/day-3-network-2026-10-02.md` 与 `.artifacts/verification.json`' if network_started else '见 `reports/day-3-dev-environment-2026-09-29.md` 与 `.artifacts/verification.json`' if dev_started else '见 `reports/day-2-system-details-2026-09-29.md` 与 `.artifacts/verification.json`' if system_details_started else '见 `reports/day-2-system-soul-memory-closeout-2026-09-29.md` 与 `.artifacts/verification.json`' if day2_started else '见 `reports/phase-a-visual-closeout-2026-09-28.md` 与 `.artifacts/verification.json`'),
+       '- Manual UI：' + manual_note + ('；Performance、真实 sleep/wake、Claude subscription quota、App Store Connect privacy validation：NOT_RUN' if ai_accepted else '；Performance/真实 AI Provider：NOT_RUN'),'',
        '## 未完成任务','', '| ID | 原始日 | 点数 | 状态 | 任务 |','|---|---:|---:|---|---|']
 for t in original:
     if t['status']!='done': lines.append(f"| {t['id']} | {t['original_day']} | {t['original_points']} | {t['status']} | {t['title'].replace('|','/')} |")

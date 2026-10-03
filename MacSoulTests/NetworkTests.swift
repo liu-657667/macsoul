@@ -363,7 +363,8 @@ final class NetworkTests: XCTestCase {
         XCTAssertEqual(store.snapshot.systemMode, .live); XCTAssertEqual(store.snapshot.devMode, .live); XCTAssertEqual(store.snapshot.networkMode, .live)
         XCTAssertNil(store.snapshot.publicIP); XCTAssertNil(store.snapshot.region)
         XCTAssertEqual(store.snapshot.network.region, "Not collected")
-        XCTAssertEqual(store.snapshot.quotas.first?.mode, .mock)
+        XCTAssertEqual(store.snapshot.quotas.first?.mode, .live)
+        XCTAssertTrue(store.snapshot.quotas.allSatisfy(\.entirelyUnavailable)) // AI Live never reuses Mock quotas.
         for _ in 0..<5 {
             let id = UUID(); store.setWindow(id, visible: true, section: .network)
             store.setWindowSection(id, section: .overview); store.setWindow(id, visible: false, section: .network)
