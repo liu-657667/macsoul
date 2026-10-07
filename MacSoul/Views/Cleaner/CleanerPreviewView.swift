@@ -69,7 +69,7 @@ struct CleanerPreviewView: View {
                 }.frame(width: 180)
             }.controlSize(.small)
             HStack {
-                if snapshot.state == .scanning { ProgressView().controlSize(.small) }
+                if snapshot.state == .scanning { ProgressView().controlSize(.small).accessibilityLabel(language.cleanerText("Calculating…")) }
                 Text(language.cleanerText(snapshot.state == .scanning ? "Calculating…" : snapshot.state.label))
                     .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
                 Spacer()
@@ -92,7 +92,7 @@ struct CleanerPreviewView: View {
                 Text(language.cleanerText("This category estimates matching marker files only; other entries have no category size."))
                     .font(.caption2).foregroundStyle(MacSoulTheme.supportingText)
             }
-        } else { ProgressView(); Spacer() }
+        } else { ProgressView().accessibilityLabel(language.cleanerText("Calculating…")); Spacer() }
     }
     private func pathComponents(_ snapshot: CleanerPreviewSnapshot) -> [String] {
         let root = snapshot.category.rootURL.path
@@ -106,12 +106,13 @@ private struct CleanerPreviewTable: View {
     @EnvironmentObject private var store: AppStore
     @Environment(\.macSoulLanguage) private var language
     let snapshot: CleanerPreviewSnapshot
+    @State private var selection: CleanerPreviewItem.ID?
     var body: some View {
-        Table(snapshot.sortedItems) {
+        Table(snapshot.sortedItems, selection: $selection) {
             TableColumn(language.cleanerText("Name")) { item in
                 HStack(spacing: 8) {
                     Image(systemName: item.kind == .directory ? "folder" : item.isSymlink ? "link" : "doc")
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.secondary).accessibilityHidden(true)
                     Text(item.name).lineLimit(1).truncationMode(.middle).help(item.name)
                     Spacer(minLength: 0)
                     if item.kind == .directory {

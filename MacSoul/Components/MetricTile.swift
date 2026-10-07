@@ -43,6 +43,10 @@ struct MetricTile: View {
                     .foregroundStyle(.orange)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(language.text(name))
+        .accessibilityValue(AccessibilityPresentation.metricValue(metric: metric, language: language,
+            override: overrideLabel, empty: emptyStateText, attention: attentionText))
     }
 }
 

@@ -182,3 +182,15 @@ Prefer structured concurrency/actors for shared mutable state. UI updates on Mai
 ### AI quota — verified Codex integration (2026-10-04)
 
 The later Owner-approved capability result supersedes the historical first-phase closed gate. MacSoulApp injects the native provider for the verified bundled CLI 0.160.0; default/injected AppStores and the XCTest host remain fail-closed. Live activation owns one child, one serialized initial/240s verification read path and a bounded event stream. Read IDs and connection/generation checks reject stale replies. Automatic disconnect retains numeric values/time; explicit stop/sleep/Preview clears baseline. No profile read, credential-store read, inference or auth mutation is exposed. Typed bucket plan semantics can establish missing 5h non-applicability under current verified Pro policy; unknown and future semantics stay unreported. Actual reported windows always win. See AI-QUOTA.md for the contract and report for evidence; real MacSoul AI UI / cross-client propagation / alerts and formal Performance remain NOT_RUN.
+
+### Day 6 review boundary (2026-10-07, pending Owner review)
+
+Historical capability checkpoints above are retained. Current accepted integration supports exactly Codex CLI 0.160.0 and 0.160.1, event updates plus serialized 240s verification reads; unknown versions fail closed. Quota canonical `usedPercent` remains unchanged, while visible bars, numeric text and accessible values express **remaining**. Natural memory-pressure warning was observed; critical was not. System/Dev/Network/Cleaner/AI Day 2–5 reports describe the accepted baseline.
+
+Day 6 adds a native Settings scene (system Cmd+,) and an injected `LoginItemManaging` adapter for `SMAppService.mainApp`. Reading/refreshing status never registers/unregisters; only an explicit switch action mutates system state. The native system status is authoritative, approval/unavailable/error remain explicit. No LoginAgent, helper daemon, persistent bool or actual automated owner registration.
+
+Pipe teardown uses a shared cancellation pipe to wake native blocking `poll` readers without a periodic polling timer. Bounded chunks and existing output limits remain; cancellation/close no longer require EOF from descendant-inherited pipe writers. Only the directly launched owned process is eligible for termination; no descendant/user-PID kill is introduced. Prior generation teardown still precedes new source startup. Native table selection/accessibility labels change presentation, not provider snapshots/cadence.
+
+### Day 6 Owner closeout (2026-10-07)
+
+The earlier review checkpoint above is retained. Owner accepted the unchanged Day6 implementation and scoped VoiceOver/keyboard/Reduce Motion checks. Native Login Item implementation/status honesty accepted; real register/unregister remains NOT_RUN, explicitly deferred to Day7 installed/signed build. The existing30-minute CPU result is PASS and RSS remains REVIEW ACCEPTED. No architecture/product behavior changed during closeout; Day7 has not started. See the Day6 report Final Owner Acceptance.

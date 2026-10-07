@@ -20,6 +20,15 @@ struct MacSoulApp: App {
         }
         .defaultSize(width: 1120, height: 760)
 
+        Settings {
+            SettingsView()
+                .environmentObject(store)
+                .macSoulAppearance()
+                .environment(\.macSoulLanguage, selectedLanguage)
+                .environment(\.locale, selectedLanguage.locale)
+                .frame(width: 700, height: 650)
+        }
+
         MenuBarExtra("MacSoul", image: "MacSoulMenuTemplateDraft") {
             MenuBarContentView()
                 .environmentObject(store)

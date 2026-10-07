@@ -3,6 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject private var store: AppStore
     @Environment(\.macSoulLanguage) private var language
+    @StateObject private var loginItem = LoginItemController(manager: NativeLoginItemManager())
     @AppStorage("macsoul.appearance") private var appearance = MacSoulAppearance.system.rawValue
     @AppStorage("macsoul.language") private var selectedLanguage = MacSoulLanguage.english.rawValue
 
@@ -11,12 +12,12 @@ struct SettingsView: View {
             VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.section) {
                 GroupBox(language.text("Current build capabilities")) {
                     VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
-                        LabeledContent(language.text("Data mode"), value: language.text(store.systemMode == .live ? "Partial Live + Mock" : "Bundled Mock"))
+                        LabeledContent(language.text("Data mode"), value: language.text(store.systemMode == .live ? "Live · availability per source" : "Bundled Mock"))
                         LabeledContent(language.text("Live system sampling"), value: language.text(store.systemMode == .live ? "CPU, memory, disk, battery, processes" : "Not connected"))
                         LabeledContent(language.text("Live developer environment"), value: language.text(store.systemMode == .live ? "Runtimes and TCP listeners" : "Not connected"))
                         LabeledContent(language.text("Live network monitoring"), value: language.text(store.systemMode == .live ? "Path, public IP, proxy, tunnel hints, connectivity" : "Not connected"))
                         LabeledContent(language.text("Live quota providers"), value: language.text(store.systemMode == .live ? "Availability per provider" : "Not connected"))
-                        LabeledContent(language.text("Cleaner"), value: language.cleanerText(store.systemMode == .live ? "Read only" : "Preview uses Mock fixtures; no filesystem scan runs."))
+                        LabeledContent(language.text("Cleaner"), value: language.cleanerText(store.systemMode == .live ? "Read only · on demand" : "Preview uses Mock fixtures; no filesystem scan runs."))
                         LabeledContent(language.text("Cleaner deletion"), value: language.text("Not available"))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -41,7 +42,7 @@ struct SettingsView: View {
                     HStack(alignment: .top, spacing: MacSoulTheme.Spacing.card) {
                         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                             Text(language.text("Connectivity probes"))
-                            Text(language.text("In Live mode, probes send minimal HTTPS requests to GitHub, OpenAI and Anthropic. No account credentials or project data are sent. Turning probes off cancels pending probes."))
+                            Text(language.text("In Live mode, probes send anonymous HTTPS HEAD requests to GitHub, OpenAI and Anthropic. No account credentials or project data are sent. Turning probes off cancels pending probes."))
                                 .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
                             Text(language.text("Live mode also queries ipify for public IPv4/IPv6. Developer Preview sends no external network requests."))
                                 .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
@@ -52,6 +53,24 @@ struct SettingsView: View {
                             .toggleStyle(.switch)
                             .accessibilityLabel(language.text("Connectivity probes"))
                             .accessibilityHint(language.text("Turning probes off cancels pending connectivity probes."))
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                }
+                GroupBox(language == .english ? "Launch at Login" : "登录时启动") {
+                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+                        Toggle(language == .english ? "Launch MacSoul at login" : "登录时启动 MacSoul", isOn: Binding(
+                            get: { loginItem.state.isRegistered }, set: { loginItem.setEnabled($0) }))
+                            .toggleStyle(.switch)
+                            .disabled(loginItem.state == .unavailable)
+                        Text(loginItem.state.label(language)).font(.caption)
+                        if loginItem.operationFailed {
+                            Text(language == .english ? "Could not change the login item. Check System Settings and refresh."
+                                 : "无法更改登录项，请检查系统设置并刷新。")
+                                .font(.caption).foregroundStyle(.orange)
+                        }
+                        Text(language == .english ? "Uses the macOS login item. Changes apply only when you use this switch."
+                             : "使用 macOS 系统登录项；仅在操作此开关时更改设置。")
+                            .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
+                        Button(language.text("Refresh")) { loginItem.refresh() }.controlSize(.small)
                     }.frame(maxWidth: .infinity, alignment: .leading)
                 }
                 GroupBox(language.text("App appearance")) {
@@ -101,7 +120,7 @@ struct SettingsView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 18, height: 18)
-                            .accessibilityLabel("MacSoul menu icon draft at 18 points")
+                            .accessibilityHidden(true)
                         Text(language.text("18 pt template candidate is active; small-size artwork remains DRAFT."))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -113,5 +132,7 @@ struct SettingsView: View {
             .padding(MacSoulTheme.Spacing.section)
         }
         .navigationTitle(language.text("Settings"))
+        .onAppear { loginItem.refresh() }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in loginItem.refresh() }
     }
 }

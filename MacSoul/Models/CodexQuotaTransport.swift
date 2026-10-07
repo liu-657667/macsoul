@@ -77,6 +77,7 @@ private final class CodexPipeSession: @unchecked Sendable {
     private let input = Pipe(), output = Pipe(), error = Pipe()
     private var continuation: AsyncThrowingStream<Data, Error>.Continuation?
     private let readers = DispatchGroup()
+    private let pipeCancellation = PipeReadCancellation()
     private let terminated = DispatchGroup()
     private var launched = false
     init(executable: URL) { self.executable = executable }
@@ -105,7 +106,7 @@ private final class CodexPipeSession: @unchecked Sendable {
                     var buffer = CodexLineBuffer()
                     do {
                         while true {
-                            let chunk = try Self.readAvailable(output.fileHandleForReading)
+                            let chunk = try CancellablePipeReader.read(output.fileHandleForReading, cancellation: pipeCancellation)
                             if chunk.isEmpty { break }
                             for line in try buffer.append(chunk) {
                                 if case .dropped = continuation?.yield(line) {
@@ -120,7 +121,7 @@ private final class CodexPipeSession: @unchecked Sendable {
                 DispatchQueue.global(qos: .utility).async { [self] in
                     defer { readers.leave() }
                     // Drain/discard diagnostics in bounded chunks, never persist raw messages.
-                    while let chunk = try? Self.readAvailable(error.fileHandleForReading), !chunk.isEmpty { }
+                    while let chunk = try? CancellablePipeReader.read(error.fileHandleForReading, cancellation: pipeCancellation), !chunk.isEmpty { }
                 }
                 reply.resume(returning: stream)
             }
@@ -142,14 +143,6 @@ private final class CodexPipeSession: @unchecked Sendable {
             }
         }
     }
-    private static func readAvailable(_ handle: FileHandle) throws -> Data {
-        var bytes = [UInt8](repeating: 0, count: 4096)
-        while true {
-            let count = Darwin.read(handle.fileDescriptor, &bytes, bytes.count)
-            if count >= 0 { return Data(bytes.prefix(count)) }
-            if errno != EINTR { throw CodexTransportError.closed }
-        }
-    }
     func close() async {
         await withCheckedContinuation { reply in
             queue.async { [self] in
@@ -161,6 +154,7 @@ private final class CodexPipeSession: @unchecked Sendable {
                         if process.isRunning { kill(process.processIdentifier, SIGKILL) }
                     }
                 }
+                pipeCancellation.cancel()
                 if launched { terminated.wait() }
                 process.terminationHandler = nil
                 readers.wait()

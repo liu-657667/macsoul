@@ -18,7 +18,7 @@ MacSoul 希望把系统状态、AI 编程额度、网络和本地开发环境放
 
 **有趣的反馈是入口，清楚、可信的数据才是目的。**
 
-> **当前为开发预览。** 应用默认使用内置模拟数据；在设置中选择「实时系统」后，CPU、内存已用/总量由 macOS 原生数据提供，Soul 可由真实 CPU 与内存状态驱动。内存压力接入了原生事件，但真实 warning/critical 事件尚未观察到。磁盘、电池、进程仍为模拟或待实现；AI 配额、网络和开发环境尚未接入真实 Provider。正式性能测量尚未进行，不能当作已完成的日常监控工具。下表明确区分实时功能与界面预览。
+> **v0.1.0 源码开发版。** 默认 Developer Preview 使用模拟数据；设置中选择「实时系统」后，System、Network、Dev 使用共享实时快照，Codex 使用已验证版本的 App Server。Claude 无已验证的真实配额来源时明确不可用。Cleaner 只在显式 Scan 时只读扫描；没有删除。Day 2–5 的自动与 Owner 人工验收记录已保留，Day 6 已按 Owner 批准的验收边界收口，Day 7 尚未开始；尚未正式签名、notarize 或发布安装包。
 
 ![MacSoul 产品概念主视觉，非当前 App 截图](assets-source/reference/macsoul-product-hero.png)
 
@@ -28,24 +28,25 @@ MacSoul 希望把系统状态、AI 编程额度、网络和本地开发环境放
 
 | 模块 | 要解决的问题 | 当前主分支 |
 |---|---|---|
-| **Soul** | 用角色表情和简短文案回应机器状态；严重时提醒，恢复后反馈，不反复打扰 | 六种角色图片与模拟场景已接入；实时模式可由真实 CPU / 内存状态驱动，真实内存压力 warning/critical 事件仍待观察 |
-| **系统状态** | CPU、内存压力、磁盘、电池，以及哪些进程占资源 | CPU、内存已用/总量为 Live；内存压力来自原生事件，未收到事件时显示未知；磁盘、电池仍为模拟，进程分析待实现 |
-| **AI 配额** | 查看 Codex / Claude Code 实际适用的 5h / Week 窗口及重置时间 | 动态窗口、Week-only、0%、缺失、失败和过期场景可预览；真实账户待接入 |
-| **网络** | 了解公网 IP、代理线索与服务连通性 | 页面预览；真实检测待实现 |
-| **开发环境** | 看清运行时版本、路径与监听端口 | 页面及模拟端口展示；真实检测待实现 |
-| **开发缓存** | 解释开发缓存占了多少空间、清理有什么风险 | 界面预览；真实扫描未实现，不执行删除 |
+| **Soul** | 机器状态与恢复的简短反馈 | 本地确定性规则；CPU 持续阈值、memory pressure、冷却/恢复；静态图片，不依赖 LLM |
+| **系统状态** | CPU、内存、磁盘、电池与开发进程 | 原生 CPU、内存已用/总量、压力事件、根卷磁盘、电源状态；进程 CPU delta / RSS；真实 warning 已观察，critical 尚未观察 |
+| **AI 配额** | Codex / Claude Code 的适用窗口 | Codex CLI 0.160.0 / 0.160.1 经验证；共享快照显示剩余百分比与 provider reset；Claude 无已验证来源时 unavailable |
+| **网络** | 出口 IP、代理线索、连通性 | NWPath、独立 IPv4/IPv6、App/system 代理及隧道线索、匿名 HEAD 探测；Region 不采集 |
+| **开发环境** | 运行时与开发相关监听端口 | Java/Node/Python/Go 与 SDKMAN/NVM/pyenv/goenv 上下文、缓存/刷新、开发端口筛选与全部端口展开；停止命令仅复制 |
+| **开发缓存** | 解释估算占用与内容 | Xcode/Gradle/Maven/npm/Homebrew，只读 Preview/drill-down；Docker 本地 logical usage，不遍历 VM；不清理 |
+
 
 主窗口用于看细节，**菜单栏是所有 Mac 共用的快速入口**。不需要带刘海的屏幕；当前范围不实现 Notch 展示。
 
 ### AI 配额：有什么窗口，就显示什么
 
-MacSoul 的目标是展示账户实际提供的额度窗口，而不是根据套餐名称猜测限制。当前 Mock App 已能预览这些情况：
+MacSoul 的目标是展示账户实际提供的额度窗口，而不是根据套餐名称猜测限制。Live 与 Mock 共用同一窗口契约：
 
 | 返回的窗口或状态 | 展示方式 |
 |---|---|
 | 只有 Week，5h 明确不适用 | 摘要只显示 Week，不补一个假的 5h 进度条 |
 | 同时有 5h 和 Week | 显示两个窗口 |
-| 有效窗口已用 0% | 正常显示 0%，不当作缺失 |
+| 有效窗口已用 0% | 显示剩余 100%，不当作缺失 |
 | 未报告、请求失败、数据过期 | 显示对应状态，不冒充不限额或最新数据 |
 
 主窗口与菜单栏共用同一份状态。AI 模块不做 Token 成本分析、Agent 会话管理或自动模型选择。这里讨论的是 **Codex / Claude Code 配额**，不是把 ChatGPT 聊天额度混在一起。
@@ -60,7 +61,7 @@ MacSoul 的目标是展示账户实际提供的额度窗口，而不是根据套
 
 ## 从源码体验开发预览
 
-需要 macOS、完整 Xcode 和 Python 3。工程最低部署目标是 macOS 13；这不代表所有 macOS / Xcode 组合都已经测试，工具链与验收记录见[开发指南](docs/DEVELOPMENT.md)。体验当前预览不要求 Codex、Claude Code 或 AI API 密钥。
+需要 macOS、完整 Xcode（含 Swift toolchain）和 Python 3。工程最低部署目标是 macOS 13；这不代表所有 macOS / Xcode 组合都已经测试，工具链与验收记录见[开发指南](docs/DEVELOPMENT.md)。体验当前预览不要求 Codex、Claude Code 或 AI API 密钥。
 
 ```bash
 git clone https://github.com/liu-657667/macsoul.git
@@ -77,28 +78,41 @@ cd macsoul
 open MacSoul.xcodeproj
 ```
 
-运行预览脚本前，请先正常退出已运行的 MacSoul。应用默认使用开发预览数据；在 **Settings → 系统数据来源** 可选择「实时系统」，只采集本机 CPU 与内存。切回开发预览后，可选择 `Codex: Week only`、高 CPU、内存压力等模拟场景；这些场景不会修改真实账户套餐，也不会给电脑制造真实高负载。
+运行预览脚本前，请先正常退出已运行的 MacSoul。应用默认使用开发预览数据；在 **Settings → 系统数据来源** 可选择「实时系统」，启用真实 System/Dev/Network 和已验证 AI Provider。切回开发预览后，可选择 `Codex: Week only`、高 CPU、内存压力等模拟场景；这些场景不会修改真实账户套餐，也不会给电脑制造真实高负载。
 
 本页提供的是源码预览流程，不承诺已发布可直接安装的正式安装包。
 
 ## 隐私与产品边界
 
-本地优先是产品的设计原则。当前预览默认使用内置模拟数据；选择「实时系统」后，会在本机采集 CPU 与内存，不访问 AI 账户。网络与开发环境仍无真实 Provider。后续网络检查会明确区分本地检测与外部请求；公网 IP 查询本身需要访问外部服务，不能把它描述成“完全不联网”。
+本地优先不等于零联网。Live Network 向 ipify 查询出口 IPv4/IPv6；启用 Connectivity 时向 GitHub/OpenAI/Anthropic 发匿名 HTTPS HEAD，不发送 API token、账户凭据或项目内容。OFF 仅关闭探测，不关闭公网 IP 查询。Preview 不启动这些外部请求；不采集 SSID/BSSID、位置或 Region，不修改 proxy/VPN/DNS/route。
 
-MacSoul 不负责写代码，不提供杀毒或防火墙能力，也不会把“占用的空间”直接等同于“安全可删除的空间”。当前没有自动清理，更没有一键删除真实开发数据。
+Codex 启动选定的已验证 CLI app-server（PATH 或 bundled discovery），仅发送 initialize、initialized、account/rateLimits/read，消费最小 rate-limit 字段；不读取 account profile、prompts/threads、不发模型推理、不操作登录或配额。协议 usedPercent 保持原义，UI/进度条统一显示 remaining。5h 只有已验证 machine-readable capability 才能判为不适用，缺失窗口本身不足以判断。Claude 当前只检查 executable/version，安装不代表有订阅。
+
+Cleaner 只读明确解析的 cache roots，不上传路径或内容；跳过符号链接，限制 Preview 边界。Docker 只查询本地 Engine logical usage，远程 context 不计入本机总量，不扫描 Docker.raw/VM。登录项是 macOS 系统设置，仅用户显式操作才更改；真实注册/取消为 NOT_RUN，按 Owner 批准延期至 Day 7 installed/signed 环境。
+
+### 限制
+
+- 配额是 Provider 上报，不是官方 SLA；未知 Codex 版本 fail closed，Claude 无 verified source 时不可用。
+- 估算占用不是精确可回收字节；APFS clone/shared blocks、稀疏文件、hard links/purgeable 空间会造成差异。Docker logical usage 不是 VM 物理占用。
+- 监听端口不是冲突；复制 `kill -TERM <PID>` 不执行，用户执行前需确认 PID 未复用。
+- NWPath connected 不等于互联网健康；HTTP 401/405 只证明 transport reachable，不证明认证或完整服务健康；隧道线索不证明 VPN routing。
+- v0.1 无 cleanup/Trash、Notch、历史时间线；不会人为耗尽内存或 quota 来验收。
+
+### 性能
+
+Day 5 在 Mac14,9、12 logical CPUs、16 GiB、macOS 27.0.1 / Xcode 27、unsigned Release、Codex 0.160.1 上测量。支持版本 menu-bar-only 5 分钟：MacSoul 平均 CPU 约 0.0057%，RSS 平均约 53.4 MB / 最大约 63.0 MB；Codex 子进程单独测量。详见[方法与限制](reports/day-5-performance-hardening-2026-10-04.md)。Day 6 更长测量见[当前报告](reports/day-6-review-hardening-2026-10-07.md)，不把尚未执行的测量写成 PASS。
+
+这些是有限环境/时间结果，不保证所有机器 <0.5%，也不证明未来不可能泄漏。
 
 ## 接下来做什么
 
 | 阶段 | 交付重点 |
 |---|---|
-| **当前：部分实时预览** | 原生窗口与菜单栏、Soul 图片、模拟场景；实时 CPU / 内存经共享快照驱动界面与 Soul；构建和测试入口 |
-| **下一步：其他系统指标** | 按任务账本继续评估磁盘、电池和进程；内存压力真实事件继续验证 |
-| **后续：真实集成** | Codex / Claude Code 配额、网络、运行时与端口检测 |
-| **后续：扩展与发布** | 按任务账本推进只读缓存分析、性能验证、安装与发布 |
+| **当前：核心能力已集成** | System / Dev / Network / Codex、只读 Cleaner；Day 6 review、无障碍、设置与持续性能验收已收口 |
+| **下一步：发布准备** | Day 7 尚未开始，后续按授权推进文档、签名/分发验证；当前无正式 DMG/Homebrew 安装 |
+| **v0.2.0 计划** | 单独设计 Cleaner cleanup/Trash/确认、Maven/Gradle Build Tools、Docker 扩展，不是现有功能 |
 
-这是产品方向，不是已完成清单或固定交付日期。[当前任务状态](docs/STATUS.md)记录开发进度；人工界面、真实性和性能验收分别记录，不互相代替。
-
-Phase A 历史视觉验收仍为部分通过，菜单栏小图标保持 DRAFT。实时 CPU、内存数值和主窗口/菜单栏联动已通过人工验收；内存压力真实事件、正式性能测量及真实 AI Provider 仍未通过或未运行。见[System/Soul 报告](reports/day-2-system-soul-2026-09-29.md)与[当前任务状态](docs/STATUS.md)。
+[当前任务状态](docs/STATUS.md)是开发进度入口。截图、自动测试、真实功能、性能和全量交互验收分别记录。菜单栏小图标保持 DRAFT；[Day 6 安全 Preview 截图 checklist](reports/day-6-review-hardening-2026-10-07.md)已获接受，最终截图/GIF 待 D7-07，不以概念图代替。
 
 ## 参与开发
 
