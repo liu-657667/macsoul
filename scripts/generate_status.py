@@ -79,6 +79,17 @@ if hardening_started:
     manual_note += ('；D5 本轮性能与窗口验收证据见报告；真实 sleep/wake：Live=' +
                     sleep_observation.get('live', 'NOT_RUN') + '，Preview=' +
                     sleep_observation.get('preview', 'NOT_RUN'))
+day6 = [t for t in data['tasks'] if t['id'].startswith('D6-')]
+day6_started = any(t['status'] != 'todo' for t in day6)
+day6_closed = len(day6) == 7 and all(t['status'] == 'done' for t in day6)
+day7_started = any(t['status'] != 'todo' for t in data['tasks'] if t['id'].startswith('D7-'))
+if day6_started:
+    if day6_closed:
+        phase_a_note = '既有产品验收保持；Day 6 已由负责人验收并关闭；' + ('Day 7 已按账本开始' if day7_started else 'Day 7 尚未开始')
+        manual_note += '；D6 Owner VoiceOver/Keyboard/Reduce Motion PASS；30 分钟 CPU PASS、RSS REVIEW ACCEPTED；真实登录项 NOT_RUN，延期至 Day 7 installed/signed 环境；截图 draft/checklist 已接受，最终截图/GIF PENDING（D7-07）'
+    else:
+        phase_a_note = '既有产品验收保持；D6 review、辅助功能、设置与持续性能收尾进行中，等待负责人 review'
+        manual_note += '；D6 VoiceOver/键盘/Reduce Motion/真实登录项待负责人验收，持续测量见 D6 报告'
 lines=['# MacSoul 当前状态','', '> 此页由 `python3 scripts/generate_status.py` 从 `tasks.json` 生成；只编辑账本。','',
        f'- Phase A: '+', '.join(f"{t['id']}={t['status']}" for t in data['tasks'] if t['id'].startswith('A')),
        f'- 原始计划验收：{points}/76 点（{points/76:.1%}）',
@@ -89,9 +100,10 @@ lines=['# MacSoul 当前状态','', '> 此页由 `python3 scripts/generate_statu
        '- D3 本轮：' + ', '.join(f"{t['id']}={t['status']}" for t in day3),
        '- D4 本轮：' + ', '.join(f"{t['id']}={t['status']}" for t in day4),
        '- D5 本轮：' + ', '.join(f"{t['id']}={t['status']}" for t in data['tasks'] if t['id'].startswith('D5-')),
+       '- D6 本轮：' + ', '.join(f"{t['id']}={t['status']}" for t in day6),
        '- 执行顺序：' + ('负责人批准 Cleaner 只读扫描先于 AI 配额；原始计划、点数和依赖历史保留' if cleaner_started else '沿用原始计划；按负责人本轮授权执行'),
-       '- Build/Unit：' + ('见 `reports/day-5-performance-hardening-2026-10-04.md` 与 `.artifacts/verification.json`' if hardening_started else '见 `reports/day-4-ai-quota-2026-10-03.md` 与 `.artifacts/verification.json`' if ai_started else '见 `reports/day-5-cleaner-readonly-2026-10-02.md` 与 `.artifacts/verification.json`' if cleaner_started else '见 `reports/day-3-network-2026-10-02.md` 与 `.artifacts/verification.json`' if network_started else '见 `reports/day-3-dev-environment-2026-09-29.md` 与 `.artifacts/verification.json`' if dev_started else '见 `reports/day-2-system-details-2026-09-29.md` 与 `.artifacts/verification.json`' if system_details_started else '见 `reports/day-2-system-soul-memory-closeout-2026-09-29.md` 与 `.artifacts/verification.json`' if day2_started else '见 `reports/phase-a-visual-closeout-2026-09-28.md` 与 `.artifacts/verification.json`'),
-       '- Manual UI：' + manual_note + ('；本轮 Performance 状态见 D5 报告；Claude subscription quota、App Store Connect privacy validation：NOT_RUN' if hardening_started else '；Performance、真实 sleep/wake、Claude subscription quota、App Store Connect privacy validation：NOT_RUN' if ai_accepted else '；Performance/真实 AI Provider：NOT_RUN'),'',
+       '- Build/Unit：' + ('见 `reports/day-6-review-hardening-2026-10-07.md` 与 `.artifacts/verification.json`' if day6_started else '见 `reports/day-5-performance-hardening-2026-10-04.md` 与 `.artifacts/verification.json`' if hardening_started else '见 `reports/day-4-ai-quota-2026-10-03.md` 与 `.artifacts/verification.json`' if ai_started else '见 `reports/day-5-cleaner-readonly-2026-10-02.md` 与 `.artifacts/verification.json`' if cleaner_started else '见 `reports/day-3-network-2026-10-02.md` 与 `.artifacts/verification.json`' if network_started else '见 `reports/day-3-dev-environment-2026-09-29.md` 与 `.artifacts/verification.json`' if dev_started else '见 `reports/day-2-system-details-2026-09-29.md` 与 `.artifacts/verification.json`' if system_details_started else '见 `reports/day-2-system-soul-memory-closeout-2026-09-29.md` 与 `.artifacts/verification.json`' if day2_started else '见 `reports/phase-a-visual-closeout-2026-09-28.md` 与 `.artifacts/verification.json`'),
+       '- Manual UI：' + manual_note + ('；本轮 Performance 状态见 D6 报告；Claude subscription quota、App Store Connect privacy validation：NOT_RUN' if day6_started else '；本轮 Performance 状态见 D5 报告；Claude subscription quota、App Store Connect privacy validation：NOT_RUN' if hardening_started else '；Performance、真实 sleep/wake、Claude subscription quota、App Store Connect privacy validation：NOT_RUN' if ai_accepted else '；Performance/真实 AI Provider：NOT_RUN'),'',
        '## 未完成任务','', '| ID | 原始日 | 点数 | 状态 | 任务 |','|---|---:|---:|---|---|']
 for t in original:
     if t['status']!='done': lines.append(f"| {t['id']} | {t['original_day']} | {t['original_points']} | {t['status']} | {t['title'].replace('|','/')} |")

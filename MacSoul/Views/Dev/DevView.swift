@@ -129,13 +129,14 @@ struct DevView: View {
 private struct PortTable: View {
     @Environment(\.macSoulLanguage) private var language
     let items: [LogicalListener]
+    @State private var selection: LogicalListener.ID?
 
     private var copyHelp: String {
         language == .english ? "Copy port or PID" : "复制端口或 PID"
     }
 
     var body: some View {
-        Table(items) {
+        Table(items, selection: $selection) {
             TableColumn(language.text("Port")) { item in
                 Text(String(item.port)).monospacedDigit().lineLimit(1)
             }

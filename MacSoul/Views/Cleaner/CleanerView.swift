@@ -13,7 +13,7 @@ struct CleanerView: View {
                     Spacer()
                     if store.snapshot.cleaner.mode == .live {
                         if store.snapshot.cleaner.state == .scanning {
-                            ProgressView().controlSize(.small)
+                            ProgressView().controlSize(.small).accessibilityLabel(language.cleanerText("Scanning…"))
                             Button(language.cleanerText("Cancel scan")) { store.cancelCleaner() }
                         } else {
                             Button(language.cleanerText(store.snapshot.cleaner.state == .notRun ? "Scan" : "Rescan")) { store.scanCleaner() }

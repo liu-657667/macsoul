@@ -86,6 +86,11 @@ struct QuotaWindowView: View {
                 ProgressView(value: value.remainingProgress)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(language.text(window.kind.label))
+        .accessibilityValue(AccessibilityPresentation.quotaValue(window: window, now: now,
+            language: language, presentation: presentation)
+            + (presentation == .detail ? window.state.value.map { " " + fullResetLabel(for: $0) } ?? "" : ""))
     }
 
     private var isAbnormal: Bool {
