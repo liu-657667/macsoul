@@ -141,13 +141,14 @@ struct UnavailableProvider: SnapshotProvider {
     private var visibleSystemWindows: Set<UUID> = []
     private var visibleDevWindows: Set<UUID> = []
     private var sleeping = false
+    private var terminating = false
     @Published private(set) var connectivityEnabled: Bool
     private let networkPath: (any NetworkPathProviding)?
     private let networkHTTP: any NetworkHTTPClient
     private let networkLocal: any LocalNetworkProviding
     private lazy var networkMonitor = NetworkMonitor(path: networkPath, client: networkHTTP, local: networkLocal,
         onSnapshot: { [weak self] value in
-            guard let self, self.systemMode == .live else { return }
+            guard let self, self.systemMode == .live, !self.sleeping, !self.terminating else { return }
             var current = self.snapshot
             current.network = value
             self.snapshot = current
@@ -155,7 +156,7 @@ struct UnavailableProvider: SnapshotProvider {
     private let cleanerScanner: CleanerScanner
     private let cleanerDescriptors: [CleanerDescriptor]
     private lazy var cleanerSession = CleanerSession(scanner: cleanerScanner, descriptors: cleanerDescriptors) { [weak self] value in
-        guard let self, self.systemMode == .live else { return }
+        guard let self, self.systemMode == .live, !self.sleeping, !self.terminating else { return }
         var current = self.snapshot
         current.cleaner = value
         self.snapshot = current
@@ -170,16 +171,16 @@ struct UnavailableProvider: SnapshotProvider {
     var cleanerPreviewRunning: Bool { cleanerPreviewSession.isRunning }
     var cleanerRunning: Bool { cleanerSession.isRunning }
     func scanCleaner() {
-        if systemMode == .live && !sleeping && !cleanerPreviewRunning && cleanerPreviewDestination == nil { cleanerSession.start() }
+        if systemMode == .live && !sleeping && !terminating && !cleanerPreviewRunning && cleanerPreviewDestination == nil { cleanerSession.start() }
     }
     func openCleanerPreview(_ category: CleanerCategory) {
-        guard systemMode == .live, !sleeping, !cleanerRunning,
+        guard systemMode == .live, !sleeping, !terminating, !cleanerRunning,
               snapshot.cleaner.categories.contains(category), CleanerPreviewBoundary.resolvedRoot(for: category) != nil else { return }
         cleanerPreviewDestination = .directory(category)
         cleanerPreviewSession.open(category)
     }
     func openDockerPreview() {
-        guard systemMode == .live, !sleeping, !cleanerRunning, let value = snapshot.cleaner.docker else { return }
+        guard systemMode == .live, !sleeping, !terminating, !cleanerRunning, let value = snapshot.cleaner.docker else { return }
         cleanerPreviewSession.close(); cleanerPreview = nil
         cleanerPreviewDestination = .docker(value) // shared logical rows only, never a filesystem/CLI query
     }
@@ -200,7 +201,7 @@ struct UnavailableProvider: SnapshotProvider {
     private let quotaClock: any QuotaClock
     @Published private(set) var quotaAlertEvents: [QuotaAlertEvent] = []
     private lazy var aiQuotaMonitor = AIQuotaMonitor(codex: codexQuota, claude: claudeQuota, clock: quotaClock) { [weak self] value, alerts in
-        guard let self, self.systemMode == .live, !self.sleeping else { return }
+        guard let self, self.systemMode == .live, !self.sleeping, !self.terminating else { return }
         var current = self.snapshot
         current.quotas = value.items
         current.quotaDetails = value.details
@@ -211,8 +212,21 @@ struct UnavailableProvider: SnapshotProvider {
     var quotaStarts: Int { aiQuotaMonitor.starts }
     func waitForQuotaStop() async { await aiQuotaMonitor.waitForStop() }
     func stopQuotaForTermination() async {
-        aiQuotaMonitor.stop()
-        await aiQuotaMonitor.waitForStop()
+        stopForTermination()
+        await waitForCollectorsToStop()
+    }
+    func stopForTermination() {
+        guard !terminating else { return }
+        terminating = true
+        clockSubscription?.cancel(); clockSubscription = nil
+        lifecycleSubscriptions.removeAll()
+        sensorHub.stop(); devMonitor.stop(); networkMonitor.stop(); aiQuotaMonitor.stop()
+        cleanerSession.suspend(); closeCleanerPreview(); quotaAlertEvents = []
+    }
+    func waitForCollectorsToStop() async {
+        await sensorHub.waitForStop(); await devMonitor.waitForStop()
+        await networkMonitor.waitForStop(); await aiQuotaMonitor.waitForStop()
+        await cleanerSession.waitForStop(); await cleanerPreviewSession.waitForStop()
     }
 
     private let sensorSampler: any SystemSampling
@@ -220,17 +234,25 @@ struct UnavailableProvider: SnapshotProvider {
     private lazy var sensorHub = SensorHub(sampler: sensorSampler, details: detailSampler,
         onReading: { [weak self] reading, soul in self?.applyLive(reading: reading, soul: soul) },
         onDetails: { [weak self] update in self?.applyDetail(update) })
-    private lazy var devMonitor = DevMonitor(
+    private let devRuntimes: RuntimeDetector
+    private let devPorts: PortDetector
+    private lazy var devMonitor = DevMonitor(runtimes: devRuntimes, ports: devPorts,
         onRuntimes: { [weak self] reading in self?.applyDevRuntimes(reading) },
         onPorts: { [weak self] reading in self?.applyDevPorts(reading) })
     var sensorStarts: Int { sensorHub.starts }
     var sensorInterval: TimeInterval { sensorHub.samplingInterval }
     var devStarts: Int { devMonitor.starts }
     var devPortInterval: TimeInterval { devMonitor.portInterval }
+    var systemSamplingTier: SamplingTier { sensorHub.samplingTier }
+    var devSamplingTier: SamplingTier { devMonitor.samplingTier }
+    var collectorsRunning: (system: Bool, dev: Bool, network: Bool, quota: Bool) {
+        (sensorHub.isRunning, devMonitor.isRunning, networkMonitor.isRunning, aiQuotaMonitor.isRunning)
+    }
 
     init(provider: any SnapshotProvider = MockProvider(fixture: .healthy),
          sampler: any SystemSampling = NativeSystemSampler(),
          details: any SystemDetailSampling = NativeSystemDetailSampler(),
+         devRuntimes: RuntimeDetector = RuntimeDetector(), devPorts: PortDetector = PortDetector(),
          networkPath: (any NetworkPathProviding)? = nil,
          networkHTTP: any NetworkHTTPClient = EphemeralNetworkHTTPClient(),
          networkLocal: any LocalNetworkProviding = NativeLocalNetworkProvider(),
@@ -240,6 +262,7 @@ struct UnavailableProvider: SnapshotProvider {
          codexQuota: (any LiveQuotaProviding)? = nil, claudeQuota: (any LiveQuotaProviding)? = nil,
          quotaClock: any QuotaClock = SystemQuotaClock(), now: Date = Date()) {
         self.codexQuota = codexQuota ?? CodexQuotaProvider()
+        self.devRuntimes = devRuntimes; self.devPorts = devPorts
         self.claudeQuota = claudeQuota ?? ClaudeQuotaProvider()
         self.quotaClock = quotaClock
         self.cleanerPreviewScanner = cleanerPreviewScanner
@@ -252,6 +275,7 @@ struct UnavailableProvider: SnapshotProvider {
         previewFixture = (provider as? MockProvider)?.fixture
         displayNow = now
         snapshot = provider.snapshot(now: now)
+        updateSamplingPolicy()
         clockSubscription = Timer.publish(every: 60, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] date in
@@ -264,7 +288,7 @@ struct UnavailableProvider: SnapshotProvider {
             .sink { [weak self] _ in Task { @MainActor in self?.resumeAfterWake() } }
             .store(in: &lifecycleSubscriptions)
         NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)
-            .sink { [weak self] _ in Task { @MainActor in self?.cancelCleaner(); self?.closeCleanerPreview(); self?.aiQuotaMonitor.stop() } }
+            .sink { [weak self] _ in Task { @MainActor in self?.stopForTermination() } }
             .store(in: &lifecycleSubscriptions)
     }
     func advanceDisplayClock(now: Date) { displayNow = now }
@@ -308,7 +332,7 @@ struct UnavailableProvider: SnapshotProvider {
     }
 
     func setSystemMode(_ mode: SystemMode) {
-        guard mode != systemMode else { return }
+        guard !terminating, mode != systemMode else { return }
         if mode == .preview { cleanerSession.resetForPreview(); closeCleanerPreview(); aiQuotaMonitor.stop(); quotaAlertEvents = [] }
         systemMode = mode
         refresh()
@@ -317,6 +341,8 @@ struct UnavailableProvider: SnapshotProvider {
     }
 
     func setWindow(_ id: UUID, visible: Bool, section: AppSection) {
+        visibleSystemWindows.remove(id)
+        visibleDevWindows.remove(id)
         if visible {
             visibleWindows.insert(id)
             if section == .system { visibleSystemWindows.insert(id) }
@@ -326,8 +352,7 @@ struct UnavailableProvider: SnapshotProvider {
             visibleSystemWindows.remove(id)
             visibleDevWindows.remove(id)
         }
-        sensorHub.systemPageVisible = !visibleSystemWindows.isEmpty
-        devMonitor.devPageVisible = !visibleDevWindows.isEmpty
+        updateSamplingPolicy()
     }
 
     func setWindowSection(_ id: UUID, section: AppSection) {
@@ -336,8 +361,12 @@ struct UnavailableProvider: SnapshotProvider {
         else { visibleSystemWindows.remove(id) }
         if section == .dev { visibleDevWindows.insert(id) }
         else { visibleDevWindows.remove(id) }
-        sensorHub.systemPageVisible = !visibleSystemWindows.isEmpty
-        devMonitor.devPageVisible = !visibleDevWindows.isEmpty
+        updateSamplingPolicy()
+    }
+
+    private func updateSamplingPolicy() {
+        sensorHub.samplingTier = .resolve(mainVisible: !visibleWindows.isEmpty, relevantVisible: !visibleSystemWindows.isEmpty)
+        devMonitor.samplingTier = .resolve(mainVisible: !visibleWindows.isEmpty, relevantVisible: !visibleDevWindows.isEmpty)
     }
 
     func setConnectivityEnabled(_ enabled: Bool) {
@@ -351,21 +380,21 @@ struct UnavailableProvider: SnapshotProvider {
     func refreshDev() { if systemMode == .live && !sleeping { devMonitor.refresh() } }
 
     private func applyDevRuntimes(_ reading: RuntimeReading) {
-        guard systemMode == .live && !sleeping else { return }
+        guard systemMode == .live && !sleeping && !terminating else { return }
         var current = snapshot
         current.runtimeReading = reading
         snapshot = current
     }
 
     private func applyDevPorts(_ reading: PortReading) {
-        guard systemMode == .live && !sleeping else { return }
+        guard systemMode == .live && !sleeping && !terminating else { return }
         var current = snapshot
         current.portReading = reading
         snapshot = current
     }
 
     private func applyLive(reading: SystemReading, soul: SoulStatus) {
-        guard systemMode == .live && !sleeping else { return }
+        guard systemMode == .live && !sleeping && !terminating else { return }
         var current = snapshot
         current.cpu = PercentMetric(usedPercent: reading.cpuPercent)
         current.memoryUsed = PercentMetric(usedPercent: reading.memory?.usedPercent)
@@ -378,7 +407,7 @@ struct UnavailableProvider: SnapshotProvider {
     }
 
     private func applyDetail(_ update: SystemDetailUpdate) {
-        guard systemMode == .live && !sleeping else { return }
+        guard systemMode == .live && !sleeping && !terminating else { return }
         var current = snapshot
         switch update {
         case .disk(let reading):
@@ -402,8 +431,9 @@ struct UnavailableProvider: SnapshotProvider {
     }
 
     func suspendForSleep() {
+        guard !sleeping, !terminating else { return }
         closeCleanerPreview()
-        cleanerSession.cancel()
+        cleanerSession.suspend()
         sleeping = true
         sensorHub.stop()
         devMonitor.stop()
@@ -413,6 +443,7 @@ struct UnavailableProvider: SnapshotProvider {
     }
 
     func resumeAfterWake() {
+        guard sleeping, !terminating else { return }
         sleeping = false
         if systemMode == .live { sensorHub.start(); devMonitor.start(); networkMonitor.start(probesEnabled: connectivityEnabled); aiQuotaMonitor.start() }
     }

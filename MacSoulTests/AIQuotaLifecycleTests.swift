@@ -240,6 +240,34 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
         let opens = await fake.counts().0; XCTAssertEqual(opens, 0)
         provider.stop(); await provider.waitForStop()
     }
+    func testCodex01600Accepted() async throws { try await assertVerifiedVersion("0.160.0") }
+    func testCodex01601Accepted() async throws { try await assertVerifiedVersion("0.160.1") }
+    private func assertVerifiedVersion(_ version: String) async throws {
+        let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
+        let provider = CodexQuotaProvider(approved: true, clock: clock,
+                                         versionLookup: { version }, makeTransport: { fake })
+        try await establish(provider, fake)
+        XCTAssertEqual(provider.detail.version, version)
+        XCTAssertEqual(provider.detail.connection, .available)
+        XCTAssertFalse(provider.item.entirelyUnavailable)
+        let methods = await fake.methods()
+        XCTAssertEqual(methods, ["initialize", "initialized", "account/rateLimits/read"])
+        provider.stop(); await provider.waitForStop()
+    }
+    func testCodex01602Rejected() async { await assertUnverifiedVersion("0.160.2") }
+    func testCodex01610Rejected() async { await assertUnverifiedVersion("0.161.0") }
+    func testMalformedCodexVersionRejected() async { await assertUnverifiedVersion("codex-cli 0.160.1") }
+    func testMissingCodexVersionRejected() async { await assertUnverifiedVersion(nil) }
+    private func assertUnverifiedVersion(_ version: String?) async {
+        let fake = FakeQuotaTransport()
+        let provider = CodexQuotaProvider(approved: true, versionLookup: { version }, makeTransport: { fake })
+        provider.start()
+        await wait { provider.detail.connection == .unavailable }
+        XCTAssertTrue(provider.item.entirelyUnavailable)
+        let opens = await fake.counts().0
+        XCTAssertEqual(opens, 0)
+        provider.stop(); await provider.waitForStop()
+    }
     func testNativeFactoryInUnitTestHostCannotReadOwnerAccount() async {
         let provider = CodexQuotaProvider.nativeLive()
         provider.start()
@@ -441,5 +469,198 @@ final class CodexNativePipeFixtureTests: XCTestCase {
             } catch { }
             await transport.close()
         }
+    }
+}
+
+private actor HardeningSystemSampler: SystemSampling {
+    private(set) var active = 0
+    private(set) var maximumActive = 0
+    func start() { active += 1; maximumActive = max(maximumActive, active) }
+    func stop() { active -= 1 }
+    func sample() -> SystemReading { SystemReading(cpuPercent: nil, memory: nil, pressure: .unknown) }
+}
+private actor HardeningDetailSampler: SystemDetailSampling {
+    func start() { }
+    func stop() { }
+    func sampleDisk(now: Date) -> DiskReading { .unavailable(sampledAt: now) }
+    func sampleBattery(now: Date) -> BatteryReading { .notPresent(sampledAt: now) }
+    func sampleProcesses(now: Date, uptime: TimeInterval) -> ProcessReading { .available([], sampledAt: now) }
+}
+private actor HardeningDevRunner: ShellRunning {
+    var failPorts = false
+    func fail() { failPorts = true }
+    func run(_ command: ShellCommand) throws -> ShellResult {
+        if command.executableURL.lastPathComponent == "lsof", failPorts { throw ShellRunnerError.timeout }
+        return ShellResult(stdout: "", stderr: "", exitCode: 0, terminationReason: .exit, outputTruncated: false, duration: 0)
+    }
+}
+@MainActor final class PerformanceLifecycleIntegrationTests: XCTestCase {
+    private func store(path: FakeNetworkPath? = nil,
+                       sampler: HardeningSystemSampler = HardeningSystemSampler(),
+                       runner: HardeningDevRunner = HardeningDevRunner(),
+                       codex: FixtureQuotaProvider? = nil,
+                       scanner: CleanerScanner = CleanerScanner()) -> AppStore {
+        AppStore(sampler: sampler, details: HardeningDetailSampler(),
+                 devRuntimes: RuntimeDetector(runner: runner, environment: [:], home: URL(fileURLWithPath: "/MacSoul-Test-No-Home")),
+                 devPorts: PortDetector(runner: runner), networkPath: path ?? FakeNetworkPath(),
+                 networkHTTP: NoQuotaTestHTTP(), networkLocal: FakeLocalNetwork(),
+                 cleanerScanner: scanner, codexQuota: codex ?? FixtureQuotaProvider(.codex), claudeQuota: FixtureQuotaProvider(.claude))
+    }
+    private func wait(_ condition: @escaping () -> Bool) async {
+        for _ in 0..<10_000 { if condition() { return }; await Task.yield() }
+        XCTFail("Injected work did not complete")
+    }
+    func testSystemBackgroundMenuAndReopenPolicyWithoutExtraCollectors() async {
+        let store = store(), id = UUID()
+        store.setSystemMode(.live)
+        XCTAssertEqual(store.sensorInterval, 10)
+        for _ in 0..<10 {
+            store.setWindow(id, visible: true, section: .system)
+            XCTAssertEqual(store.sensorInterval, 1)
+            store.setWindowSection(id, section: .overview)
+            XCTAssertEqual(store.sensorInterval, 5)
+            store.setWindow(id, visible: false, section: .overview)
+            XCTAssertEqual(store.sensorInterval, 10)
+        }
+        XCTAssertEqual(store.sensorStarts, 1); XCTAssertEqual(store.devStarts, 1)
+        XCTAssertEqual(store.networkStarts, 1); XCTAssertEqual(store.quotaStarts, 1)
+        store.setSystemMode(.preview); await store.waitForCollectorsToStop()
+    }
+    func testMultipleMainWindowsResolveRelevantPolicyAndHiddenWindowCannotPromote() async {
+        let store = store(), first = UUID(), second = UUID()
+        store.setWindow(first, visible: true, section: .overview)
+        store.setWindow(second, visible: true, section: .system)
+        XCTAssertEqual(store.systemSamplingTier, .foregroundRelevant)
+        store.setWindow(second, visible: true, section: .dev)
+        XCTAssertEqual(store.systemSamplingTier, .foregroundBackground)
+        XCTAssertEqual(store.devSamplingTier, .foregroundRelevant)
+        store.setWindow(second, visible: false, section: .system)
+        XCTAssertEqual(store.systemSamplingTier, .foregroundBackground)
+        XCTAssertEqual(store.devSamplingTier, .foregroundBackground)
+        store.setWindowSection(second, section: .system)
+        XCTAssertEqual(store.systemSamplingTier, .foregroundBackground)
+        store.setWindow(first, visible: false, section: .overview)
+        XCTAssertEqual(store.systemSamplingTier, .menuBarOnly)
+        await store.stopQuotaForTermination()
+    }
+    func testDevPageFastPortsMenuBackgroundAndAIIntervalUnchanged() async {
+        let store = store(), id = UUID()
+        store.setSystemMode(.live)
+        store.setWindow(id, visible: true, section: .dev)
+        XCTAssertEqual(store.devPortInterval, 10)
+        XCTAssertEqual(store.sensorInterval, 5)
+        store.setWindowSection(id, section: .ai)
+        XCTAssertEqual(store.devPortInterval, 60)
+        XCTAssertEqual(CodexQuotaProvider.verificationInterval, 240)
+        store.setWindow(id, visible: false, section: .ai)
+        XCTAssertEqual(store.devPortInterval, 60)
+        XCTAssertEqual(store.devSamplingTier, .menuBarOnly)
+        store.setSystemMode(.preview); await store.waitForCollectorsToStop()
+    }
+    func testLivePreviewRoundTripSingleActiveSourceNoCleanerAutoScan() async {
+        let sampler = HardeningSystemSampler(), scanner = CleanerScanner()
+        let store = store(sampler: sampler, scanner: scanner), id = UUID()
+        for _ in 0..<3 {
+            store.setSystemMode(.live); store.setSystemMode(.live)
+            store.setWindow(id, visible: true, section: .cleaner)
+            XCTAssertEqual(store.snapshot.cleaner.state, .notRun)
+            XCTAssertFalse(store.cleanerRunning); XCTAssertFalse(store.cleanerPreviewRunning)
+            store.setSystemMode(.preview)
+            await store.waitForCollectorsToStop()
+            XCTAssertTrue(store.snapshot.quotas.allSatisfy { $0.mode == .mock })
+            XCTAssertFalse(store.collectorsRunning.system); XCTAssertFalse(store.collectorsRunning.dev)
+            XCTAssertFalse(store.collectorsRunning.network); XCTAssertFalse(store.collectorsRunning.quota)
+        }
+        XCTAssertEqual(store.sensorStarts, 3); XCTAssertEqual(store.devStarts, 3)
+        XCTAssertEqual(store.networkStarts, 3); XCTAssertEqual(store.quotaStarts, 3)
+        let maximum = await sampler.maximumActive, scans = await scanner.starts
+        XCTAssertLessThanOrEqual(maximum, 1); XCTAssertEqual(scans, 0)
+    }
+    func testSleepStopsEverythingWakeStartsOncePreviewWakeDoesNothing() async {
+        let store = store()
+        store.setSystemMode(.live)
+        store.suspendForSleep(); store.suspendForSleep()
+        await store.waitForCollectorsToStop()
+        XCTAssertFalse(store.collectorsRunning.system); XCTAssertFalse(store.collectorsRunning.dev)
+        XCTAssertFalse(store.collectorsRunning.network); XCTAssertFalse(store.collectorsRunning.quota)
+        XCTAssertTrue(store.snapshot.quotas.allSatisfy(\.entirelyUnavailable))
+        store.resumeAfterWake(); store.resumeAfterWake()
+        XCTAssertEqual(store.sensorStarts, 2); XCTAssertEqual(store.devStarts, 2)
+        XCTAssertEqual(store.networkStarts, 2); XCTAssertEqual(store.quotaStarts, 2)
+        XCTAssertEqual(store.snapshot.cleaner.state, .notRun)
+        store.setSystemMode(.preview); await store.waitForCollectorsToStop()
+        store.suspendForSleep(); store.resumeAfterWake()
+        XCTAssertEqual(store.sensorStarts, 2); XCTAssertEqual(store.quotaStarts, 2)
+    }
+    func testNetworkPathEventDoesNotRestartOtherModulesOrScan() async {
+        let path = FakeNetworkPath(), scanner = CleanerScanner(), store = store(path: path, scanner: scanner)
+        store.setSystemMode(.live)
+        path.send(NetworkPathReading(state: .unsatisfied))
+        XCTAssertEqual(store.snapshot.network.path.state, .unsatisfied)
+        XCTAssertEqual(store.sensorStarts, 1); XCTAssertEqual(store.devStarts, 1)
+        XCTAssertEqual(store.quotaStarts, 1); XCTAssertEqual(store.networkStarts, 1)
+        XCTAssertFalse(store.cleanerRunning)
+        let scans = await scanner.starts; XCTAssertEqual(scans, 0)
+        store.setSystemMode(.preview); await store.waitForCollectorsToStop()
+    }
+    func testRetiredQuotaAndPathCallbacksCannotLeakAfterSleepOrPreview() async {
+        let path = FakeNetworkPath(), codex = FixtureQuotaProvider(.codex), store = store(path: path, codex: codex)
+        store.setSystemMode(.live)
+        let oldPath = path.receive, oldQuota = codex.onUpdate
+        store.suspendForSleep(); await store.waitForCollectorsToStop(); store.resumeAfterWake()
+        let before = store.snapshot
+        oldPath?(NetworkPathReading(state: .satisfied))
+        oldQuota?(MockProvider(fixture: .quota95).snapshot(now: Date()).quotas[0], codex.detail)
+        XCTAssertEqual(store.snapshot.network, before.network)
+        XCTAssertEqual(store.snapshot.quotas, before.quotas)
+        store.setSystemMode(.preview); await store.waitForCollectorsToStop()
+    }
+    func testTerminationCancelsAllCollectorsAndPreventsResurrection() async {
+        let store = store(); store.setSystemMode(.live)
+        await store.stopQuotaForTermination(); await store.stopQuotaForTermination()
+        XCTAssertFalse(store.collectorsRunning.system); XCTAssertFalse(store.collectorsRunning.dev)
+        XCTAssertFalse(store.collectorsRunning.network); XCTAssertFalse(store.collectorsRunning.quota)
+        store.setSystemMode(.preview); store.setSystemMode(.live); store.resumeAfterWake()
+        XCTAssertEqual(store.sensorStarts, 1); XCTAssertEqual(store.devStarts, 1)
+        XCTAssertEqual(store.quotaStarts, 1); XCTAssertEqual(store.networkStarts, 1)
+        XCTAssertFalse(store.cleanerRunning); XCTAssertNil(store.cleanerPreviewDestination)
+    }
+    func testDisplayClockDoesNotChangeSnapshotOrRestartProviders() async {
+        let store = store(); store.setSystemMode(.live)
+        let quota = store.snapshot.quotas, starts = store.quotaStarts
+        for i in 1...5 { store.advanceDisplayClock(now: Date(timeIntervalSince1970: Double(i * 60))) }
+        XCTAssertEqual(store.snapshot.quotas, quota); XCTAssertEqual(store.quotaStarts, starts)
+        store.setSystemMode(.preview); await store.waitForCollectorsToStop()
+    }
+    func testFailureStatesRemainDistinctInSharedSnapshot() async {
+        let path = FakeNetworkPath(), runner = HardeningDevRunner()
+        await runner.fail()
+        let store = store(path: path, runner: runner)
+        store.setSystemMode(.live); path.send(NetworkPathReading(state: .unsatisfied))
+        await wait { store.snapshot.batteryReading != .unknown && store.snapshot.diskReading != .unknown && store.snapshot.portReading?.state == .timeout }
+        XCTAssertNil(store.snapshot.cpu.usedPercent); XCTAssertNil(store.snapshot.memoryUsed.usedPercent)
+        XCTAssertEqual(store.snapshot.memoryPressure, MemoryPressureLevel.unknown.liveLabel)
+        XCTAssertEqual(store.snapshot.diskEmptyState, "Unavailable")
+        XCTAssertEqual(store.snapshot.batterySummaryOverride, "No battery")
+        XCTAssertEqual(store.snapshot.network.connectivityDisplay(.english), "Offline")
+        XCTAssertTrue(store.snapshot.quotas.allSatisfy(\.entirelyUnavailable))
+        XCTAssertEqual(store.snapshot.cleaner.state, .notRun)
+        store.setSystemMode(.preview); await store.waitForCollectorsToStop()
+    }
+    func testMenuProcessCadenceAndDiskRemainIndependent() {
+        var cadence = DetailCadence()
+        XCTAssertTrue(cadence.due(at: 0, systemVisible: false, mainVisible: false).processes)
+        XCTAssertFalse(cadence.due(at: 15, systemVisible: false, mainVisible: false).processes)
+        XCTAssertTrue(cadence.due(at: 30, systemVisible: false, mainVisible: false).processes)
+        XCTAssertFalse(cadence.due(at: 59, systemVisible: false, mainVisible: false).disk)
+        XCTAssertTrue(cadence.due(at: 60, systemVisible: false, mainVisible: false).disk)
+        XCTAssertTrue(cadence.due(at: 63, systemVisible: true, mainVisible: true).processes)
+    }
+    func testDevSleepsToDeadlineWithoutFiveSecondPolling() {
+        var cadence = DevCadence(); cadence.markPortsSampled(at: 0)
+        XCTAssertEqual(cadence.nextDelay(at: 0, visible: false, lastRuntimeSample: 0), 60)
+        XCTAssertEqual(cadence.nextDelay(at: 0, visible: true, lastRuntimeSample: 0), 10)
+        cadence.markPortsSampled(at: 290)
+        XCTAssertEqual(cadence.nextDelay(at: 290, visible: false, lastRuntimeSample: 0), 10)
     }
 }

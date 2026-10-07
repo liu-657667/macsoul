@@ -20,8 +20,8 @@ import Foundation
     private lazy var powerNotifications = PowerSourceNotifications { [weak self] in self?.refreshBattery() }
     private(set) var starts = 0
     private(set) var samples = 0
-    var systemPageVisible = false { didSet { if oldValue != systemPageVisible { delay?.cancel() } } }
-    var samplingInterval: TimeInterval { systemPageVisible ? 1 : 5 }
+    var samplingTier: SamplingTier = .foregroundBackground { didSet { if oldValue != samplingTier { delay?.cancel() } } }
+    var samplingInterval: TimeInterval { samplingTier.systemInterval }
     var isRunning: Bool { loop != nil }
 
     init(sampler: any SystemSampling = NativeSystemSampler(),
@@ -57,7 +57,8 @@ import Foundation
                 samples += 1
                 onReading(reading, soul.evaluate(cpu: reading.cpuPercent, pressure: reading.pressure))
                 let due = cadence.due(at: ProcessInfo.processInfo.systemUptime,
-                                      systemVisible: systemPageVisible)
+                                      systemVisible: samplingTier == .foregroundRelevant,
+                                      mainVisible: samplingTier != .menuBarOnly)
                 if due.disk { refreshDisk() }
                 if due.processes { refreshProcesses() }
                 if !batteryNotificationsActive,

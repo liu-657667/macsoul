@@ -165,16 +165,32 @@ struct ProcessCPUCalculator {
     }
 }
 
+enum SamplingTier: Equatable {
+    case foregroundRelevant, foregroundBackground, menuBarOnly
+
+    static func resolve(mainVisible: Bool, relevantVisible: Bool) -> Self {
+        mainVisible ? (relevantVisible ? .foregroundRelevant : .foregroundBackground) : .menuBarOnly
+    }
+    var systemInterval: TimeInterval {
+        switch self {
+        case .foregroundRelevant: return 1
+        case .foregroundBackground: return 5
+        case .menuBarOnly: return 10
+        }
+    }
+}
+
 struct DetailCadence {
     var lastDisk: TimeInterval?
     var lastProcesses: TimeInterval?
     var diskInterval: TimeInterval = 60
     var visibleProcessInterval: TimeInterval = 3
     var backgroundProcessInterval: TimeInterval = 15
+    var menuBarProcessInterval: TimeInterval = 30
 
-    mutating func due(at uptime: TimeInterval, systemVisible: Bool) -> (disk: Bool, processes: Bool) {
+    mutating func due(at uptime: TimeInterval, systemVisible: Bool, mainVisible: Bool = true) -> (disk: Bool, processes: Bool) {
         let disk = lastDisk.map { uptime - $0 >= diskInterval || uptime < $0 } ?? true
-        let processInterval = systemVisible ? visibleProcessInterval : backgroundProcessInterval
+        let processInterval = mainVisible ? (systemVisible ? visibleProcessInterval : backgroundProcessInterval) : menuBarProcessInterval
         let processes = lastProcesses.map { uptime - $0 >= processInterval || uptime < $0 } ?? true
         if disk { lastDisk = uptime }
         if processes { lastProcesses = uptime }

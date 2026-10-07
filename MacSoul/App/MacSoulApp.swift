@@ -32,7 +32,7 @@ struct MacSoulApp: App {
     }
 }
 
-// Delay normal App termination until the MacSoul-owned quota child has been reaped.
+// Await all collector/scan teardown, including the MacSoul-owned quota child.
 // Views still never launch or poll providers.
 @MainActor final class QuotaTerminationDelegate: NSObject, NSApplicationDelegate {
     weak var store: AppStore?

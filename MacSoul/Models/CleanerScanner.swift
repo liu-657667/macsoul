@@ -233,6 +233,13 @@ actor CleanerScanner {
         snapshot.docker = value; onSnapshot(snapshot)
     }
     func cancel() { task?.cancel() }
+    func suspend() {
+        task?.cancel(); generation += 1
+        if task != nil {
+            snapshot.state = .cancelled
+            onSnapshot(snapshot)
+        }
+    }
     func resetForPreview() {
         task?.cancel(); generation += 1
         snapshot = .live(categories: descriptors)
