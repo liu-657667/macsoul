@@ -87,3 +87,7 @@ README 发布新能力之前，应检查对应代码是否已进入目标分支�
 不要提交凭据、原始敏感日志、个人配置或构建产物。Git 忽略规则不是完整的泄露检查，提交前仍需检查暂存内容。
 
 提交、推送、打 tag 和 Release 是不同动作，按负责人授权执行。这个开发指南不赋予自动发布权限，也不会在 Agent 会话结束后自动运行每日任务。
+
+## 7. Release candidate
+
+Day 7 构建、unsigned 打包与 Owner signing/notarization plan 见[发布指南](RELEASE.md)。对外贡献见[贡献指南](../CONTRIBUTING.md)，最终事实与未执行项目见[最终报告](../reports/FINAL.md)。签名、公证、安装与发布均需单独授权。
