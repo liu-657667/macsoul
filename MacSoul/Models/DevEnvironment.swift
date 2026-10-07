@@ -105,6 +105,11 @@ struct DevCadence {
         return true
     }
     mutating func markPortsSampled(at now: TimeInterval) { lastPortSample = now }
+    func nextDelay(at now: TimeInterval, visible: Bool, lastRuntimeSample: TimeInterval?) -> TimeInterval {
+        let portDue = (lastPortSample ?? now) + (visible ? Self.visible : Self.background)
+        let runtimeDue = (lastRuntimeSample ?? now) + Self.runtimeTTL
+        return max(0.01, min(portDue, runtimeDue) - now)
+    }
 }
 
 enum ExecutableResolver {

@@ -16,8 +16,9 @@ import Foundation
     private var refreshPending = false
     private var portRefreshPending = false
     private(set) var starts = 0
-    var devPageVisible = false { didSet { if oldValue != devPageVisible { delay?.cancel() } } }
-    var portInterval: TimeInterval { devPageVisible ? DevCadence.visible : DevCadence.background }
+    var samplingTier: SamplingTier = .foregroundBackground { didSet { if oldValue != samplingTier { delay?.cancel() } } }
+    var portInterval: TimeInterval { samplingTier == .foregroundRelevant ? DevCadence.visible : DevCadence.background }
+    var isRunning: Bool { loop != nil }
 
     init(runtimes: RuntimeDetector = RuntimeDetector(), ports: PortDetector = PortDetector(),
          onRuntimes: @escaping (RuntimeReading) -> Void,
@@ -42,11 +43,13 @@ import Foundation
                 if let lastRuntimeSample, now - lastRuntimeSample >= DevCadence.runtimeTTL {
                     sampleRuntimes(refresh: false)
                 }
-                if cadence.portsDue(at: now, visible: devPageVisible) {
+                if cadence.portsDue(at: now, visible: samplingTier == .foregroundRelevant) {
                     samplePorts()
                 }
+                let seconds = cadence.nextDelay(at: now, visible: samplingTier == .foregroundRelevant,
+                                                lastRuntimeSample: lastRuntimeSample)
                 let sleeper = Task {
-                    do { try await Task.sleep(nanoseconds: 5_000_000_000) }
+                    do { try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000)) }
                     catch { return }
                 }
                 delay = sleeper
@@ -58,6 +61,8 @@ import Foundation
             runtimeTask = nil; portTask = nil
         }
     }
+
+    func waitForStop() async { await previousLoop?.value }
 
     func stop() {
         guard let active = loop else { return }

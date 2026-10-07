@@ -9,6 +9,7 @@ import Foundation
     private(set) var snapshot = AIQuotaSnapshot.stopped
     private(set) var starts = 0
     private var active = false
+    var isRunning: Bool { active }
     private var generation = 0
     init(codex: any LiveQuotaProviding, claude: any LiveQuotaProviding,
          clock: any QuotaClock = SystemQuotaClock(),

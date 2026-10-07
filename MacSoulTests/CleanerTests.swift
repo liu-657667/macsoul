@@ -309,3 +309,34 @@ final class CleanerTests: XCTestCase {
         XCTAssertFalse(zh.cleanerSummary(snapshot).contains("可释放"))
     }
 }
+
+private actor SuspendedCleanerLocator: CleanerLocating {
+    var waiting = false
+    private var continuation: CheckedContinuation<Void, Never>?
+    func resolve(_ catalog: [CleanerDescriptor]) async -> [CleanerDescriptor] {
+        waiting = true
+        await withCheckedContinuation { continuation = $0 }
+        return catalog
+    }
+    func release() { continuation?.resume(); continuation = nil }
+}
+
+extension CleanerTests {
+    @MainActor func testSleepInvalidatesCleanerGenerationWithoutRestartingScan() async throws {
+        let fixture = try CleanerFixture(); defer { fixture.cleanup() }
+        let locator = SuspendedCleanerLocator()
+        let scanner = CleanerScanner(locator: locator)
+        var updates: [CleanerSnapshot] = []
+        let session = CleanerSession(scanner: scanner, descriptors: fixture.descriptors) { updates.append($0) }
+        session.start()
+        for _ in 0..<10_000 { if await locator.waiting { break }; await Task.yield() }
+        let waiting = await locator.waiting; XCTAssertTrue(waiting)
+        session.suspend()
+        XCTAssertEqual(updates.last?.state, .cancelled)
+        let count = updates.count
+        await locator.release(); await session.waitForStop()
+        XCTAssertEqual(updates.count, count) // No old traversal result after the sleep boundary.
+        let starts = await scanner.starts; XCTAssertEqual(starts, 1)
+        XCTAssertFalse(session.isRunning)
+    }
+}

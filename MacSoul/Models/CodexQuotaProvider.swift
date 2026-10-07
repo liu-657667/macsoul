@@ -16,6 +16,7 @@ import Foundation
     private(set) var detail = QuotaProviderDetail(provider: .codex, connection: .stopped)
     var onUpdate: ((QuotaItem, QuotaProviderDetail) -> Void)?
     static let verificationInterval: TimeInterval = 240
+    static let supportedVersions: Set<String> = ["0.160.0", "0.160.1"]
     private let makeTransport: () -> any CodexQuotaTransport
     private let clock: any QuotaClock
     private let approved: Bool
@@ -82,8 +83,10 @@ import Foundation
                 let version = await versionLookup()
                 guard !Task.isCancelled, cycle == generation else { return }
                 detail.version = version
-                // Installed capability was verified for this exact version. Others fail closed.
-                guard version == "0.160.0" else { publish(.unavailable, failed: false); return }
+                // Only independently verified exact versions may open a native session.
+                guard let version, Self.supportedVersions.contains(version) else {
+                    publish(.unavailable, failed: false); return
+                }
             }
             await run(cycle: cycle)
         }
