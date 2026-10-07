@@ -16,7 +16,7 @@ import Foundation
     private(set) var detail = QuotaProviderDetail(provider: .codex, connection: .stopped)
     var onUpdate: ((QuotaItem, QuotaProviderDetail) -> Void)?
     static let verificationInterval: TimeInterval = 240
-    static let supportedVersions: Set<String> = ["0.160.0", "0.160.1"]
+    static let supportedVersions: Set<String> = ["0.160.0", "0.160.1", "0.162.0-alpha.2"]
     private let makeTransport: () -> any CodexQuotaTransport
     private let clock: any QuotaClock
     private let approved: Bool

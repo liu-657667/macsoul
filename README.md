@@ -18,11 +18,29 @@ MacSoul 希望把系统状态、AI 编程额度、网络和本地开发环境放
 
 **有趣的反馈是入口，清楚、可信的数据才是目的。**
 
-> **v0.1.0 源码开发版。** 默认 Developer Preview 使用模拟数据；设置中选择「实时系统」后，System、Network、Dev 使用共享实时快照，Codex 使用已验证版本的 App Server。Claude 无已验证的真实配额来源时明确不可用。Cleaner 只在显式 Scan 时只读扫描；没有删除。Day 2–5 的自动与 Owner 人工验收记录已保留，Day 6 已按 Owner 批准的验收边界收口，Day 7 尚未开始；尚未正式签名、notarize 或发布安装包。
+> **v0.1.0 源码开发版。** 默认 Developer Preview 使用模拟数据；设置中选择「实时系统」后，System、Network、Dev 使用共享实时快照，Codex 使用已验证版本的 App Server。Claude 无已验证的真实配额来源时明确不可用。Cleaner 只在显式 Scan 时只读扫描；没有删除。Day 2–5 的自动与 Owner 人工验收记录已保留，Day 6 已按 Owner 批准的验收边界收口，Day 7 本地 unsigned RC 已获 Owner scoped final review 接受；截图集与最终 Live 回归 PASS，CPU PASS、RSS REVIEW ACCEPTED，尚未正式签名、notarize 或发布安装包。
 
 ![MacSoul 产品概念主视觉，非当前 App 截图](assets-source/reference/macsoul-product-hero.png)
 
 > 这张图是早期产品概念，**不是当前 App 截图或功能验收证据**。其中的 VPN、服务延迟和清理按钮尚未实现；图中的指标布局不代表当前实时界面。
+
+## 当前 App 截图
+
+以下为当前候选版的真实 Developer Preview 截图，数据均为内置模拟。AI 配额与重置时间均为 Developer Preview 模拟数据；Cleaner 展示未扫描状态，设置图为上半部分。截图集已完成隐私检查并获 Owner 审核；概念图不替代实机画面。
+
+![MacSoul v0.1.0 Developer Preview 总览，模拟数据](docs/screenshots/v0.1/overview.png)
+
+![MacSoul AI 编程 Developer Preview，模拟配额与重置时间](docs/screenshots/v0.1/ai-coding.png)
+
+*AI 编程 — Developer Preview。配额与重置时间均为 Developer Preview 模拟数据，不代表真实账户。*
+
+![MacSoul Cleaner Developer Preview，只读、模拟、未扫描状态](docs/screenshots/v0.1/cleaner.png)
+
+![MacSoul 菜单栏 Developer Preview，模拟数据与相对倒计时](docs/screenshots/v0.1/menu-bar.png)
+
+更多界面：[设置页上半部分（开发预览）](docs/screenshots/v0.1/settings.png)。
+
+*设置 — 当前为 unsigned Developer Preview。「登录时启动」不可用是该 RC 的诚实状态；真实 Login Item register/unregister 留待 signed/installed 发行环境验证。*
 
 ## 核心功能与当前状态
 
@@ -109,16 +127,20 @@ Day 5 在 Mac14,9、12 logical CPUs、16 GiB、macOS 27.0.1 / Xcode 27、unsigne
 | 阶段 | 交付重点 |
 |---|---|
 | **当前：核心能力已集成** | System / Dev / Network / Codex、只读 Cleaner；Day 6 review、无障碍、设置与持续性能验收已收口 |
-| **下一步：发布准备** | Day 7 尚未开始，后续按授权推进文档、签名/分发验证；当前无正式 DMG/Homebrew 安装 |
+| **下一步：发布准备** | Day 7 本地 unsigned RC 已接受；后续仓库集成与公开签名分发待 Owner 配置，当前无正式 DMG/Homebrew 安装 |
 | **v0.2.0 计划** | 单独设计 Cleaner cleanup/Trash/确认、Maven/Gradle Build Tools、Docker 扩展，不是现有功能 |
 
-[当前任务状态](docs/STATUS.md)是开发进度入口。截图、自动测试、真实功能、性能和全量交互验收分别记录。菜单栏小图标保持 DRAFT；[Day 6 安全 Preview 截图 checklist](reports/day-6-review-hardening-2026-10-07.md)已获接受，最终截图/GIF 待 D7-07，不以概念图代替。
+[当前任务状态](docs/STATUS.md)是开发进度入口。截图、自动测试、真实功能、性能和全量交互验收分别记录。菜单栏小图标保持 DRAFT；[Day 6 安全 Preview 截图 checklist](reports/day-6-review-hardening-2026-10-07.md)已获接受，D7-07 实机截图已采集并完成隐私检查，已获 Owner 审核，不以概念图代替；GIF 为可选。
+
+## 发布候选状态
+
+版本 0.1.0 / build 1 的本地 unsigned Release、zip、解压资源与 SHA-256 核对已通过；截图集 Owner 审核已通过；最终 Owner Live 回归 PASS，CPU PASS、RSS REVIEW ACCEPTED；接受范围仅本地 unsigned RC，Day7 GitHub CI NOT_RUN。构建、测试、打包、签名、公证和公开发布分别记录。见[发布指南](docs/RELEASE.md)、[最终报告](reports/FINAL.md)与[更新记录](CHANGELOG.md)。尚无公开 Release、签名安装包或 Gatekeeper 验证声明。
 
 ## 参与开发
 
 欢迎围绕 macOS / Xcode 兼容性、界面可读性、可复现 Bug 和真实数据接入提交 [Issue](https://github.com/liu-657667/macsoul/issues) 或 Pull Request。反馈请注明环境、分支或提交号、复现步骤，并先移除日志和截图里的敏感信息。
 
-[开发指南](docs/DEVELOPMENT.md) · [产品设计](docs/DESIGN.md) · [技术架构](docs/ARCHITECTURE.md) · [任务状态](docs/STATUS.md)
+[贡献指南](CONTRIBUTING.md) · [开发指南](docs/DEVELOPMENT.md) · [产品设计](docs/DESIGN.md) · [技术架构](docs/ARCHITECTURE.md) · [任务状态](docs/STATUS.md)
 
 使用 Coding Agent 开发时，从 [AGENTS.md](AGENTS.md) 和当前任务开始。普通体验者不需要先阅读七天计划、审查报告或模型配置。
 

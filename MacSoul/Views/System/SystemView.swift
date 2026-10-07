@@ -4,34 +4,48 @@ struct SystemView: View {
     @EnvironmentObject private var store: AppStore
     @Environment(\.macSoulLanguage) private var language
     var body: some View {
-        Form {
-            Section(language.text(store.systemMode == .live ? "System · LIVE" : "System · MOCK DATA")) {
-                LabeledContent(language.text("CPU"), value: store.snapshot.cpu.label)
-                LabeledContent(language.text("Memory used"), value: store.snapshot.memoryUsed.label)
-                if let memory = store.snapshot.memoryBytes {
-                    LabeledContent(language.text("Memory used / total"), value:
-                        String(format: "%.2f / %.2f GiB", memory.usedGiB, memory.totalGiB))
+        ScrollView {
+            VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.section) {
+                GroupBox(language.text(store.systemMode == .live ? "System · LIVE" : "System · MOCK DATA")) {
+                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+                        LabeledContent(language.text("CPU"), value: store.snapshot.cpu.label)
+                        LabeledContent(language.text("Memory used"), value: store.snapshot.memoryUsed.label)
+                        if let memory = store.snapshot.memoryBytes {
+                            LabeledContent(language.text("Memory used / total"), value:
+                                String(format: "%.2f / %.2f GiB", memory.usedGiB, memory.totalGiB))
+                        }
+                        LabeledContent(language.text("Memory pressure"), value: language.text(store.snapshot.memoryPressure))
+                        diskRows
+                        batteryRows
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                LabeledContent(language.text("Memory pressure"), value: language.text(store.snapshot.memoryPressure))
-                diskRows
-                batteryRows
-            }
-            if store.systemMode == .live {
-                Section(language.text("Top Developer Processes")) { processRows }
-                Text(language.text("Process CPU is per logical CPU over two samples; a multicore process can exceed 100%. First CPU sample is unknown."))
+                if store.systemMode == .live {
+                    GroupBox(language.text("Top Developer Processes")) {
+                        VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+                            processRows
+                            Text(language.text("Process CPU is per logical CPU over two samples; a multicore process can exceed 100%. First CPU sample is unknown."))
+                                .foregroundStyle(.secondary)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+                Text(language.text(store.systemMode == .live
+                    ? "CPU is host-wide busy time between samples; first sample is unknown. Memory pressure stays unknown until macOS reports an event."
+                    : "No system sampler is connected."))
                     .foregroundStyle(.secondary)
+                if store.systemMode == .live {
+                    Text(language.text("Memory used estimate: physical RAM minus free and file-backed pages; pressure is independent."))
+                        .foregroundStyle(.secondary)
+                    Text(language.text("Disk uses root volume total minus available bytes; APFS and purgeable space may differ from Storage Settings."))
+                        .foregroundStyle(.secondary)
+                }
             }
-            Text(language.text(store.systemMode == .live
-                ? "CPU is host-wide busy time between samples; first sample is unknown. Memory pressure stays unknown until macOS reports an event."
-                : "No system sampler is connected."))
-                .foregroundStyle(.secondary)
-            if store.systemMode == .live {
-                Text(language.text("Memory used estimate: physical RAM minus free and file-backed pages; pressure is independent."))
-                    .foregroundStyle(.secondary)
-                Text(language.text("Disk uses root volume total minus available bytes; APFS and purgeable space may differ from Storage Settings."))
-                    .foregroundStyle(.secondary)
-            }
-        }.padding().navigationTitle(language.text("System"))
+            .frame(maxWidth: 680, alignment: .topLeading)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .padding(MacSoulTheme.Spacing.section)
+        }
+        .navigationTitle(language.text("System"))
     }
 
     @ViewBuilder private var diskRows: some View {

@@ -242,6 +242,7 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
     }
     func testCodex01600Accepted() async throws { try await assertVerifiedVersion("0.160.0") }
     func testCodex01601Accepted() async throws { try await assertVerifiedVersion("0.160.1") }
+    func testCodex01620Alpha2Accepted() async throws { try await assertVerifiedVersion("0.162.0-alpha.2") }
     private func assertVerifiedVersion(_ version: String) async throws {
         let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
         let provider = CodexQuotaProvider(approved: true, clock: clock,
@@ -256,6 +257,11 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
     }
     func testCodex01602Rejected() async { await assertUnverifiedVersion("0.160.2") }
     func testCodex01610Rejected() async { await assertUnverifiedVersion("0.161.0") }
+    func testUnverifiedCodex0162VariantsAnd0163Rejected() async {
+        for version in ["0.162.0-alpha.1", "0.162.0-alpha.3", "0.162.0", "0.163.0"] {
+            await assertUnverifiedVersion(version)
+        }
+    }
     func testMalformedCodexVersionRejected() async { await assertUnverifiedVersion("codex-cli 0.160.1") }
     func testMissingCodexVersionRejected() async { await assertUnverifiedVersion(nil) }
     private func assertUnverifiedVersion(_ version: String?) async {

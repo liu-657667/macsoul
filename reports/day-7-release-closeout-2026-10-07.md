@@ -1,0 +1,551 @@
+# Day 7 — Final regression / release candidate closeout
+
+## Repository integration — evidence portability repair pending new-head CI
+
+Recorded 2026-10-07T11:12:34.664523+00:00; reference migration reviewed by the Codex repository agent under explicit Owner approval. Baseline integration commit `c1c262f11bdda333e52aa9120e85ecda745bc07b`, branch `feature/day7-release-closeout`, [Draft PR #10](https://github.com/liu-657667/macsoul/pull/10), target `main`. This repair changes evidence references/documentation only. Local RC acceptance remains completed; repository CI acceptance is separate and **PENDING for the repair head**, not PASS in advance.
+
+### Historical CI failures and exact missing references
+
+[Push Verify / macos 37610177778](https://github.com/liu-657667/macsoul/actions/runs/37610177778) and [PR Verify / macos 37610241025](https://github.com/liu-657667/macsoul/actions/runs/37610241025) both concluded **FAILURE** for head `c1c262f11bdda333e52aa9120e85ecda745bc07b`. Actual logs/manifest: doctor, build, unit (365 tests / 0 failures), progress tests and visual assets PASS; ledger exit1 FAIL. Missing private evidence in clean checkout: **15 path/log references, 8 distinct files**, not 15 files. D7-02's tracked report log exists; its private path does not. PR ran merge revision `f2dc4ba11881371aba66c1ad587ae08fbe3be993`, with the accepted source fingerprint. These failures are retained, not relabeled as passing.
+
+| Task | Prior current evidence.path | Prior current evidence.log | Missing in clean checkout |
+|---|---|---|---|
+| D7-01 | `.artifacts/day7/system-layout/test-summary.json` | `.artifacts/day7/system-layout/verify-sanitized.log` | path, log |
+| D7-02 | `.artifacts/day7/system-layout/owner-live-acceptance.json` | `reports/day-7-release-closeout-2026-10-07.md` | path |
+| D7-03 | `.artifacts/day7/owner-final-closeout/owner-acceptance.json` | `.artifacts/day7/owner-final-closeout/register-closeout.log` | path, log |
+| D7-04 | `.artifacts/day7/system-layout/package-audit.json` | `.artifacts/day7/system-layout/archive-sanitized.log` | path, log |
+| D7-05 | `.artifacts/day7/owner-final-closeout/document-review.json` | `.artifacts/day7/owner-final-closeout/register-closeout.log` | path, log |
+| D7-06 | `.artifacts/day7/system-layout/package-audit.json` | `.artifacts/day7/system-layout/archive-sanitized.log` | path, log |
+| D7-07 | `.artifacts/day7/owner-final-closeout/document-review.json` | `.artifacts/day7/owner-final-closeout/register-closeout.log` | path, log |
+| D7-08 | `.artifacts/day7/owner-final-closeout/document-review.json` | `.artifacts/day7/owner-final-closeout/register-closeout.log` | path, log |
+
+### Portable evidence contract and provenance
+
+**Sanitized acceptance record / execution summary, not fabricated machine logs.** This report is the committed static path and log for D7-02–D7-08; each ledger acceptance remains `D7-NN-A`. The sections below independently describe the actual accepted scope. Original private evidence objects (paths, logs, commands, timestamps, source revisions, fingerprints, results and limitations) have been appended intact to each task's existing `evidence_history`. All prior history remains unchanged. Private originals are repository-relative ignored references for local audit, not CI inputs and not uploaded.
+
+Common accepted object for all summaries: local v0.1.0 / build1 System-layout Archive-derived **UNSIGNED / UNNOTARIZED** RC. Source fingerprint `1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067`. Executable SHA256 `7224f208d58b45612c3482b24ee7ec637c4f6c725fb0cde4a49fc4aabac60200`; zip SHA256 `6b541098d2cddcab546fecad4d5a48b09e1c837892ea0af68a912ff634e3f177`, **6,062,427 bytes**. Historical source revision `a0a93a59c1d553a527f75616732fc9b9db90a820` plus its then-working-tree content produced this fingerprint; reference migration does not rewrite historical revisions. Final scoped Owner review recorded **2026-10-07T10:43:18.034361+00:00** accepted this finite local RC only.
+
+### D7-01-A — real automatic build and tests
+
+Two current entries point to ignored `.artifacts/verification.json`: **check=build**, command `./scripts/build.sh`, log `.artifacts/build.log`; **check=unit**, command `./scripts/test.sh`, log `.artifacts/test.log`. Both cover the original full-clean-build/tests acceptance. `verify.sh` writes actual build/unit commands, exit codes, statuses, checked_at, git_revision and working_tree_fingerprint before the ledger check. Fresh CI uses its own manifest, never checks.ledger as self-evidence. These files stay ignored. Current local validation reuses the real manifest recorded **2026-10-07T10:06:02.106456+00:00**, revision `a0a93a59c1d553a527f75616732fc9b9db90a820`, matching fingerprint; build/unit exit0 PASS. No local Swift rerun in this migration.
+
+Historical independent clean build PASS and current-source **365 tests / 0 failures / 0 skips** are retained. Prior original commands: `./scripts/doctor.sh`, `./scripts/build.sh`, `./scripts/test.sh`, progress/ledger checks and `./scripts/verify.sh`, exit0; independent clean-build record in `.artifacts/day7/clean-build.log`. Current-source test summary and verify summary are the two D7-01 private files in the table; original acceptance record dated **2026-10-07T10:07:55.963225+00:00**. Fresh CI times/results must come from its actual manifest/log, not these historical numbers. CI manual_ui/performance/live_provider remain **NOT_RUN**.
+
+### D7-02-A — scoped Owner final Live regression
+
+Actual Owner confirmation recorded **2026-10-07T10:24:07.210291+00:00**: “Live 回归 PASS。Day7 Live 性能已就绪”. System layouts/resizing/scrolling, Network, Dev clipboard-only actions, AI Coding/Overview/Menu Bar consistency, Live main/Menu Bar and normal Quit/reopen PASS; Preview smoke PASS. Earlier unchanged Soul and Cleaner read-only scan/lifecycle/idle acceptance retained; no Cleaner rescan or active traversal required. Honest Claude unavailable and Mock/Live boundaries retained. Original registration `python3 .artifacts/day7/final-performance-closeout.py`, exit0, **2026-10-07T10:30:21.813676+00:00**, records manual approval; it is not an automated UI test. Private original: `.artifacts/day7/system-layout/owner-live-acceptance.json`. CI does not repeat Owner actions. Local scoped review accepted this RC at the common final-review time above.
+
+### D7-03-A — finite performance observation and Owner review
+
+Original native measurement completed with exit0; validity PASS, recorded **2026-10-07T10:30:21.813676+00:00**. Release `-O`, no debugger/Instruments; macOS27.0.1, Mac14,9, 12 logical CPUs, 16 GiB; menu-bar-only Live/Codex active, windows/popovers closed and Cleaner idle. Actual preheat20.004s, formal300.051s, 61 samples/60 valid CPU intervals, no missing samples. Native cumulative user+system CPU deltas use actual monotonic intervals, one logical CPU100%; no core division. RSS uses **decimal MB**, separately from physical footprint. Exactly one owned Codex child throughout, stable identity/PID.
+
+MacSoul CPU avg/p95/max **0.012488% / 0.039502% / 0.063822%: CPU PASS**. RSS start/end/avg/max **100.483 / 79.479 / 88.107 / 100.483 decimal MB**; first/middle/final-third means **93.502 / 89.300 / 81.833 MB**: raw **RSS REVIEW**. **RSS REVIEW ACCEPTED by Owner for this finite v0.1.0 RC observation.** Owner review at **2026-10-07T10:43:18.034361+00:00**: CPU average below0.5%; RSS start/peak slightly above100MB target, average/end below100MB, all below150MB investigation threshold; no obvious sustained RSS/thread growth or further-investigation trigger observed. Targets unchanged; no all-samples-below100MB PASS or claim of no memory leak. No added profiling/stress/rerun. Original registration `python3 .artifacts/day7/owner-final-closeout/register-closeout.py`, exit0, records explicit Owner REVIEW acceptance; ledger PASS describes accepted review, not raw RSS target PASS. Private originals: `.artifacts/day7/final-live-performance.json`, `final-live-performance-context.json`, `final-live-performance-verdict.json`, plus `.artifacts/day7/owner-final-closeout/owner-acceptance.json` and `register-closeout.log`. Existing detailed child/footprint/thread data below remain unchanged.
+
+### D7-04-A and D7-06-A — final package privacy and unsigned distribution plan
+
+Actual Archive static audit **2026-10-07T10:06:14.501432+00:00**, original unsigned no-override Release Archive exit0: `xcodebuild -project MacSoul.xcodeproj -scheme MacSoul -configuration Release -destination generic/platform=macOS -archivePath .artifacts/day7/system-layout/MacSoul.xcarchive CODE_SIGNING_ALLOWED=NO archive`. Effective Release testabilityNO/installed strippingYES/dwarf-with-dsym; actual **Strip count1**. Corrected owner-prefix scanner: **arm64=0, x86_64=0**, original N_SO/N_OSO/N_AST absent; bundle and all zip members owner-prefix0. PrivacyInfo byte-identical: DiskSpace85F4.1, UserDefaultsCA92.1, SystemBootTime35F9.1. ThirdPartyNotices byte-identical; resource bytes match validated Archive; no unwanted files. Generated private dSYM UUIDs match both executable slices; dSYM/Archive/source/tests/logs excluded from zip. Zip is derived solely from the Archive App, independent extraction yields equal hashes for all7App files and executable privacy PASS. Identity is the common final RC above.
+
+Combined package acceptance updated **2026-10-07T10:30:21.813676+00:00** after recorded Preview/Owner smoke and final Live acceptance, exit0 registration; **FINAL UNSIGNED RC PACKAGE PRIVACY = PASS**, Owner accepted at final-review time. Private originals: `.artifacts/day7/system-layout/package-audit.json` and `archive-sanitized.log`. Original recorded command includes formal Archive/static privacy/extraction plus `python3 .artifacts/day7/final-performance-closeout.py` Owner smoke registration. D7-06's original criterion explicitly permits a **plan or completed path**; [release guide](../docs/RELEASE.md) provides the signing/notarization plan. Signing/notarization/Gatekeeper/public release remain NOT_RUN, unsigned zip is not public distribution. No Archive or zip regenerated by this repair.
+
+### D7-05-A — actual version/license/document review
+
+Read-only version/license/document review recorded **2026-10-07T10:43:18.034361+00:00**, original `python3 .artifacts/day7/owner-final-closeout/register-closeout.py`, exit0. App/test version0.1.0/build1 metadata present; [MIT license](../LICENSE), exact packaged [ThirdPartyNotices](../MacSoul/Resources/ThirdPartyNotices.txt), [CHANGELOG](../CHANGELOG.md), [contribution guide](../CONTRIBUTING.md) and [release plan](../docs/RELEASE.md) present/reviewed. Owner accepts the recorded review for the common local RC. Private original `.artifacts/day7/owner-final-closeout/document-review.json` and `register-closeout.log`. This is a document/metadata review, not new signing or release execution.
+
+### D7-07-A — Owner-approved README Mock/Preview screenshots
+
+Privacy/placement review **2026-10-07T08:35:35.392253+00:00**; actual Owner screenshot acceptance **2026-10-07T08:44:13.926832+00:00**, followed by final scoped review at the common final-review time. Overview, AI Coding, Cleaner, Settings and Menu Bar Preview images in `docs/screenshots/v0.1/` integrated into both READMEs. Owner explicitly approved labeled Mock quota/reset/updated values, TEST-NET example IP and README order; Settings unsigned/Login Item unavailable is honest. **GIF optional / NOT_GENERATED; menu icon DRAFT** under existing scope. Original final registration `python3 .artifacts/day7/owner-final-closeout/register-closeout.py`, exit0; private original document-review/register-closeout files as above; actual screenshot review/Owner records also retained in tasks.json. Automatic image validation does not constitute a new human visual acceptance. No Live screenshots or new images added.
+
+### D7-08-A — final report, limitations and scoped acceptance
+
+[FINAL](FINAL.md) contains implemented v0.1 scope (not public release), per-task accepted basis, historical failures/stops, unexecuted/deferred checks and proposed v0.2 items only. Actual read-only document registration **2026-10-07T10:43:18.034361+00:00**, `python3 .artifacts/day7/owner-final-closeout/register-closeout.py`, exit0; Owner scoped final review COMPLETED/ACCEPTED. Private original document-review/register-closeout/owner-acceptance files as above. D7-01–D7-08 stay done; original76/76points, acceptance baseline, dependencies and prior completed statuses unchanged.
+
+Signing/notarization/Gatekeeper/public release/App Store Connect privacy validation/real Claude subscription quota/stress and special validation **NOT_RUN**; signed/installed Login Item **deferred / NOT_RUN**. Natural quota update notification/real critical pressure/quota95 event **NOT_OBSERVED**. Region **NOT_COLLECTED**; Cleaner deletion **NOT_IMPLEMENTED BY DESIGN**. Owner acceptance of a finite local unsigned RC does not expand these boundaries. The fixed D6 STATUS historical summary is intentionally unchanged. New CI acceptance remains pending actual new-head results; no workflow/verifier/generator changes, no merge/tag/Release/signing/notarization or next-version work.
+
+### Actual local portability checks before commit
+
+2026-10-07T11:13:06.295203+00:00: existing STATUS generator exit0, byte-identical output; fingerprint exit0/matches accepted RC; progress positive ledger plus six negative cases exit0 PASS; real tasks.json ledger exit0 PASS (59tasks /76original points), reusing the existing real fingerprint-matched build/unit manifest and logs, not rerunning Swift tests. Existing local-link/fragment method: FINAL5links + Day7report9links, zero missing; diff --check exit0. Static D7 path/log references are actual tracked report files; dynamic D7-01 references remain ignored and produced by verify.sh. Immutable ledger/history/non-D7 task comparison PASS;369protected source/package/history files unchanged, executable/zip hashes and zip size unchanged; sensitive-added-content scan PASS. Only tasks.json and both reports changed; scripts/workflow untouched. Evidence of this migration review stays in ignored `.artifacts/day7/evidence-portability/`. Final clean-checkout proof remains pending new-head CI.
+
+## Current authoritative status — scoped local unsigned RC accepted
+
+Owner final review completed (2026-10-07T10:43:18.034361+00:00): **Owner Live regression PASS; Preview smoke PASS; CPU PASS; RSS REVIEW ACCEPTED; Package privacy PASS. D7-01–D7-08 = done** after separate original-criterion/dependency/evidence review. Current authority: [final checkpoint and per-task decisions](FINAL.md#current-authoritative-checkpoint--owner-scoped-final-review-completed).
+
+Executable `7224f208d58b45612c3482b24ee7ec637c4f6c725fb0cde4a49fc4aabac60200`; zip `6b541098d2cddcab546fecad4d5a48b09e1c837892ea0af68a912ff634e3f177`, **6,062,427 bytes**; source fingerprint `1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067` unchanged. Existing365tests/0failures/0skips, Archive/strip/privacy/extraction and finite300smeasurement are retained previous evidence, not rerun this unit.
+
+CPU avg/p95/max **0.012488% / 0.039502% / 0.063822%**. RSS start/end/avg/max **100.483 / 79.479 / 88.107 / 100.483 decimal MB**; thirds **93.502 / 89.300 / 81.833 MB**. **RSS REVIEW ACCEPTED by Owner for this finite v0.1.0 RC observation.** Raw RSS REVIEW and100MB target/150MB investigation threshold remain unchanged; no leak-absence claim.
+
+No original D7 clause requires CI for this local unsigned RC; Day7 GitHub CI remains **NOT_RUN**, required separately at future PR integration. Signing/notarization/Gatekeeper/public release/App Store Connect/real Claude quota/stress validation **NOT_RUN**; signed/installed Login Item **deferred / NOT_RUN**; natural quota notification/critical pressure/quota95 **NOT_OBSERVED**; Region **NOT_COLLECTED**; Cleaner deletion **NOT_IMPLEMENTED BY DESIGN**. GIF optional/NOT_GENERATED, menu icon DRAFT. Full boundaries and unchanged evidence identities are in FINAL.
+
+This round changes documentation/ledger only. STATUS generated by the existing script; fixed D6 historical summary wording is explicitly qualified in FINAL. No rebuild, zip overwrite, measurement, product change, commit/push/PR/tag or publication. STOP for separate Owner integration/release direction.
+
+Documentation-only closeout checks: STATUS generation / ledger / progress tests / diff exit0;78 local links with0 missing and linked fragments checked;369 protected files unchanged, immutable ledger/history preserved;22 accumulated worktree files, staged0. Evidence: `.artifacts/day7/owner-final-closeout/`. No Swift/build/package/performance rerun.
+
+## Historical chronological checkpoints — earlier PENDING / NOT_RUN are superseded where resolved
+
+The original bodies/results/failures/hashes below are retained in time order. Unknown-version STOP,178owner-path FAIL,false-zero SUPERSEDED correction,ineffective strip override,testability diagnosis/fix,System-layout repair/new identity,Computer Use TOOL FAILURE,accidental Debug launch/correct Archive validation and HeldPipe repetition are historical evidence, not erased by final acceptance.
+
+## Scope / start checkpoint
+
+Branch `feature/day7-release-closeout`, base `a0a93a59c1d553a527f75616732fc9b9db90a820`. Main fast-forward synchronization, expected SHA and clean-tree check PASS; branch absent before creation. D7-01–08 started as doing with history retained. No staging/commit/push/PR/tag/release authorized. Baseline76points preserved; Day2–6 not reopened.
+
+Local macOS27.0.1/26A434, Xcode27.0/27A266a. Installed Codex0.160.1 matches exact supported versions; no new compatibility spike/profile/account read. Day7 GitHub Xcode26.6 CI NOT_RUN.
+
+## D6-F1 — test-only correction
+
+Fixture checks fork success. Only the successfully forked descendant emits stdout readiness and writes the test-owned marker while holding inherited stdout/stderr. Shell cancellation awaits a filesystem extension event and validates marker contents rather than a300ms delay. Codex close awaits descendant stdout. XCTest watchdogs bound readiness/completion; descendant exits naturally after3s, no scanned user PID or descendant termination. Production ShellRunner/Codex transport unchanged. Repetition≥20 pending.
+
+## Executed checkpoints
+
+| Command / checkpoint | Result | Evidence |
+|---|---|---|
+| Independent Debug clean build, Day7 DerivedData | exit0 PASS | `.artifacts/day7/clean-build.log` |
+| First full test build | exit65 FAIL; Data compared with String in new test assertion | `.artifacts/day7/clean-test.log` |
+| Repaired full XCTest | exit0 PASS,363tests/0failures | `.artifacts/day7/clean-test-repaired.log` |
+| Generated Debug Info.plist | version0.1.0/build1 | independent Debug product |
+
+First failure retained; correction is test-only typed Data assertion. Final `.extend` readiness refinement and repeated/final gates pending. No hidden/deleted failed checkpoint.
+
+## Version / licensing / docs
+
+Version0.1.0/build1 on App and test Debug/Release. Generator updated minimally to retain metadata; generated project diff verified to be only version settings. Bundle ID/signing/deployment unchanged. Existing MIT Copyright2026liu-657667 and Phosphor2023notice retained. CHANGELOG Unreleased, CONTRIBUTING and owner-ready RELEASE guide added. README/FINAL remain explicitly pending final acceptance.
+
+## Regression matrix
+
+| Module | Automated coverage | Historical Owner acceptance | Day7 Owner |
+|---|---|---|---|
+| System | native calculations/unknown/cadence/lifecycle fixtures | PASS | PENDING |
+| Soul | thresholds/cooldown/priority/suspend/recovery | PASS | PENDING natural state/Preview |
+| Network | path/IP/proxy/tunnel/probe states/cache/cancellation | PASS | PENDING |
+| Dev | runtime contexts/cache/ports/grouping/copy-only | PASS | PENDING |
+| AI | exact version/mapping/freshness/remaining/shared lifecycle | PASS | PENDING |
+| Cleaner | containment/estimate/Preview/Docker/read-only | PASS | PENDING explicit Owner Scan |
+
+Final automatic source run pending. Historical accepted manual/performance evidence will be carried only by explicitly unchanged-scope review, not reclassified as new runs.
+
+## Performance sanity
+
+NOT_RUN. Final Release bytes,20s warmup,300s observation at~5s using native rusage, Owner-confirmed Live supported Codex, all main/settings windows and popover closed, Cleaner idle. Parent/child CPU/RSS/threads and child count recorded separately. No argv/environment/quota/reset/rawtrace. Historical Day6 RSS REVIEW remains accepted and visible, not target PASS.
+
+## Packaging / privacy
+
+Final unsigned Release/App/zip/extraction/checksum pending. UNNOTARIZED/NOT FOR PUBLIC DISTRIBUTION. Source PrivacyInfo unchanged, exact original3reasons; final packaged byte comparison pending. No Keychain/certificate/account/notary/Gatekeeper action. No `/Applications` install.
+
+## Screenshots / Owner action
+
+Actual final Preview screenshots pending: Overview, AI Coding, Cleaner, Settings, MenuBar required; System/Network/Dev if useful. Native AX channel returned Preview Mock state, screenshot API not yet validated. No fabricated image, sensitive Live capture or broken screenshot links. GIF NOT_GENERATED at checkpoint.
+
+Bundled final Owner checklist: Live System/Network/Dev/AI/Cleaner/MenuBar; RC launch/main/menu/quit/reopen; Preview screenshot privacy/quality/README placement. Login Item only with separately approved installed/signed conditions.
+
+## Remaining statuses
+
+Signing/notarization/real Login Item/public distribution, Day7CI, finalmanual/performance: NOT_RUN. Region NOT_COLLECTED; natural critical/quota95%/quota-update notification NOT_OBSERVED. No artificial CPU/memory/battery/network/quota stress, no system proxy/VPN/DNS/route/accessibility mutation, cleanup NOT_IMPLEMENTED BY DESIGN.
+
+## Historical / Superseded — Final commands / fingerprint / task states
+
+Pending. D7 tasks doing, staged0. Detailed evidence/failure logs in ignored `.artifacts/day7/`; prior manifest/logs/tasks/product hashes preserved in its `prior-checkpoint/`. No commit or external publication.
+
+## Completed automatic checkpoints — before ledger refresh
+
+HeldPipeLifecycleTests repeated20times with native test repetition/relaunch: exit0,60executions/0failures; each of3cases passed20times, no skips. Evidence `.artifacts/day7/held-pipe-20.log` and result bundle. Final readiness uses vnode extension event, not polling or fixed startup delay. Full final-source independent XCTest:363/0 (automated fixtures only).
+
+Initial unsigned Release clean build exit0, universalarm64/x86_64. All81 product source/resource files hash-identical to the base. Only project version metadata, test synchronization and generator/report changes affect verification inputs. App-selected bundled Codex version command returned0.160.1; no quota/account read was executed by the version check.
+
+Native AX returned a real Preview tree with Mock label. Screenshot capture remains pending until final Release launch; AX success alone is not screenshot/UI acceptance. Owner authorized normal exit of the initial Day7 test host and subsequent Day7 test hosts; old Day6 acceptance App retained. No SIGKILL, other App or user process termination.
+
+## Historical / Superseded — Final automatic verification / evidence refresh
+
+Formal doctor/build/test/progress-tests exit0; full363tests/0failures/0skipped. First verify exited1 solely from61stale-fingerprint entries; every product check PASS. Failed manifest/errors retained in `.artifacts/day7/verification-before-refresh.json` and `ledger-before-refresh-errors.log`. Refreshed46actual automatic records and15explicit unchanged-product scope reviews, preserving originals in evidence_history. Historical Owner/performance values are not rerun or upgraded. All81 product/resource hashes remain equal to base.
+
+Refreshed `./scripts/verify.sh` exit0, doctor/build/unit/progress_tests/visual_assets/ledger PASS; explicit progress-tests/verify-progress/diff exit0. Fingerprint `8c99387ca7090664dbfd50d73868fe865bcf3adeec1b86902fb5afaa9221f350`, source revision is base plus Day7 worktree. Xcode26.6Day7CI NOT_RUN.
+
+## Historical / Superseded — Final unsigned package — actual verification
+
+Independent final Release clean build exit0 (`.artifacts/day7/release-final.log`). Final App `.artifacts/day7/release/MacSoul.app`; visible copy `build-preview/MacSoul.Day7.wpl8d2x0/MacSoul.app`. Generated version0.1.0/build1, bundlelocal.macsoul.app, universalarm64/x86_64. No signing/team/deployment/entitlements change.
+
+Zip `.artifacts/day7/release/MacSoul-v0.1.0-unsigned.zip`:6,890,124bytes; SHA256 `142e55c8f6db4541c80dbfc15c5792541dbab895e553e3948840c73f91c974a6`. Executable SHA256 `f58e5531c7517fa77e85af21730fdc901b9a442a387190ae875106bed62645fb`. Ditto extraction into an independent Day7 temporary directory yields identical hashes for all7Appfiles. APPLtype/executable/icon/Assets.car/ThirdPartyNotices/PrivacyInfo checked. No source/log/fixture/JSONpayload content; executable strings contain0absolute owner paths. PrivacyInfo byte-identical, exact3reasons unchanged. ThirdPartyNotices byte-identical. Evidence `.artifacts/day7/package-verification.json`, `package-file-hashes.json`.
+
+UNSIGNED / UNNOTARIZED / NOT FOR PUBLIC DISTRIBUTION. Package launch/manual, final5min measurement and real screenshots still pending at this checkpoint. No Gatekeeper/signing/notary/Keychain action.
+
+## Privacy/document preliminary audit
+
+New/updated docs have no credential/token/private-key/absoluteOwnerpath literals. Email-regex candidates in README are the existing asset `@2x.png` image paths, not addresses. Screenshots are still pending a separate visual privacy audit. No artifacts staged/tracked; no product Swift changed. MIT and Phosphor notices retained.
+
+## Native screenshot checkpoint / Owner handoff
+
+Final Release launched after Owner-authorized normal exit of the old Day6App. Launch executable hash matches packaged finalproduct. Preview Mock badge verified. Native screenshot captured `docs/screenshots/v0.1/overview.png`, visually inspected: actual App only, Mock numeric fixture/TEST-NET exampleIP, no real quota/reset/account/path/proxy/secret. Integrated into bilingual README.
+
+Opening Settings next failed with `native pipe closed`; kernel reset/rebinding also failed. No alternate UI automation or fake image. D7-07 stays doing/OWNER ACTION REQUIRED. Needed files: ai-coding.png, cleaner.png, settings.png, menu-bar.png; optionalsystem/network/dev. AI failure fixture avoids absolute reset timestamps. No Live screenshot. GIF NOT_GENERATED.
+
+### Historical / Superseded — Concentrated final Owner checklist
+
+1. Preview screenshots: required4remainingfiles in `docs/screenshots/v0.1/`, Mock label obvious; no actual quota/reset/publicIP/privatepath/proxy/account. Review existing Overview privacy/quality and final README placement.
+2. Live regression: SystemCPU/memory/disk/battery/developerprocesses update; Networkpath/IPavailability/proxy/tunnel/probe meanings; Devcontexts/listeners/refresh/copyonly; AIsource/verified0.160.1/applicablewindows/remaining/freshness/Claudeunavailable across3surfaces; explicitread-onlyCleanerScan/Preview only byOwner. Record PASS/issue only, no sensitive values. Historical unchanged detailedacceptance need not be repeated.
+3. FinalRC: normal launch/main/MenuBar/Open/normalQuit/reopen, mainclosedbackgroundcontinuation. No executed stop command, stress, systemnetwork/settings mutation.
+4. Performance setup afterthosechecks: Live supportedCodex active, all main/settingswindows/popoverclosed, Cleaneridle, Appresident; reply readiness before300smeasurement. Keep idle/no sleep/modechange duringmeasurement.
+5. RealLoginItem: NOT_RUN absent Owner-authorized installed/signed setup. No system registration/install/signing/account action.
+
+## Historical / Superseded — Current task review state
+
+D7-01/04/05/06/08 verifying; D7-02/03/07 doing. D7-04 current source/docs/package/Overview privacy audit completed, but incoming images must be checked again. D7-06 unsigned package plus complete signingplan satisfies current automatedboundary, real signing/notary remains NOT_RUN. FINAL fact report complete for this pending checkpoint; release decision NOT READY while requiredmanual/performance/screens remain. Staged0, no commit/push/PR/tag/release.
+
+## Historical / Superseded — Final pending-Owner checkpoint
+
+Current-source automatic gates remain PASS:363tests/0failures/0skipped,60HeldPipeexecutions/0failures; source fingerprint unchanged. Seven target documents:67local links/images checked,0missing. Ledger immutable baseline/points/days/dependencies/acceptance definitions and all non-Day7statuses match start snapshot. Diff has15changed/newfiles, no productSwift/resources, staged0, tracked artifacts0. Final audit `.artifacts/day7/final-audit.json`. Generator edit is only version constants; no Harness regeneration.
+
+Native retry after Owner requested Computer Use again: inventory API succeeded, exact finalApp window binding still returned `native pipe closed`. Cached duplicate bundle registrations are not running processes; no extra App was launched by retry. No alternative screenshot/control mechanism used. Overview remains the only collected image. Requiredremainingimages and finalOwnerregression still pending.
+
+### Owner-authorized App restart and native reconnect
+
+Normal SIGTERM stopped the current candidate; the same verified Day 7 Release was restarted without changing product bytes. The native binding initially returned the Preview Overview accessibility tree, but the next Settings click failed with `native pipe closed`. Resetting the Computer Use kernel and rebinding the exact App path failed with the same error. The restarted App remains running. No additional screenshot or manual acceptance was obtained; D7-07 and final regression/performance setup remain pending. No alternate UI control or capture method was used, and no source, staged content, commit or remote state changed.
+
+Final5minuteperformance NOT_RUN: supported Live/window-closed setup has not been confirmed; values/duration/child measurements UNKNOWN. Prepared observer is not a completed measurement. SignedinstalledLoginItem, signing/notary/Gatekeeper/publication/Day7CI NOT_RUN; GIF NOT_GENERATED. Release decision NOT READY for final acceptance, public distribution pending signing.
+
+## Owner-approved Codex restart boundary
+
+Current work is saved on disk; no staging or commit. A full Codex restart has not yet been performed in this checkpoint. The current tool inventory provides no full Codex restart operation, so the Owner must quit and reopen the desktop client. After that restart, exactly one Computer Use connection/capture attempt is allowed. If `native pipe closed` recurs, stop Computer Use investigation, record **TOOL FAILURE / not proven MacSoul defect**, and request the four missing Preview images from Owner. Do not change MacSoul code or repeatedly restart MacSoul for screenshots. D7-07 stays doing / waiting for screenshot files; incoming images require visual privacy inspection and README integration before further closeout. Historical failed attempts remain recorded.
+
+## Historical / Superseded — Final post-Codex-restart attempt — TOOL FAILURE
+
+Owner confirmed a full Codex restart on 2026-10-07. The single authorized attempt bound the exact Day 7 candidate and returned the Preview Overview accessibility tree. The next Settings navigation returned `Sky Computer Use native pipe closed before response`. No further reset, reconnect, diagnostic exploration, alternate UI method or MacSoul restart was performed. Result: **TOOL FAILURE / not proven MacSoul defect**. No new screenshot or manual acceptance was obtained, and no MacSoul implementation code was changed.
+
+D7-07 remains **doing / WAITING FOR OWNER SCREENSHOT FILES**. Owner will provide `ai-coding.png`, `cleaner.png`, `settings.png` and `menu-bar.png` in `docs/screenshots/v0.1/` (or attach the files for placement). Use Developer Preview with the Mock badge visible; AI request-failed fixture can avoid reset timestamps. Exclude real quota/reset, private paths, actual public IP, account data and proxy secrets. Existing Overview capture is retained. Once files arrive, inspect visual privacy, integrate the actual images into both READMEs, verify links and continue the remaining Day 7 closeout. No staging, commit, push or PR.
+
+## Additional Owner-authorized MacSoul restart — TOOL FAILURE retained
+
+Owner explicitly authorized one more normal MacSoul restart and Computer Use attempt. The exact running Day 7 candidate was verified against the packaged executable hash, stopped with SIGTERM and restarted from the same path. Exactly one candidate was verified running after launch. No SIGKILL, other-process termination or product-byte change.
+
+The fresh native session could read Preview Overview and return its real screenshot. Navigation to Settings using a coordinate target visible in that screenshot then returned `Sky Computer Use native pipe closed before response`. No retry after that failure. No additional deliverable screenshot was saved; the existing Overview remains the only required image collected. **TOOL FAILURE / not proven MacSoul defect** remains the result. D7-07 continues waiting for the four Owner-provided Preview images. No product code, staging, commit, push or PR.
+
+### Owner-requested attempt without Settings navigation
+
+Owner asked to keep the existing Developer Preview mode and avoid Settings. The fresh binding to the current candidate failed immediately with `native pipe closed`, before any page click or screenshot. Therefore Cleaner/AI navigation was not reached; this attempt does not establish a Settings-specific defect or an alternate-page result. No App restart, product change or additional capture. TOOL FAILURE / not proven MacSoul defect; D7-07 still awaits Owner screenshot files.
+
+### Owner-opened Cleaner page — read access recovered, capture unsuitable
+
+After Owner manually selected Cleaner, native binding and accessibility observation succeeded. The tree explicitly reported Cleaner / read-only / Mock and no scan result. Screenshot API returned a distorted small thumbnail (238 x 268 pixels), not a usable full App window. A second observation and the exposed window Raise action did not produce a usable capture. No page-selection click, scan, product edit or App restart. No such image was saved or integrated as acceptance evidence. Read access recovered in this checkpoint, but the required Cleaner deliverable remains pending; screenshot failure is not proven MacSoul defect. Owner-provided full-window PNG files remain the fallback.
+
+### Owner-positioned Cleaner capture — actual image saved
+
+Owner positioned the App as a fully visible window and confirmed Cleaner ready. A read-only state/screenshot call returned the full 2240 x 1520 Cleaner window: read-only, Mock badge, current scenario has no scan results. Visual privacy review found no actual quota/reset, private path, account, public IP or proxy secret. Original native JPEG retained in ignored Day 7 artifacts; lossless PNG re-encoding preserves dimensions and visual content, without cropping, resizing or fabrication. Saved `docs/screenshots/v0.1/cleaner.png` and integrated with accurate not-scanned captions into both READMEs. No click, Raise, scan or App restart in this capture checkpoint. Native capture is usable under this Owner-positioned setup; prior tool failures remain historical. This screenshot is not functional acceptance, scan evidence or Owner approval of final image quality. AI Coding, Settings and Menu Bar files remain pending; D7-07 stays doing.
+
+### Owner-opened Settings capture — tool failure
+
+Owner confirmed Settings ready. The agent performed only a combined accessibility/screenshot read; it returned `Sky Computer Use native pipe closed before response`. No setting change, UI click, reconnect, App restart or new image. Settings screenshot remains pending. Overview and Cleaner files remain intact. TOOL FAILURE / not proven MacSoul defect; no Settings-specific product defect is established by this tool error.
+
+Owner requested one additional read-only retry of the ready Settings page. Kernel reset followed by exact-path binding again returned `native pipe closed` before capture. No screenshot saved, UI setting changed, App restarted or product source modified; pending image state unchanged.
+
+Owner separately authorized another normal candidate restart; exact prior PID identity and unchanged executable hash were verified, SIGTERM exit succeeded and the same Release was relaunched. After Owner selected Settings, the one read-only binding attempt again returned `native pipe closed` before any screenshot. No UI input or product change; Settings capture remains pending. TOOL FAILURE / not proven MacSoul defect.
+
+### Owner-provided Settings image — privacy inspection complete
+
+Owner supplied an actual 2240 x 1520 PNG of Settings. Visual inspection confirms Developer Preview / built-in Mock mode, provider-not-connected presentation and read-only Cleaner boundary. No actual quota/reset, account identifier, private path, public IP or proxy secret is visible. Saved the original unchanged as `docs/screenshots/v0.1/settings.png`; byte identity verified, with no crop, resize or retouch. The image shows the upper Settings section; the language section continues below the viewport. Both READMEs link it with that scope explicitly stated. This is an accepted capture for documentation preparation, not an Owner final screenshot approval, full-page interaction test or real login-item validation. AI Coding and Menu Bar images remain pending; D7-07 stays doing. Historical tool failures remain intact.
+
+### Owner-provided AI image — replacement needed for screenshot policy
+
+The supplied AI Coding image visibly uses Developer Preview, Mock badges and bundled scenario source. It also displays absolute reset timestamps. Day 7 screenshot instructions explicitly exclude reset timestamps, without a Mock exception, so this image was not copied into repository screenshots or integrated into README. No numeric quota or timestamps are transcribed into this report. Request a replacement using the existing Quota request failed Mock fixture, which avoids numeric reset rows; no provider/product or fixture change. AI Coding and Menu Bar deliverables remain pending, and D7-07 stays doing.
+
+### Release scenario-selector correction
+
+Owner reported Quota request failed is absent from current Settings. Source inspection confirms the fixture selector is guarded by `#if DEBUG`; the final Release candidate cannot select that scenario through Settings. The earlier replacement instruction was incorrect for this build. The supplied AI image matches the bundled Mock numeric windows and source labels, but its absolute Mock reset times conflict with the current screenshot policy. Owner clarification requested: permit explicitly labeled synthetic reset times, or retain the restriction and leave this image pending. No new build, fixture/product change, image retouch or repository image copy was performed.
+
+### Owner-provided Menu Bar image — privacy inspection complete
+
+Owner supplied an actual 780 x 1184 PNG of the complete Menu Bar popover. Visual privacy inspection confirms the global Mock badge, built-in numeric fixture values, relative reset countdowns and TEST-NET example IP. No absolute reset timestamp, real account data, private path, actual public IP or proxy secret is visible. Original bytes preserved as `docs/screenshots/v0.1/menu-bar.png`, with byte identity verified and no visual changes. Both READMEs include the actual image and a Mock/relative-countdown caption. Screenshot preparation does not establish functional/performance acceptance or approve the small menu icon, which remains DRAFT. Overview, Cleaner, Settings and Menu Bar documentation images are now present. AI Coding image remains outside repository pending Owner clarification of the rule excluding absolute reset timestamps, even for Mock. D7-07 stays doing. No product change, staging, commit or push.
+
+
+## Screenshot / README closeout — Owner-approved Mock reset policy
+
+This checkpoint supersedes the earlier AI image policy blocker without deleting it. Owner explicitly permits clearly labeled Developer Preview quota and reset times. The supplied AI image was saved unchanged as `docs/screenshots/v0.1/ai-coding.png`; both providers show Mock labels and bundled scenario source, with no Live source/account metadata. Neither real quota/reset values nor account payloads are transcribed into evidence.
+
+| Required image | File present | Visual privacy review | Scope |
+|---|---|---|---|
+| AI Coding | PASS | PASS | Developer Preview; simulated quota/reset explicitly permitted |
+| Cleaner | PASS | PASS | Read-only Mock, not-scanned state; no real cache paths |
+| Settings | PASS | PASS | Developer Preview; upper Settings section |
+| Menu Bar | PASS | PASS | Global Mock marker, relative fixture countdowns, TEST-NET example IP |
+
+Every image was checked for real public IP, real quota/reset, account identity, absolute local paths, proxy credentials, token/session and unnecessary real PID; none was observed. Original Cleaner/Settings/Menu Bar hashes remain unchanged in this work unit. Existing Overview remains retained. Images are actual captures, not generated mockups.
+
+Both READMEs now integrate AI Coding with the explicit caption “配额与重置时间均为 Developer Preview 模拟数据” / “Quota and reset time are Developer Preview mock data”, and explain that values do not represent a real account. Cleaner not-scanned and Settings upper-section scope remain explicit. The small menu icon remains DRAFT; no finalized-icon claim. D7-07 advances only to verifying, pending Owner review of image quality and README placement. No screenshot is treated as final functional/performance/interaction acceptance.
+
+Verification in this documentation-only unit: local link/image audit, task ledger verification and diff whitespace checks; results appended below after execution. Visual checklist and image SHA records: `.artifacts/day7/screenshots/final-screenshot-privacy-review.json`; scoped before/after hashes: `.artifacts/day7/screenshots/screenshot-closeout-before.json`. Product source fingerprint remains unchanged. No build/unit/live/performance rerun is claimed; earlier verified results remain historical. No Computer Use retry, App restart, product code change, signing, notarization, staging, commit, push or PR.
+
+### Executed documentation checks
+
+- `python3 scripts/generate_status.py`: exit 0; D7-07 verifying; no Owner approval claimed.
+- `python3 scripts/verify_progress.py`: exit 0, PASS (59 tasks, original 76 points retained).
+- `python3 .artifacts/day7/audit.py`: exit 0, PASS; 75 local Markdown/HTML links and image paths, zero missing. All 81 product source/resource hashes unchanged; source fingerprint `8c99387ca7090664dbfd50d73868fe865bcf3adeec1b86902fb5afaa9221f350`.
+- `git diff --check`: exit 0. Required four PNG signatures, bilingual AI captions and DRAFT wording checked; existing Cleaner/Settings/Menu Bar hashes unchanged.
+- Working branch `feature/day7-release-closeout`; full Day 7 worktree has 19 modified/new files, staging remains empty. This screenshot unit changes README pair, AI PNG, task/status records and two reports; preceding Day 7 changes remain intact. Final Owner review pending.
+
+A temporary status-generator presentation edit invalidated the global verification fingerprint; `verify_progress.py` reported stale evidence. That edit was removed, restoring the previously verified generator bytes rather than relabeling evidence. Status was regenerated and the checks rerun. The generated Manual UI paragraph retains the historical D6 screenshot-pending checkpoint; the current D7-07 row, task blocker and this final section are the current screenshot state. Historical records were not erased. Product sources remain unchanged.
+
+
+## Historical / Superseded — Final Owner screenshot review — PASS
+
+Owner explicitly reviewed Overview, AI Coding, Cleaner, Settings and Menu Bar: all PASS. Developer Preview/Mock markers are clear; AI quota/reset/updated time are synthetic. TEST-NET example IP is accepted. No real account/quota/reset/public IP, private local path, proxy credentials or token/session is present. Cleaner remains read-only / Mock / not scanned. Menu small icon remains DRAFT, not final artwork.
+
+README main order remains Overview → AI Coding → Cleaner → Menu Bar; Settings is secondary. Both Settings captions now identify the unsigned Developer Preview RC and explain unavailable Launch at Login, with real Login Item registration/unregistration deferred to signed/installed validation. Owner permits D7-07 done at overall Day 7 closeout; current status remains verifying while regression/performance are outstanding. Historical pending/rejected capture checkpoints are retained.
+
+## Remaining closeout preflight — STOP on unknown Codex version
+
+The read-only `--version` query of the exact executable selected by `CodexQuotaProvider.nativeLive()` now returns `codex-cli 0.162.0-alpha.2`, exit0. It is outside the exact verified set 0.160.0 / 0.160.1. The original Day 7 AI regression instruction requires STOP and Owner report for unknown versions, unless a strict compatibility verification is separately pursued. No wildcard allowance, parser change, compatibility spike, account read or quota protocol observation was performed.
+
+Source inspection confirms version gating precedes transport initialization; no new current Live UI fail-closed PASS is claimed. Final Live regression and supported-Codex five-minute performance remain NOT_RUN. The earlier Owner regression/setup request is paused due to this discovered environment blocker. Historical Day4–6 Live evidence is not reclassified as current evidence.
+
+Current RC remains resident; no restart or termination was performed. Read-only checks of current visible executable and unsigned zip SHA, version0.1.0/build1 and packaged PrivacyInfo/source byte equality PASS. No product change, signing/notarization, commit/push/PR or later-stage work. Detailed sanitized preflight evidence is in `.artifacts/day7/owner-screenshot-and-version-preflight.json`.
+
+Post-update checks: STATUS regeneration exit0; task ledger PASS (59 tasks / baseline76points); local-link/image audit PASS (75 / zero missing); `git diff --check` exit0. Product81file hashes and source fingerprint unchanged. Full Day7 worktree19modified/new files, staged0. No new build/unit/CI claim; prior363tests/0failures/0skips remain historical. Current unknown Codex version blocker prevents final Live/performance acceptance.
+
+
+## Owner-authorized exact 0.162.0-alpha.2 compatibility work unit
+
+Owner authorized a minimal read-only compatibility check for the exact bundled CLI, not semver ranges or a runtime-gate redesign. The prior unknown-version STOP remains historical. Only initialize / initialized / one account/rateLimits/read are allowed, with up to 15 seconds passive notification observation. Provider payloads and numeric quota/reset/plan/account fields stay in memory; only validation verdicts may be retained. Actual production parser is compiled into an ignored validation helper; it is not replaced or relaxed.
+
+### Historical / Superseded — Cleaner final RC scan lifecycle / idle — Owner PASS
+
+Owner observed explicit scanning state and Cancel, successful completion and Rescan, retained results and no active scan. Scan lifecycle and idle PASS. Idle means no active scan/traversal; retained completed results do not require reverting to Not Run. No rescan is performed or requested. Current-message Content Preview navigation is not explicitly confirmed; earlier Day5 Preview acceptance remains historical, not upgraded to current RC PASS. No real cache path or Live scan image enters this report/README; public Cleaner image remains Preview Mock.
+
+
+### Exact-version read-only observation — PASS
+
+The exact bundled version was confirmed. Only initialize, initialized and exactly one account/rateLimits/read were sent; no extra RPC. Initialization result, uniquely identified Codex bucket, recognized windows, usedPercent numeric type/range, nullable epoch reset and existing plan semantics all PASS. Actual production parser accepted the in-memory payload. Synthetic in-memory perturbations verified ambiguous identities fail closed, unknown windows do not contaminate known windows and duration-based mapping is independent of primary/secondary order. Semantic field interpretation also matches the [official App Server field notes](https://learn.chatgpt.com/docs/app-server). No real percentage/reset/plan/account field value is recorded. Fifteen seconds passive observation: natural account/rateLimits/updated NOT_OBSERVED. Observer stdin EOF produced normal child exit; no SIGKILL.
+
+Production delta is solely supportedVersions = 0.160.0 / 0.160.1 / 0.162.0-alpha.2. Parser, transport, reconnect, refresh interval, plan mapping, remaining semantics, alerts and Preview/Live lifecycle are unchanged. Neighbor alpha.1/alpha.3, stable0.162.0,0.163.0, malformed and nil are rejected in tests. No semver range or wildcard. Future runtime protocol/capability gating is a post-v0.1 follow-up, not implemented here.
+
+### Automatic validation after exact-version admission — PASS
+
+build exit0; test exit0,365passed/0failed/0skipped (xcresult summary retained). progress-tests exit0; verify-progress exit0; verify exit0, doctor/build/unit/progress_tests/visual_assets/ledger PASS; diff check exit0. HeldPipe fixture remains unchanged from its deterministic Day7 fix; retained20iterations/60caseexecutions/0failures reconfirmed, not claimed as a new repetition run. Only1of81product files changed, and its complete delta is the allowlist literal; other80hashes match the original checkpoint.
+
+Refreshed46actual automatic records and15explicit scoped carry-forward reviews, preserving prior entries in evidence_history; previous Owner acceptance/performance remain historical. Current fingerprint `82396e1efc6f75dd50aae89b556912560d647e62207be38088c240c8cd4dc8c2`. Evidence `.artifacts/day7/codex-0162-compat/observation-redacted.json`, `test-summary.json`, `evidence-refresh.json`, `verify.log` and `release-final.log`. No failure was hidden.
+
+### New unsigned RC package privacy — FAIL / STOP
+
+The new Release clean build completed exit0. Archive creation and independent extraction/copy hash equality succeeded; version0.1.0/build1, unchanged PrivacyInfo/source bytes and exact3reasons, ThirdPartyNotices/source bytes and absence of source/log files passed. Before launch, the executable literal privacy check failed:178string occurrences contain the actual owner-home prefix. Matched strings are not emitted or retained in reports. This is a real packaged-binary path finding, not inferred account/credential leakage; whether these are debug metadata or runtime strings has not been determined.
+
+Under Owner's stop-on-failure instruction, no product/build-setting repair or further profiling was attempted. The new App was not launched or distributed. Old zip SHA is the earlier pre-compatibility checkpoint, not the final current RC. New diagnostic hashes are retained only in ignored `.artifacts/day7/codex-0162-compat/package-verification-failure.json`; there is no accepted final package SHA at this checkpoint. Cleaner Owner Scan/idle PASS and screenshot Owner PASS remain retained. Final new RC Owner Live regression and300sperformance remain NOT_RUN; real Cleaner Content Preview for this RC is not explicitly confirmed. No rescan, process termination, signing/notary/commit/push/PR/tag/release.
+
+## Packaged binary owner-path diagnosis — DEBUG METADATA / PACKAGING PIPELINE, STOP
+
+This work unit only performed read-only source/binary/build-metadata analysis and a standard unsigned Archive. No compatibility/business Swift, project/generator settings, signing or privacy manifest was changed. No manual strip, new zip, launch, Live regression or performance measurement. The failed executable and zip remain byte-identical and undistributed.
+
+### Preserved failure and source evidence
+
+- Source fingerprint unchanged: `82396e1efc6f75dd50aae89b556912560d647e62207be38088c240c8cd4dc8c2`.
+- Failed normal-build executable SHA256: `4b0dd49d28c2593963d25a57be5a1dba2ee475c8744e02bbf86e6ab62cae3430`.
+- Failed zip SHA256: `dcab860db5b638cf20cdc3e874cf751f89ce7ba6ae6ef549e439a94d909bdddb` (diagnostic only, not accepted final RC).
+- 44 tracked production source files: no `#file`/`#filePath`, explicit owner-home prefix or generic user-directory path literal. Two generated Swift source files in this project's build intermediates: same zero findings. No explicit assertion/precondition/fatalError path producer found. This source PASS alone does not establish binary privacy.
+- Matching bytes/strings never printed or persisted in diagnostic output. Evidence contains only counts, offsets, section/type categories and sanitized path classes. `otool -l` and `dwarfdump --uuid` outputs were reduced in memory to names/flags/UUID checks.
+
+### Exact classification, both slices
+
+| Executable | x86_64 | arm64 | Total | Runtime section hits | DWARF sections |
+|---|---:|---:|---:|---:|---|
+| Earlier preserved build/zip | 89 | 89 | 178 | 0 | absent |
+| New compatibility build/zip | 89 | 89 | 178 | 0 | absent |
+| Standard unsigned Archive | 89 | 89 | 178 | 0 | absent |
+
+Every match lies in `__LINKEDIT`, `LC_SYMTAB/string_table`, referenced by linker STABS/debug-map symbols. Per slice: `N_SO` source reference 44, `N_OSO` object reference 44, `N_AST` Swift AST reference 1. No match enters `__TEXT/__cstring`, `__TEXT/__const`, Swift reflection/runtime sections or an unmapped range. This finding is linker debug-map metadata, **not embedded executable DWARF** and not an observed runtime string literal. The ignored classifier retains per-match slice/universal offsets, categories and UUIDs without matching text.
+
+### Previous zero claim corrected without rewriting history
+
+The old zip was independently extracted to a fresh diagnostic directory. Its executable hash matches the original `f58e5531c7517fa77e85af21730fdc901b9a442a387190ae875106bed62645fb`, and the same full-byte classifier finds 178. Old zip SHA256 remains `142e55c8f6db4541c80dbfc15c5792541dbab895e553e3948840c73f91c974a6`, historical/superseded for binary privacy. Therefore the alleged 0-to-178 binary difference is not reproduced. The earlier package manifest recorded resource/extraction checks but no executable owner-prefix count/check field; the exact historical binary-scanner implementation is UNKNOWN. Earlier PASS checkpoints remain retained and are superseded for this gate, rather than rewritten as successful current evidence.
+
+Both earlier and newer retained commands used isolated DerivedData, Release `clean build`, universal arm64/x86_64 and version0.1.0/build1. Historical effective debug/strip settings were not retained: UNKNOWN, not reconstructed as facts. The tracked project/generator delta only adds version/build constants, with no debug/strip overrides. No evidence supports blaming the exact Codex allowlist literal; both executables have identical path counts/categories despite different executable hashes.
+
+### Standard Archive and effective settings
+
+Executed exactly the unsigned Archive command in [release guide](../docs/RELEASE.md), without Team/Keychain/signing or configuration changes. Command exit0, ARCHIVE SUCCEEDED. Log retained only after owner-prefix sanitization. Archive privacy gate fails178; no new zip was generated.
+
+| Effective Release setting | build | archive |
+|---|---|---|
+| DEBUG_INFORMATION_FORMAT | dwarf | dwarf |
+| COPY_PHASE_STRIP | YES | YES |
+| STRIP_INSTALLED_PRODUCT | NO | NO |
+| DEPLOYMENT_POSTPROCESSING | NO | YES |
+| STRIP_STYLE | all | all |
+| DEPLOYMENT_LOCATION | NO | YES |
+| ARCHS / ONLY_ACTIVE_ARCH | arm64 x86_64 / NO | arm64 x86_64 / NO |
+
+Archive has zero Strip actions. `COPY_PHASE_STRIP=YES` did not strip the main executable. Effective installed-product stripping is off; the precise historical/default origin of that value is not inferred. The standard Archive therefore retains the same linker debug-map references. Root-cause verdict: **DEBUG METADATA / PACKAGING PIPELINE**, no evidence of an explicit production-source or runtime-section leak. Binary privacy acceptance is nevertheless **FAIL**, since Owner's required zero-prefix gate is unmet.
+
+Archive executable SHA256 (diagnostic, not accepted final): `39b45ae6ea32e74398211263ce78a52676378c25330e0afc08a00da3a73744e1`. Version0.1.0/build1, both architectures, seven bundled files, no source/log/test fixtures: PASS. PrivacyInfo byte-identical with source, exactly DiskSpace/85F4.1, UserDefaults/CA92.1, SystemBootTime/35F9.1: PASS. ThirdPartyNotices byte equality: PASS. No new accepted zip hash/size exists.
+
+### Stop and proposed next unit
+
+No remediation was applied. Minimal option for Owner review: test standard Archive with `STRIP_INSTALLED_PRODUCT=YES`, using a separate new archive path; verify both slice counts and resource/runtime integrity before any package/launch. This is an unexecuted proposal, not a proven fix. No manual post-build strip, dSYM/source-map deletion or business-source substitution is permitted here.
+
+New RC safe-to-launch under the current privacy acceptance gate: **NO**. No App launched or process terminated. Live regression/five-minute performance remain NOT_RUN. Prior current-fingerprint build/test/verify PASS (365passed/0failed/0skipped) remain unchanged evidence; they were not rerun or relabeled as this Archive privacy PASS. Project settings/source unchanged, so no new behavior/test claim. Day7 task states stay verifying/doing, blockers updated; failure evidence preserved in evidence_history. No staging, commit, push or PR.
+
+Ignored evidence: `.artifacts/day7/package-privacy/{source-scan,generated-source-scan,failure-artifact-preserved,failed-build-classification,previous-build-classification,previous-extracted-classification,previous-comparison,effective-settings,archive-result,archive-classification,archive-audit,diagnosis}.json` and `archive-sanitized.log`. The diagnostic archive itself remains preserved. Wait for Owner review.
+
+Diagnostic closeout checks: STATUS regenerated; verify-progress exit0 (59tasks/original76points);76local links/images PASS/0missing; git diff --check exit0. Source fingerprint unchanged, failure artifacts preserved, no product/project-setting delta from this diagnosis. Full pending Day7 worktree21modified/newfiles, staged0; no tracked artifacts. No new build/test/verify rerun beyond the successful diagnostic Archive. Privacy STOP remains in force; wait for Owner.
+
+## Owner-authorized first-stage installed-product-strip validation — FAIL / STOP
+
+Executed an independent unsigned Archive in `.artifacts/day7/strip-validation/MacSoul.xcarchive`, using the exact requested command with `CODE_SIGNING_ALLOWED=NO STRIP_INSTALLED_PRODUCT=YES archive`. Archive command exit0 / ARCHIVE SUCCEEDED. No project or generator edit preceded this test; no production Swift, Codex allowlist, version, bundle identity, signing, Team or entitlements changed.
+
+Same sanitized Mach-O classifier: **178before /178after**, x86_64=89, arm64=89. Every match remains `__LINKEDIT / LC_SYMTAB/string_table` debug-map metadata: per slice `N_SO`44, `N_OSO`44, `N_AST`1. STABS debug-map entries remain. No runtime-section hits or executable DWARF sections. No actual matching strings printed or persisted. Executable SHA256 remains `39b45ae6ea32e74398211263ce78a52676378c25330e0afc08a00da3a73744e1`, identical to the prior unstripped diagnostic Archive.
+
+### Requested override versus actual effective settings
+
+- Requested command-line value: `STRIP_INSTALLED_PRODUCT=YES`.
+- Effective Archive target value from read-only showBuildSettings: `STRIP_INSTALLED_PRODUCT=NO`.
+- `DEBUG_INFORMATION_FORMAT=dwarf`, `COPY_PHASE_STRIP=YES`, `STRIP_STYLE=all`, `DEPLOYMENT_POSTPROCESSING=YES`, `DEPLOYMENT_LOCATION=YES`.
+- `ARCHS=arm64 x86_64`, `ONLY_ACTIVE_ARCH=NO`, `ENABLE_TESTABILITY=YES`, `SKIP_INSTALL=NO`.
+- Actual Strip actions:0. Actual command-position strip invocations:0. Incidental toolchain-exclusion mentions of the strip executable do not count as invocation; that distinction is recorded in sanitized evidence.
+
+The existing debug-metadata/packaging diagnosis is retained. However, the hypothesis that the single requested override would remove paths is **not confirmed**: it did not become the effective installed-product setting. The reason for that discrepancy is **UNKNOWN**, not guessed or attributed to allowlist/runtime behavior. Owner's explicit nonzero-count stop condition is reached. No additional build flags, clean retry, manual strip, generator/pbxproj change, formal final Archive, new zip, smoke launch, process termination or performance measurement.
+
+### Resource and preservation checks
+
+Universal architectures and version0.1.0/build1 PASS. Seven-file App bundle set unchanged; every resource byte matches the unstripped diagnostic Archive. PrivacyInfo/source byte equality PASS, exactly DiskSpace/85F4.1, UserDefaults/CA92.1, SystemBootTime/35F9.1. ThirdPartyNotices/source byte equality PASS. No bundled source/log/testfixtures/raw-payload/artifact file. Bundle owner-prefix count remains178, all confined to the executable. No runtime resource lost. dSYM generated:NO; UUID match:N/A. No accepted final executable/zip/hash/size; this hash is diagnostic only. Privacy gate FAIL, safe for Owner Live regression:NO.
+
+Before-file-hash snapshot confirms all existing tracked/pending files were unchanged before recording this result, including generator/project/product/tests. Original failed App and zip hashes unchanged. Source fingerprint still `82396e1efc6f75dd50aae89b556912560d647e62207be38088c240c8cd4dc8c2`. No formal Release settings persisted: Debug/tests/Release configurations remain as before this attempt.
+
+The conditional full doctor/build/test/progress/verify sequence was not entered because the first-stage zero-count prerequisite failed and no settings were changed. Previous current-fingerprint365tests/0failures/0skips and build/test/verify PASS remain prior evidence, not a new test run. Current ledger/diff checks and source-preservation audit are separate. Task statuses unchanged; previous failure evidence retained in evidence_history. Historical old zero result remains **SUPERSEDED / historical check implementation did not reproduce the actual178 LC_SYMTAB debug-map occurrences**; corrected scanner is current authority.
+
+Evidence: `.artifacts/day7/strip-validation/archive-result.json`, `archive-sanitized.log`, `classification.json`, `effective-settings.json`, `validation-failure.json`, `before-file-hashes.json`. No signing/notary/commit/push/PR/tag/Release. STOP waiting for Owner before further diagnosis or repair.
+
+## Owner-approved persisted App Release packaging fix — static gates PASS, smoke pending
+
+Temporary validation with testabilityNO/stripYES/dwarf-with-dsym proved178→0, actual Strip1, universal architectures and matching private dSYM. Root cause confirmed: Release App's shared generator `ENABLE_TESTABILITY=YES` disabled installed-product stripping. The earlier single-override failure and UNKNOWN checkpoint remain historical, now resolved by actual testability validation.
+
+Generator changed minimally to distinguish App Release from other configurations. Candidate project was generated via `--print` into ignored artifacts, diffed against the current pending project, and checked byte-for-byte against the exact expected App Release transformation before replacing pbxproj. Overwrite-refusal guard remains intact. Only App Release testabilityYES→NO, installed-product stripYES and dwarf-with-dsym were added. App Debug, Tests Debug/Release, version/build, bundle identity, signing policy, deployment target, architectures, Swift language/optimization, capabilities/assets/entitlements unchanged. All production/test source bytes match the start of this unit. Current fingerprint `0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da`.
+
+### Actual complete automatic rerun
+
+Doctor/build/test/progress-tests/visual-assets each exit0; phase-one XCTest365passed/0failed/0skipped. Current automatic evidence46records and scope carry-forward15records refreshed truthfully, prior evidence retained in evidence_history; no new manual/live/performance claimed. verify-progress exit0 (59tasks/original76points). Full verify exit0 with doctor/build/unit/progress_tests/visual_assets/ledger PASS; its independent full test run also365passed/0failed/0skipped. Diff check exit0. Existing product/provider/Soul logic and test cases unchanged. No failed verification hidden or replaced with old results.
+
+### Formal project-only Archive and package checks
+
+Exact unsigned Release Archive command in release guide, no temporary ENABLE_TESTABILITY/STRIP_INSTALLED_PRODUCT/DEBUG_INFORMATION_FORMAT overrides. Archive exit0. Effective testabilityNO, installed-product stripYES, dwarf-with-dsym, COPY_PHASE_STRIPYES, STRIP_STYLEall, DEPLOYMENT_POSTPROCESSINGYES; actual Strip step1 / invocation1.
+
+Corrected sanitized scanner: arm64=0, x86_64=0, executable total0. Original N_SO/N_OSO/N_AST path records absent. All seven distributed App files/resources owner-prefix0. Runtime resources byte-identical to the validated stripped Archive; no resource loss. Version0.1.0/build1, universal architectures, no bundled source/tests/logs/raw payloads/artifacts PASS. PrivacyInfo/source byte equality PASS with exactly DiskSpace85F4.1, UserDefaultsCA92.1, SystemBootTime35F9.1. ThirdPartyNotices/source byte equality PASS. Private dSYM generatedYES and both UUIDs matchPASS; dSYM retained ignored, not inside App/zip or public metadata.
+
+Archive-only zip created at `.artifacts/day7/final-archive/release/MacSoul-v0.1.0-unsigned.zip`,6,062,468bytes. Executable SHA256 `b97a0c0fe276f68b8875879456a3e2f0963d6a76505bc2df8d824992d0dedb1f`. Zip SHA256 `8a230b20839ceb5d51d303896fac85e85faceaa0ebb0f7d1eb77a99bd44c5411`. Independent extraction matches all7Appfilehashes; extracted executable and all uncompressed zip members owner-prefix0. No dSYM/xcarchive/source/tests/logs in zip. This is static privacy/extraction PASS, **not combined acceptance yet: smoke pending**. Zip preparation performed while restart approval is pending; no launch or runtime gate inferred.
+
+Original failed exe/zip and oldpackage hashes remain preserved/history, not repaired in place. Earlier oldpackage zero-path claim explicitly **SUPERSEDED / historical check implementation did not reproduce the actual178 LC_SYMTAB debug-map occurrences**; oldzip independently showed178, corrected scanner authoritative.
+
+A visible byte-identical Archive-derived Preview copy is prepared. Old App PID25955 remains running; explicit normal-exit authorization requested under AGENTS.md before replacement. No duplicate App launched. Live regression/performance NOT_RUN, signing/notary NOT_RUN. Evidence `.artifacts/day7/final-archive/{project-diff-audit,effective-settings,phase-one-verification,verification,test-summary,evidence-refresh,archive-result,classification,App-audit,App-file-hashes,package-audit,extracted-classification,smoke-preflight}.json`; raw matched strings not emitted. Minimum smoke and final package acceptance still pending at this checkpoint. No staging/commit/push/PR/tag/Release.
+
+### Archive Preview smoke — duplicate instance checkpoint
+
+Owner reported two MacSoul instances. Read-only process inspection confirmed PID 76055 and PID 76421 both use the same current Archive Preview copy (`build-preview/MacSoul.Day7.Archive.p1xsmzoy/MacSoul.app`). Neither is an XCTest host. The submitted screenshot shows Developer Preview Overview with explicit Mock labeling; it does not prove Menu Bar Extra acceptance. Menu Bar smoke and combined unsigned RC package acceptance remain pending. Requested permission to send SIGTERM only to duplicate PID 76055 and preserve PID 76421; no termination, new launch, Live switch or performance measurement was performed at this checkpoint.
+
+Duplicate instance resolution: Owner explicitly authorized SIGTERM only to PID 76055. Its exact executable identity was checked before signaling; normal exit was confirmed. PID 76421 was preserved and remains running. A subsequent process inventory confirmed exactly one MacSoul instance. No SIGKILL, further App launch, Live switch, code change or performance measurement occurred. Menu Bar Extra Owner acceptance remains pending.
+
+## Historical / Superseded — Final persisted Archive package closeout — packaging privacy PASS
+
+**FINAL UNSIGNED RC PACKAGE PRIVACY = PASS.** This scoped packaging verdict combines the actual automatic, no-override Archive, corrected binary/resource privacy, matching private dSYM, independent extraction and minimum Preview smoke gates. It does not establish final Live regression, performance, signing/notarization or Owner overall release approval.
+
+### Minimum Preview smoke — actual observations
+
+- Launch and main window PASS: native AX observed the exact byte-identical Archive Preview copy with clear Mock/no live-service labels.
+- Developer Preview PASS: native AX plus Owner-supplied main-window screenshot. No Live switch or external quota observation in this unit.
+- Normal Quit PASS: native MacSoul Quit menu action; PID 74994 exit confirmed. Reopen PASS: same App copy, PID 76421 and native AX Preview Overview observed.
+- Menu Bar Extra PASS: Owner operated the menu-bar entry and supplied a screenshot showing the rendered popover, clear “模拟数据” label and complete Mock content. This is visual smoke evidence, not inferred Owner final release approval. The image contains authorized Mock quotas/resets and TEST-NET example IP, no real account/network telemetry. Stored only in ignored `.artifacts/day7/final-archive/owner-menu-bar-smoke.png`.
+- SystemUIServer native lookup timed out: TOOL FAILURE, not proven MacSoul defect. No retry or source workaround; Owner operation provided the remaining visual observation.
+- A duplicate current App instance was genuinely observed and recorded. Owner authorized normal SIGTERM only to PID 76055; exit confirmed, PID 76421 preserved. Final process inventory: exactly one MacSoul. No forced termination.
+
+All seven running Preview App file hashes still match the formal Archive, and the zip hash/size are unchanged. Executable SHA256 `b97a0c0fe276f68b8875879456a3e2f0963d6a76505bc2df8d824992d0dedb1f`. Archive-only zip SHA256 `8a230b20839ceb5d51d303896fac85e85faceaa0ebb0f7d1eb77a99bd44c5411`,6,062,468bytes. Private dSYM remains outside the zip. Corrected scanner totals remain0, both architectures0; original debug-map owner-path records absent.
+
+Persisted App Release testabilityNO/stripYES/dwarf-with-dsym; generator/project byte consistency PASS, Debug/test configurations unchanged, actual formal Strip1. Doctor/build/test/full verify/ledger PASS; actual365passed/0failed/0skipped. Source fingerprint `0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da`. No Swift/test source change in the packaging fix. Historical178-path failures and superseded false-zero checkpoints remain intact.
+
+**Final RC safe for separately authorized Owner Live regression: YES.** Live regression and final300sperformance remain NOT_RUN in this work unit; no automatic mode switch/measurement. UNSIGNED / UNNOTARIZED / NOT FOR PUBLIC DISTRIBUTION. Signing, notarization, installed Login Item and App Store Connect privacy validation NOT_RUN. Day7 tasks remain verifying/doing, waiting overall closeout; no original points/dependencies/history altered. No commit/push/PR/tag/Release.
+
+Final packaging closeout checks: STATUS regenerated, verify-progress exit0 (59tasks/original76points),76local links/images PASS/0missing, git diff --check exit0. Full pending Day7 worktree21modified/newfiles, staged0, tracked artifacts0, sensitive literal findings0. Current packaging unit changes only generator/project, tasks and required release reports/guide; production Swift/tests unchanged since its start and since current full automatic verification. Current fingerprint unchanged. Final package/smoke scope is PASS; overall Owner Day7 release approval remains pending. Stop before Live/performance. Evidence: `.artifacts/day7/final-archive/closeout-checks.json` and `closeout-scope-audit.json`.
+
+### Historical / Superseded — Final RC Live screenshot checkpoint — visual observations, Owner verdict pending
+
+Owner supplied13Live screenshots for visual review. Overview/System/Network/AI/Dev/Settings show Live sources. AI visibly reports Codex App Server / CLI0.162.0-alpha.2, applicable Week-only remaining semantics and fiveHour notApplicable; Claude honest unavailable. Network preserves independent IP outcomes, distinct proxy contexts, tunnel-hint disclaimer and HTTP/TLS-only probe semantics. Memory pressure unknown/monitoring is retained; Soul copy limits its health claim to CPU. Dev context/shim and filtered/all listener tables are visible. Cleaner screenshots show not-run→active scan→completed, but no Content Preview traversal observation.
+
+Layout concern: System content is vertically centered with substantial blank space and a wide separation between process names and numeric columns. Read-only inspection confirms SystemView currently uses default Form with padding; Network uses grouped Form. No code edit or causal toolchain claim. Owner must decide whether this is a final UI issue or an accepted presentation limitation before proceeding.
+
+No final per-section Owner PASS, Live Menu Bar/three-surface consistency, Live normal Quit/reopen or performance readiness was supplied in this screenshot-only message. Clipboard actions and current Preview traversal cannot be proven from static images. Final Live regression remains pending, final300sperformance NOT_RUN; no preheat or sampling. Live images and their real quota/reset/IP/local-path data were not copied into repository/evidence; only sanitized semantic observations recorded. Existing package identity/privacy PASS is unchanged.
+
+## Owner-authorized System-only layout work unit — automatic checkpoint
+
+Worktree baseline saved in ignored `.artifacts/day7/system-layout/before-file-hashes.json` and before-tasks/source copies before editing. Parent AppShell detail is a Group/switch with no centering Spacer; only System used default Form with padding. Its label/value Form layout also hosted the full-width process section. Live screenshot showed vertically centered content and widely separated name/numeric columns; no claim that an unobserved parent Spacer caused it.
+
+Only `MacSoul/Views/System/SystemView.swift` changed: a top-leading ScrollView/VStack replaces default Form; metrics and process summary are separate GroupBoxes, using existing theme spacing and the same680pt bounded content strategy as Settings. A second full-width top-leading frame keeps the local680pt content aligned left on wider windows. Process table header/rows and their fixed numeric widths remain identical, but now inherit the local bounded content rather than the whole window. No fixed page height, negative padding or offsets. Labels/values/units/explanations and conditional display semantics preserved. Disk/battery/processRows suffix is byte-identical to the prior source; all provider/model/resource/test/shared-container/project/generator files unchanged this unit. No new collectors/tasks/requests/scans.
+
+Actual doctor/build/test/progress-tests/visual-assets exit0;365passed/0failed/0skipped from this modified source, not copied from old RC. Current fingerprint `1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067`. Refreshed46automatic and15scoped carry-forward records; earlier evidence retained verbatim. Historical manual/Live/performance checks are not rerun, and new System UI/RC Owner acceptance remains pending. Ledger exit0:59tasks/original76points. Full verify, new Archive/package and runtime layout/smoke remain pending at this checkpoint. Existing accepted old RC packaging privacy PASS remains valid history; current final RC identity will change only after the new package gates pass. No task promoted done, no commit/push/PR/performance.
+
+## System-layout RC automatic/static closeout — PASS; manual smoke pending
+
+Full actual verify exit0: doctor/build/unit/progress_tests/visual_assets/ledger PASS, independent XCTest365passed/0failed/0skipped. Source fingerprint `1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067`. No layout-mirroring unit tests added. Existing method suffix for disk/battery/process rows is byte-identical; only System-local layout composition changed. Shared parent/AppShell, providers/semantics/cadences/other pages/tests/project settings/PrivacyInfo unchanged. Minimum900×620, default1120×760 are defined in MacSoulApp; actual minimum/default/large/tall visual checks remain PENDING, not automated PASS.
+
+Formal new Archive `.artifacts/day7/system-layout/MacSoul.xcarchive` exit0 with only unsigned CODE_SIGNING_ALLOWED override, no temporary packaging flags. Effective testabilityNO/stripYES/dwarf-with-dsym, optimization-O, COPY_PHASE_STRIPYES/DEPLOYMENT_POSTPROCESSINGYES/STRIP_STYLEall; actual Strip1. Universalarm64/x86_64, owner-prefix0in each slice and all App resources, old debug-map references absent; private dSYM generated and both UUIDs match. Version0.1.0/build1, exact unchanged3privacyreasons/source bytes, notices/source bytes and runtime resources PASS. Seven distributed files, no source/tests/logs/raw payloads/artifacts/screenshots/private dSYM in bundle/zip. Independent fresh extraction all7filehashes identical and privacy rescan0.
+
+**New current RC identity:** executable SHA256 `7224f208d58b45612c3482b24ee7ec637c4f6c725fb0cde4a49fc4aabac60200`; zip SHA256 `6b541098d2cddcab546fecad4d5a48b09e1c837892ea0af68a912ff634e3f177`; zip6,062,427bytes at `.artifacts/day7/system-layout/release/MacSoul-v0.1.0-unsigned.zip`. New static package privacy PASS. Prior accepted b97a0c/8a230b/6,062,468byte RC is HISTORICAL / SUPERSEDED for current final validation, with its original privacy and Preview smoke PASS retained, not converted to FAIL or overwritten. All earlier STOP/FAIL/SUPERSEDED/temporary-strip/HeldPipe/history retained.
+
+Per this work unit's explicit restart instruction, verified old exact RC PID76421 received only SIGTERM; normal exit confirmed. Started byte-identical new Archive-derived copy `build-preview/MacSoul.Day7.SystemLayout.bos7qpyh/MacSoul.app`, PID3374; exactly one App at launch. Native AX confirms main Overview and Developer Preview Mock labels PASS. System click returned **TOOL FAILURE: native pipe closed**, not proven MacSoul defect. No further Computer Use retries, alternate UI automation, source workaround or repeat restart. Requested Owner manual System minimum/default/large/tall checks, Preview Menu Bar and normal Quit/reopen. These gates remain PENDING, combined new minimum smoke PARTIAL; no final combined new package runtime verdict inferred. Other-page regression beyond the observed Overview is NOT_CONFIRMED this unit.
+
+Owner new-RC Live acceptance pending: System layout; Live Menu Bar / AI Coding / Overview consistency; final Live Quit/reopen and remaining per-section results. Cleaner existing lifecycle/idle PASS retained; no new scan or traversal initiated by agent. Final performance NOT_RUN; only after actual new-RC Owner Live PASS and readiness can that next unit begin. No new quota/reset/account/IP/path retention, no signing/notary/publication/commit/push/PR/tag/Release or Day7 done promotion.
+
+Owner authorized one additional Computer Use retry after suggesting backgrounding may cause disconnect. getApp again succeeded and observed Preview Overview; clicking System again returned native pipe closed. The backgrounding hypothesis remains UNKNOWN, not a proven App defect. No further retries, source changes, App restarts or screenshots; remaining System size/layout and Menu Bar/Quit-reopen manual checks still pending.
+
+System Preview screenshot checkpoint: Owner supplied a Mock-only System screenshot showing content starting near the navigation header, readable metrics without overlap and explicit simulated-data labels. Visual observation PASS for the pictured window only; exact window point dimensions UNKNOWN. This is not Owner all-size approval, minimum/default/large scrolling proof or Live process-table acceptance. Screenshot privacy PASS and file retained only at ignored `.artifacts/day7/system-layout/owner-system-preview.png`. Remaining Menu Bar/normal Quit-reopen and Owner size/Live checks pending. No source/build/package change or performance sampling.
+
+### Additional Owner Preview visual observations
+
+Owner supplied three System Preview window screenshots and one Menu Bar Preview screenshot. System content remains top-leading with readable metrics and no visible overlap at the pictured sizes. Exact point dimensions, the minimum/default sizing gate and scrolling are not inferred from image pixels. Menu Bar visual smoke PASS: rendered popover with explicit simulated-data labeling. Screenshot privacy PASS: all quota/reset values are visibly Mock, the IP is the documentation example, and no real account/telemetry/local absolute paths/credentials are visible. Images retained only under ignored `.artifacts/day7/system-layout/`; existing evidence preserved.
+
+Normal Quit/reopen of the new RC and Owner final size/Live acceptance remain PENDING. Combined new Preview smoke remains PARTIAL; no source/package identity changes, task promotion, Live action, performance measurement or publication.
+
+Manual reopen checkpoint: Owner ran `scripts/run-mock.sh`, which builds and copies the Debug product. Read-only inventory observes one MacSoul (PID9413, `build-preview/MacSoul.kVtM1k/MacSoul.app`), not the current System-layout Archive copy. Therefore this launch does not establish same-Archive normal Quit/reopen PASS; that gate remains pending. Existing Archive/zip identity and privacy evidence are unchanged. No agent termination, launch, source change or performance measurement.
+
+### Correct Archive reopen — Owner manual smoke checkpoint
+
+After correcting the accidental Debug launch, Owner reports executing the instructed exit/open steps and supplies reopened Preview Overview and Menu Bar screenshots. Read-only inventory confirms exactly one MacSoul, PID10479, running the current `build-preview/MacSoul.Day7.SystemLayout.bos7qpyh/MacSoul.app`. All seven App file hashes match the formal System-layout Archive, including executable SHA256 `7224f208d58b45612c3482b24ee7ec637c4f6c725fb0cde4a49fc4aabac60200`. Previous Archive PID3374 and accidental Debug PID9413 are absent.
+
+Same-Archive reopen/main/Menu Bar manual smoke PASS, with explicit Mock labeling. Normal exit is based on Owner's report of executing the instructed steps; the native Quit action was not independently observed. Screenshot privacy PASS; Mock quota/reset and documentation-example IP only, stored under ignored `.artifacts/day7/system-layout/`. Prior pending and accidental Debug checkpoints preserved. Exact minimum/default size and scroll confirmation, Live process layout and final Owner Live acceptance remain pending; no overall Day7 approval or performance readiness inferred. No source/package changes, task promotion, agent termination, App launch, Live action or performance sampling.
+
+### New System-layout RC — Live screenshot observations
+
+Owner supplies Settings/Live System at several pictured window sizes and Live Menu Bar screenshots. Visual observation PASS: System is top-leading, metrics and developer-process ranking are separate bounded sections, numeric columns align without visible overlap, and explanatory footnotes remain readable. Memory pressure remains unknown/monitoring rather than being inferred from memory-used percentage. Settings shows Live mode; Menu Bar shows applicable Week-only remaining quota and honest Claude unavailable without Mock leakage.
+
+These are visual observations, not an inferred explicit Owner acceptance verdict or exact minimum/default dimension/scroll proof. System Owner verdict and remaining Live regression/three-surface/lifecycle acceptance remain pending. Raw Live screenshots and real quota/reset/IP/process IDs were not copied into repository or evidence; only presentation semantics recorded. Source/package identity unchanged; performance NOT_RUN, no task promotion, commit/push/PR or new product changes.
+
+### New RC Live cross-surface screenshot checkpoint
+
+Owner supplies Network, AI Coding, Overview and Menu Bar screenshots. AI three-surface visual consistency PASS: applicable Week-only remaining numeric presentation and reset expression agree; detail explicitly retains fiveHour notApplicable, Codex App Server / CLI0.162.0-alpha.2 and freshness, while Claude remains honest unavailable with no fabricated source. Network shows connected Wi-Fi, independent IPv4/IPv6 failure semantics, region not collected and distinct App/system proxy contexts. Overview shows the transport-reachable summary and Cleaner read-only/not scanned. No real quota/reset/IP/process IDs or raw Live images retained.
+
+Static visuals do not prove Dev clipboard interactions, System scrolling, final Live normal Quit/reopen or an explicit Owner overall acceptance verdict. Those confirmations remain pending; performance NOT_RUN and no warmup/sampling initiated. Source/package/task statuses unchanged, historical evidence preserved.
+
+## Historical / Superseded — Current final RC checkpoint — Owner Live PASS, finite performance REVIEW
+
+Owner explicitly reports **Live regression PASS** and **Day7 Live performance ready** for the final System-layout Archive-derived RC. System resizing/scrolling, Network, Dev clipboard-only actions, AI Coding/Overview/Menu Bar shared presentation, Live main/Menu Bar and normal Quit/reopen PASS under the issued checklist. Existing Cleaner read-only scan/lifecycle/idle PASS retained; no rescan, no active scan/traversal in the Owner readiness setup. Mock/Live boundary and honest Claude unavailable retained. This is scoped manual acceptance, not final overall Day7 review or public-release approval.
+
+### Actual native five-minute measurement
+
+Release Archive-derived unsigned -O, no debugger/Instruments, macOS 27.0.1, Mac14,9 / 12 logical CPUs / 16 GiB. Owner confirms windows/settings/popovers closed, Live Codex active, Cleaner idle and no interaction/sleep/mode switch. No UI/provider/account query used to inspect readiness. Actual preheat 20.004s; formal duration 300.051s; 61 sample points, 60 valid CPU intervals per process, no missing samples/timing anomalies. First point is a baseline, not 0% CPU. Per-process native cumulative user+system deltas divided by actual monotonic intervals, duration-weighted mean; one logical CPU100%, no core division. RSS and physical footprint separately reported in **decimal MB**.
+
+| Metric | MacSoul parent | Owned Codex child |
+|---|---:|---:|
+| PID | 16961 | 17072 |
+| CPU avg / p95 / max | 0.012488% / 0.039502% / 0.063822% | 0.000647% / 0.001543% / 0.012119% |
+| RSS start / end / avg / max MB | 100.483 / 79.479 / 88.107 / 100.483 | 45.990 / 46.285 / 47.341 / 56.492 |
+| Physical footprint start / end / avg / max MB | 51.250 / 52.725 / 52.033 / 52.839 | 39.831 / 37.389 / 37.976 / 40.912 |
+| Threads start / end (min–max) | 6 / 7 (6–12) | 26 / 26 (26–28) |
+| Valid CPU intervals / coverage seconds | 60 / 300.043 | 60 / 300.042 |
+
+Owned Codex min/max count **1/1 at every sample**, no other owned helpers. Exact executable identity verified with proc_pidpath plus PPID ancestry; parent/child PIDs stable, no replacements, no cross-PID CPU subtraction or missing-interval zero fill. No argv/environment/quota/reset/account/prompt/network/IP/Cleaner path retention. Sanitized artifacts: `.artifacts/day7/final-live-performance.json`, `final-live-performance-context.json`, `final-live-performance-verdict.json`; helper measurement-only/ignored, outside product source.
+
+**Parent CPU PASS** (<0.5% average). **Parent RSS REVIEW**: start/max 100.483 MB slightly exceeds100MB target; average/end below100MB and all observations below150MB review budget. Do not relabel this as unconditional <100MB target PASS. Codex memory reported independently with no parent-only threshold applied. Parent RSS first/middle/final-third means: 93.502 / 89.300 / 81.833 MB; child: 50.012 / 46.214 / 45.871 MB. Parent thread third-means 8.050 / 7.600 / 7.810; child 26.500 / 26.100 / 26.333. No obvious sustained RSS or thread growth observed in this finite5-minute sanity run. Physical footprint is distinct and its values remain explicit. This is **not proof of no memory leak**. No CPU spin, >150MB parent RSS, repeated child or clear sustained RSS/thread growth trigger observed; no added Time Profiler or performance rerun.
+
+### Compatibility, verification and package identity
+
+0.162.0-alpha.2 compatibility PASS from the prior authorized sanitized protocol/parser observation; Owner current Live three-surface acceptance PASS. No new rate-limit/account observation this measurement. Actual final `supportedVersions` set: `0.160.0`, `0.160.1`, `0.162.0-alpha.2`. Historical unknown-version STOP retained. HeldPipe history:3cases×20iterations=60executions/0failures, retained, not rerun. Current-source automatic verification remains **365passed / 0failed / 0skipped**, from `.artifacts/day7/system-layout/verification.json` and `test-summary.json`; build/test/full verify PASS, not rerun for this report-only unit. Source fingerprint **`1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067`** unchanged.
+
+Current executable SHA256 **`7224f208d58b45612c3482b24ee7ec637c4f6c725fb0cde4a49fc4aabac60200`**. Archive-only zip SHA256 **`6b541098d2cddcab546fecad4d5a48b09e1c837892ea0af68a912ff634e3f177`**, **6,062,427bytes**. Running App file hashes match all7formal Archive files; no rebuild or package overwrite. Release testabilityNO/installed strippingYES/dwarf-with-dsym, no temporary settings overrides, actual Strip1, arm64/x86_64 owner-prefix0, all resource/zip member scans0, private dSYM UUID match and independent extraction equality remain PASS. Exact PrivacyInfo/source bytes and DiskSpace85F4.1/UserDefaultsCA92.1/SystemBootTime35F9.1 plus notices PASS. Owner manual smoke/Live acceptance completes the current scoped **FINAL UNSIGNED RC PACKAGE PRIVACY = PASS**; private dSYM excluded from distributed zip. Prior accepted package and178path failures/false-zero SUPERSEDED/debug-map/testability/temporary-strip checkpoints preserved.
+
+### Ledger, limits and stop
+
+**D7-01 through D7-08 = verifying**, pending Owner overall final review; no automatic done promotion. D7-02 now has actual Owner regression PASS, D7-03 actual measurement with RSS REVIEW; D7-07 screenshot review PASS retained, menu icon DRAFT. Original points/day/dependencies/history and all earlier done statuses unchanged.
+
+NOT_RUN: Day7 GitHub Xcode26.6 CI; signed/installed Login Item registration/unregistration; signing/notarization/Gatekeeper/public distribution/App Store Connect privacy validation; real Claude subscription quota; Energy Log/active outage or resource stress. NOT_OBSERVED:15s natural quota update notification; real critical memory-pressure/quota95% event. Region NOT_COLLECTED; observed IPv6 transport failure retained. Cleanup NOT_IMPLEMENTED BY DESIGN. Overall Day7 Owner final review PENDING. Current finite measurement replaces earlier performance NOT_RUN checkpoints only for this specific RC; historical records remain intact.
+
+Product/source/project/privacy/tests unchanged in this unit. Worktree remains uncommitted, staged0, no commit/push/PR/tag/GitHub Release, signing or notarization. STOP for Owner final review; no next-feature work. Document/ledger/link/fingerprint consistency checks recorded separately below after execution.
+
+Final documentation/ledger closeout checks actually executed: `python3 scripts/generate_status.py` exit0; `python3 scripts/verify_progress.py` exit0 (59tasks/original76points); `python3 scripts/test_progress.py` exit0; read-only source/baseline/privacy/local-link audit exit0 (76links/images,0missing); `git diff --check` exit0. Evidence `.artifacts/day7/final-live-closeout-checks.json` and `final-performance-consistency.json`. Source fingerprint unchanged;22modified/newfiles in full Day7 worktree, staged0, tracked measurement/build artifacts0. Product-source changes across the whole Day7 branch remain limited to the previously accepted exact Codex allowlist and System-local layout repair; this performance/report unit changes no product code. Overall Owner final review and RSS REVIEW acceptance pending.

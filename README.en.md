@@ -18,11 +18,29 @@ MacSoul aims to bring system health, AI coding quotas, network information and y
 
 **Personality gets your attention. Clear, trustworthy information is the point.**
 
-> **v0.1.0 source development build.** Developer Preview uses mock data by default. Live System enables shared System, Network and Dev snapshots and the verified Codex App Server integration. Claude stays unavailable without a verified live quota source. Cleaner scans read-only only on explicit Scan; there is no deletion. Day 2–5 automated and Owner acceptance records are retained. Day 6 is closed within the Owner-approved acceptance boundary; Day 7 has not started. No signed/notarized production installer has been released.
+> **v0.1.0 source development build.** Developer Preview uses mock data by default. Live System enables shared System, Network and Dev snapshots and the verified Codex App Server integration. Claude stays unavailable without a verified live quota source. Cleaner scans read-only only on explicit Scan; there is no deletion. Day 2–5 automated and Owner acceptance records are retained. Day 6 is closed within the Owner-approved acceptance boundary; Day 7 local unsigned RC has completed Owner scoped final review. Screenshots and final Live regression PASS; CPU PASS, RSS REVIEW ACCEPTED. No signed/notarized production installer has been released.
 
 ![MacSoul product concept artwork, not a screenshot of the current app](assets-source/reference/macsoul-product-hero.png)
 
 > This is early product artwork, **not a current app screenshot or acceptance evidence**. Its VPN status, latency and cleanup buttons are not implemented; the pictured metric layout does not represent the current live UI.
+
+## Current App screenshots
+
+These are real Developer Preview captures of the current candidate with bundled mock data. AI quota and reset-time values are synthetic Developer Preview data. Cleaner shows the not-scanned state; Settings shows the upper section. Screenshot privacy review and Owner screenshot review passed. Concept artwork is not an App screenshot.
+
+![MacSoul v0.1.0 Developer Preview overview with mock data](docs/screenshots/v0.1/overview.png)
+
+![MacSoul AI Coding Developer Preview with mock quota and reset times](docs/screenshots/v0.1/ai-coding.png)
+
+*AI Coding — Developer Preview. Quota and reset time are Developer Preview mock data and do not represent a real account.*
+
+![MacSoul Cleaner Developer Preview: read-only, Mock, not scanned](docs/screenshots/v0.1/cleaner.png)
+
+![MacSoul Menu Bar Developer Preview with mock data and relative countdowns](docs/screenshots/v0.1/menu-bar.png)
+
+Additional view: [Settings, upper section (Developer Preview)](docs/screenshots/v0.1/settings.png).
+
+*Settings — This is an unsigned Developer Preview. Launch at Login is honestly unavailable in this RC; real Login Item registration/unregistration awaits validation in a signed, installed distribution environment.*
 
 ## Features and implementation status
 
@@ -109,16 +127,20 @@ Finite runs do not guarantee <0.5% on every machine or prove that future leaks a
 | Stage | Focus |
 |---|---|
 | **Now: core integrations** | System / Dev / Network / Codex, read-only Cleaner; Day 6 review, accessibility, Settings and sustained-performance acceptance closed |
-| **Next: distribution preparation** | Day 7 has not started; documentation/signing/distribution checks require the next authorization; no production DMG/Homebrew installation yet |
+| **Next: distribution preparation** | Day 7 local unsigned RC accepted; repository integration and public signed distribution await Owner direction; no production DMG/Homebrew installation yet |
 | **v0.2.0 plans** | Separately design Cleaner cleanup/Trash/confirmation, Maven/Gradle Build Tools and Docker extensions; not current capabilities |
 
-[Task status](docs/STATUS.md) is the progress entry. Screenshots, automated tests, real features, performance and full interaction acceptance are separate. The small menu icon remains DRAFT; the [Day 6 safe Preview screenshot checklist](reports/day-6-review-hardening-2026-10-07.md) is accepted; final screenshots/GIF remain pending for D7-07, not replaced by concept artwork.
+[Task status](docs/STATUS.md) is the progress entry. Screenshots, automated tests, real features, performance and full interaction acceptance are separate. The small menu icon remains DRAFT; the [Day 6 safe Preview screenshot checklist](reports/day-6-review-hardening-2026-10-07.md) is accepted; real Preview screenshots have been collected and privacy checked for D7-07; Owner screenshot approval passed, never replaced by concept artwork. GIF is optional.
+
+## Release-candidate status
+
+The local unsigned 0.1.0 / build 1 Release, zip, extraction/resources and SHA-256 checks passed; Owner screenshot approval passed; final Owner Live regression PASS, CPU PASS and RSS REVIEW ACCEPTED for this local unsigned RC; Day7 GitHub CI NOT_RUN. Build, test, package, signing, notarization and publication are tracked separately. See the [release guide](docs/RELEASE.md), [final report](reports/FINAL.md) and [changelog](CHANGELOG.md). No public Release, signed installer or Gatekeeper verification is claimed.
 
 ## Contributing
 
 Reproducible bug reports, macOS / Xcode compatibility feedback, readability improvements and live integration work are welcome through [Issues](https://github.com/liu-657667/macsoul/issues) and Pull Requests. Include the environment, branch or commit, and reproduction steps; remove sensitive information from logs and screenshots first.
 
-[Development guide](docs/DEVELOPMENT.md) · [Product design](docs/DESIGN.md) · [Architecture](docs/ARCHITECTURE.md) · [Task status](docs/STATUS.md)
+[Contributing guide](CONTRIBUTING.md) · [Development guide](docs/DEVELOPMENT.md) · [Product design](docs/DESIGN.md) · [Architecture](docs/ARCHITECTURE.md) · [Task status](docs/STATUS.md)
 
 For agent-assisted development, start with [AGENTS.md](AGENTS.md) and the current task. Trying the app does not require reading sprint plans, audit reports or model configurations.
 
