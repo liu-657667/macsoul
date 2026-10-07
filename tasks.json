@@ -22533,15 +22533,29 @@
       "evidence": [
         {
           "acceptance_id": "D7-01-A",
-          "path": ".artifacts/day7/system-layout/test-summary.json",
-          "log": ".artifacts/day7/system-layout/verify-sanitized.log",
-          "command": "./scripts/doctor.sh; ./scripts/build.sh; ./scripts/test.sh; python3 scripts/test_progress.py; python3 scripts/verify_progress.py; ./scripts/verify.sh",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/build.log",
+          "command": "./scripts/build.sh",
           "exit_code": 0,
           "status": "PASS",
           "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
           "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
-          "checked_at": "2026-10-07T10:07:55.963225+00:00",
-          "scope": "Actual new System-layout automatic rerun365passed/0failed/0skipped; no Owner/Live/performance claim."
+          "checked_at": "2026-10-07T10:06:02.106456+00:00",
+          "scope": "Automatic build/unit binding to the real per-run verification manifest. Initial local metadata is the retained 2026-10-07 execution, not a rerun during migration; each fresh verify.sh manifest supplies its actual checked_at/git_revision/results. No checks.ledger self-reference. Original clean build and 365/0/0 retained in history and sanitized report.",
+          "check": "build"
+        },
+        {
+          "acceptance_id": "D7-01-A",
+          "path": ".artifacts/verification.json",
+          "log": ".artifacts/test.log",
+          "command": "./scripts/test.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+          "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+          "checked_at": "2026-10-07T10:06:02.106456+00:00",
+          "scope": "Automatic build/unit binding to the real per-run verification manifest. Initial local metadata is the retained 2026-10-07 execution, not a rerun during migration; each fresh verify.sh manifest supplies its actual checked_at/git_revision/results. No checks.ledger self-reference. Original clean build and 365/0/0 retained in history and sanitized report.",
+          "check": "unit"
         }
       ],
       "blocker": null,
@@ -22599,6 +22613,18 @@
           "fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da",
           "checked_at": "2026-10-07T09:40:16.746636+00:00",
           "scope": "Actual complete automatic rerun after App Release-only packaging fix:365passed/0failed/0skipped; no manual/Live/performance claim. Historical HeldPipe repetition retained separately."
+        },
+        {
+          "acceptance_id": "D7-01-A",
+          "path": ".artifacts/day7/system-layout/test-summary.json",
+          "log": ".artifacts/day7/system-layout/verify-sanitized.log",
+          "command": "./scripts/doctor.sh; ./scripts/build.sh; ./scripts/test.sh; python3 scripts/test_progress.py; python3 scripts/verify_progress.py; ./scripts/verify.sh",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+          "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+          "checked_at": "2026-10-07T10:07:55.963225+00:00",
+          "scope": "Actual new System-layout automatic rerun365passed/0failed/0skipped; no Owner/Live/performance claim."
         }
       ],
       "checkpoint_history": [
@@ -22615,6 +22641,14 @@
         "scope": "Current local System-layout Archive-derived unsigned v0.1.0 RC only; not CI, signing, notarization, public release or other unexecuted checks",
         "criterion_basis": "Independent Day7 clean build PASS retained; current-source automatic verification 365 tests / 0 failures / 0 skips and Release Archive PASS; Owner accepts recorded verification. No build/test rerun this unit.",
         "remaining_original_required_gap": null
+      },
+      "evidence_reference_migration": {
+        "reviewed_at": "2026-10-07T11:12:34.664523+00:00",
+        "reviewer": "Codex repository agent under explicit Owner approval in this session",
+        "source_revision": "c1c262f11bdda333e52aa9120e85ecda745bc07b",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "summary": "reports/day-7-release-closeout-2026-10-07.md",
+        "scope": "Reference portability and unchanged-scope review only; original evidence appended intact to evidence_history; no acceptance/status/points/dependency or RC changes. New CI pending."
       }
     },
     {
@@ -22640,7 +22674,7 @@
       "evidence": [
         {
           "acceptance_id": "D7-02-A",
-          "path": ".artifacts/day7/system-layout/owner-live-acceptance.json",
+          "path": "reports/day-7-release-closeout-2026-10-07.md",
           "log": "reports/day-7-release-closeout-2026-10-07.md",
           "command": "python3 .artifacts/day7/final-performance-closeout.py (register actual Owner final Live regression; manual approval, not automated UI)",
           "exit_code": 0,
@@ -22648,7 +22682,7 @@
           "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
           "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
           "checked_at": "2026-10-07T10:30:21.813676+00:00",
-          "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution"
+          "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
         }
       ],
       "blocker": null,
@@ -22717,6 +22751,28 @@
         "scope": "Current local System-layout Archive-derived unsigned v0.1.0 RC only; not CI, signing, notarization, public release or other unexecuted checks",
         "criterion_basis": "Current final Owner Live regression PASS; Preview smoke and normal Quit/reopen PASS; unchanged earlier Soul/Cleaner read-only acceptance retained.",
         "remaining_original_required_gap": null
+      },
+      "evidence_history": [
+        {
+          "acceptance_id": "D7-02-A",
+          "path": ".artifacts/day7/system-layout/owner-live-acceptance.json",
+          "log": "reports/day-7-release-closeout-2026-10-07.md",
+          "command": "python3 .artifacts/day7/final-performance-closeout.py (register actual Owner final Live regression; manual approval, not automated UI)",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+          "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+          "checked_at": "2026-10-07T10:30:21.813676+00:00",
+          "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution"
+        }
+      ],
+      "evidence_reference_migration": {
+        "reviewed_at": "2026-10-07T11:12:34.664523+00:00",
+        "reviewer": "Codex repository agent under explicit Owner approval in this session",
+        "source_revision": "c1c262f11bdda333e52aa9120e85ecda745bc07b",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "summary": "reports/day-7-release-closeout-2026-10-07.md",
+        "scope": "Reference portability and unchanged-scope review only; original evidence appended intact to evidence_history; no acceptance/status/points/dependency or RC changes. New CI pending."
       }
     },
     {
@@ -22742,15 +22798,15 @@
       "evidence": [
         {
           "acceptance_id": "D7-03-A",
-          "path": ".artifacts/day7/owner-final-closeout/owner-acceptance.json",
-          "log": ".artifacts/day7/owner-final-closeout/register-closeout.log",
+          "path": "reports/day-7-release-closeout-2026-10-07.md",
+          "log": "reports/day-7-release-closeout-2026-10-07.md",
           "command": "python3 .artifacts/day7/owner-final-closeout/register-closeout.py",
           "exit_code": 0,
           "status": "PASS",
           "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
           "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
           "checked_at": "2026-10-07T10:43:18.034361+00:00",
-          "scope": "Valid existing 300.051-second native Live measurement; CPU PASS; measured RSS REVIEW, explicitly REVIEW ACCEPTED by Owner for this finite v0.1.0 RC observation. Targets unchanged. Acceptance-record PASS denotes explicit Owner REVIEW ACCEPTED; raw measurement remains RSS REVIEW, not all-samples-below100MB PASS."
+          "scope": "Valid existing 300.051-second native Live measurement; CPU PASS; measured RSS REVIEW, explicitly REVIEW ACCEPTED by Owner for this finite v0.1.0 RC observation. Targets unchanged. Acceptance-record PASS denotes explicit Owner REVIEW ACCEPTED; raw measurement remains RSS REVIEW, not all-samples-below100MB PASS. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
         }
       ],
       "blocker": null,
@@ -22906,8 +22962,28 @@
           "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
           "checked_at": "2026-10-07T10:30:21.813676+00:00",
           "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution"
+        },
+        {
+          "acceptance_id": "D7-03-A",
+          "path": ".artifacts/day7/owner-final-closeout/owner-acceptance.json",
+          "log": ".artifacts/day7/owner-final-closeout/register-closeout.log",
+          "command": "python3 .artifacts/day7/owner-final-closeout/register-closeout.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+          "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+          "checked_at": "2026-10-07T10:43:18.034361+00:00",
+          "scope": "Valid existing 300.051-second native Live measurement; CPU PASS; measured RSS REVIEW, explicitly REVIEW ACCEPTED by Owner for this finite v0.1.0 RC observation. Targets unchanged. Acceptance-record PASS denotes explicit Owner REVIEW ACCEPTED; raw measurement remains RSS REVIEW, not all-samples-below100MB PASS."
         }
-      ]
+      ],
+      "evidence_reference_migration": {
+        "reviewed_at": "2026-10-07T11:12:34.664523+00:00",
+        "reviewer": "Codex repository agent under explicit Owner approval in this session",
+        "source_revision": "c1c262f11bdda333e52aa9120e85ecda745bc07b",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "summary": "reports/day-7-release-closeout-2026-10-07.md",
+        "scope": "Reference portability and unchanged-scope review only; original evidence appended intact to evidence_history; no acceptance/status/points/dependency or RC changes. New CI pending."
+      }
     },
     {
       "id": "D7-04",
@@ -22932,15 +23008,15 @@
       "evidence": [
         {
           "acceptance_id": "D7-04-A",
-          "path": ".artifacts/day7/system-layout/package-audit.json",
-          "log": ".artifacts/day7/system-layout/archive-sanitized.log",
+          "path": "reports/day-7-release-closeout-2026-10-07.md",
+          "log": "reports/day-7-release-closeout-2026-10-07.md",
           "command": "Formal unsigned no-override Release Archive/static privacy/extraction plus python3 .artifacts/day7/final-performance-closeout.py Owner smoke registration",
           "exit_code": 0,
           "status": "PASS",
           "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
           "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
           "checked_at": "2026-10-07T10:30:21.813676+00:00",
-          "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution"
+          "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
         }
       ],
       "blocker": null,
@@ -23046,6 +23122,18 @@
           "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
           "checked_at": "2026-10-07T10:07:55.963225+00:00",
           "scope": "New System-layout RC static App/package privacy PASS, Strip1, both slices0, private matching dSYM, exact resources and extraction. Preview main PASS; System/window sizes/Menu Bar/Quit/reopen PENDING after TOOL FAILURE. Previous accepted package PASS retained as history; no combined new package smoke/Owner/Live/performance acceptance."
+        },
+        {
+          "acceptance_id": "D7-04-A",
+          "path": ".artifacts/day7/system-layout/package-audit.json",
+          "log": ".artifacts/day7/system-layout/archive-sanitized.log",
+          "command": "Formal unsigned no-override Release Archive/static privacy/extraction plus python3 .artifacts/day7/final-performance-closeout.py Owner smoke registration",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+          "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+          "checked_at": "2026-10-07T10:30:21.813676+00:00",
+          "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution"
         }
       ],
       "checkpoint_history": [
@@ -23067,6 +23155,14 @@
         "scope": "Current local System-layout Archive-derived unsigned v0.1.0 RC only; not CI, signing, notarization, public release or other unexecuted checks",
         "criterion_basis": "Current final Archive executable/resources/zip privacy PASS; Strip1, both executable slices owner-prefix0; sanitized log review and independent extraction PASS; Owner accepts.",
         "remaining_original_required_gap": null
+      },
+      "evidence_reference_migration": {
+        "reviewed_at": "2026-10-07T11:12:34.664523+00:00",
+        "reviewer": "Codex repository agent under explicit Owner approval in this session",
+        "source_revision": "c1c262f11bdda333e52aa9120e85ecda745bc07b",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "summary": "reports/day-7-release-closeout-2026-10-07.md",
+        "scope": "Reference portability and unchanged-scope review only; original evidence appended intact to evidence_history; no acceptance/status/points/dependency or RC changes. New CI pending."
       }
     },
     {
@@ -23092,15 +23188,15 @@
       "evidence": [
         {
           "acceptance_id": "D7-05-A",
-          "path": ".artifacts/day7/owner-final-closeout/document-review.json",
-          "log": ".artifacts/day7/owner-final-closeout/register-closeout.log",
+          "path": "reports/day-7-release-closeout-2026-10-07.md",
+          "log": "reports/day-7-release-closeout-2026-10-07.md",
           "command": "python3 .artifacts/day7/owner-final-closeout/register-closeout.py",
           "exit_code": 0,
           "status": "PASS",
           "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
           "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
           "checked_at": "2026-10-07T10:43:18.034361+00:00",
-          "scope": "Version0.1.0/build1, LICENSE/ThirdPartyNotices, CHANGELOG and CONTRIBUTING present and reviewed; Owner accepts recorded automatic/document checks."
+          "scope": "Version0.1.0/build1, LICENSE/ThirdPartyNotices, CHANGELOG and CONTRIBUTING present and reviewed; Owner accepts recorded automatic/document checks. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
         }
       ],
       "blocker": null,
@@ -23149,8 +23245,28 @@
           "fingerprint": "8c99387ca7090664dbfd50d73868fe865bcf3adeec1b86902fb5afaa9221f350",
           "checked_at": "2026-10-07T07:53:32.229726+00:00",
           "scope": "Current automatic/document/plan boundary only; future screenshots/Owner/live/signing/notary/CI acceptance not inferred"
+        },
+        {
+          "acceptance_id": "D7-05-A",
+          "path": ".artifacts/day7/owner-final-closeout/document-review.json",
+          "log": ".artifacts/day7/owner-final-closeout/register-closeout.log",
+          "command": "python3 .artifacts/day7/owner-final-closeout/register-closeout.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+          "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+          "checked_at": "2026-10-07T10:43:18.034361+00:00",
+          "scope": "Version0.1.0/build1, LICENSE/ThirdPartyNotices, CHANGELOG and CONTRIBUTING present and reviewed; Owner accepts recorded automatic/document checks."
         }
-      ]
+      ],
+      "evidence_reference_migration": {
+        "reviewed_at": "2026-10-07T11:12:34.664523+00:00",
+        "reviewer": "Codex repository agent under explicit Owner approval in this session",
+        "source_revision": "c1c262f11bdda333e52aa9120e85ecda745bc07b",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "summary": "reports/day-7-release-closeout-2026-10-07.md",
+        "scope": "Reference portability and unchanged-scope review only; original evidence appended intact to evidence_history; no acceptance/status/points/dependency or RC changes. New CI pending."
+      }
     },
     {
       "id": "D7-06",
@@ -23175,15 +23291,15 @@
       "evidence": [
         {
           "acceptance_id": "D7-06-A",
-          "path": ".artifacts/day7/system-layout/package-audit.json",
-          "log": ".artifacts/day7/system-layout/archive-sanitized.log",
+          "path": "reports/day-7-release-closeout-2026-10-07.md",
+          "log": "reports/day-7-release-closeout-2026-10-07.md",
           "command": "Formal unsigned no-override Release Archive/static privacy/extraction plus python3 .artifacts/day7/final-performance-closeout.py Owner smoke registration",
           "exit_code": 0,
           "status": "PASS",
           "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
           "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
           "checked_at": "2026-10-07T10:30:21.813676+00:00",
-          "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution"
+          "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
         }
       ],
       "blocker": null,
@@ -23289,6 +23405,18 @@
           "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
           "checked_at": "2026-10-07T10:07:55.963225+00:00",
           "scope": "New System-layout RC static App/package privacy PASS, Strip1, both slices0, private matching dSYM, exact resources and extraction. Preview main PASS; System/window sizes/Menu Bar/Quit/reopen PENDING after TOOL FAILURE. Previous accepted package PASS retained as history; no combined new package smoke/Owner/Live/performance acceptance."
+        },
+        {
+          "acceptance_id": "D7-06-A",
+          "path": ".artifacts/day7/system-layout/package-audit.json",
+          "log": ".artifacts/day7/system-layout/archive-sanitized.log",
+          "command": "Formal unsigned no-override Release Archive/static privacy/extraction plus python3 .artifacts/day7/final-performance-closeout.py Owner smoke registration",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+          "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+          "checked_at": "2026-10-07T10:30:21.813676+00:00",
+          "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution"
         }
       ],
       "checkpoint_history": [
@@ -23310,6 +23438,14 @@
         "scope": "Current local System-layout Archive-derived unsigned v0.1.0 RC only; not CI, signing, notarization, public release or other unexecuted checks",
         "criterion_basis": "Reproducible Archive-derived unsigned zip/checksum/independent extraction PASS and complete owner-ready signing/notarization PLAN available in docs/RELEASE.md. Actual signing/notarization NOT_RUN; original criterion explicitly permits plan path.",
         "remaining_original_required_gap": null
+      },
+      "evidence_reference_migration": {
+        "reviewed_at": "2026-10-07T11:12:34.664523+00:00",
+        "reviewer": "Codex repository agent under explicit Owner approval in this session",
+        "source_revision": "c1c262f11bdda333e52aa9120e85ecda745bc07b",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "summary": "reports/day-7-release-closeout-2026-10-07.md",
+        "scope": "Reference portability and unchanged-scope review only; original evidence appended intact to evidence_history; no acceptance/status/points/dependency or RC changes. New CI pending."
       }
     },
     {
@@ -23335,15 +23471,15 @@
       "evidence": [
         {
           "acceptance_id": "D7-07-A",
-          "path": ".artifacts/day7/owner-final-closeout/document-review.json",
-          "log": ".artifacts/day7/owner-final-closeout/register-closeout.log",
+          "path": "reports/day-7-release-closeout-2026-10-07.md",
+          "log": "reports/day-7-release-closeout-2026-10-07.md",
           "command": "python3 .artifacts/day7/owner-final-closeout/register-closeout.py",
           "exit_code": 0,
           "status": "PASS",
           "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
           "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
           "checked_at": "2026-10-07T10:43:18.034361+00:00",
-          "scope": "Actual sanitized Preview screenshots integrated in both READMEs and explicitly Owner approved; overall review now completed. GIF optional under prior Owner clarification, NOT_GENERATED; menu icon DRAFT."
+          "scope": "Actual sanitized Preview screenshots integrated in both READMEs and explicitly Owner approved; overall review now completed. GIF optional under prior Owner clarification, NOT_GENERATED; menu icon DRAFT. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
         }
       ],
       "blocker": null,
@@ -23418,7 +23554,28 @@
         "criterion_basis": "Actual sanitized Preview screenshots integrated in both READMEs and explicitly Owner approved; overall review now completed. GIF optional under prior Owner clarification, NOT_GENERATED; menu icon DRAFT.",
         "remaining_original_required_gap": null
       },
-      "evidence_history": []
+      "evidence_history": [
+        {
+          "acceptance_id": "D7-07-A",
+          "path": ".artifacts/day7/owner-final-closeout/document-review.json",
+          "log": ".artifacts/day7/owner-final-closeout/register-closeout.log",
+          "command": "python3 .artifacts/day7/owner-final-closeout/register-closeout.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+          "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+          "checked_at": "2026-10-07T10:43:18.034361+00:00",
+          "scope": "Actual sanitized Preview screenshots integrated in both READMEs and explicitly Owner approved; overall review now completed. GIF optional under prior Owner clarification, NOT_GENERATED; menu icon DRAFT."
+        }
+      ],
+      "evidence_reference_migration": {
+        "reviewed_at": "2026-10-07T11:12:34.664523+00:00",
+        "reviewer": "Codex repository agent under explicit Owner approval in this session",
+        "source_revision": "c1c262f11bdda333e52aa9120e85ecda745bc07b",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "summary": "reports/day-7-release-closeout-2026-10-07.md",
+        "scope": "Reference portability and unchanged-scope review only; original evidence appended intact to evidence_history; no acceptance/status/points/dependency or RC changes. New CI pending."
+      }
     },
     {
       "id": "D7-08",
@@ -23443,15 +23600,15 @@
       "evidence": [
         {
           "acceptance_id": "D7-08-A",
-          "path": ".artifacts/day7/owner-final-closeout/document-review.json",
-          "log": ".artifacts/day7/owner-final-closeout/register-closeout.log",
+          "path": "reports/day-7-release-closeout-2026-10-07.md",
+          "log": "reports/day-7-release-closeout-2026-10-07.md",
           "command": "python3 .artifacts/day7/owner-final-closeout/register-closeout.py",
           "exit_code": 0,
           "status": "PASS",
           "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
           "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
           "checked_at": "2026-10-07T10:43:18.034361+00:00",
-          "scope": "FINAL records implemented scope, deferred work, limitations and proposed v0.2 items; current scoped acceptance and historical checkpoints distinguished; Owner final review completed."
+          "scope": "FINAL records implemented scope, deferred work, limitations and proposed v0.2 items; current scoped acceptance and historical checkpoints distinguished; Owner final review completed. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
         }
       ],
       "blocker": null,
@@ -23500,8 +23657,28 @@
           "fingerprint": "8c99387ca7090664dbfd50d73868fe865bcf3adeec1b86902fb5afaa9221f350",
           "checked_at": "2026-10-07T07:53:32.229726+00:00",
           "scope": "Current automatic/document/plan boundary only; future screenshots/Owner/live/signing/notary/CI acceptance not inferred"
+        },
+        {
+          "acceptance_id": "D7-08-A",
+          "path": ".artifacts/day7/owner-final-closeout/document-review.json",
+          "log": ".artifacts/day7/owner-final-closeout/register-closeout.log",
+          "command": "python3 .artifacts/day7/owner-final-closeout/register-closeout.py",
+          "exit_code": 0,
+          "status": "PASS",
+          "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+          "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+          "checked_at": "2026-10-07T10:43:18.034361+00:00",
+          "scope": "FINAL records implemented scope, deferred work, limitations and proposed v0.2 items; current scoped acceptance and historical checkpoints distinguished; Owner final review completed."
         }
-      ]
+      ],
+      "evidence_reference_migration": {
+        "reviewed_at": "2026-10-07T11:12:34.664523+00:00",
+        "reviewer": "Codex repository agent under explicit Owner approval in this session",
+        "source_revision": "c1c262f11bdda333e52aa9120e85ecda745bc07b",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "summary": "reports/day-7-release-closeout-2026-10-07.md",
+        "scope": "Reference portability and unchanged-scope review only; original evidence appended intact to evidence_history; no acceptance/status/points/dependency or RC changes. New CI pending."
+      }
     },
     {
       "id": "VA-01",

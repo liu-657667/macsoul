@@ -1,5 +1,11 @@
 # MacSoul v0.1.0 — Final Report
 
+## Repository integration checkpoint — evidence portability repair awaiting CI
+
+Recorded 2026-10-07T11:12:34.664523+00:00, baseline `c1c262f11bdda333e52aa9120e85ecda745bc07b`; [Draft PR #10](https://github.com/liu-657667/macsoul/pull/10). Earlier push/PR CI runs37610177778/37610241025 genuinely failed: build/unit365tests/0failures and other automatic checks PASS, ledger FAIL due15missing references to8distinct ignored private files. This documentation/ledger repair preserves those failures and the accepted product/RC identity; **new-head CI evidence portability PENDING**, not PASS in advance. See [sanitized acceptance record and exact migration](day-7-release-closeout-2026-10-07.md#repository-integration--evidence-portability-repair-pending-new-head-ci).
+
+D7-01 binds build/unit to each real per-run verification manifest/log. D7-02–D7-08 use the complete tracked Day7 sanitized acceptance/execution summary; replaced current evidence is preserved intact in evidence_history. No original acceptance/points/dependencies/statuses or product/test/project/scripts/workflow changed. Local Owner Live PASS, CPU PASS, raw RSS REVIEW with **RSS REVIEW ACCEPTED**, package privacy PASS and unexecuted/deferred limits remain unchanged. The following local closeout checkpoint's CI NOT_RUN/STOP statements describe that historical pre-integration unit, not the current PR runs. No local rebuild/repackage/Live/performance rerun in this reference migration.
+
 ## Current authoritative checkpoint — Owner scoped final review completed
 
 Recorded 2026-10-07T10:43:18.034361+00:00. **Local unsigned System-layout Archive-derived v0.1.0 / build1 RC ACCEPTED by Owner. Owner Live regression PASS; Preview smoke PASS; CPU PASS; RSS REVIEW ACCEPTED; Package privacy PASS.** This is local RC acceptance, not public release or GitHub CI acceptance.
