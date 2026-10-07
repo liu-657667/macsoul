@@ -18,7 +18,7 @@ MacSoul aims to bring system health, AI coding quotas, network information and y
 
 **Personality gets your attention. Clear, trustworthy information is the point.**
 
-> **v0.1.0 source development build.** Developer Preview uses mock data by default. Live System enables shared System, Network and Dev snapshots and the verified Codex App Server integration. Claude stays unavailable without a verified live quota source. Cleaner scans read-only only on explicit Scan; there is no deletion. Day 2–5 automated and Owner acceptance records are retained. Day 6 is closed within the Owner-approved acceptance boundary; Day 7 local unsigned RC has completed Owner scoped final review. Screenshots and final Live regression PASS; CPU PASS, RSS REVIEW ACCEPTED. No signed/notarized production installer has been released.
+> **v0.1.0 Unsigned Developer Preview preparation; not publicly released.** Developer Preview uses mock data by default. Live System enables shared System, Network and Dev snapshots and the verified Codex App Server integration. Claude stays unavailable without a verified live quota source. Cleaner scans read-only only on explicit Scan; there is no deletion. Day 2–5 automated and Owner acceptance records are retained. Day 6 is closed within the Owner-approved acceptance boundary; Day 7 local unsigned RC has completed Owner scoped final review. Screenshots and final Live regression PASS; CPU PASS, RSS REVIEW ACCEPTED. PR #10 is merged and main CI passed. This phase prepares precompiled unsigned, unnotarized DMG / ZIP downloads; public release awaits final Owner approval.
 
 ![MacSoul product concept artwork, not a screenshot of the current app](assets-source/reference/macsoul-product-hero.png)
 
@@ -48,7 +48,7 @@ Additional view: [Settings, upper section (Developer Preview)](docs/screenshots/
 |---|---|---|
 | **Soul** | Concise reactions and recovery | Deterministic local rules: sustained CPU thresholds, memory pressure, cooldown/recovery; static artwork, no LLM |
 | **System** | CPU, memory, storage, power and developer processes | Native CPU, memory used/total, pressure events, root-volume disk, power-source state, process CPU delta/RSS; natural warning observed, critical not observed |
-| **AI quotas** | Applicable Codex / Claude Code windows | Verified Codex CLI 0.160.0 / 0.160.1; shared remaining percentages and provider resets; Claude unavailable without verified source |
+| **AI quotas** | Applicable Codex / Claude Code windows | Verified Codex CLI 0.160.0 / 0.160.1 / 0.162.0-alpha.2; shared remaining percentages and provider resets; Claude unavailable without verified source |
 | **Network** | Egress IP, proxy hints, transport checks | NWPath, independent IPv4/IPv6, App/system proxy context, tunnel hints and anonymous HEAD probes; Region not collected |
 | **Dev environment** | Runtime contexts and developer TCP listeners | Java/Node/Python/Go, SDKMAN/NVM/pyenv/goenv, cache/refresh; developer filtering plus full-list disclosure; stop command is copy-only |
 | **Dev storage** | Explain estimates and inspect contents | Read-only Xcode/Gradle/Maven/npm/Homebrew Preview/drill-down, local Docker logical usage without VM traversal; no cleanup |
@@ -77,6 +77,14 @@ Normal, busy, overloaded, too full, low energy and resting are expressions of th
 
 Live Soul behavior uses local rules, sustained thresholds, cooldowns and recovery rather than an LLM generating comments. A momentary CPU spike does not directly change Soul state.
 
+## Precompiled App: release preparation
+
+Candidate downloads are `MacSoul-v0.1.0-macos-universal-unsigned.dmg` (recommended), `MacSoul-v0.1.0-unsigned.zip` (alternative) and `SHA256SUMS.txt`. Once published, download from [GitHub Releases](https://github.com/liu-657667/macsoul/releases); no public binary Release exists yet. The precompiled App does not require Xcode or compilation.
+
+The minimum deployment target is macOS 13.0. Universal contains arm64 and x86_64; it does not claim Intel hardware testing or coverage of every macOS version. Verify the download, open the DMG, drag MacSoul to Applications and launch it. The App defaults to mock data.
+
+**UNSIGNED / UNNOTARIZED: macOS may block first opening.** Only after trusting the source and checksums, follow [Apple's per-App opening guidance](https://support.apple.com/en-us/102445); do not disable global protection. Browser download quarantine / first opening and public anonymous downloads require separate observation; no Gatekeeper PASS is claimed. No App Store, Homebrew or automatic updates. See the [release guide](docs/RELEASE.md) for steps and validation boundaries.
+
 ## Run the developer preview from source
 
 You need macOS, full Xcode (including the Swift toolchain) and Python 3. The project's deployment target is macOS 13; that is not a claim that every macOS / Xcode combination has been tested. See the [development guide](docs/DEVELOPMENT.md) for tooling and verification records. Codex, Claude Code and AI API keys are not required to try the preview.
@@ -98,7 +106,7 @@ open MacSoul.xcodeproj
 
 Quit any running MacSoul instance before using the preview script. The app starts with mock data. Choose **Settings → System data source → Live System** for live System/Dev/Network and verified AI providers. Back in Developer Preview, try `Codex: Week only`, high CPU and memory-pressure scenarios. These fixtures neither alter a real subscription nor place the machine under load.
 
-These instructions are for a source preview, not a promise of an available production installer.
+The commands above are for source development; preparing precompiled artifacts does not mean they have been publicly released.
 
 ## Privacy and boundaries
 
@@ -106,7 +114,7 @@ Local-first does not mean zero network traffic. Live Network queries ipify for o
 
 Codex starts a selected verified CLI app-server (PATH or bundled discovery), sending only initialize, initialized and account/rateLimits/read and consuming minimal rate-limit fields. No account profile, prompts/threads, inference, login or quota mutation. Canonical usedPercent is preserved; numeric UI/bars show remaining. Only verified machine-readable capability can classify absent 5h as not applicable; absence alone is insufficient. Claude currently checks executable/version only; installation does not prove a subscription.
 
-Cleaner reads resolved cache roots without uploading paths/content, skips symlinks and constrains Preview traversal. Docker queries local Engine logical usage only; remote contexts are excluded, with no Docker.raw/VM traversal. Launch at Login uses macOS system state and changes only through explicit user action; real registration/unregistration remains NOT_RUN, explicitly deferred to the Day 7 installed/signed environment.
+Cleaner reads resolved cache roots without uploading paths/content, skips symlinks and constrains Preview traversal. Docker queries local Engine logical usage only; remote contexts are excluded, with no Docker.raw/VM traversal. Launch at Login uses macOS system state and changes only through explicit user action; real registration/unregistration remains NOT_RUN, explicitly deferred to a future installed/signed environment.
 
 ### Limitations
 
@@ -120,6 +128,8 @@ Cleaner reads resolved cache roots without uploading paths/content, skips symlin
 
 Day 5 measured Mac14,9, 12 logical CPUs, 16 GiB, macOS 27.0.1 / Xcode 27, unsigned Release with Codex 0.160.1. Supported menu-bar-only five-minute run: MacSoul average CPU about 0.0057%; RSS average about 53.4 MB / peak about 63.0 MB, with the Codex child measured separately. See [method and limits](reports/day-5-performance-hardening-2026-10-04.md). The longer Day 6 run is recorded in the [current report](reports/day-6-review-hardening-2026-10-07.md); unexecuted measurements are not PASS.
 
+The current Day 7 five-minute run measured CPU avg / p95 / max: 0.012488% / 0.039502% / 0.063822%; RSS start / end / avg / max: 100.483 / 79.479 / 88.107 / 100.483 decimal MB. The original results are CPU PASS and RSS REVIEW; the Owner decision is **RSS REVIEW ACCEPTED by Owner for this finite v0.1.0 RC observation.** The 100 MB target and 150 MB investigation threshold remain unchanged; RSS was not below 100 MB throughout.
+
 Finite runs do not guarantee <0.5% on every machine or prove that future leaks are impossible.
 
 ## Roadmap
@@ -127,14 +137,14 @@ Finite runs do not guarantee <0.5% on every machine or prove that future leaks a
 | Stage | Focus |
 |---|---|
 | **Now: core integrations** | System / Dev / Network / Codex, read-only Cleaner; Day 6 review, accessibility, Settings and sustained-performance acceptance closed |
-| **Next: distribution preparation** | Day 7 local unsigned RC accepted; repository integration and public signed distribution await Owner direction; no production DMG/Homebrew installation yet |
+| **Next: distribution preparation** | Day 7 local unsigned RC and PR #10 integration completed; preparing unsigned, unnotarized DMG / ZIP and Release draft; public tag / publication await final Owner approval |
 | **v0.2.0 plans** | Separately design Cleaner cleanup/Trash/confirmation, Maven/Gradle Build Tools and Docker extensions; not current capabilities |
 
 [Task status](docs/STATUS.md) is the progress entry. Screenshots, automated tests, real features, performance and full interaction acceptance are separate. The small menu icon remains DRAFT; the [Day 6 safe Preview screenshot checklist](reports/day-6-review-hardening-2026-10-07.md) is accepted; real Preview screenshots have been collected and privacy checked for D7-07; Owner screenshot approval passed, never replaced by concept artwork. GIF is optional.
 
 ## Release-candidate status
 
-The local unsigned 0.1.0 / build 1 Release, zip, extraction/resources and SHA-256 checks passed; Owner screenshot approval passed; final Owner Live regression PASS, CPU PASS and RSS REVIEW ACCEPTED for this local unsigned RC; Day7 GitHub CI NOT_RUN. Build, test, package, signing, notarization and publication are tracked separately. See the [release guide](docs/RELEASE.md), [final report](reports/FINAL.md) and [changelog](CHANGELOG.md). No public Release, signed installer or Gatekeeper verification is claimed.
+The local unsigned 0.1.0 / build 1 Release, zip, extraction/resources and SHA-256 checks passed; Owner screenshot approval passed; final Owner Live regression PASS, CPU PASS and RSS REVIEW ACCEPTED for this local unsigned RC; [PR #10](https://github.com/liu-657667/macsoul/pull/10) merged normally; [main CI 37614072470](https://github.com/liu-657667/macsoul/actions/runs/37614072470) SUCCESS. This CI is distinct from the earlier local 365 tests / 0 failures / 0 skips; successful CI logs did not expose test counts. Build, test, package, signing, notarization and publication are tracked separately. See the [release guide](docs/RELEASE.md), [final report](reports/FINAL.md) and [changelog](CHANGELOG.md). No public Release, signed installer or Gatekeeper verification is claimed.
 
 ## Contributing
 

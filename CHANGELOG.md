@@ -2,7 +2,7 @@
 
 ## [0.1.0] - Unreleased
 
-This is the source release-candidate scope, not a published signed release.
+v0.1.0 Unsigned / Unnotarized Developer Preview is in release preparation, not publicly released. The release date remains unconfirmed. Candidate distribution uses a precompiled Universal DMG with the accepted ZIP as an alternative; no Xcode is required for users.
 
 ### Features
 
@@ -10,7 +10,7 @@ This is the source release-candidate scope, not a published signed release.
 - Deterministic Soul with sustained thresholds, category cooldowns, priority and recovery.
 - Network path, independent public IPv4/IPv6, redacted App/system proxy facts, tunnel hints and optional anonymous transport probes.
 - Java/Node/Python/Go discovery with version-manager contexts; developer TCP listeners with grouped binds and clipboard-only actions.
-- Codex quota integration for exactly verified CLI 0.160.0 / 0.160.1; applicable windows, remaining presentation, freshness and provider reset. Claude stays unavailable without a verified source.
+- Codex quota integration for exactly verified CLI 0.160.0 / 0.160.1 / 0.162.0-alpha.2; applicable windows, remaining presentation, freshness and provider reset. Claude stays unavailable without a verified source.
 - On-demand read-only Cleaner discovery, estimates, Content Preview/drill-down and local Docker logical usage.
 - Shared Overview/Menu Bar, Developer Preview fixtures, Chinese/English, App appearance and accessibility improvements.
 
@@ -19,11 +19,18 @@ This is the source release-candidate scope, not a published signed release.
 - Lifecycle-safe cancellation and shared collectors; sleep/wake and Preview/Live boundaries.
 - Bounded literal child commands and cancellable pipe draining, including inherited-pipe regressions.
 - Day 7 test readiness synchronization and explicit version/build metadata.
+- Exact Codex 0.162.0-alpha.2 compatibility; unknown versions remain fail closed.
+- Release testability, Archive stripping and private matching dSYM fix; distributed App owner-path scan passed for both slices.
+- System page content starts at the top with separate metrics/process sections and scrolling.
+- PR #10 merged; [main CI 37614072470](https://github.com/liu-657667/macsoul/actions/runs/37614072470) SUCCESS.
 
 ### Limitations
 
 - No cleanup, Trash, process termination, port conflict detection, Notch or history.
 - Estimated usage is not exact reclaimable space; transport reachability is not full service health.
 - Unknown Codex versions fail closed. Real Claude subscription quota is not verified.
-- Finite performance measurements are environment-specific; historical parent RSS includes an Owner-accepted REVIEW result.
-- Signing, notarization, real installed Login Item validation and public distribution are pending Owner setup. See [release guide](docs/RELEASE.md).
+- Finite performance measurements are environment-specific; the current five-minute CPU result is PASS and original RSS result is REVIEW. RSS REVIEW ACCEPTED by Owner for this finite v0.1.0 RC observation; the 100 MB target / 150 MB investigation threshold remain unchanged.
+- Unsigned, unnotarized; first opening may be blocked by macOS. Browser/quarantine and public anonymous download results are separate from local package validation; no Gatekeeper PASS claim.
+- Minimum deployment target macOS 13.0; Universal arm64 + x86_64 is not Intel hardware validation.
+- Signed/installed Login Item validation remains deferred. Signing/notarization and App Store Connect privacy validation are NOT_RUN; no App Store, Homebrew or automatic update distribution.
+- Public tag / Release publication await final Owner authorization. See [release guide](docs/RELEASE.md).
