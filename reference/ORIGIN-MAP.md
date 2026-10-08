@@ -1,6 +1,6 @@
 # 修改文件与原文
 
-原始 Swift 与 Review 保持逐字不变。以下条目列出本次修改前的文档副本。
+**Historical — initial integration package.** “原始 Swift 与 Review 保持逐字不变”只描述初始合并包制作时的范围；后续 Swift 实现与 v0.1.0 发布另有证据。以下条目列出初始修改前的文档副本，不是当前仓库的文件未改声明。当前维护见 [CONTINUE](../prompts/CONTINUE.md) 与 [RELEASE](../docs/RELEASE.md)。
 
 - `README.md` → `reference/originals/harness/README.md`
 - `AGENTS.md` → `reference/originals/harness/AGENTS.original.md`

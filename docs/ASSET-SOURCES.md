@@ -1,5 +1,12 @@
 # MacSoul 视觉资源 · 技术来源与原稿说明
 
+## 当前资源维护入口 — 2026-10-08
+
+资源已接入公开 v0.1.0，无需按初始 ZIP 流程重新导入。菜单栏当前使用 **MacSoulMenuTemplateDraft**，并非尚未启用，也不代表正式美术全部定稿。Owner 的 Dock 单项认可、其他视觉条件及增量 verifying 见 [历史视觉 closeout](../reports/phase-a-visual-closeout-2026-09-28.md)；后续 Menu Bar/Mock/Live 的实际观察与限制见 [FINAL](../reports/FINAL.md) 和 [发行说明](RELEASE.md)。不扩展资源来源、许可证或 Owner 美术批准范围。
+
+以下初始导入、候选说明与未勾 checklist 为 **Historical / Initial integration reference**，不是要求重新接入或全面 PASS。
+
+
 整理日期：2026-09-28。以下官方资料用于核对资源格式与渲染语义，不代表本包已通过 Xcode 或商店验收。Apple 的部分格式参考是归档文档；具体项目以本机 Xcode 编译结果验证。
 
 ## 官方技术资料
@@ -35,7 +42,7 @@ https://developer.apple.com/documentation/uikit/providing-images-for-different-a
 
 没有把同名 imagegen.png 当作唯一文件：8 张主要原稿按各自独立文件身份取得并校验，避免下载同名覆盖后遗漏状态。
 
-## 导出做了什么 / 没做什么
+## 初始包导出做了什么 / 没做什么 — Historical
 
 做了：原图归档、尺寸导出、PNG alpha 保留、单色候选的 alpha 模板化、Contents.json、命名、预览和静态校验。
 

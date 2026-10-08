@@ -21,8 +21,8 @@
   "files": [
     {
       "path": "ASSETS-START-HERE.md",
-      "bytes": 3832,
-      "sha256": "6b847766a897c6c5ef9ca705d1c11552f905d3fac30da15928fc3ee5f32b34d9"
+      "bytes": 4837,
+      "sha256": "7b60c7f84dd1653b86c2aee1529cfd27b33017f2f2c38dbb79f43b39000c3e81"
     },
     {
       "path": "MacSoul/Resources/MacSoulBrand.xcassets/Contents.json",
@@ -335,8 +335,8 @@
     },
     {
       "path": "assets-source/README.md",
-      "bytes": 908,
-      "sha256": "438c8a04a17be7b72c538cd3e5c0e38070320372fab84ba3109a039c09dccbfd"
+      "bytes": 1640,
+      "sha256": "c10e88adca2987f25c21230265c833976c642593e4af9b70f2b408605fc02f76"
     },
     {
       "path": "assets-source/app-icon/macsoul-app-icon-source.png",
@@ -514,28 +514,28 @@
     },
     {
       "path": "docs/ASSET-CATALOG-PLAN.md",
-      "bytes": 6965,
-      "sha256": "7fcf34db3366e172b0a50bcf0e82fa47b8575926e97c155dbe7ab342e6cb700e"
+      "bytes": 7726,
+      "sha256": "842b62fe5e37368559449d2bbfd4d116a96bf90c060c7154b14bf4cfd54c4a10"
     },
     {
       "path": "docs/ASSET-SOURCES.md",
-      "bytes": 3030,
-      "sha256": "582c512c8f8cc5bcbceb1905810288d467958247be2b66d094e9d70343ca2883"
+      "bytes": 3763,
+      "sha256": "c8857f8080df589fd8993c3812ec25dc2bd5ad924ce1abc739604efc5292993b"
     },
     {
       "path": "docs/ASSETS-ACCEPTANCE.md",
-      "bytes": 2707,
-      "sha256": "61cea76eca976743b1e6ba63b3d3d311f4952c79ae2644e07366cb96b6adbe66"
+      "bytes": 3499,
+      "sha256": "5bab2fe87d49af73d0e4f46691b5fcc7a20658e5c1826a2c561dca49c9815426"
     },
     {
       "path": "docs/ASSETS-NAMING.md",
-      "bytes": 5837,
-      "sha256": "5578e0aa0e5dcfcfbfdd56e26ce4e6a480621d44db7de4f23cac43a0d5e84fc7"
+      "bytes": 6804,
+      "sha256": "55aaf48e5d36d53f80576729ad8bec0dceb1ec67950c2cb7e86f0fc94cc1f635"
     },
     {
       "path": "prompts/INTEGRATE-VISUAL-ASSETS.md",
-      "bytes": 3248,
-      "sha256": "fc34046743d293fffc3e5e13ba576ba396b020432af466868843fe9bcf5716c1"
+      "bytes": 4013,
+      "sha256": "46912b45946a5089ba06d46e5242adbf45c7138da20cda619d1d886b22d8a471"
     },
     {
       "path": "scripts/verify-visual-assets.py",

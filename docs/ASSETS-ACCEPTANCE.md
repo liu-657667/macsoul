@@ -1,5 +1,12 @@
 # MacSoul 视觉资源验收
 
+## 当前资源维护入口 — 2026-10-08
+
+资源已接入公开 v0.1.0，无需按初始 ZIP 流程重新导入。菜单栏当前使用 **MacSoulMenuTemplateDraft**，并非尚未启用，也不代表正式美术全部定稿。Owner 的 Dock 单项认可、其他视觉条件及增量 verifying 见 [历史视觉 closeout](../reports/phase-a-visual-closeout-2026-09-28.md)；后续 Menu Bar/Mock/Live 的实际观察与限制见 [FINAL](../reports/FINAL.md) 和 [发行说明](RELEASE.md)。不扩展资源来源、许可证或 Owner 美术批准范围。
+
+以下初始导入、候选说明与未勾 checklist 为 **Historical / Initial integration reference**，不是要求重新接入或全面 PASS。
+
+
 本清单用于现有任务账本中的资源接入任务。不要重置七天计划，也不要创建第二份权威进度表。
 
 ## 静态检查（包内已执行，可在本机复跑）
@@ -10,7 +17,7 @@ python3 scripts/verify-visual-assets.py
 
 检查交付清单内文件、SHA-256、PNG 尺寸/通道、8 个 asset 的 JSON/文件引用、AppIcon 10 个 macOS 槽位，以及 Soul 与菜单栏 scale 对应关系。静态校验不能证明 Xcode 成功加载。
 
-## 构建与 target
+## 构建与 target — Historical 空 checklist
 
 - [ ] 现有代码与未提交改动保留，没有误替换 MacSoul 目录。
 - [ ] `MacSoulBrand.xcassets` 进入正确 App target。
@@ -18,7 +25,7 @@ python3 scripts/verify-visual-assets.py
 - [ ] 构建没有缺图、重复 asset、未分配图槽位警告。
 - [ ] `.app` 不包含 assets-source 原稿、海报、预览与开发文档。
 
-## 界面
+## 界面 — Historical 空 checklist
 
 - [ ] Mock 数据模式仍明确标识；图片切换不冒充系统监控已经完成。
 - [ ] 六状态同一 frame、scaledToFit；不挤压、不截断、不明显跳位。
@@ -40,7 +47,7 @@ python3 scripts/verify-visual-assets.py
 - 菜单栏 Draft 可以和其他图片一起进入开发候选，但不能把它汇报为“正式模板已完成”。
 - 不提交个人绝对路径、账户/IP 信息和未脱敏日志；图片预览使用 fixture。
 
-## 初始状态
+## 初始状态 — Historical 包记录
 
 STATIC：随 packaging-checks.json 查看实际结果。
 XCODE / ACTOOL：NOT_RUN。

@@ -13,10 +13,10 @@ MacSoul 是本地优先的原生 macOS 开发者控制中心：专业数据帮�
 |---|---|---|
 | System | CPU、内存压力、磁盘、电池、耗资源进程 | 共享数据源；无电池/权限缺失要降级 |
 | Soul | 大脑/胃/家/体力等隐喻，异常和恢复反馈 | 本地规则；持续阈值、滞回、冷却；不乱通知 |
-| AI Coding | Codex / Claude Code 按账户实际适用情况展示 5h / Week 已用百分比与重置 | 不加 Token/费用/会话；来源、新鲜度、缺失要真实 |
+| AI Coding | Codex / Claude Code 按账户实际适用情况展示 5h / Week 剩余百分比与重置（canonical 保留 usedPercent） | 不加 Token/费用/会话；来源、新鲜度、缺失要真实 |
 | Network | 出口 IP、系统/环境代理、隧道提示、轻量连通性 | hint 不当结论；探测可关闭；精确位置不是必需 |
 | Dev | Java/Node/Python/Go 版本与路径、监听端口/PID | 呈现检测上下文；不暗自执行 shell 启动脚本 |
-| Cleaner Lite | 按需统计开发目录大小与风险说明 | 首次只 Mock；后续只读扫描，删除不在 Phase A |
+| Cleaner Lite | 按需统计开发目录大小与风险说明 | v0.1.0 按需只读扫描/内容预览；删除未实现（设计边界） |
 
 ## 两个展示入口
 
@@ -34,11 +34,10 @@ Menu Bar：Soul 一句话、CPU/内存/磁盘/电池的紧凑摘要、Codex / Cl
 ## 非目标
 
 账号/云同步、Agent 管理、代码生成、Token/成本分析、自动推荐模型、PRD/架构工具、全盘自动清理、杀毒/防火墙。
-Notch、历史时间线、项目拓扑是后续版本，不插入本次 Phase A。
+Notch、历史时间线、项目拓扑是后续版本规划，不属于已发布 v0.1.0。
 
 ## 开发与验收
 
-第一步是 Phase A：构建工程、Mock 契约、设计统一、证据账本；不是已经接通真实服务。
-随后按七天任务基线迁移后的依赖实施。真实 quota 读取和 unavailable UI 分别验收。
+历史实施从 Phase A 的工程、Mock 契约、设计与账本开始，随后完成七天批准范围。当前 v0.1.0 已公开发布：System / Dev / Network / 只读 Cleaner 已接入，Codex 仅限已验证 exact CLI versions，Claude 无验证来源时 unavailable；见 [发行状态与限制](RELEASE.md)。真实 quota 读取和 unavailable UI 仍分别验收，规划模块不据此成为已实现。
 build/unit/manual UI/performance/live provider/release 要各自有证据，不能用包完整性检查代替。
 性能采取事件/分层采样/按需扫描；资源预算见 PERFORMANCE.md，未测量不宣称达标。

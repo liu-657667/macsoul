@@ -1,12 +1,31 @@
 # MacSoul v0.1.0 — Final Report
 
+## Current published release and maintenance navigation — 2026-10-08
+
+Day 7 closed within the approved scope (D7-01–D7-08 done; original plan 48 done / 76 points). The full ledger retains 51 done / 8 verifying out of 59; increment records do not reopen Day 7. [PR #10](https://github.com/liu-657667/macsoul/pull/10) merged at `17387226303b2aee7b6c4aacde11fbb0401790eb`; [main CI 37614072470](https://github.com/liu-657667/macsoul/actions/runs/37614072470) SUCCESS for that revision. Historical `c1c262f` push/PR failures and the portability repair below remain intact; `28afd171` push/PR [37612681656](https://github.com/liu-657667/macsoul/actions/runs/37612681656) / [37612687992](https://github.com/liu-657667/macsoul/actions/runs/37612687992) succeeded before merge.
+
+[PR #11](https://github.com/liu-657667/macsoul/pull/11) completed release preparation, with [main CI 37618754994](https://github.com/liu-657667/macsoul/actions/runs/37618754994) SUCCESS at `2075572faafa5989ce3fd6ff7e6d7393365d8b99`. [v0.1.0](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) was publicly released 2026-10-07T12:44:17Z: Pre-release, non-Latest, UNSIGNED / UNNOTARIZED. Tag target stays **2075572faafa5989ce3fd6ff7e6d7393365d8b99**. [PR #12](https://github.com/liu-657667/macsoul/pull/12) synchronized the four public documents; [main CI 37710520301](https://github.com/liu-657667/macsoul/actions/runs/37710520301) SUCCESS at maintenance baseline **b7ca041e0a07623113534e577301f7c3c313df26**. Main advances for maintenance; the release tag identifies immutable shipped content. None of these CI results substitutes a new local RC build or human/performance run; unit counts not exposed in CI stay unreported.
+
+Current [release/downloads and validation limits](../docs/RELEASE.md), [report index](README.md) and [maintenance entry](../prompts/CONTINUE.md) are authoritative navigation. Source fingerprint **1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067**, accepted executable/ZIP and Owner Live PASS / CPU PASS / Package privacy PASS are unchanged. Original **RSS REVIEW** and **RSS REVIEW ACCEPTED by Owner for this finite v0.1.0 RC observation.** remain; target 100 MB / investigation 150 MB are unchanged. Public anonymous download/file identity passed. Browser first opening was BLOCKED_OBSERVED; Owner personally applied a per-App exception and confirmed mock main window/label, Menu Bar and normal Quit. Browser-candidate reopen / Applications install remain NOT_RUN; no Gatekeeper PASS. All existing NOT_RUN / NOT_OBSERVED / Deferred limits remain, as listed in the release guide.
+
+The generator/STATUS legacy Day 6/7 summary is a known maintenance candidate; original task rows remain authoritative. The five fingerprint-controlled fixes are isolated pending a provenance decision, not evidence that Day 7 or the public release failed.
+
+## Historical checkpoints retained below
+
+The original headings/anchors and evidence bodies below are preserved for ledger references. “Current”, “Final”, “Latest”, PENDING, Draft and pre-publication statements belong to their recorded checkpoints, not the current publication status.
+
+
 ## Repository integration checkpoint — evidence portability repair awaiting CI
+
+> **Historical checkpoint.** The original local/CI decision below retains its timestamp and scope; current integration/publication is summarized above.
 
 Recorded 2026-10-07T11:12:34.664523+00:00, baseline `c1c262f11bdda333e52aa9120e85ecda745bc07b`; [Draft PR #10](https://github.com/liu-657667/macsoul/pull/10). Earlier push/PR CI runs37610177778/37610241025 genuinely failed: build/unit365tests/0failures and other automatic checks PASS, ledger FAIL due15missing references to8distinct ignored private files. This documentation/ledger repair preserves those failures and the accepted product/RC identity; **new-head CI evidence portability PENDING**, not PASS in advance. See [sanitized acceptance record and exact migration](day-7-release-closeout-2026-10-07.md#repository-integration--evidence-portability-repair-pending-new-head-ci).
 
 D7-01 binds build/unit to each real per-run verification manifest/log. D7-02–D7-08 use the complete tracked Day7 sanitized acceptance/execution summary; replaced current evidence is preserved intact in evidence_history. No original acceptance/points/dependencies/statuses or product/test/project/scripts/workflow changed. Local Owner Live PASS, CPU PASS, raw RSS REVIEW with **RSS REVIEW ACCEPTED**, package privacy PASS and unexecuted/deferred limits remain unchanged. The following local closeout checkpoint's CI NOT_RUN/STOP statements describe that historical pre-integration unit, not the current PR runs. No local rebuild/repackage/Live/performance rerun in this reference migration.
 
 ## Current authoritative checkpoint — Owner scoped final review completed
+
+> **Historical checkpoint.** The original local/CI decision below retains its timestamp and scope; current integration/publication is summarized above.
 
 Recorded 2026-10-07T10:43:18.034361+00:00. **Local unsigned System-layout Archive-derived v0.1.0 / build1 RC ACCEPTED by Owner. Owner Live regression PASS; Preview smoke PASS; CPU PASS; RSS REVIEW ACCEPTED; Package privacy PASS.** This is local RC acceptance, not public release or GitHub CI acceptance.
 
@@ -278,6 +297,8 @@ Layout concern: System content is vertically centered with substantial blank spa
 No final per-section Owner PASS, Live Menu Bar/three-surface consistency, Live normal Quit/reopen or performance readiness was supplied in this screenshot-only message. Clipboard actions and current Preview traversal cannot be proven from static images. Final Live regression remains pending, final300sperformance NOT_RUN; no preheat or sampling. Live images and their real quota/reset/IP/local-path data were not copied into repository/evidence; only sanitized semantic observations recorded. Existing package identity/privacy PASS is unchanged.
 
 ## System-layout RC automatic/static closeout — PASS; manual smoke pending
+
+> **Historical checkpoint.** The original local/CI decision below retains its timestamp and scope; current integration/publication is summarized above.
 
 Full actual verify exit0: doctor/build/unit/progress_tests/visual_assets/ledger PASS, independent XCTest365passed/0failed/0skipped. Source fingerprint `1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067`. No layout-mirroring unit tests added. Existing method suffix for disk/battery/process rows is byte-identical; only System-local layout composition changed. Shared parent/AppShell, providers/semantics/cadences/other pages/tests/project settings/PrivacyInfo unchanged. Minimum900×620, default1120×760 are defined in MacSoulApp; actual minimum/default/large/tall visual checks remain PENDING, not automated PASS.
 

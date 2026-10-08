@@ -1,5 +1,7 @@
 # Day 3 Developer Environment — 2026-09-29
 
+> 公开文本中的 Owner-home 路径前缀已替换为 `<OWNER_HOME>`；命令含义、日期、哈希和历史结果保留。原私有证据与 Git 历史未改写；此项与 distributed App package privacy 分别记录。
+
 Base: `origin/main` at `135b74520671a2076e1ebc1da2e7152d56ddadda`
 Branch: `feature/dev-environment`
 Scope: D3-01, D3-02, D3-03 and the Dev portion of D3-07. Local closeout commit authorized on 2026-10-02; no push or PR.
@@ -33,10 +35,10 @@ Read-only observation was run using the implementation compiled as an ignored `.
 
 | Runtime | Status / version | Source and detected executable |
 |---|---|---|
-| Java | AVAILABLE / 1.8.0_472 | Process PATH `/usr/bin/java`; SDKMAN current and JAVA_HOME both resolve to `/Users/mrliu/.sdkman/candidates/java/8.0.472-zulu/zulu-8.jdk/Contents/Home/bin/java` |
-| Node | AVAILABLE / 18.20.8 | NVM default `/Users/mrliu/.nvm/versions/node/v18.20.8/bin/node`; no Process PATH node was resolved in this observation |
-| Python | AVAILABLE / 3.12.0 | pyenv global `/Users/mrliu/.pyenv/versions/3.12.0/bin/python3.12`; Process PATH contained a pyenv shim, recorded as unresolved rather than the final executable |
-| Go | AVAILABLE / 1.21.3 | goenv global and GOROOT both resolve to `/Users/mrliu/.goenv/versions/1.21.3/bin/go`; Process PATH contained a goenv shim |
+| Java | AVAILABLE / 1.8.0_472 | Process PATH `/usr/bin/java`; SDKMAN current and JAVA_HOME both resolve to `<OWNER_HOME>/.sdkman/candidates/java/8.0.472-zulu/zulu-8.jdk/Contents/Home/bin/java` |
+| Node | AVAILABLE / 18.20.8 | NVM default `<OWNER_HOME>/.nvm/versions/node/v18.20.8/bin/node`; no Process PATH node was resolved in this observation |
+| Python | AVAILABLE / 3.12.0 | pyenv global `<OWNER_HOME>/.pyenv/versions/3.12.0/bin/python3.12`; Process PATH contained a pyenv shim, recorded as unresolved rather than the final executable |
+| Go | AVAILABLE / 1.21.3 | goenv global and GOROOT both resolve to `<OWNER_HOME>/.goenv/versions/1.21.3/bin/go`; Process PATH contained a goenv shim |
 
 No differing detected runtime versions were observed. Source contexts differ, especially Node's NVM default without a GUI/CLI PATH resolution. IDE project SDKs were not inspected or inferred.
 
@@ -46,7 +48,7 @@ Port result: AVAILABLE, 46 deduplicated current-user-visible TCP listeners at ob
 
 PARTIAL / VERIFYING. Owner screenshots identified grouped port/PID identifiers in Overview, an overlong Dev table and a default listener list crowded by ordinary applications. The revised build still needs review of the identifier fix, developer-only default list, full-list disclosure, bind expansion, Live/Preview switching, four runtime sources and paths, context mismatch presentation, Refresh, Copy Port/PID, Overview agreement, and readable error/empty states. GUI-process PATH may differ from the CLI observation above.
 
-The revised build is running for review from `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.UyZdRk/MacSoul.app` (PID 40860). The prior preview PID 32832 exited after SIGTERM. Launch is not a manual UI PASS.
+The revised build is running for review from `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.UyZdRk/MacSoul.app` (PID 40860). The prior preview PID 32832 exited after SIGTERM. Launch is not a manual UI PASS.
 
 ## PERFORMANCE
 
@@ -72,7 +74,7 @@ Owner review found PID and Bind headers misaligned in both the developer and all
 - `./scripts/verify.sh`: final PASS, exit 0. Its first run passed automated checks but found stale ledger fingerprints after the view edit; current automated evidence was refreshed from the actual passing checks and prior records retained in `evidence_history` before the final rerun.
 - `git diff --check`: PASS, exit 0.
 - Revision: `135b74520671a2076e1ebc1da2e7152d56ddadda`; fingerprint: `b03d4718e5a9463fb61a159af50efe27ef8c91f256f6b6d40681ba42f4a188bd`. Evidence remains in `.artifacts/build.log`, `.artifacts/test.log` and `.artifacts/verification.json`.
-- The App was not running at the start of the launch step. The revised build was started from `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.cNCfsU/MacSoul.app`, PID 84571. No existing process needed termination.
+- The App was not running at the start of the launch step. The revised build was started from `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.cNCfsU/MacSoul.app`, PID 84571. No existing process needed termination.
 - Agent attempted UI navigation to inspect default/minimum/enlarged windows, but native computer control returned `Sky Computer Use native pipe closed before response`, including after resetting and reconnecting to the exact App path. Actual resize/alignment observation is NOT_RUN; owner review is still pending. Code uses the existing 900pt minimum App window and preserves the current sidebar/window configuration.
 - D3-01, D3-02, D3-03 and D3-07 remain VERIFYING. Formal Performance and live AI/Network Provider validation remain NOT_RUN. No commit, push or PR.
 
@@ -88,7 +90,7 @@ Actions uses one borderless copy-icon Menu with tooltip/accessibility label and 
 - `./scripts/verify.sh`: final PASS, exit 0. Initial ledger check failed only on stale fingerprints after the view edits; actual passing automated evidence was refreshed with prior evidence preserved, then the complete script rerun passed.
 - `git diff --check`: PASS, exit 0.
 - Revision: `135b74520671a2076e1ebc1da2e7152d56ddadda`; fingerprint: `3faf804cfa6f1a42c813de88a1afaed772a496156a967958bfafc1e8183af3ae`; logs: `.artifacts/build.log`, `.artifacts/test.log`, `.artifacts/verification.json`.
-- Previous MacSoul PID 89780 exited normally after SIGTERM under the owner-authorized restart. New App: `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.1hin02/MacSoul.app`; PID 95971, branch `feature/dev-environment`.
+- Previous MacSoul PID 89780 exited normally after SIGTERM under the owner-authorized restart. New App: `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.1hin02/MacSoul.app`; PID 95971, branch `feature/dev-environment`.
 - Initial native UI state was readable, but clicking Settings returned `Sky Computer Use native pipe closed before response`. Default/minimum/large window visual checks, Table menu copy interaction and multi-bind popover interaction are NOT_RUN pending owner review. Native Table compilation and functional unit tests are not visual acceptance.
 - D3-01 / D3-02 / D3-03 / D3-07 remain VERIFYING. Formal Performance and live AI/Network Provider validation remain NOT_RUN. No commit, push or PR.
 
@@ -102,7 +104,7 @@ Owner accepted the native Table alignment, separators, alternating rows and quie
 - `./scripts/verify.sh`: final PASS, exit 0; doctor/build/unit/progress tests/visual assets/ledger all PASS. The initial run identified stale ledger fingerprints following the width edit; current evidence was refreshed from actual successful checks, preserving previous records in evidence_history, before the full rerun.
 - `git diff --check`: PASS, exit 0.
 - Revision: `135b74520671a2076e1ebc1da2e7152d56ddadda`; fingerprint: `d720fe8426acf50b02dbe5bc0ffb261df5eaf72ba993333e63cfa3057b734fbd`. Evidence: `.artifacts/build.log`, `.artifacts/test.log`, `.artifacts/verification.json` (2026-09-30T06:04:13.000931+00:00).
-- Owner-authorized restart: prior preview PID 95971 exited after SIGTERM. `./scripts/run-mock.sh` rebuilt successfully and launched `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.vHt1YT/MacSoul.app`, PID 7512, from feature/dev-environment.
+- Owner-authorized restart: prior preview PID 95971 exited after SIGTERM. `./scripts/run-mock.sh` rebuilt successfully and launched `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.vHt1YT/MacSoul.app`, PID 7512, from feature/dev-environment.
 - New default/minimum/large-window width appearance remains pending owner UI acceptance; no automated visual PASS is claimed. D3-01 / D3-02 / D3-03 / D3-07 remain VERIFYING. Formal Performance and live AI/Network Provider checks remain NOT_RUN.
 - No commit, push or PR; the pre-existing Day 3 working-tree changes remain intact.
 
@@ -120,7 +122,7 @@ Three pure tests cover the exact command for PID 71217, positive PID boundaries,
 - `./scripts/verify.sh`: final PASS, exit 0; all six checks passed. Initial ledger verification found only stale source fingerprints; actual passing automated evidence was refreshed, previous records preserved in evidence_history, and the complete verify script rerun.
 - `git diff --check`: PASS, exit 0.
 - Revision: `135b74520671a2076e1ebc1da2e7152d56ddadda`; fingerprint: `cf5c2819af3824a6e5334ac8789e494adfd1d8a762360c1dba9a1a2158e5b416`; manifest checked_at: `2026-09-30T06:13:28.170178+00:00`. Logs: `.artifacts/build.log`, `.artifacts/test.log`, `.artifacts/verification.json`.
-- Owner-authorized preview restart: PID 7512 exited normally after SIGTERM. Current-worktree `./scripts/run-mock.sh` rebuilt and launched `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.cHflXt/MacSoul.app`, PID 16545, on feature/dev-environment. No port-listed user process was terminated.
+- Owner-authorized preview restart: PID 7512 exited normally after SIGTERM. Current-worktree `./scripts/run-mock.sh` rebuilt and launched `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.cHflXt/MacSoul.app`, PID 16545, on feature/dev-environment. No port-listed user process was terminated.
 - Revised column appearance, clipboard action and tooltip interaction await owner acceptance; unit tests are not manual UI evidence. D3-01 / D3-02 / D3-03 / D3-07 remain VERIFYING. Formal Performance and live AI/Network Provider validation remain NOT_RUN.
 - No commit, push or PR. Existing Day 3 uncommitted changes are preserved.
 
@@ -138,7 +140,7 @@ Before/after hashes match for ListeningPorts.swift, DevEnvironment.swift, DevMon
 - `./scripts/verify.sh`: final PASS, exit 0; all six checks PASS. Initial ledger check found only stale fingerprints after the view change; successful command evidence was refreshed with old entries retained in evidence_history, then the full script rerun passed.
 - `git diff --check`: PASS, exit 0.
 - Revision: `135b74520671a2076e1ebc1da2e7152d56ddadda`; fingerprint: `2dd1a6dc20c5102a60339db5436f166781ac7a35e57e3e2c72378db28238b449`; manifest checked_at: `2026-10-01T16:12:35.694297+00:00`. Evidence: `.artifacts/build.log`, `.artifacts/test.log`, `.artifacts/verification.json`.
-- Owner-authorized restart: only previous MacSoul preview PID 71165 received SIGTERM and exited. Current-worktree `./scripts/run-mock.sh` rebuilt and launched `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.5KLazm/MacSoul.app`, PID 76439, on feature/dev-environment.
+- Owner-authorized restart: only previous MacSoul preview PID 71165 received SIGTERM and exited. Current-worktree `./scripts/run-mock.sh` rebuilt and launched `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.5KLazm/MacSoul.app`, PID 76439, on feature/dev-environment.
 - Native UI inspection read the new App's Overview, but navigation click failed with “Sky Computer Use native pipe closed before response”. Actual hover/tooltip visibility and trailing-edge appearance are NOT_RUN by the agent, awaiting owner review. Build/unit success does not certify these visual interactions.
 - D3-01 / D3-02 / D3-03 / D3-07 remain VERIFYING. Formal Performance and live AI/Network Provider validation remain NOT_RUN. No commit, push or PR; pre-existing uncommitted Day 3 work is preserved.
 
@@ -156,7 +158,7 @@ Existing command tests retain exact PID 71217, positive boundaries, invalid PIDs
 - `./scripts/verify.sh`: final PASS, exit 0; all six checks PASS. Initial ledger check found only stale fingerprints after this source revision; passing automated evidence was refreshed with previous entries preserved in evidence_history, then the complete script rerun passed.
 - `git diff --check`: PASS, exit 0.
 - Revision: `135b74520671a2076e1ebc1da2e7152d56ddadda`; fingerprint: `d010a971169cfa1d08f03ce9aeac1e076c6b0ea4c774299451a7d5447b6da9f6`; manifest checked_at: `2026-10-01T16:22:58.076248+00:00`. Evidence: `.artifacts/build.log`, `.artifacts/test.log`, `.artifacts/verification.json`.
-- Owner-authorized preview restart: only MacSoul preview PID 78020 received SIGTERM and exited. Current-worktree `./scripts/run-mock.sh` rebuilt and launched `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.LvD8Hy/MacSoul.app`, PID 87093, on feature/dev-environment.
+- Owner-authorized preview restart: only MacSoul preview PID 78020 received SIGTERM and exited. Current-worktree `./scripts/run-mock.sh` rebuilt and launched `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.LvD8Hy/MacSoul.app`, PID 87093, on feature/dev-environment.
 - Agent reset/reconnected native UI control to the exact new App path, but even getApp failed with “Sky Computer Use native pipe closed before response”. Actual hover, copy click, transient popover and pbpaste of the clicked row's command remain MANUAL UI / NOT_RUN, awaiting owner review. The general clipboard was not read without a successful observed copy action. Automated pasteboard testing does not establish hover/UI success.
 - Owner acceptance checklist: hover Copy → 复制端口或 PID; hover Terminal → 复制停止命令; click Terminal → temporary 已复制停止命令; run only pbpaste to inspect kill -TERM <PID>, do not execute that command.
 - D3-01 / D3-02 / D3-03 / D3-07 remain VERIFYING. Formal Performance and live AI/Network Provider validation remain NOT_RUN. No commit, push or PR. Other uncommitted Day 3 work is preserved.

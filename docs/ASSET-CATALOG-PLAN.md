@@ -1,5 +1,12 @@
 # MacSoul · Assets.xcassets 目录规划 v0.1
 
+## 当前资源维护入口 — 2026-10-08
+
+资源已接入公开 v0.1.0，无需按初始 ZIP 流程重新导入。菜单栏当前使用 **MacSoulMenuTemplateDraft**，并非尚未启用，也不代表正式美术全部定稿。Owner 的 Dock 单项认可、其他视觉条件及增量 verifying 见 [历史视觉 closeout](../reports/phase-a-visual-closeout-2026-09-28.md)；后续 Menu Bar/Mock/Live 的实际观察与限制见 [FINAL](../reports/FINAL.md) 和 [发行说明](RELEASE.md)。不扩展资源来源、许可证或 Owner 美术批准范围。
+
+以下初始导入、候选说明与未勾 checklist 为 **Historical / Initial integration reference**，不是要求重新接入或全面 PASS。
+
+
 ## 1. 为什么本包使用独立 MacSoulBrand.xcassets
 
 你可能已经让 Codex 创建了主 `Assets.xcassets`。为避免覆盖它及其颜色、图标或 `Contents.json`，本包选择新增：
@@ -10,7 +17,7 @@ MacSoul/Resources/MacSoulBrand.xcassets/
 
 它和 `Assets.xcassets` 都是 `.xcassets` 资源目录；品牌资源单独维护是本项目的组织选择。多个 catalog 中的 asset 仍要避免重名，不能靠不同文件夹名掩盖相同资源名。
 
-## 2. 增量落地目录
+## 2. 初始增量落地目录 — Historical 示例
 
 ```text
 macsoul/                              ← 你已有的仓库，不重建
@@ -125,7 +132,7 @@ MacSoulMenuTemplateDraft.imageset/
 
 六张 512×512、4 字节/像素的未压缩图像像素合计约 6 MiB，这是简单像素存储估算，不是实测 App 内存。实际解码、缓存、GPU 与视图开销要在 Mac 上测量，不能用 ZIP 大小推断常驻内存。
 
-## 8. 交付状态
+## 8. 初始包交付状态 — Historical
 
 图片尺寸与资源引用已做静态检查。target membership、actool 构建、运行时资源查找、Dock 和浅深菜单栏、VoiceOver、性能均需要本机验证。目录结构正确不等于这些验证已通过。
 

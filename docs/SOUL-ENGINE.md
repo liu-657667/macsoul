@@ -1,14 +1,20 @@
 # Soul Engine
 
+## Current implementation versus design examples
+
+Current `MacSoul/Models/SoulEngine.swift` evaluates only CPU and native memory pressure, using `observing`, `calm`, `stressed`, `brainOverload`, `memoryWarning`, `memoryCritical`, `recovering`. CPU >85% for 15s / >95% for 20s, <60% for 30s recovery, memory-pressure priority and 30m category cooldown are implemented. Unknown pressure stays unknown; no used-RAM health inference. Memory warning/critical comes from native pressure events, not a newly imposed sustained timer. Quota eligibility/copy is a separate fresh-applicable-window path, with canonical usedPercent >=95; real critical / quota95% events remain NOT_OBSERVED.
+
+The broader states/contexts, disk, battery, port conflict, network loss/recovery and country-change copy below are **design examples**, not shipped SoulEngine transitions. Low-battery/resting artwork can be previewed using Mock fixtures without implying Live triggers. Region remains NOT_COLLECTED; a listener alone is never a conflict. [Release](RELEASE.md) and dated [System/Soul report](../reports/day-2-system-soul-memory-closeout-2026-09-29.md) retain the actual acceptance scope.
+
 ## Purpose
 Convert technical state transitions into restrained human-readable reactions. The system is deterministic and local.
 
-## Global states
+## Global states — design vocabulary
 `idle`, `calm`, `busy`, `stressed`, `critical`, `recovering`
 
 Special contexts include `brainOverload`, `memoryFull`, `storageFull`, `lowEnergy`, `networkLost`.
 
-## State transition rules
+## State transition rules — design examples and implemented subset above
 Never trigger on one noisy sample. Use sustained thresholds + hysteresis.
 
 Examples:
@@ -25,7 +31,7 @@ Examples:
 - Recovery can fire once when returning to safe state.
 - Only one top-priority Soul message at a time.
 
-## Sample copy
+## Sample copy — design examples, not all implemented
 CPU critical: `我的脑子要爆炸了。`
 CPU recovery: `呼……终于安静了。`
 Memory critical: `我的胃快撑爆了。`
