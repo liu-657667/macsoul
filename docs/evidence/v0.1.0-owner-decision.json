@@ -1,10 +1,10 @@
 {
   "decision": "ACCEPTED",
-  "review_reference": "Owner explicit approval in the MacSoul conversation on 2026-10-08: CI-01/CI-02 corrected fixed documentation-maintenance candidate, full fingerprint 0876653d7cf31e78a171304d1421517157a3e918e98931b5da2b7231800487fe.",
+  "review_reference": "Owner explicit approval in the MacSoul conversation on 2026-10-08: shared Network fake-clock and live timer-registration correction, full fingerprint 80332822221eba5e377f360a51cbbc15307eceeb5070552687c45e3035aca7a0.",
   "historical_baseline": "b7ca041e0a07623113534e577301f7c3c313df26",
   "implementation_base": "51f0c0d3a1361ac5ac7ceac52b84175f71ff78e0",
   "from_fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
-  "to_fingerprint": "0876653d7cf31e78a171304d1421517157a3e918e98931b5da2b7231800487fe",
-  "payload_sha256": "ef848baa58d5878f135258485c8df6ab61aa766f5872fc214f3d3eb3f2c862aa",
-  "declaration_sha256": "3e949b89e0d919517cc0a52c1c7e83fac52f3b627230150c11b0e48b986afdfe"
+  "to_fingerprint": "80332822221eba5e377f360a51cbbc15307eceeb5070552687c45e3035aca7a0",
+  "payload_sha256": "fedbd76d1e936c7f7d084f770929ccf88f52f9c23760a7491186396db498ab77",
+  "declaration_sha256": "86b2d9d71a00a68a0d93158fa1218f2b364dac9371e14694d0dc23d07877b94f"
 }

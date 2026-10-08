@@ -71,8 +71,11 @@ Missing or mismatched objects fail. Full baseline bytes are independently hashed
 then compared with current input names/content. Production/resources/project,
 locked plan, ledger and all content outside the explicit payload remain unchanged.
 The only product-test exception is `MacSoulTests/NetworkTests.swift`: the
-Owner-authorized CI-02 completion synchronization and deterministic fake-client
-regression. Its exact before/after bytes and modes are a distinct payload entry;
+Owner-authorized CI-02 batch-completion synchronization and fake-client regression,
+plus the separately authorized shared fake-clock/timer registration and cancellation
+handshake correction. Tests wait for an identified live deadline before advancing
+time and join launched work before checking results; deterministic entry gates
+cover delayed registration and cancellation without runtime changes. Its exact before/after bytes and modes are a distinct payload entry;
 other product tests remain unchanged. This does not change runtime behavior or
 reopen RC human/Live/performance/Archive acceptance.
 
@@ -154,11 +157,12 @@ runner PASS results are neither fresh actual build/unit results nor Owner approv
 
 Read fixed Git commit/tree/blob objects directly with replacement objects disabled; export-ignore does not filter
 the baseline. Compare all paths in implementation base, HEAD, index and working
-files, including outside fingerprint inputs. The CI-01/CI-02 candidate changes twelve paths (eleven payload files and declaration);
+files, including outside fingerprint inputs. The corrected Network-fixture candidate changes twelve paths (eleven payload files and declaration);
 the future decision is a thirteenth individually constrained path, currently absent.
-The real Owner decision committed at `112e4dc78d6165bcc0145ead3241470a363ee891`
-binds only the earlier exact candidate. It is retained as history there, excluded
-from this candidate, and cannot authorize these new bytes. This remains a direct
+The real Owner decisions committed at `112e4dc78d6165bcc0145ead3241470a363ee891`
+and `c28da7aea878f3f45b36fd40c380bd076ef4081f` each bind only their own exact
+candidate. They remain historical in those commits, are excluded from this new
+candidate, and cannot authorize these new bytes. This remains a direct
 original RC fingerprint → exact new candidate mapping, not a migration chain.
 Outside paths must retain baseline content, Git mode and type in all three states;
 new untracked, staged or committed paths fail. Payload index/HEAD may match base

@@ -19,6 +19,9 @@ struct FakeLocalNetwork: LocalNetworkProviding {
 }
 private actor FakeNetworkHTTP: NetworkHTTPClient {
     struct Call { let url: URL; let method: String; let maxBytes: Int }
+    private let trace: NetworkTestTrace?
+    private let time: ManualNetworkTime?
+    init(trace: NetworkTestTrace? = nil, time: ManualNetworkTime? = nil) { self.trace = trace; self.time = time }
     var calls: [Call] = []
     var answers: [String: Result<NetworkHTTPResponse, NetworkFailure>] = [:]
     var held = false
@@ -60,6 +63,8 @@ private actor FakeNetworkHTTP: NetworkHTTPClient {
             } onCancel: { Task { await self.cancelEntry(id) } }
             try Task.checkCancellation()
         }
+        trace?.record("request-enter time=\(time?.uptime() ?? 0) method=\(method) service=\(url.host ?? "fake")")
+        defer { trace?.record("request-complete time=\(time?.uptime() ?? 0) method=\(method) service=\(url.host ?? "fake")") }
         calls.append(Call(url: url, method: method, maxBytes: maxBytes))
         if held {
             let id = UUID()
@@ -74,65 +79,269 @@ private actor FakeNetworkHTTP: NetworkHTTPClient {
         return NetworkHTTPResponse(status: 200, body: Data((url.host == "api.ipify.org" ? "192.0.2.1" : "2001:db8::1").utf8))
     }
 }
+private final class NetworkTestTrace: @unchecked Sendable {
+    private let lock = NSLock()
+    private var events: [String] = []
+    func record(_ event: String) { lock.lock(); events.append(event); lock.unlock() }
+    func dump() { lock.lock(); let copy = events; lock.unlock(); print("NETWORK_EVENTS\n" + copy.joined(separator: "\n")) }
+}
 private final class ManualNetworkTime: @unchecked Sendable {
     private let lock = NSLock()
     private var value: TimeInterval = 0
-    func uptime() -> TimeInterval { lock.lock(); defer { lock.unlock() }; return value }
-    func set(_ time: TimeInterval) { lock.lock(); value = time; lock.unlock() }
+    let trace: NetworkTestTrace
+    init(trace: NetworkTestTrace = NetworkTestTrace()) { self.trace = trace }
+    func withTime<T>(_ body: (inout TimeInterval) -> T) -> T {
+        lock.lock(); defer { lock.unlock() }; return body(&value)
+    }
+    func uptime() -> TimeInterval { withTime { $0 } }
+    // Synchronous main-actor stimulus only. Timer advances use the registered ticket.
+    func set(_ time: TimeInterval) { withTime { trace.record("time-set \($0) -> \(time)"); $0 = time } }
     func date() -> Date { Date(timeIntervalSince1970: uptime()) }
 }
-private actor ManualNetworkSleeper {
-    private var time: TimeInterval = 0
-    private var pending: [UUID: (TimeInterval, CheckedContinuation<Void, Error>)] = [:]
-    func wait(until deadline: TimeInterval) async throws {
+// Test-only gate between the monitor's relative-duration read and sleep registration.
+private final class NetworkSleepEntryGate: @unchecked Sendable {
+    private let lock = NSLock()
+    private let trace: NetworkTestTrace
+    init(trace: NetworkTestTrace = NetworkTestTrace()) { self.trace = trace }
+    private var heldSeconds: TimeInterval?
+    private var entries: [UUID: CheckedContinuation<Void, Error>] = [:]
+    func hold(_ seconds: TimeInterval) { lock.lock(); heldSeconds = seconds; lock.unlock(); trace.record("entry-gate-hold seconds=\(seconds)") }
+    func count() -> Int { lock.lock(); defer { lock.unlock() }; return entries.count }
+    func release() {
+        lock.lock(); heldSeconds = nil; let copy = entries; entries = [:]; lock.unlock()
+        for (id, entry) in copy { trace.record("entry-gate-release id=\(id)"); entry.resume() }
+    }
+    private func cancel(_ id: UUID) {
+        lock.lock(); let entry = entries.removeValue(forKey: id); lock.unlock()
+        trace.record("entry-gate-cancel id=\(id) removed=\(entry != nil)")
+        entry?.resume(throwing: CancellationError())
+    }
+    func enter(_ seconds: TimeInterval) async throws {
         let id = UUID()
         try await withTaskCancellationHandler {
-            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-                if Task.isCancelled { continuation.resume(throwing: CancellationError()) }
-                else if deadline <= time { continuation.resume() }
-                else { pending[id] = (deadline, continuation) }
+            try await withCheckedThrowingContinuation { (entry: CheckedContinuation<Void, Error>) in
+                lock.lock()
+                if Task.isCancelled { lock.unlock(); entry.resume(throwing: CancellationError()) }
+                else if heldSeconds == seconds { entries[id] = entry; lock.unlock(); trace.record("entry-gate-wait id=\(id) seconds=\(seconds)") }
+                else { lock.unlock(); entry.resume() }
             }
-        } onCancel: { Task { await self.cancel(id) } }
+        } onCancel: { self.cancel(id) }
     }
-    func cancel(_ id: UUID) { pending.removeValue(forKey: id)?.1.resume(throwing: CancellationError()) }
-    func advance(to value: TimeInterval) {
-        time = value
-        let due = pending.filter { $0.value.0 <= value }
-        for (id, entry) in due { pending.removeValue(forKey: id); entry.1.resume() }
+}
+private final class ManualNetworkSleeper: @unchecked Sendable {
+    struct Ticket: Equatable { let id: Int; let deadline: TimeInterval }
+    private struct Entry { let ticket: Ticket; let continuation: CheckedContinuation<Void, Error> }
+    private let time: ManualNetworkTime
+    // All entries, IDs and clock changes share the same lock. Cancellation removes
+    // synchronously; a cancelled entry can never satisfy a readiness handshake.
+    private var nextID = 0
+    private var pending: [Int: Entry] = [:]
+    init(time: ManualNetworkTime) { self.time = time }
+    func wait(seconds: TimeInterval) async throws {
+        let id = time.withTime { _ in nextID += 1; return nextID }
+        try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                let immediate: Result<Void, Error>? = time.withTime { now in
+                    if Task.isCancelled {
+                        time.trace.record("cancel-before-register id=\(id) time=\(now)")
+                        return .failure(CancellationError())
+                    }
+                    let ticket = Ticket(id: id, deadline: now + seconds)
+                    time.trace.record("register id=\(id) time=\(now) deadline=\(ticket.deadline)")
+                    if ticket.deadline <= now { return .success(()) }
+                    pending[id] = Entry(ticket: ticket, continuation: continuation); return nil
+                }
+                if let immediate { continuation.resume(with: immediate) }
+            }
+        } onCancel: { self.cancel(id) }
     }
-    func count() -> Int { pending.count }
+    private func cancel(_ id: Int) {
+        let entry = time.withTime { now in
+            let entry = pending.removeValue(forKey: id)
+            time.trace.record("cancel/remove id=\(id) time=\(now) registered=\(entry != nil)")
+            return entry
+        }
+        entry?.continuation.resume(throwing: CancellationError())
+    }
+    func ticket(deadline: TimeInterval) -> Ticket? {
+        time.withTime { _ in pending.values.first { $0.ticket.deadline == deadline }?.ticket }
+    }
+    func count() -> Int { time.withTime { _ in pending.count } }
+    // False leaves time untouched: registration, identity and deadline are checked
+    // atomically with advancing, not by counting arbitrary pending continuations.
+    func advance(to value: TimeInterval, requiring ticket: Ticket) -> Bool {
+        let due: [Entry]? = time.withTime { now in
+            guard pending[ticket.id]?.ticket == ticket, value >= now else { return nil }
+            time.trace.record("advance id=\(ticket.id) deadline=\(ticket.deadline) \(now) -> \(value)")
+            now = value
+            let due = pending.values.filter { $0.ticket.deadline <= value }
+            for entry in due { pending.removeValue(forKey: entry.ticket.id) }
+            return due
+        }
+        guard let due else { return false }
+        for entry in due {
+            time.trace.record("resume id=\(entry.ticket.id) deadline=\(entry.ticket.deadline)")
+            entry.continuation.resume()
+        }
+        return true
+    }
 }
 @MainActor private final class NetworkHarness {
     let path = FakeNetworkPath()
-    let client = FakeNetworkHTTP()
     let time = ManualNetworkTime()
-    let sleeper = ManualNetworkSleeper()
+    lazy var entryGate = NetworkSleepEntryGate(trace: time.trace)
+    lazy var client = FakeNetworkHTTP(trace: time.trace, time: time)
+    lazy var sleeper = ManualNetworkSleeper(time: time)
     lazy var monitor = NetworkMonitor(path: path, client: client, local: FakeLocalNetwork(),
         clock: NetworkClock(now: { [time] in time.date() }, uptime: { [time] in time.uptime() },
-                            sleep: { [time, sleeper] seconds in try await sleeper.wait(until: time.uptime() + seconds) }),
-        onSnapshot: { _ in })
+                            sleep: { [time, sleeper, entryGate] seconds in
+                                time.trace.record("sleep-entry time=\(time.uptime()) seconds=\(seconds)")
+                                try await entryGate.enter(seconds)
+                                try await sleeper.wait(seconds: seconds)
+                            }), onSnapshot: { _ in })
     func online(_ kind: NetworkInterfaceKind = .wifi) {
+        time.trace.record("path time=\(time.uptime()) kind=\(kind)")
         path.send(NetworkPathReading(state: .satisfied, interfaces: [kind], interfaceNames: ["en0"],
                                      expensive: false, constrained: false, supportsIPv4: true, supportsIPv6: true))
     }
-    func advance(_ to: TimeInterval) async { time.set(to); await sleeper.advance(to: to) }
-    func stop() async { monitor.stop(); await monitor.waitForStop() }
+    func advance(_ to: TimeInterval, registered deadline: TimeInterval,
+                 file: StaticString = #filePath, line: UInt = #line) async -> Bool {
+        time.trace.record("handshake-wait time=\(time.uptime()) deadline=\(deadline) target=\(to)")
+        let limit = ContinuousClock.now.advanced(by: .seconds(2))
+        while ContinuousClock.now < limit {
+            if let ticket = sleeper.ticket(deadline: deadline), sleeper.advance(to: to, requiring: ticket) {
+                time.trace.record("handshake-success id=\(ticket.id)"); return true
+            }
+            await Task.yield()
+        }
+        time.trace.record("handshake-failure deadline=\(deadline)")
+        XCTFail("Expected live timer registration at \(deadline)", file: file, line: line)
+        await stop(); return false
+    }
+    func stop() async {
+        monitor.stop(); entryGate.release(); await monitor.waitForStop()
+        // Stop does not join timers. Synchronous cancellation already removed
+        // their entries; gated entries observe Task.isCancelled before registration.
+        XCTAssertEqual(sleeper.count(), 0); XCTAssertEqual(entryGate.count(), 0)
+        time.trace.dump()
+    }
 }
 
 final class NetworkTests: XCTestCase {
-    @MainActor private func eventually(_ condition: () async -> Bool, file: StaticString = #filePath, line: UInt = #line) async {
-        for _ in 0..<10000 {
-            if await condition() { return }
+    @discardableResult @MainActor private func eventually(_ condition: () async -> Bool, file: StaticString = #filePath, line: UInt = #line) async -> Bool {
+        let limit = ContinuousClock.now.advanced(by: .seconds(2))
+        while ContinuousClock.now < limit {
+            if await condition() { return true }
             await Task.yield()
         }
         XCTFail("Deterministic fake work did not complete", file: file, line: line)
+        return false
     }
-    @MainActor private func connected(_ h: NetworkHarness, probes: Bool = true) async {
+    @MainActor private func completed(_ h: NetworkHarness, file: StaticString = #filePath, line: UInt = #line) async -> Bool {
+        h.time.trace.record("batch-wait time=\(h.time.uptime())")
+        guard await eventually({ !h.monitor.snapshot.ipv4.checking && !h.monitor.snapshot.ipv6.checking
+            && h.monitor.snapshot.probes.allSatisfy { $0.state != .checking }
+            && h.monitor.snapshot.localSampledAt != nil }, file: file, line: line) else { h.time.trace.record("batch-condition-failure"); await h.stop(); return false }
+        // Join is bounded as well: published family results need not mean that the
+        // containing batch has finished scheduling its next timer.
+        var done = false
+        let join = Task { await h.monitor.waitForCurrentWork(); done = true }
+        guard await eventually({ done }, file: file, line: line) else { h.time.trace.record("batch-join-failure"); await h.stop(); join.cancel(); return false }
+        await join.value; h.time.trace.record("batch-join-success time=\(h.time.uptime())"); return true
+    }
+    @MainActor private func connected(_ h: NetworkHarness, probes: Bool = true) async -> Bool {
         h.monitor.start(probesEnabled: probes); h.online()
-        await eventually { await h.sleeper.count() > 0 }
-        await h.advance(0.75)
-        await eventually { h.monitor.snapshot.ipv4.freshness == .fresh && (!probes || h.monitor.snapshot.probes.allSatisfy { $0.state == .reachable }) }
-        await h.monitor.waitForCurrentWork()
+        guard await h.advance(0.75, registered: 0.75), await completed(h) else { return false }
+        XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .fresh)
+        if probes { XCTAssertTrue(h.monitor.snapshot.probes.allSatisfy { $0.state == .reachable }) }
+        return true
+    }
+
+    @MainActor func testDelayedTimerEntryCannotShiftPathDebounceDeadline() async {
+        let h = NetworkHarness(); guard await connected(h) else { return }
+        guard await eventually({ h.sleeper.ticket(deadline: 60.75) != nil }),
+              let old = h.sleeper.ticket(deadline: 60.75) else { await h.stop(); return }
+        h.entryGate.hold(0.75)
+        h.time.set(62); h.online(.ethernet)
+        guard await eventually({ h.entryGate.count() == 1 }) else { await h.stop(); return }
+        XCTAssertEqual(h.sleeper.count(), 0) // Cancellation does not await another actor task.
+        XCTAssertFalse(h.sleeper.advance(to: 62.75, requiring: old))
+        XCTAssertEqual(h.time.uptime(), 62)
+        var started = false, finished = false
+        let advance = Task { @MainActor in
+            started = true
+            let result = await h.advance(62.75, registered: 62.75)
+            finished = true; return result
+        }
+        guard await eventually({ started }) else { await h.stop(); advance.cancel(); return }
+        XCTAssertFalse(finished); XCTAssertEqual(h.time.uptime(), 62)
+        XCTAssertNil(h.sleeper.ticket(deadline: 63.5))
+        h.entryGate.release()
+        guard await eventually({ finished }), await advance.value, await completed(h) else { await h.stop(); advance.cancel(); return }
+        let count = await h.client.probeCount(); XCTAssertEqual(count, 6)
+        XCTAssertEqual(h.time.uptime(), 62.75)
+        XCTAssertNil(h.sleeper.ticket(deadline: 63.5))
+        await h.stop()
+    }
+    @MainActor func testSleeperCancellationBeforeRegistrationDoesNotLeaveEntry() async {
+        let time = ManualNetworkTime()
+        let gate = NetworkSleepEntryGate(trace: time.trace)
+        let sleeper = ManualNetworkSleeper(time: time)
+        var finished = false, cancelled = false
+        gate.hold(10)
+        let task = Task { @MainActor in
+            do { try await gate.enter(10); try await sleeper.wait(seconds: 10) }
+            catch { cancelled = error is CancellationError }
+            finished = true
+        }
+        guard await eventually({ gate.count() == 1 }) else { task.cancel(); gate.release(); return }
+        task.cancel()
+        guard await eventually({ finished }) else { gate.release(); return }
+        await task.value; gate.release()
+        XCTAssertTrue(cancelled); XCTAssertEqual(gate.count(), 0); XCTAssertEqual(sleeper.count(), 0)
+        // Cancellation before the operation body also cannot register or resume twice.
+        finished = false; cancelled = false
+        let early = Task { @MainActor in
+            do { try await sleeper.wait(seconds: 10) }
+            catch { cancelled = error is CancellationError }
+            finished = true
+        }
+        early.cancel(); early.cancel()
+        guard await eventually({ finished }) else { early.cancel(); return }
+        await early.value
+        XCTAssertTrue(cancelled); XCTAssertEqual(sleeper.count(), 0); time.trace.dump()
+    }
+    @MainActor func testCancelledTicketCannotAuthorizeNewWaitOrAdvanceTime() async {
+        let time = ManualNetworkTime()
+        let sleeper = ManualNetworkSleeper(time: time)
+        var oldCompleted = 0, newCompleted = 0, cancelled = false
+        let oldTask = Task { @MainActor in
+            do { try await sleeper.wait(seconds: 10) }
+            catch { cancelled = error is CancellationError }
+            oldCompleted += 1
+        }
+        guard await eventually({ sleeper.ticket(deadline: 10) != nil }),
+              let old = sleeper.ticket(deadline: 10) else { oldTask.cancel(); return }
+        oldTask.cancel(); oldTask.cancel()
+        XCTAssertEqual(sleeper.count(), 0)
+        XCTAssertFalse(sleeper.advance(to: 10, requiring: old)); XCTAssertEqual(time.uptime(), 0)
+        guard await eventually({ oldCompleted == 1 }) else { return }
+        await oldTask.value; XCTAssertTrue(cancelled)
+        let newTask = Task { @MainActor in
+            do { try await sleeper.wait(seconds: 5) } catch { XCTFail("New timer unexpectedly cancelled") }
+            newCompleted += 1
+        }
+        guard await eventually({ sleeper.ticket(deadline: 5) != nil }),
+              let current = sleeper.ticket(deadline: 5) else { newTask.cancel(); return }
+        XCTAssertNotEqual(old.id, current.id)
+        XCTAssertFalse(sleeper.advance(to: 5, requiring: old)); XCTAssertEqual(time.uptime(), 0)
+        XCTAssertTrue(sleeper.advance(to: 4.999, requiring: current)); XCTAssertEqual(newCompleted, 0)
+        XCTAssertTrue(sleeper.advance(to: 5, requiring: current))
+        XCTAssertFalse(sleeper.advance(to: 5, requiring: current))
+        guard await eventually({ newCompleted == 1 }) else { newTask.cancel(); return }
+        await newTask.value; newTask.cancel()
+        XCTAssertEqual(oldCompleted, 1); XCTAssertEqual(newCompleted, 1); XCTAssertEqual(sleeper.count(), 0)
+        time.trace.dump()
     }
 
     func testPublicIPv4Parser() throws {
@@ -294,8 +503,7 @@ final class NetworkTests: XCTestCase {
     @MainActor func testOfflineMakesNoHTTPRequestsAndClearsReachability() async {
         let h = NetworkHarness(); h.monitor.start(probesEnabled: true)
         h.path.send(NetworkPathReading(state: .unsatisfied))
-        await eventually { await h.sleeper.count() > 0 }
-        await h.advance(100)
+        guard await h.advance(100, registered: 0.75) else { return }
         await eventually { h.monitor.snapshot.localSampledAt != nil }
         let calls = await h.client.count(); XCTAssertEqual(calls, 0)
         XCTAssertTrue(h.monitor.snapshot.probes.allSatisfy { $0.state == .offline })
@@ -303,7 +511,7 @@ final class NetworkTests: XCTestCase {
     }
     @MainActor func testIPv4SuccessDoesNotDependOnIPv6() async {
         let h = NetworkHarness(); await h.client.fail(PublicIPProvider.endpoint(.ipv6), error: .timeout)
-        await connected(h, probes: false)
+        guard await connected(h, probes: false) else { return }
         await eventually { !h.monitor.snapshot.ipv6.checking }
         XCTAssertEqual(h.monitor.snapshot.ipv4.address, "192.0.2.1")
         XCTAssertEqual(h.monitor.snapshot.ipv6.failure, .timeout)
@@ -312,46 +520,45 @@ final class NetworkTests: XCTestCase {
     @MainActor func testIPv6SuccessDoesNotDependOnIPv4() async {
         let h = NetworkHarness(); await h.client.fail(PublicIPProvider.endpoint(.ipv4), error: .transport)
         h.monitor.start(probesEnabled: false); h.online()
-        await eventually { await h.sleeper.count() > 0 }; await h.advance(0.75)
+        guard await h.advance(0.75, registered: 0.75) else { return }
         await eventually { h.monitor.snapshot.ipv6.freshness == .fresh && !h.monitor.snapshot.ipv4.checking }
         XCTAssertEqual(h.monitor.snapshot.ipv6.address, "2001:db8::1"); XCTAssertEqual(h.monitor.snapshot.ipv4.failure, .transport)
         await h.stop()
     }
     @MainActor func testCacheBeforeExpiryThenTTLRefresh() async {
-        let h = NetworkHarness(); await connected(h, probes: false)
-        await eventually { await h.sleeper.count() > 0 }
-        await h.advance(299)
-        for _ in 0..<30 { await Task.yield() }
+        let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
+        guard await h.advance(299, registered: 60.75),
+              await eventually({ h.monitor.snapshot.localSampledAt == h.time.date() }), await completed(h) else { await h.stop(); return }
         let before = await h.client.ipCount(); XCTAssertEqual(before, 2)
-        await eventually { await h.sleeper.count() > 0 }; await h.advance(301)
+        guard await h.advance(301, registered: 300.75),
+              await eventually({ await h.client.ipCount() == 4 }), await completed(h) else { await h.stop(); return }
         await eventually { await h.client.ipCount() == 4 }
         await h.stop()
     }
     @MainActor func testPathChangeRefreshAndDuplicateEventsCoalesce() async {
-        let h = NetworkHarness(); await connected(h, probes: false)
+        let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
         h.time.set(1); h.online(.ethernet); h.online(.ethernet); h.online(.ethernet)
         XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .stale)
-        await eventually { await h.sleeper.count() > 0 }; await h.advance(1.75)
+        guard await h.advance(1.75, registered: 1.75) else { return }
         await eventually { await h.client.ipCount() == 4 }
         XCTAssertEqual(h.path.starts, 1)
         await h.stop()
     }
     @MainActor func testRefreshStaleFailureAndManualCooldown() async {
-        let h = NetworkHarness(); await connected(h, probes: false)
+        let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
         await h.client.fail(PublicIPProvider.endpoint(.ipv4), error: .http)
         h.time.set(4); h.monitor.refresh(); h.monitor.refresh(); h.monitor.refresh()
         await eventually { h.monitor.snapshot.ipv4.failure == .http }
         // One family result is not batch completion. Bound the fake work wait,
         // then join the existing batch before asserting its dual-stack total.
-        await eventually { !h.monitor.snapshot.ipv4.checking && !h.monitor.snapshot.ipv6.checking }
-        await h.monitor.waitForCurrentWork()
+        guard await completed(h) else { return }
         let calls = await h.client.ipCount(); XCTAssertEqual(calls, 4)
         XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .stale); XCTAssertEqual(h.monitor.snapshot.ipv4.address, "192.0.2.1")
         XCTAssertEqual(h.path.starts, 1)
         await h.stop()
     }
     @MainActor func testRefreshWaitsForDelayedIPv6BatchCompletion() async {
-        let h = NetworkHarness(); await connected(h, probes: false)
+        let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
         let ipv6 = PublicIPProvider.endpoint(.ipv6)
         await h.client.fail(PublicIPProvider.endpoint(.ipv4), error: .http)
         await h.client.delayEntry(ipv6)
@@ -370,7 +577,7 @@ final class NetworkTests: XCTestCase {
         await eventually { waiterStarted }
         XCTAssertFalse(batchCompleted)
         await h.client.releaseEntry(ipv6)
-        await eventually { batchCompleted && !h.monitor.snapshot.ipv4.checking && !h.monitor.snapshot.ipv6.checking }
+        guard await eventually({ batchCompleted && !h.monitor.snapshot.ipv4.checking && !h.monitor.snapshot.ipv6.checking }) else { await h.stop(); currentBatch.cancel(); return }
         await currentBatch.value
         let calls = await h.client.ipCount(); XCTAssertEqual(calls, 4)
         XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .stale)
@@ -383,7 +590,7 @@ final class NetworkTests: XCTestCase {
     @MainActor func testDisableProbesCancelsPendingButNotPublicIP() async {
         let h = NetworkHarness(); await h.client.hold()
         h.monitor.start(probesEnabled: true); h.online()
-        await eventually { await h.sleeper.count() > 0 }; await h.advance(0.75)
+        guard await h.advance(0.75, registered: 0.75) else { return }
         await eventually { await h.client.count() == 5 }
         h.monitor.setProbesEnabled(false)
         await eventually { await h.client.cancelledCount() == 3 }
@@ -393,21 +600,21 @@ final class NetworkTests: XCTestCase {
         let total = await h.client.cancelledCount(); XCTAssertEqual(total, 5)
     }
     @MainActor func testToggleOnRefreshesAndSuccessCadenceIs60Seconds() async {
-        let h = NetworkHarness(); await connected(h, probes: false)
+        let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
         h.monitor.setProbesEnabled(true)
         await eventually { h.monitor.snapshot.probes.allSatisfy { $0.state == .reachable } }
         let initial = await h.client.probeCount(); XCTAssertEqual(initial, 3)
-        await eventually { await h.sleeper.count() > 0 }; await h.advance(59)
-        for _ in 0..<30 { await Task.yield() }
+        guard await completed(h), await h.advance(59, registered: 60.75) else { return }
         let before = await h.client.probeCount(); XCTAssertEqual(before, 3)
-        await eventually { await h.sleeper.count() > 0 }; await h.advance(61)
+        guard await h.advance(61, registered: 60.75),
+              await eventually({ await h.client.probeCount() == 6 }), await completed(h) else { await h.stop(); return }
         await eventually { await h.client.probeCount() == 6 }
         await h.stop()
     }
     @MainActor func testStopRejectsOldPathCallbackAndResults() async {
         let h = NetworkHarness(); await h.client.hold()
         h.monitor.start(probesEnabled: true); let oldCallback = h.path.receive
-        h.online(); await eventually { await h.sleeper.count() > 0 }; await h.advance(0.75)
+        h.online(); guard await h.advance(0.75, registered: 0.75) else { return }
         await eventually { await h.client.count() == 5 }; await h.stop()
         oldCallback?(NetworkPathReading(state: .satisfied))
         XCTAssertEqual(h.monitor.snapshot.path.state, .sampling)
@@ -443,7 +650,7 @@ final class NetworkTests: XCTestCase {
         await h.client.fail(ProbeService.openai.url, error: .timeout)
         await h.client.fail(ProbeService.anthropic.url, error: .transport)
         h.monitor.start(probesEnabled: true); h.online()
-        await eventually { await h.sleeper.count() > 0 }; await h.advance(0.75)
+        guard await h.advance(0.75, registered: 0.75) else { return }
         await eventually { h.monitor.snapshot.probes.allSatisfy { $0.state != .checking } }
         XCTAssertEqual(h.monitor.snapshot.probes.first { $0.service == .openai }?.state, .timeout)
         XCTAssertEqual(h.monitor.snapshot.probes.first { $0.service == .anthropic }?.state, .transportFailed)
@@ -452,7 +659,7 @@ final class NetworkTests: XCTestCase {
     @MainActor func testInFlightRefreshTriggersCoalesceWithoutSecondBatch() async {
         let h = NetworkHarness(); await h.client.hold()
         h.monitor.start(probesEnabled: true); h.online()
-        await eventually { await h.sleeper.count() > 0 }; await h.advance(0.75)
+        guard await h.advance(0.75, registered: 0.75) else { return }
         await eventually { await h.client.count() == 5 }
         for time in [4.0, 8, 12] { h.time.set(time); h.monitor.refresh() }
         let count = await h.client.count(); XCTAssertEqual(count, 5)
@@ -463,7 +670,7 @@ final class NetworkTests: XCTestCase {
         h.path.send(NetworkPathReading(state: .unsatisfied))
         h.online()
         let before = await h.client.count(); XCTAssertEqual(before, 0)
-        await eventually { await h.sleeper.count() > 0 }; await h.advance(0.75)
+        guard await h.advance(0.75, registered: 0.75) else { return }
         await eventually { h.monitor.snapshot.ipv4.freshness == .fresh }
         await h.stop()
     }
@@ -471,15 +678,31 @@ final class NetworkTests: XCTestCase {
         let h = NetworkHarness()
         await h.client.fail(ProbeService.github.url, error: .timeout)
         h.monitor.start(probesEnabled: true); h.online()
-        await eventually { await h.sleeper.count() > 0 }; await h.advance(0.75)
-        await eventually { h.monitor.snapshot.probes.allSatisfy { $0.state != .checking } }
-        await h.monitor.waitForCurrentWork()
-        await eventually { await h.sleeper.count() > 0 }; await h.advance(61)
-        await eventually { await h.client.probeCount() == 6 }
-        await h.monitor.waitForCurrentWork()
-        h.time.set(62); h.online(.ethernet)
-        await eventually { await h.sleeper.count() > 0 }; await h.advance(62.75)
-        await eventually { await h.client.probeCount() == 9 }
+        guard await h.advance(0.75, registered: 0.75), await completed(h) else { return }
+        var count = await h.client.probeCount(); XCTAssertEqual(count, 3)
+        XCTAssertEqual(h.monitor.snapshot.probes.first { $0.service == .github }?.state, .timeout)
+        XCTAssertTrue(h.monitor.snapshot.probes.filter { $0.service != .github }.allSatisfy { $0.state == .reachable })
+        guard await h.advance(61, registered: 60.75),
+              await eventually({ await h.client.probeCount() == 6 }), await completed(h) else { await h.stop(); return }
+        count = await h.client.probeCount(); XCTAssertEqual(count, 6)
+        // Failed GitHub backs off for120s; successful probes/local work wait60s.
+        // Hold successes so their completion cannot cancel the remaining GitHub timer.
+        await h.client.delayEntry(ProbeService.openai.url); await h.client.delayEntry(ProbeService.anthropic.url)
+        guard await h.advance(121, registered: 121),
+              await eventually({ await h.client.pendingEntryCount() == 2 }) else { await h.stop(); return }
+        count = await h.client.probeCount(); XCTAssertEqual(count, 6)
+        guard await h.advance(180.999, registered: 181) else { return }
+        count = await h.client.probeCount(); XCTAssertEqual(count, 6)
+        // Path change resets backoff and cancels those held requests/timer.
+        h.online(.ethernet)
+        guard await h.advance(181.748, registered: 181.749) else { return }
+        count = await h.client.probeCount(); XCTAssertEqual(count, 6)
+        await h.client.releaseEntry(ProbeService.openai.url); await h.client.releaseEntry(ProbeService.anthropic.url)
+        guard await h.advance(181.749, registered: 181.749),
+              await eventually({ await h.client.probeCount() == 9 }), await completed(h) else { await h.stop(); return }
+        count = await h.client.probeCount(); XCTAssertEqual(count, 9)
+        XCTAssertEqual(h.monitor.snapshot.probes.first { $0.service == .github }?.state, .timeout)
+        XCTAssertEqual(h.path.starts, 1)
         await h.stop()
     }
 
@@ -646,7 +869,7 @@ extension NetworkPresentationTests {
 
 extension NetworkTests {
     @MainActor func testOffPresentationStaysDisabledAfter90SecondsAndManualRefresh() async {
-        let h = NetworkHarness(); await connected(h)
+        let h = NetworkHarness(); guard await connected(h) else { return }
         let calls = await h.client.probeCount()
         XCTAssertTrue(h.monitor.snapshot.probes.allSatisfy { $0.httpStatus != nil })
         h.monitor.setProbesEnabled(false)
@@ -662,8 +885,8 @@ extension NetworkTests {
             }
         }
         checkDisabled()
-        await eventually { await h.sleeper.count() > 0 }
-        await h.advance(90)
+        guard await h.advance(90, registered: 60.75),
+              await eventually({ h.monitor.snapshot.localSampledAt == h.time.date() }), await completed(h) else { await h.stop(); return }
         h.monitor.refresh()
         await eventually { h.monitor.snapshot.ipv4.attemptedAt == h.time.date() }
         checkDisabled()
@@ -673,7 +896,7 @@ extension NetworkTests {
         await h.stop()
     }
     @MainActor func testOnPresentationEntersCheckingWithoutRetainingDisabled() async {
-        let h = NetworkHarness(); await connected(h, probes: false)
+        let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
         XCTAssertTrue(h.monitor.snapshot.probes.allSatisfy { $0.state == .disabled })
         await h.client.hold()
         h.monitor.setProbesEnabled(true)
