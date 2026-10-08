@@ -1,0 +1,2303 @@
+{
+  "schema": "macsoul-v0.1.0-fixed-maintenance-1",
+  "historical_baseline": "b7ca041e0a07623113534e577301f7c3c313df26",
+  "implementation_base": "51f0c0d3a1361ac5ac7ceac52b84175f71ff78e0",
+  "from_fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+  "to_fingerprint": "80332822221eba5e377f360a51cbbc15307eceeb5070552687c45e3035aca7a0",
+  "payload_encoding": "canonical UTF-8 sorted JSON path/before/after SHA256 and Git mode records; declaration excluded",
+  "payload": [
+    {
+      "path": "MacSoulTests/NetworkTests.swift",
+      "before_sha256": "dab057f4fa50005aa11bb5452df537edca80465c154ad07ec15b1039aeb781fa",
+      "after_sha256": "3c05178ca2cf84d822677a8838005bf3fec313a61a3cc421140d0845ea1ec9fa",
+      "before_mode": "100644",
+      "after_mode": "100644"
+    },
+    {
+      "path": "docs/DESIGN.md",
+      "before_sha256": "aa3012dfc794873fc54379be0eb57e6a90548c2f41629038da346a631037acce",
+      "after_sha256": "9fd879d5a1af84db4aaf053d6556cbae96fdb8ddeaf5d70faee3f91dce38ec3b",
+      "before_mode": "100644",
+      "after_mode": "100644"
+    },
+    {
+      "path": "docs/PROGRESS-PROTOCOL.md",
+      "before_sha256": "aff551d9a0d8c9df590c96e743fda473795d170994cd00d981612f7d34693340",
+      "after_sha256": "9c7a0ef6c45f5dcac5d1925293e51f1e24386091c5b6bae7b5e771548e03a003",
+      "before_mode": "100644",
+      "after_mode": "100644"
+    },
+    {
+      "path": "docs/SCOPE.md",
+      "before_sha256": "1a99f61ecfae166f25d1300938d1157ff7ce279e641a3699fffa7028e713e8eb",
+      "after_sha256": "0acbc8925e68786768e3f4185cefeecdd67e1fe3265feffc71bf673a7809ac3d",
+      "before_mode": "100644",
+      "after_mode": "100644"
+    },
+    {
+      "path": "docs/STATUS.md",
+      "before_sha256": "9c5b5970aaed4b2335b37fb3406822b007e144142234c1b2da9f066ebbdb0869",
+      "after_sha256": "1d7afd511486c71485cfa400a913d3b9bf9de4eb2d0a8c89552ea25834e372ad",
+      "before_mode": "100644",
+      "after_mode": "100644"
+    },
+    {
+      "path": "scripts/README.md",
+      "before_sha256": "c39c87f4c759681b33b9f1b03c3ebb2fdcc01d5f53a2b25c6e9f9f08ae26c14f",
+      "after_sha256": "cb2dc5be2516dce4b56614be9ce39acf90e52f00127240a8be01369a4cb7decf",
+      "before_mode": "100644",
+      "after_mode": "100644"
+    },
+    {
+      "path": "scripts/generate_status.py",
+      "before_sha256": "9c849e20779935984d561c93cd9da0097bf023f7fca5364c94e974a88e71c4d1",
+      "after_sha256": "d805fa92a49d2f8f87ded52701eefa801a124bc8a14f4c7a16ee6b6e37c539bb",
+      "before_mode": "100644",
+      "after_mode": "100644"
+    },
+    {
+      "path": "scripts/test_progress.py",
+      "before_sha256": "ad362ee272962c385e8703c4903e405bfd22812d9caaed934d955c9c7b9d5c3a",
+      "after_sha256": "8aea89081b9ccca982a94761b1c3772dc827b7cce8ff6929abee434a06d6e9e0",
+      "before_mode": "100644",
+      "after_mode": "100644"
+    },
+    {
+      "path": "scripts/verify.sh",
+      "before_sha256": "1427021850076c33e078033fe58feb173c161a3cdf7de36d7cc7aed3a2692331",
+      "after_sha256": "b652610410aad6b3025a8582a10bda182998f36863b470d3ff39a8fe57d00f79",
+      "before_mode": "100755",
+      "after_mode": "100755"
+    },
+    {
+      "path": "scripts/verify_doc_maintenance.py",
+      "before_sha256": null,
+      "after_sha256": "9f2b387b7f61dcf05db7e939a247f597a47674b2f524ad159bf3cc26c64ce2c2",
+      "before_mode": null,
+      "after_mode": "100644"
+    },
+    {
+      "path": "scripts/verify_progress.py",
+      "before_sha256": "a752fbd253082df732d206072e83464ebf493fa13091d14f972a4ce76542369c",
+      "after_sha256": "7dd23f7b6d6debac746f0634a805b1deaeb307029c180801ed490cc632eced32",
+      "before_mode": "100644",
+      "after_mode": "100644"
+    }
+  ],
+  "payload_sha256": "fedbd76d1e936c7f7d084f770929ccf88f52f9c23760a7491186396db498ab77",
+  "declaration_path": "docs/evidence/v0.1.0-doc-maintenance.json",
+  "owner_decision_path": "docs/evidence/v0.1.0-owner-decision.json",
+  "allowlist": [
+    "MacSoulTests/NetworkTests.swift",
+    "docs/DESIGN.md",
+    "docs/PROGRESS-PROTOCOL.md",
+    "docs/SCOPE.md",
+    "docs/STATUS.md",
+    "docs/evidence/v0.1.0-doc-maintenance.json",
+    "docs/evidence/v0.1.0-owner-decision.json",
+    "scripts/README.md",
+    "scripts/generate_status.py",
+    "scripts/test_progress.py",
+    "scripts/verify.sh",
+    "scripts/verify_doc_maintenance.py",
+    "scripts/verify_progress.py"
+  ],
+  "decision_policy": "Exact fixed record, independently hashed; PENDING refuses coverage. JSON binds identity, not human authentication.",
+  "authorization_rule": "Coverage requires the separate exact Owner decision; this declaration does not grant authorization.",
+  "tasks_sha256": "99358710b2f36c974fe2272d0f7951357dffebfe34169f318520ffcae414e2d7",
+  "components": [
+    {
+      "path": "MacSoul.xcodeproj/project.pbxproj",
+      "before": "b06f99afdc6694fd6bac902c68cddc493b38aba958c4062ac80aebe8f1116727",
+      "after": "b06f99afdc6694fd6bac902c68cddc493b38aba958c4062ac80aebe8f1116727"
+    },
+    {
+      "path": "MacSoul.xcodeproj/xcshareddata/xcschemes/MacSoul.xcscheme",
+      "before": "a89d9328ace05c6e5b0701f637b7099338e9e45736fa1a5fe2384c8064ec536d",
+      "after": "a89d9328ace05c6e5b0701f637b7099338e9e45736fa1a5fe2384c8064ec536d"
+    },
+    {
+      "path": "MacSoul/App/MacSoulApp.swift",
+      "before": "90784d8c5969b8830c31cf75b867c25e2932db19737b0cba70c2cf3347891651",
+      "after": "90784d8c5969b8830c31cf75b867c25e2932db19737b0cba70c2cf3347891651"
+    },
+    {
+      "path": "MacSoul/Components/AccessibilityPresentation.swift",
+      "before": "ac925da4dc793874082debdf126009d7d4ac6b520c6a393ece4f14939df6e6a1",
+      "after": "ac925da4dc793874082debdf126009d7d4ac6b520c6a393ece4f14939df6e6a1"
+    },
+    {
+      "path": "MacSoul/Components/CardContainer.swift",
+      "before": "81be6743376b0f3e20380b70eab507965a395d61448d2ce6e78ba97e0b2b7594",
+      "after": "81be6743376b0f3e20380b70eab507965a395d61448d2ce6e78ba97e0b2b7594"
+    },
+    {
+      "path": "MacSoul/Components/MetricTile.swift",
+      "before": "64bd8b540cba7396fc54fba527e184d53f84ade85b07a797617e98d3c1648a38",
+      "after": "64bd8b540cba7396fc54fba527e184d53f84ade85b07a797617e98d3c1648a38"
+    },
+    {
+      "path": "MacSoul/Components/QuotaRow.swift",
+      "before": "e3df654cd404d0041681523108ad59e51200281146fad29d0aad4f67a9564bc2",
+      "after": "e3df654cd404d0041681523108ad59e51200281146fad29d0aad4f67a9564bc2"
+    },
+    {
+      "path": "MacSoul/MenuBar/MenuBarContentView.swift",
+      "before": "03b9eb49abeebe89f738bcd8f96f4725af8140afd6d29e37e14c420cbb909f93",
+      "after": "03b9eb49abeebe89f738bcd8f96f4725af8140afd6d29e37e14c420cbb909f93"
+    },
+    {
+      "path": "MacSoul/Models/AIQuota.swift",
+      "before": "c2c5953fbccaea4cc3c3532b9e43d1d6d929d8537608e2c4a7c3aa0e5bd16047",
+      "after": "c2c5953fbccaea4cc3c3532b9e43d1d6d929d8537608e2c4a7c3aa0e5bd16047"
+    },
+    {
+      "path": "MacSoul/Models/AIQuotaMonitor.swift",
+      "before": "5cc38289d94314d1a2adac84c75e068d0a47d8a34d45e39b565bef88dbe8764c",
+      "after": "5cc38289d94314d1a2adac84c75e068d0a47d8a34d45e39b565bef88dbe8764c"
+    },
+    {
+      "path": "MacSoul/Models/ClaudeQuotaProvider.swift",
+      "before": "061cb68ba56e6ac0dbb5c36cf2517a1652336a53ad6e84e5bf4741de941669fb",
+      "after": "061cb68ba56e6ac0dbb5c36cf2517a1652336a53ad6e84e5bf4741de941669fb"
+    },
+    {
+      "path": "MacSoul/Models/CleanerDiscovery.swift",
+      "before": "eecd2c7177ff2d973a58e30966a3c223d87356fe577855e8eafbc637f8af37fe",
+      "after": "eecd2c7177ff2d973a58e30966a3c223d87356fe577855e8eafbc637f8af37fe"
+    },
+    {
+      "path": "MacSoul/Models/CleanerPreview.swift",
+      "before": "46323bf2f1358416a2a1b3acab19cd8eacdce96f8f84c82a01724feb1bf99b6f",
+      "after": "46323bf2f1358416a2a1b3acab19cd8eacdce96f8f84c82a01724feb1bf99b6f"
+    },
+    {
+      "path": "MacSoul/Models/CleanerScanner.swift",
+      "before": "a5df3a33160d5e20c831d099d8a6317eec397c44564eb32e0770456febebabd9",
+      "after": "a5df3a33160d5e20c831d099d8a6317eec397c44564eb32e0770456febebabd9"
+    },
+    {
+      "path": "MacSoul/Models/CleanerSnapshot.swift",
+      "before": "53891ab54f25286326406756f77e3cf0845f14fedf244f35a5439044509430f1",
+      "after": "53891ab54f25286326406756f77e3cf0845f14fedf244f35a5439044509430f1"
+    },
+    {
+      "path": "MacSoul/Models/CodexQuotaProvider.swift",
+      "before": "cb0a32c7dbd921d2caa110ecd15d2a595e02bd93fe35e3dd03491a00460b30a5",
+      "after": "cb0a32c7dbd921d2caa110ecd15d2a595e02bd93fe35e3dd03491a00460b30a5"
+    },
+    {
+      "path": "MacSoul/Models/CodexQuotaTransport.swift",
+      "before": "36a95e7c815e7a73e461c57c247d0796bc2ab5f127b2ef73071ae15acb075499",
+      "after": "36a95e7c815e7a73e461c57c247d0796bc2ab5f127b2ef73071ae15acb075499"
+    },
+    {
+      "path": "MacSoul/Models/DevEnvironment.swift",
+      "before": "e9340b525d03682c128ed40bfa6a9ea148c6400a991007afc700c3dc5bb624c2",
+      "after": "e9340b525d03682c128ed40bfa6a9ea148c6400a991007afc700c3dc5bb624c2"
+    },
+    {
+      "path": "MacSoul/Models/DevMonitor.swift",
+      "before": "22ecc79d0f84e03a548aca3d73cfa725d6e6d3d0caaa20c3c5e561c71eb1efba",
+      "after": "22ecc79d0f84e03a548aca3d73cfa725d6e6d3d0caaa20c3c5e561c71eb1efba"
+    },
+    {
+      "path": "MacSoul/Models/DockerCleanerAdapter.swift",
+      "before": "7416f2cf5a733390591f74e9e1ec146c8bf6531de66fe44aba13fc7ab1aaf07d",
+      "after": "7416f2cf5a733390591f74e9e1ec146c8bf6531de66fe44aba13fc7ab1aaf07d"
+    },
+    {
+      "path": "MacSoul/Models/ListeningPorts.swift",
+      "before": "a90587764460b81bd221a55b107b21f7497f161aed44958d389ca27d86fafe25",
+      "after": "a90587764460b81bd221a55b107b21f7497f161aed44958d389ca27d86fafe25"
+    },
+    {
+      "path": "MacSoul/Models/LoginItem.swift",
+      "before": "5ede1b0e887082b26d5d2b345ec2be78ef45c75031811c6cb167e27e0442df64",
+      "after": "5ede1b0e887082b26d5d2b345ec2be78ef45c75031811c6cb167e27e0442df64"
+    },
+    {
+      "path": "MacSoul/Models/MacSoulModels.swift",
+      "before": "3c104367ef87a795f8252e111ad51f0a764bd9234d3cd917ee2dbcd92eefb099",
+      "after": "3c104367ef87a795f8252e111ad51f0a764bd9234d3cd917ee2dbcd92eefb099"
+    },
+    {
+      "path": "MacSoul/Models/MavenRepositoryLocator.swift",
+      "before": "7a894b0d4fffdd165875d3f4594d5ccf5a3c165f8a13c342a674a225ad445d48",
+      "after": "7a894b0d4fffdd165875d3f4594d5ccf5a3c165f8a13c342a674a225ad445d48"
+    },
+    {
+      "path": "MacSoul/Models/MockStore.swift",
+      "before": "ce9e227369609c85ee5fec6e6cee99732183b0a7e32a7c5a72c1884a9bbc7193",
+      "after": "ce9e227369609c85ee5fec6e6cee99732183b0a7e32a7c5a72c1884a9bbc7193"
+    },
+    {
+      "path": "MacSoul/Models/NetworkMonitor.swift",
+      "before": "fa6883fa1a3822e9fd0417e2c13eb9971e15749800d197caac1a8558c76b15b3",
+      "after": "fa6883fa1a3822e9fd0417e2c13eb9971e15749800d197caac1a8558c76b15b3"
+    },
+    {
+      "path": "MacSoul/Models/NetworkProviders.swift",
+      "before": "35ed78628939c68751dbad20fb0eb183105a145dd6487a98698a83b643f148da",
+      "after": "35ed78628939c68751dbad20fb0eb183105a145dd6487a98698a83b643f148da"
+    },
+    {
+      "path": "MacSoul/Models/NetworkSnapshot.swift",
+      "before": "28b5120f2410c1f683c60a079d1c14269bd728c8f843102105a89c9c4c5510ff",
+      "after": "28b5120f2410c1f683c60a079d1c14269bd728c8f843102105a89c9c4c5510ff"
+    },
+    {
+      "path": "MacSoul/Models/SensorHub.swift",
+      "before": "b04e5c16ca3f386a09ae745c359266cdd06253ecd0932417b40cc7c5d530f7a5",
+      "after": "b04e5c16ca3f386a09ae745c359266cdd06253ecd0932417b40cc7c5d530f7a5"
+    },
+    {
+      "path": "MacSoul/Models/ShellRunner.swift",
+      "before": "4e99727779590bda9a713faf8df70283f30e4946464a8b492bed0aa83a51ea5f",
+      "after": "4e99727779590bda9a713faf8df70283f30e4946464a8b492bed0aa83a51ea5f"
+    },
+    {
+      "path": "MacSoul/Models/SoulEngine.swift",
+      "before": "a62199ac56ad391c4d9c40892afd503cd2549702dba04c88f2665e95ef8e7961",
+      "after": "a62199ac56ad391c4d9c40892afd503cd2549702dba04c88f2665e95ef8e7961"
+    },
+    {
+      "path": "MacSoul/Models/SystemDetails.swift",
+      "before": "b2a8b86f82440ae771119d14f36c69c25c0cbb43f1acb8fb79f04b8348d2ec1f",
+      "after": "b2a8b86f82440ae771119d14f36c69c25c0cbb43f1acb8fb79f04b8348d2ec1f"
+    },
+    {
+      "path": "MacSoul/Models/SystemSensors.swift",
+      "before": "8918fb1deecb4a1dc5d95516ef2bd41a53af99c6b5473b5314c6a050f1c09004",
+      "after": "8918fb1deecb4a1dc5d95516ef2bd41a53af99c6b5473b5314c6a050f1c09004"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/Contents.json",
+      "before": "f5fb0e1f3a8142892ed092efb5955c1c2cc537003a89ad7bbdb9dade7fe8985f",
+      "after": "f5fb0e1f3a8142892ed092efb5955c1c2cc537003a89ad7bbdb9dade7fe8985f"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/Contents.json",
+      "before": "7155e04b17691591a1f0b09c05b5280c670de80254d06e18bd204da67819db2f",
+      "after": "7155e04b17691591a1f0b09c05b5280c670de80254d06e18bd204da67819db2f"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_128x128.png",
+      "before": "bc5281499443fd741963d52f2a441687b25cf223a1c85835922dd487a47153fb",
+      "after": "bc5281499443fd741963d52f2a441687b25cf223a1c85835922dd487a47153fb"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_128x128@2x.png",
+      "before": "3c54e9741a9ca5968c0e80d3b4fec4ab272f8681c9df096fa4ab1a47a77f0c52",
+      "after": "3c54e9741a9ca5968c0e80d3b4fec4ab272f8681c9df096fa4ab1a47a77f0c52"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_16x16.png",
+      "before": "b18fad5da988c86612009ba44058a9dca90f20dda12f82b457f688a5d9b2253f",
+      "after": "b18fad5da988c86612009ba44058a9dca90f20dda12f82b457f688a5d9b2253f"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_16x16@2x.png",
+      "before": "91784609d6c82047e029e517b3a027c578210725ad1f09ee8e66fbae005333f6",
+      "after": "91784609d6c82047e029e517b3a027c578210725ad1f09ee8e66fbae005333f6"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_256x256.png",
+      "before": "3c54e9741a9ca5968c0e80d3b4fec4ab272f8681c9df096fa4ab1a47a77f0c52",
+      "after": "3c54e9741a9ca5968c0e80d3b4fec4ab272f8681c9df096fa4ab1a47a77f0c52"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_256x256@2x.png",
+      "before": "a154706dd3bc010c0d1ce7725c3733414f0e69c6886d872611fdcaa2d3d9b31a",
+      "after": "a154706dd3bc010c0d1ce7725c3733414f0e69c6886d872611fdcaa2d3d9b31a"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_32x32.png",
+      "before": "91784609d6c82047e029e517b3a027c578210725ad1f09ee8e66fbae005333f6",
+      "after": "91784609d6c82047e029e517b3a027c578210725ad1f09ee8e66fbae005333f6"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_32x32@2x.png",
+      "before": "3882edeeb239c30ad910fedbdd946f212de84cd3918bc21bda9c783512889874",
+      "after": "3882edeeb239c30ad910fedbdd946f212de84cd3918bc21bda9c783512889874"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_512x512.png",
+      "before": "a154706dd3bc010c0d1ce7725c3733414f0e69c6886d872611fdcaa2d3d9b31a",
+      "after": "a154706dd3bc010c0d1ce7725c3733414f0e69c6886d872611fdcaa2d3d9b31a"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulAppIcon.appiconset/icon_512x512@2x.png",
+      "before": "ceb09640bb6be9b4c641ad3ad82e266c8bc64e78bb5b7db31ae7919334faf438",
+      "after": "ceb09640bb6be9b4c641ad3ad82e266c8bc64e78bb5b7db31ae7919334faf438"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBloated.imageset/Contents.json",
+      "before": "6d731f47762b2b14a193a581f02674356f58bdbd3e70aec9f5ec5a0fbbd9c106",
+      "after": "6d731f47762b2b14a193a581f02674356f58bdbd3e70aec9f5ec5a0fbbd9c106"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBloated.imageset/soul-bloated.png",
+      "before": "e5b4ecbe9bbcf8ed8931279cd0a99d574265d29db870af0f72da551e69bb61cd",
+      "after": "e5b4ecbe9bbcf8ed8931279cd0a99d574265d29db870af0f72da551e69bb61cd"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBloated.imageset/soul-bloated@2x.png",
+      "before": "34a9b0008e17c2e2ebe1b5a9aeb0f81b52d64d3073179b92f9c2dbb3d623e3d0",
+      "after": "34a9b0008e17c2e2ebe1b5a9aeb0f81b52d64d3073179b92f9c2dbb3d623e3d0"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBusy.imageset/Contents.json",
+      "before": "68004585c8188d5a1ae4f20094479486c247bfdced9d56fce8f4ce8438d940e3",
+      "after": "68004585c8188d5a1ae4f20094479486c247bfdced9d56fce8f4ce8438d940e3"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBusy.imageset/soul-busy.png",
+      "before": "34ce26f578f082e61a2a56eec5da04d71272aa93c6ed229c8c326ec82da16e71",
+      "after": "34ce26f578f082e61a2a56eec5da04d71272aa93c6ed229c8c326ec82da16e71"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulBusy.imageset/soul-busy@2x.png",
+      "before": "5058dd700b12a7dcf4e17922ebbf3bd515063bf406dd822827aae4895a8220f4",
+      "after": "5058dd700b12a7dcf4e17922ebbf3bd515063bf406dd822827aae4895a8220f4"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulLowBattery.imageset/Contents.json",
+      "before": "2562a850af2160214abf92ea5edc64c761c8c3dee88c192d205827a17a00aad2",
+      "after": "2562a850af2160214abf92ea5edc64c761c8c3dee88c192d205827a17a00aad2"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulLowBattery.imageset/soul-low-battery.png",
+      "before": "7a6ae0bcebfe79d24a7181af0583cf2111e155eed44987835623681021842dd4",
+      "after": "7a6ae0bcebfe79d24a7181af0583cf2111e155eed44987835623681021842dd4"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulLowBattery.imageset/soul-low-battery@2x.png",
+      "before": "ea8380b1b164d13810a65ae012125c3a1dabc4d73379fcadbee65944b0ce8323",
+      "after": "ea8380b1b164d13810a65ae012125c3a1dabc4d73379fcadbee65944b0ce8323"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulMenuTemplateDraft.imageset/Contents.json",
+      "before": "23c3383af268112c151c52bb364b1abb74ba7fcac249d2e3f0dd549b3e249c5d",
+      "after": "23c3383af268112c151c52bb364b1abb74ba7fcac249d2e3f0dd549b3e249c5d"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulMenuTemplateDraft.imageset/macsoul-menu-template-draft.png",
+      "before": "a445ba310cdb0c63a5ed8ae56e5824976e08f83aef6328b68c34490eb8feaa4e",
+      "after": "a445ba310cdb0c63a5ed8ae56e5824976e08f83aef6328b68c34490eb8feaa4e"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulMenuTemplateDraft.imageset/macsoul-menu-template-draft@2x.png",
+      "before": "eb5b2a7713d5e7b34323a824f71eadd471c24c95ab53b0236c619adc84e6f38c",
+      "after": "eb5b2a7713d5e7b34323a824f71eadd471c24c95ab53b0236c619adc84e6f38c"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulNormal.imageset/Contents.json",
+      "before": "b33334c383a21c935e10805acc52873ecafa03e95a8b837483c3bf5a06c9b964",
+      "after": "b33334c383a21c935e10805acc52873ecafa03e95a8b837483c3bf5a06c9b964"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulNormal.imageset/soul-normal.png",
+      "before": "e5c514bb1554c253acee1128620191631cd39c3973419eae8cb382aab777334a",
+      "after": "e5c514bb1554c253acee1128620191631cd39c3973419eae8cb382aab777334a"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulNormal.imageset/soul-normal@2x.png",
+      "before": "7e6b7299b00e5e3eccdfb44962e87d77b71e49a77a428f01e88118001280df93",
+      "after": "7e6b7299b00e5e3eccdfb44962e87d77b71e49a77a428f01e88118001280df93"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulOverload.imageset/Contents.json",
+      "before": "02555ca654b140fc3f8a344bb6e1760213724de7d861f1c41635be7882edee02",
+      "after": "02555ca654b140fc3f8a344bb6e1760213724de7d861f1c41635be7882edee02"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulOverload.imageset/soul-overload.png",
+      "before": "1be6c6e8e687f6204090b34e494c0919cbedec01f5f8e3d2b152f4abebaaa6b3",
+      "after": "1be6c6e8e687f6204090b34e494c0919cbedec01f5f8e3d2b152f4abebaaa6b3"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulOverload.imageset/soul-overload@2x.png",
+      "before": "6a5165cb17104707228785d89d7feccc4222fdc5675fed8cde18513bb74761ca",
+      "after": "6a5165cb17104707228785d89d7feccc4222fdc5675fed8cde18513bb74761ca"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulSleeping.imageset/Contents.json",
+      "before": "992ab8ac985fa569d3dcfa813ccf9b67bf6af82bc3c5d3f960ab2828b0f9470a",
+      "after": "992ab8ac985fa569d3dcfa813ccf9b67bf6af82bc3c5d3f960ab2828b0f9470a"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulSleeping.imageset/soul-sleeping.png",
+      "before": "9124e481fcbb39092c1ea72fe92a2d5028183e85d85a42a066e5f1ddc4710994",
+      "after": "9124e481fcbb39092c1ea72fe92a2d5028183e85d85a42a066e5f1ddc4710994"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulBrand.xcassets/MacSoulSleeping.imageset/soul-sleeping@2x.png",
+      "before": "3bee5fab655d678a963ae8fae6a36a75a72c6d2ce25ae6f68a8567e1057cdf7a",
+      "after": "3bee5fab655d678a963ae8fae6a36a75a72c6d2ce25ae6f68a8567e1057cdf7a"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulCleaner.xcassets/CleanerBroom.imageset/Contents.json",
+      "before": "53e473d7c135306879534e9f2845281b939c707e3ab35b0cc61432a156c1292f",
+      "after": "53e473d7c135306879534e9f2845281b939c707e3ab35b0cc61432a156c1292f"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulCleaner.xcassets/CleanerBroom.imageset/broom.svg",
+      "before": "e0805212cc05dd85c80cad8a62684a6705b2a8329ced7c2363d74747d01c3fb4",
+      "after": "e0805212cc05dd85c80cad8a62684a6705b2a8329ced7c2363d74747d01c3fb4"
+    },
+    {
+      "path": "MacSoul/Resources/MacSoulCleaner.xcassets/Contents.json",
+      "before": "f5fb0e1f3a8142892ed092efb5955c1c2cc537003a89ad7bbdb9dade7fe8985f",
+      "after": "f5fb0e1f3a8142892ed092efb5955c1c2cc537003a89ad7bbdb9dade7fe8985f"
+    },
+    {
+      "path": "MacSoul/Resources/PrivacyInfo.xcprivacy",
+      "before": "807d2e9c7bbfa1a08e9755305d76fe730c75175723d3e24abadcc0fe73b34a3b",
+      "after": "807d2e9c7bbfa1a08e9755305d76fe730c75175723d3e24abadcc0fe73b34a3b"
+    },
+    {
+      "path": "MacSoul/Resources/ThirdPartyNotices.txt",
+      "before": "1895b29705e6590faeb964d95b92067e4f095a346e4040c02c044278491aa308",
+      "after": "1895b29705e6590faeb964d95b92067e4f095a346e4040c02c044278491aa308"
+    },
+    {
+      "path": "MacSoul/Theme/MacSoulTheme.swift",
+      "before": "babce454ed6eb79d09bda0b125bd2e1b93b49a54266046a8e0140fc5e558d9c6",
+      "after": "babce454ed6eb79d09bda0b125bd2e1b93b49a54266046a8e0140fc5e558d9c6"
+    },
+    {
+      "path": "MacSoul/Views/AI/AICodingView.swift",
+      "before": "b1509851adf1dab4bd7f3a1cfcb1124e47c63eca368347025fd61de95ba516f5",
+      "after": "b1509851adf1dab4bd7f3a1cfcb1124e47c63eca368347025fd61de95ba516f5"
+    },
+    {
+      "path": "MacSoul/Views/AI/QuotaProviderPresentation.swift",
+      "before": "4fa1d1b9c63622c2a60a0b78326d12e607ca926d748e20ea7a9551da0f3a1692",
+      "after": "4fa1d1b9c63622c2a60a0b78326d12e607ca926d748e20ea7a9551da0f3a1692"
+    },
+    {
+      "path": "MacSoul/Views/AppShellView.swift",
+      "before": "bb252fa23392d38a17e4147c1209f9e6e9403ce172abd5502bfe2f2503bd84e1",
+      "after": "bb252fa23392d38a17e4147c1209f9e6e9403ce172abd5502bfe2f2503bd84e1"
+    },
+    {
+      "path": "MacSoul/Views/Cleaner/CleanerPresentation.swift",
+      "before": "0a62b33ab227c7d84cd0c2b07d06f96e3ee2f19080f319642f488f05064a49a8",
+      "after": "0a62b33ab227c7d84cd0c2b07d06f96e3ee2f19080f319642f488f05064a49a8"
+    },
+    {
+      "path": "MacSoul/Views/Cleaner/CleanerPreviewView.swift",
+      "before": "85039e33a8ea98681ebedf1423fde818f1707c64941a5fa57d3986e147c4e0c6",
+      "after": "85039e33a8ea98681ebedf1423fde818f1707c64941a5fa57d3986e147c4e0c6"
+    },
+    {
+      "path": "MacSoul/Views/Cleaner/CleanerView.swift",
+      "before": "42a1a3d08e9067fa33cb92950d550ea30ff53896f1f4c856e82114507f14220a",
+      "after": "42a1a3d08e9067fa33cb92950d550ea30ff53896f1f4c856e82114507f14220a"
+    },
+    {
+      "path": "MacSoul/Views/Dev/DevView.swift",
+      "before": "67ab04fa7672d0b03c292b8b95cb5411ce164f6840fcaacaf3ef1a79a2638711",
+      "after": "67ab04fa7672d0b03c292b8b95cb5411ce164f6840fcaacaf3ef1a79a2638711"
+    },
+    {
+      "path": "MacSoul/Views/Network/NetworkView.swift",
+      "before": "a9501195383ad82e10d2ee573738a5c18680d1b69b12f8e253f658dacc2b9491",
+      "after": "a9501195383ad82e10d2ee573738a5c18680d1b69b12f8e253f658dacc2b9491"
+    },
+    {
+      "path": "MacSoul/Views/Overview/OverviewView.swift",
+      "before": "abe9529b24b88870a3b27aa5b56a58a91bfc6c06beb6ae21d197dad0799622cd",
+      "after": "abe9529b24b88870a3b27aa5b56a58a91bfc6c06beb6ae21d197dad0799622cd"
+    },
+    {
+      "path": "MacSoul/Views/Settings/SettingsView.swift",
+      "before": "e6172953fa7d97143ca5ffac3726872c292e4c1ab82c226413f8c410c423c2d5",
+      "after": "e6172953fa7d97143ca5ffac3726872c292e4c1ab82c226413f8c410c423c2d5"
+    },
+    {
+      "path": "MacSoul/Views/System/SystemView.swift",
+      "before": "334f05bf3ba87c3e65a43cceb936c0cbc178aa759c3d6958b630919f8d8d6bf5",
+      "after": "334f05bf3ba87c3e65a43cceb936c0cbc178aa759c3d6958b630919f8d8d6bf5"
+    },
+    {
+      "path": "MacSoulTests/AIQuotaLifecycleTests.swift",
+      "before": "a731009b67495fa9e609351811c07e0fffa802a9bca9b5085c89e28cc2296f8d",
+      "after": "a731009b67495fa9e609351811c07e0fffa802a9bca9b5085c89e28cc2296f8d"
+    },
+    {
+      "path": "MacSoulTests/AIQuotaTests.swift",
+      "before": "81700b52936ae3a5123f7860a25a89616cb6d847a923f47c4127ca88605d0894",
+      "after": "81700b52936ae3a5123f7860a25a89616cb6d847a923f47c4127ca88605d0894"
+    },
+    {
+      "path": "MacSoulTests/CleanerDiscoveryTests.swift",
+      "before": "76aa33b350927ca48f6f554d413fb11e610784993a10a6ef388e9357ee8a7c8c",
+      "after": "76aa33b350927ca48f6f554d413fb11e610784993a10a6ef388e9357ee8a7c8c"
+    },
+    {
+      "path": "MacSoulTests/CleanerPreviewTests.swift",
+      "before": "cee34624973ad9b048db46d20a0a5b9c69a6fe29d87ba47c4befd8027ae8dc0c",
+      "after": "cee34624973ad9b048db46d20a0a5b9c69a6fe29d87ba47c4befd8027ae8dc0c"
+    },
+    {
+      "path": "MacSoulTests/CleanerTests.swift",
+      "before": "bb10844d987fbd74f979a568deb8785479bc783c0a7221b52b83be6914bc2e30",
+      "after": "bb10844d987fbd74f979a568deb8785479bc783c0a7221b52b83be6914bc2e30"
+    },
+    {
+      "path": "MacSoulTests/Day6HardeningTests.swift",
+      "before": "e8fae3a8abfc304da38413cd53f456e7658ecc796a30200d0b2bad80f1c4f635",
+      "after": "e8fae3a8abfc304da38413cd53f456e7658ecc796a30200d0b2bad80f1c4f635"
+    },
+    {
+      "path": "MacSoulTests/DevEnvironmentTests.swift",
+      "before": "d5578903437b0944942160ea531e904f8534ba52328186a2dc95d47f7e6c644d",
+      "after": "d5578903437b0944942160ea531e904f8534ba52328186a2dc95d47f7e6c644d"
+    },
+    {
+      "path": "MacSoulTests/MavenCleanerTests.swift",
+      "before": "a865795da35f9258d75af3e2998aad5f8fc84d22497efd4c376c597a6ffbdd3a",
+      "after": "a865795da35f9258d75af3e2998aad5f8fc84d22497efd4c376c597a6ffbdd3a"
+    },
+    {
+      "path": "MacSoulTests/NetworkTests.swift",
+      "before": "dab057f4fa50005aa11bb5452df537edca80465c154ad07ec15b1039aeb781fa",
+      "after": "3c05178ca2cf84d822677a8838005bf3fec313a61a3cc421140d0845ea1ec9fa"
+    },
+    {
+      "path": "MacSoulTests/QuotaTests.swift",
+      "before": "6db87452e3792a65aab1fe6c89e211aa69639ff608f9b906d9fadeda430381c0",
+      "after": "6db87452e3792a65aab1fe6c89e211aa69639ff608f9b906d9fadeda430381c0"
+    },
+    {
+      "path": "MacSoulTests/SystemDetailsTests.swift",
+      "before": "6fd18b79d675eca89796da5a1a1c49cf3762175befeeb5aafe240fc17a20b4e5",
+      "after": "6fd18b79d675eca89796da5a1a1c49cf3762175befeeb5aafe240fc17a20b4e5"
+    },
+    {
+      "path": "MacSoulTests/SystemSoulTests.swift",
+      "before": "6584325a9add7046b40a14a8a2d1a6d3cca2d10a090844c091e658d07759196d",
+      "after": "6584325a9add7046b40a14a8a2d1a6d3cca2d10a090844c091e658d07759196d"
+    },
+    {
+      "path": "docs/DESIGN.md",
+      "before": "aa3012dfc794873fc54379be0eb57e6a90548c2f41629038da346a631037acce",
+      "after": "9fd879d5a1af84db4aaf053d6556cbae96fdb8ddeaf5d70faee3f91dce38ec3b"
+    },
+    {
+      "path": "docs/SCOPE.md",
+      "before": "1a99f61ecfae166f25d1300938d1157ff7ce279e641a3699fffa7028e713e8eb",
+      "after": "0acbc8925e68786768e3f4185cefeecdd67e1fe3265feffc71bf673a7809ac3d"
+    },
+    {
+      "path": "scripts/README.md",
+      "before": "c39c87f4c759681b33b9f1b03c3ebb2fdcc01d5f53a2b25c6e9f9f08ae26c14f",
+      "after": "cb2dc5be2516dce4b56614be9ce39acf90e52f00127240a8be01369a4cb7decf"
+    },
+    {
+      "path": "scripts/build.sh",
+      "before": "927c39f6001bd73ccdec37d8f999b419e8202ff49ea7dc38f270f409c58194ae",
+      "after": "927c39f6001bd73ccdec37d8f999b419e8202ff49ea7dc38f270f409c58194ae"
+    },
+    {
+      "path": "scripts/check_bundle.py",
+      "before": "ff38306d705499371dea423f1b77ee0e53b0890764e509f92a212bd35f8c2355",
+      "after": "ff38306d705499371dea423f1b77ee0e53b0890764e509f92a212bd35f8c2355"
+    },
+    {
+      "path": "scripts/doctor.sh",
+      "before": "c7578b46ea40d6d73dae6bbbceff6ab509d5858297bc3d8abdf1728d25577d53",
+      "after": "c7578b46ea40d6d73dae6bbbceff6ab509d5858297bc3d8abdf1728d25577d53"
+    },
+    {
+      "path": "scripts/fingerprint.py",
+      "before": "54352278c3fc249617aa39aa5cccb493df399690e572aa82e7c80f21fcdb3257",
+      "after": "54352278c3fc249617aa39aa5cccb493df399690e572aa82e7c80f21fcdb3257"
+    },
+    {
+      "path": "scripts/generate_project.py",
+      "before": "cf7c6287f3eb6ffff537c1eb3b72d08c09c0e9dd9e43559dd1469be87796494e",
+      "after": "cf7c6287f3eb6ffff537c1eb3b72d08c09c0e9dd9e43559dd1469be87796494e"
+    },
+    {
+      "path": "scripts/generate_status.py",
+      "before": "9c849e20779935984d561c93cd9da0097bf023f7fca5364c94e974a88e71c4d1",
+      "after": "d805fa92a49d2f8f87ded52701eefa801a124bc8a14f4c7a16ee6b6e37c539bb"
+    },
+    {
+      "path": "scripts/migrate_plan.py",
+      "before": "f0b1169b0f9b5bbbe4a1709125f3b43c7efd58cf340c5419af1f0630e58f8de2",
+      "after": "f0b1169b0f9b5bbbe4a1709125f3b43c7efd58cf340c5419af1f0630e58f8de2"
+    },
+    {
+      "path": "scripts/observe-network.swift",
+      "before": "1bab245343f3dcf1de9aa2ee6fbada1bfc96f5cc5481b4fac5c95e2949bffbca",
+      "after": "1bab245343f3dcf1de9aa2ee6fbada1bfc96f5cc5481b4fac5c95e2949bffbca"
+    },
+    {
+      "path": "scripts/observe-system.swift",
+      "before": "77a6c3df8f6acea4fb4db438f817bd846eebec06628c5ca473e39b8baacd0d3c",
+      "after": "77a6c3df8f6acea4fb4db438f817bd846eebec06628c5ca473e39b8baacd0d3c"
+    },
+    {
+      "path": "scripts/run-mock.sh",
+      "before": "be73f9e69721166ee60f24ec9de6bb0695433b26beca09e91edc1e0d5cc4f439",
+      "after": "be73f9e69721166ee60f24ec9de6bb0695433b26beca09e91edc1e0d5cc4f439"
+    },
+    {
+      "path": "scripts/test.sh",
+      "before": "8617cc2e1ae045cf7667b1ab1a4f3a4aba01c1314985c4fd4526dd13b2bdc458",
+      "after": "8617cc2e1ae045cf7667b1ab1a4f3a4aba01c1314985c4fd4526dd13b2bdc458"
+    },
+    {
+      "path": "scripts/test_progress.py",
+      "before": "ad362ee272962c385e8703c4903e405bfd22812d9caaed934d955c9c7b9d5c3a",
+      "after": "8aea89081b9ccca982a94761b1c3772dc827b7cce8ff6929abee434a06d6e9e0"
+    },
+    {
+      "path": "scripts/verify-visual-assets.py",
+      "before": "1b4ba55e8defc225f4a1b2cc123020f26d7f847f4983b525805f14ffd39ee541",
+      "after": "1b4ba55e8defc225f4a1b2cc123020f26d7f847f4983b525805f14ffd39ee541"
+    },
+    {
+      "path": "scripts/verify.sh",
+      "before": "1427021850076c33e078033fe58feb173c161a3cdf7de36d7cc7aed3a2692331",
+      "after": "b652610410aad6b3025a8582a10bda182998f36863b470d3ff39a8fe57d00f79"
+    },
+    {
+      "path": "scripts/verify_doc_maintenance.py",
+      "before": null,
+      "after": "9f2b387b7f61dcf05db7e939a247f597a47674b2f524ad159bf3cc26c64ce2c2"
+    },
+    {
+      "path": "scripts/verify_progress.py",
+      "before": "a752fbd253082df732d206072e83464ebf493fa13091d14f972a4ce76542369c",
+      "after": "7dd23f7b6d6debac746f0634a805b1deaeb307029c180801ed490cc632eced32"
+    }
+  ],
+  "evidence_mappings": [
+    {
+      "task": "A4",
+      "acceptance": "A4-LEDGER",
+      "index": 0,
+      "original_entry_sha256": "1b3684e56f62f12efd024b69fa2fd2b826e6f506bdb99f923383aae53f26fd55",
+      "original_evidence": {
+        "acceptance_id": "A4-LEDGER",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/progress-tests.log",
+        "check": "progress_tests",
+        "command": "python3 scripts/test_progress.py",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "progress_tests"
+    },
+    {
+      "task": "A4",
+      "acceptance": "A4-NEGATIVE",
+      "index": 1,
+      "original_entry_sha256": "5bbab8c346d16df80eff521cd8f955981140313aeceb5058b25b8bc499a455c0",
+      "original_evidence": {
+        "acceptance_id": "A4-NEGATIVE",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/progress-tests.log",
+        "check": "progress_tests",
+        "command": "python3 scripts/test_progress.py",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "progress_tests"
+    },
+    {
+      "task": "A2",
+      "acceptance": "A2-BUILD",
+      "index": 0,
+      "original_entry_sha256": "0e2500d2b5d4710a63f294a2a15710bdfd5d79a4883d82197dc5f6b01d19a569",
+      "original_evidence": {
+        "acceptance_id": "A2-BUILD",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/build.log",
+        "check": "build",
+        "command": "./scripts/build.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "build"
+    },
+    {
+      "task": "A2",
+      "acceptance": "A2-UNIT",
+      "index": 1,
+      "original_entry_sha256": "f275661102cf259069a5d4815aca7afa8ad339b7e208d316191cbb2995b58390",
+      "original_evidence": {
+        "acceptance_id": "A2-UNIT",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D1-01",
+      "acceptance": "D1-01-A",
+      "index": 0,
+      "original_entry_sha256": "cf1e6070fbf851409650ae807eae461a055780a9711ddf4e60d2d46df6bde534",
+      "original_evidence": {
+        "acceptance_id": "D1-01-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/build.log",
+        "check": "build",
+        "command": "./scripts/build.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "build"
+    },
+    {
+      "task": "D1-01",
+      "acceptance": "D1-01-A",
+      "index": 1,
+      "original_entry_sha256": "2a63c3a9a2a7f349f5207b0618aece159882351e1ceef442fd87c77e911d642a",
+      "original_evidence": {
+        "acceptance_id": "D1-01-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/doctor.log",
+        "check": "doctor",
+        "command": "./scripts/doctor.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "doctor"
+    },
+    {
+      "task": "D1-01",
+      "acceptance": "D1-01-A",
+      "index": 2,
+      "original_entry_sha256": "54988ad3b67602a83329a221a7bd60f64e331dbb39cdccaaf0994c64256e5581",
+      "original_evidence": {
+        "acceptance_id": "D1-01-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D1-02",
+      "acceptance": "D1-02-A",
+      "index": 0,
+      "original_entry_sha256": "a1f477793d736d38a4483ae4509ba2b9a4fa176ebed5aa6829a8c13159574b49",
+      "original_evidence": {
+        "acceptance_id": "D1-02-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/build.log",
+        "check": "build",
+        "command": "./scripts/build.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "build"
+    },
+    {
+      "task": "D1-03",
+      "acceptance": "D1-03-A",
+      "index": 0,
+      "original_entry_sha256": "79d8ef8662e1243ea049725126caf16beb05cb0af9292b86e9728ab4150a10ab",
+      "original_evidence": {
+        "acceptance_id": "D1-03-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D1-04",
+      "acceptance": "D1-04-A",
+      "index": 0,
+      "original_entry_sha256": "a375b4ea51deba24f4104dda1927fd8e448fd0f27499ddf7e32d0bf541dc2463",
+      "original_evidence": {
+        "acceptance_id": "D1-04-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/build.log",
+        "check": "build",
+        "command": "./scripts/build.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "build"
+    },
+    {
+      "task": "D1-05",
+      "acceptance": "D1-05-A",
+      "index": 0,
+      "original_entry_sha256": "6df28c4c8fc4670f75c7cac861de05b3083f255a0806f6bb767790088b4cf104",
+      "original_evidence": {
+        "acceptance_id": "D1-05-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/build.log",
+        "check": "build",
+        "command": "./scripts/build.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "build"
+    },
+    {
+      "task": "D1-06",
+      "acceptance": "D1-06-A",
+      "index": 0,
+      "original_entry_sha256": "3cf7f7efc4ae9208706c6ba75d34570301c606d1db983dc4614f255076f84776",
+      "original_evidence": {
+        "acceptance_id": "D1-06-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/build.log",
+        "check": "build",
+        "command": "./scripts/build.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "build"
+    },
+    {
+      "task": "D1-06",
+      "acceptance": "D1-06-A",
+      "index": 1,
+      "original_entry_sha256": "0d95900e8c2b039ac9570978d7b3bbc59d7726f7c2c9ab468309431bfbf684bc",
+      "original_evidence": {
+        "acceptance_id": "D1-06-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D2-01",
+      "acceptance": "D2-01-A",
+      "index": 0,
+      "original_entry_sha256": "a2de917490229a152f9bb21f72dd9fcc40666afd3997b87fe324dd477cebc15c",
+      "original_evidence": {
+        "acceptance_id": "D2-01-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D2-02",
+      "acceptance": "D2-02-A",
+      "index": 0,
+      "original_entry_sha256": "2bf421f4e0ada349eb580e518719b2ba4343b2a394413d2ec80891adb0c90ae7",
+      "original_evidence": {
+        "acceptance_id": "D2-02-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D2-03",
+      "acceptance": "D2-03-A",
+      "index": 0,
+      "original_entry_sha256": "97d9088bfefae66ebac243e5c0f3ade5f93b036d427d6cd2c258debc201bfa73",
+      "original_evidence": {
+        "acceptance_id": "D2-03-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D2-04",
+      "acceptance": "D2-04-A",
+      "index": 0,
+      "original_entry_sha256": "511e3e176dbd9f22d8c0346c7b3c442cb78bda0d1509479d489fc7bbff2451b4",
+      "original_evidence": {
+        "acceptance_id": "D2-04-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D2-05",
+      "acceptance": "D2-05-A",
+      "index": 0,
+      "original_entry_sha256": "12057b54bc13be27fa89e964ef69def91441dcacc1acc694c387bb7dd12d6a42",
+      "original_evidence": {
+        "acceptance_id": "D2-05-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D2-06",
+      "acceptance": "D2-06-A",
+      "index": 0,
+      "original_entry_sha256": "1b8cab19ce6e917bd665aa151d0ffef763715b2ed2baa5b78376112951821e90",
+      "original_evidence": {
+        "acceptance_id": "D2-06-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D2-07",
+      "acceptance": "D2-07-A",
+      "index": 0,
+      "original_entry_sha256": "378ca09c282750bb98acbd6b1ec61098d0b62bb2b542ba108f3b2d7d33adf960",
+      "original_evidence": {
+        "acceptance_id": "D2-07-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D3-01",
+      "acceptance": "D3-01-A",
+      "index": 0,
+      "original_entry_sha256": "e4ff95cf8c381beb45411c0d2837ef8f31364a5373f7490bb333aa690d429c1a",
+      "original_evidence": {
+        "acceptance_id": "D3-01-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D3-02",
+      "acceptance": "D3-02-A",
+      "index": 0,
+      "original_entry_sha256": "3391e4b37264fc03b483719dd90286ebcb97ff7032c840a1ede3887d8fdce967",
+      "original_evidence": {
+        "acceptance_id": "D3-02-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D3-03",
+      "acceptance": "D3-03-A",
+      "index": 0,
+      "original_entry_sha256": "1cbd8bbaa5f5d65c9c0e8af4e49a52a9d1e47d2ae1bc71c390d38aff37d153e1",
+      "original_evidence": {
+        "acceptance_id": "D3-03-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D3-04",
+      "acceptance": "D3-04-A",
+      "index": 0,
+      "original_entry_sha256": "361968996e1ed4f5fcb72e4009fdfb325d22ca34712e0122daa939c73589721f",
+      "original_evidence": {
+        "acceptance_id": "D3-04-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D3-05",
+      "acceptance": "D3-05-A",
+      "index": 0,
+      "original_entry_sha256": "94564d44f59a7d1e82f8e9b69fd6d443666aa16c0ce98e010fd2befb371453c6",
+      "original_evidence": {
+        "acceptance_id": "D3-05-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D3-06",
+      "acceptance": "D3-06-A",
+      "index": 0,
+      "original_entry_sha256": "7f82de2f831fac0c9b1cb0357ccc1fb954927589ce7d571ced47bc7914a72a05",
+      "original_evidence": {
+        "acceptance_id": "D3-06-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D3-07",
+      "acceptance": "D3-07-A",
+      "index": 0,
+      "original_entry_sha256": "1feb123609b961324c1d3e9e8e939461814e411683f084c8c6ef9d6b784e544b",
+      "original_evidence": {
+        "acceptance_id": "D3-07-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/build.log",
+        "check": "build",
+        "command": "./scripts/build.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "build"
+    },
+    {
+      "task": "D4-01",
+      "acceptance": "D4-01-A",
+      "index": 0,
+      "original_entry_sha256": "62474dd622f5159ee36ff1fed9c0f87fcda3e0fd874a3d7c35d9b68f558c877d",
+      "original_evidence": {
+        "acceptance_id": "D4-01-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D4-02",
+      "acceptance": "D4-02-A",
+      "index": 0,
+      "original_entry_sha256": "45ef07173066d673c9962ba3622a0233019b9f055b4dcc1eef2d5bb84c4c613b",
+      "original_evidence": {
+        "acceptance_id": "D4-02-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D4-03",
+      "acceptance": "D4-03-A",
+      "index": 0,
+      "original_entry_sha256": "e01352c75ea5f0f08f816746065646d50cdb966b519a8d21777efcf7e96ad922",
+      "original_evidence": {
+        "acceptance_id": "D4-03-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D4-04",
+      "acceptance": "D4-04-A",
+      "index": 0,
+      "original_entry_sha256": "66a2995fb45c295594131f6d0da0b0f5f97e015c97e147f8b153955d6c6ef70e",
+      "original_evidence": {
+        "acceptance_id": "D4-04-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D4-05",
+      "acceptance": "D4-05-A",
+      "index": 0,
+      "original_entry_sha256": "23c0da8d85c8449fa78c6e94ffcaaa1dac4ea3dc5d74cc9e38881e2036426bf4",
+      "original_evidence": {
+        "acceptance_id": "D4-05-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D4-06",
+      "acceptance": "D4-06-A",
+      "index": 0,
+      "original_entry_sha256": "44b88858145211d03339e69ccf3b96eda8ee1ee22d5fe6e05ef2f98627cd6bd6",
+      "original_evidence": {
+        "acceptance_id": "D4-06-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D4-07",
+      "acceptance": "D4-07-A",
+      "index": 0,
+      "original_entry_sha256": "96934288d3084dd5eaf0429799651d328834c174ee631d9860ab602d458ad1dc",
+      "original_evidence": {
+        "acceptance_id": "D4-07-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D5-01",
+      "acceptance": "D5-01-A",
+      "index": 0,
+      "original_entry_sha256": "41294a902bb3081a50f260acba4596f1981b41b6c61b85415f8b8fc05eb2336f",
+      "original_evidence": {
+        "acceptance_id": "D5-01-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/build.log",
+        "check": "build",
+        "command": "./scripts/build.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "build"
+    },
+    {
+      "task": "D5-01",
+      "acceptance": "D5-01-A",
+      "index": 1,
+      "original_entry_sha256": "2ad954300dc0243dab3585aa66786e8fa0c2f6c3e5b41c929ffde0e5be9b9375",
+      "original_evidence": {
+        "acceptance_id": "D5-01-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D5-02",
+      "acceptance": "D5-02-A",
+      "index": 0,
+      "original_entry_sha256": "04fd57c73d6dd4352e534bd1a4bee38639b7d4d180d1ae412f2339775ef4164e",
+      "original_evidence": {
+        "acceptance_id": "D5-02-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/build.log",
+        "check": "build",
+        "command": "./scripts/build.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "build"
+    },
+    {
+      "task": "D5-02",
+      "acceptance": "D5-02-A",
+      "index": 1,
+      "original_entry_sha256": "5ede5aeb72047137c5e71c71e9e1e81e89c72da48319f418c363943fb02eb0cf",
+      "original_evidence": {
+        "acceptance_id": "D5-02-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D5-03",
+      "acceptance": "D5-03-A",
+      "index": 0,
+      "original_entry_sha256": "1311b4e7426f62ee77b869b0b0cdc97feeefdcd863f9d9f5b1cb4c236e6552d3",
+      "original_evidence": {
+        "acceptance_id": "D5-03-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D5-03",
+      "acceptance": "D5-03-A",
+      "index": 1,
+      "original_entry_sha256": "f933d92efd0a282d2e6f209301b182588cb33a4cbfa7ed5a4f563894b486baa7",
+      "original_evidence": {
+        "acceptance_id": "D5-03-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D5-04",
+      "acceptance": "D5-04-A",
+      "index": 0,
+      "original_entry_sha256": "bc0810e4f944e69209462e57e0916fca49fae10e34498b36486e58dd33ac79f5",
+      "original_evidence": {
+        "acceptance_id": "D5-04-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D5-04",
+      "acceptance": "D5-04-A",
+      "index": 1,
+      "original_entry_sha256": "d25aff34c727b6b072eafa70a399cd7934937c117d07acab76a76e68711a2ab3",
+      "original_evidence": {
+        "acceptance_id": "D5-04-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D5-05",
+      "acceptance": "D5-05-A",
+      "index": 0,
+      "original_entry_sha256": "deec78d5533428d5d1141881021ff12fdb9cf499329691c84739fd42e749d7d1",
+      "original_evidence": {
+        "acceptance_id": "D5-05-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "measurement_fingerprint": "2f2f614d778c95c262b279fb57e21acbeac6c8e88347c030f9fd185dfec31301",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D5-05",
+      "acceptance": "D5-05-A",
+      "index": 1,
+      "original_entry_sha256": "ae09e5aa46b57aa42d0972c21f71b176393aa2ce7afe1fb101d8e4c7fffa951e",
+      "original_evidence": {
+        "acceptance_id": "D5-05-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D5-06",
+      "acceptance": "D5-06-A",
+      "index": 0,
+      "original_entry_sha256": "088ad0dfe2a5cf023b512b3e63e1ef0b0154c1259a6a24a78ddd8d92832f6036",
+      "original_evidence": {
+        "acceptance_id": "D5-06-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D5-06",
+      "acceptance": "D5-06-A",
+      "index": 1,
+      "original_entry_sha256": "febaf8126515d1a6dcca74e719af4346c6a1eabce447c56b71e0c83fb347807c",
+      "original_evidence": {
+        "acceptance_id": "D5-06-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D6-01",
+      "acceptance": "D6-01-A",
+      "index": 0,
+      "original_entry_sha256": "664dd1d6aeaa8fa99210782f6d2b630df922a045297c723a376811cf3ef0e99b",
+      "original_evidence": {
+        "acceptance_id": "D6-01-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D6-01",
+      "acceptance": "D6-01-A",
+      "index": 1,
+      "original_entry_sha256": "664dd1d6aeaa8fa99210782f6d2b630df922a045297c723a376811cf3ef0e99b",
+      "original_evidence": {
+        "acceptance_id": "D6-01-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D6-02",
+      "acceptance": "D6-02-A",
+      "index": 0,
+      "original_entry_sha256": "cb48aecaa1944a02e9552bf44173402cf020e8f76dd6c84c23d067174b7cb8d7",
+      "original_evidence": {
+        "acceptance_id": "D6-02-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D6-02",
+      "acceptance": "D6-02-A",
+      "index": 1,
+      "original_entry_sha256": "86e2d226c3b7819b478666525705cd34caa5c9b0611bd085a7f1e199168e7379",
+      "original_evidence": {
+        "acceptance_id": "D6-02-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D6-03",
+      "acceptance": "D6-03-A",
+      "index": 0,
+      "original_entry_sha256": "3de68780290e8c940dc4862c4429ce1e5a73b3542eca3dfe227519a70b816f23",
+      "original_evidence": {
+        "acceptance_id": "D6-03-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D6-03",
+      "acceptance": "D6-03-A",
+      "index": 1,
+      "original_entry_sha256": "fd98b53c4cacce6cec78677e08984b992dbbf6b18af36b095303e51e33a5fdb7",
+      "original_evidence": {
+        "acceptance_id": "D6-03-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D6-04",
+      "acceptance": "D6-04-A",
+      "index": 0,
+      "original_entry_sha256": "76b791b244448381fb26d290c24aefefe796c02c8f9ae0bde2791d16d6e238c6",
+      "original_evidence": {
+        "acceptance_id": "D6-04-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D6-04",
+      "acceptance": "D6-04-A",
+      "index": 1,
+      "original_entry_sha256": "c66f4ac69608d8c96694c8e716febe1e797911b04c65ebb82a5346f011cb3f57",
+      "original_evidence": {
+        "acceptance_id": "D6-04-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D6-05",
+      "acceptance": "D6-05-A",
+      "index": 0,
+      "original_entry_sha256": "b31988f11ce0116fbb04a566b040e2c1b5fd969d4066c03b862acf11d8f61459",
+      "original_evidence": {
+        "acceptance_id": "D6-05-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D6-05",
+      "acceptance": "D6-05-A",
+      "index": 1,
+      "original_entry_sha256": "c42b568a5dd29279cb385151b287be509edfe65c93ea201557f63f5f4a003baa",
+      "original_evidence": {
+        "acceptance_id": "D6-05-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "real_system_mutation": "NOT_RUN",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D6-06",
+      "acceptance": "D6-06-A",
+      "index": 0,
+      "original_entry_sha256": "1f5264af89374a3807d2c3b7c8fac9925d6540d0a9d18bbdacd1a7f2858af0ed",
+      "original_evidence": {
+        "acceptance_id": "D6-06-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "measurement_fingerprint": "213ee72b3d113d1e5601dff89bb5f8695588b2f0ee7ac414ae907ac02c24971a",
+        "parent_rss_target": "REVIEW",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D6-06",
+      "acceptance": "D6-06-A",
+      "index": 1,
+      "original_entry_sha256": "2e518c195c9b470beeea3cf56d03a9bb4941c1e9d3505c5f0258c840376982a7",
+      "original_evidence": {
+        "acceptance_id": "D6-06-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "parent_rss_target": "REVIEW",
+        "owner_rss_budget_acceptance": "REVIEW ACCEPTED",
+        "measurement_fingerprint": "213ee72b3d113d1e5601dff89bb5f8695588b2f0ee7ac414ae907ac02c24971a",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D6-07",
+      "acceptance": "D6-07-A",
+      "index": 0,
+      "original_entry_sha256": "8153747731998263312d02a2002a11800117ae0c447326c97be2318cf8d0a43f",
+      "original_evidence": {
+        "acceptance_id": "D6-07-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D6-07",
+      "acceptance": "D6-07-A",
+      "index": 1,
+      "original_entry_sha256": "0e6460af7d3783fb184804c3ec63a33ca32a2e7bbda4c8394a374606f4a66908",
+      "original_evidence": {
+        "acceptance_id": "D6-07-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "check": "day7_system_layout_scope_review",
+        "command": "Read-only System-only presentation diff and unchanged provider/model/resource/test hashes; historical accepted semantics retained",
+        "status": "PASS",
+        "exit_code": 0,
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "System page layout changed; new System UI and current RC Owner Live approval PENDING. All collection/formulas/state machines/other pages/resources/tests unchanged this unit; this PASS is scope carry-forward review only, not new manual/Live/performance acceptance. Prior scope: Current scope carry-forward review only. Debug/tests unchanged; App Release testability/strip/debug-info fix only. Historical Owner/provider/performance evidence retained in evidence_history, not rerun or reclassified. Prior scope: Historical accepted logic/telemetry/remaining semantics and old verified versions unchanged; sole new version admission independently read-only observed PASS and exact gate unit-tested. New RC Owner regression/performance NOT_RUN. This is scope carry-forward only, not renewed manual/provider/performance approval. Prior evidence preserved in evidence_history.",
+        "final_screenshots_gif": "PENDING",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "historical_scope",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "## Owner-authorized System-only layout work unit — automatic checkpoint",
+      "section_sha256": "341b6f09812fee0b286b0a4ee50fec99bdfc323687b6a4a7ab3829bee3fc4345",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D7-01",
+      "acceptance": "D7-01-A",
+      "index": 0,
+      "original_entry_sha256": "3b49f6c1046302d0c8b2de5d5371569582d5c4fb9df33a09a284a58c5469db04",
+      "original_evidence": {
+        "acceptance_id": "D7-01-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/build.log",
+        "command": "./scripts/build.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:06:02.106456+00:00",
+        "scope": "Automatic build/unit binding to the real per-run verification manifest. Initial local metadata is the retained 2026-10-07 execution, not a rerun during migration; each fresh verify.sh manifest supplies its actual checked_at/git_revision/results. No checks.ledger self-reference. Original clean build and 365/0/0 retained in history and sanitized report.",
+        "check": "build"
+      },
+      "kind": "fresh_automatic",
+      "check": "build"
+    },
+    {
+      "task": "D7-01",
+      "acceptance": "D7-01-A",
+      "index": 1,
+      "original_entry_sha256": "1c8d5c204686d1c956731944663f5b63f63c0f0b736d36918d15ce9228a3944a",
+      "original_evidence": {
+        "acceptance_id": "D7-01-A",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:06:02.106456+00:00",
+        "scope": "Automatic build/unit binding to the real per-run verification manifest. Initial local metadata is the retained 2026-10-07 execution, not a rerun during migration; each fresh verify.sh manifest supplies its actual checked_at/git_revision/results. No checks.ledger self-reference. Original clean build and 365/0/0 retained in history and sanitized report.",
+        "check": "unit"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    },
+    {
+      "task": "D7-02",
+      "acceptance": "D7-02-A",
+      "index": 0,
+      "original_entry_sha256": "e3a2e9f8e8fe767e7d5892a7bfc0dcbcbbf7c0b987e66d4415f251dbde380648",
+      "original_evidence": {
+        "acceptance_id": "D7-02-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "command": "python3 .artifacts/day7/final-performance-closeout.py (register actual Owner final Live regression; manual approval, not automated UI)",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:30:21.813676+00:00",
+        "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
+      },
+      "kind": "historical_day7",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "### D7-02-A — scoped Owner final Live regression",
+      "section_sha256": "15f6a1838f565dceac33f8c3f5bc3d48d5e3898b3664e335cca378c35680c17c",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D7-03",
+      "acceptance": "D7-03-A",
+      "index": 0,
+      "original_entry_sha256": "bba83ac47016584b260fa4d419edad5bc713abe97545bafc0c203e65316a955b",
+      "original_evidence": {
+        "acceptance_id": "D7-03-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "command": "python3 .artifacts/day7/owner-final-closeout/register-closeout.py",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:43:18.034361+00:00",
+        "scope": "Valid existing 300.051-second native Live measurement; CPU PASS; measured RSS REVIEW, explicitly REVIEW ACCEPTED by Owner for this finite v0.1.0 RC observation. Targets unchanged. Acceptance-record PASS denotes explicit Owner REVIEW ACCEPTED; raw measurement remains RSS REVIEW, not all-samples-below100MB PASS. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
+      },
+      "kind": "historical_day7",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "### D7-03-A — finite performance observation and Owner review",
+      "section_sha256": "d171ee08aeaa2d0cb0b22cb647c719694679fa20492a02a01ccd6f66471574d8",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D7-04",
+      "acceptance": "D7-04-A",
+      "index": 0,
+      "original_entry_sha256": "d709ffc122f7b61523a6b943c3ef0a6925930927c99af0a439d418976c76b947",
+      "original_evidence": {
+        "acceptance_id": "D7-04-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "command": "Formal unsigned no-override Release Archive/static privacy/extraction plus python3 .artifacts/day7/final-performance-closeout.py Owner smoke registration",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:30:21.813676+00:00",
+        "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
+      },
+      "kind": "historical_day7",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "### D7-04-A and D7-06-A — final package privacy and unsigned distribution plan",
+      "section_sha256": "3c25a18a4563b2032c6863f9d0cb89a1c0e53a455ceee67c3ecac26cdce002f8",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D7-05",
+      "acceptance": "D7-05-A",
+      "index": 0,
+      "original_entry_sha256": "4eda9c6137e7d0c17e6eb154402dcdeaa00d9dc14524a083e74f0acf0f85eefd",
+      "original_evidence": {
+        "acceptance_id": "D7-05-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "command": "python3 .artifacts/day7/owner-final-closeout/register-closeout.py",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:43:18.034361+00:00",
+        "scope": "Version0.1.0/build1, LICENSE/ThirdPartyNotices, CHANGELOG and CONTRIBUTING present and reviewed; Owner accepts recorded automatic/document checks. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
+      },
+      "kind": "historical_day7",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "### D7-05-A — actual version/license/document review",
+      "section_sha256": "b9f2be5fd38aac9879a73de963b321f2e6f29b1ce85dfebf63008e436f42fa02",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D7-06",
+      "acceptance": "D7-06-A",
+      "index": 0,
+      "original_entry_sha256": "ab07ff262c7a713ba0ea667333d04a392ec836efa24356b04ef83aa83bfb490e",
+      "original_evidence": {
+        "acceptance_id": "D7-06-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "command": "Formal unsigned no-override Release Archive/static privacy/extraction plus python3 .artifacts/day7/final-performance-closeout.py Owner smoke registration",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:30:21.813676+00:00",
+        "scope": "Actual Owner manual acceptance and finite native measurement; not overall Owner release approval, signing or public distribution. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
+      },
+      "kind": "historical_day7",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "### D7-04-A and D7-06-A — final package privacy and unsigned distribution plan",
+      "section_sha256": "3c25a18a4563b2032c6863f9d0cb89a1c0e53a455ceee67c3ecac26cdce002f8",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D7-07",
+      "acceptance": "D7-07-A",
+      "index": 0,
+      "original_entry_sha256": "235c47fa001a078d4302443888b91ec7b951c6e0648e36766c59b890d4e4cd36",
+      "original_evidence": {
+        "acceptance_id": "D7-07-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "command": "python3 .artifacts/day7/owner-final-closeout/register-closeout.py",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:43:18.034361+00:00",
+        "scope": "Actual sanitized Preview screenshots integrated in both READMEs and explicitly Owner approved; overall review now completed. GIF optional under prior Owner clarification, NOT_GENERATED; menu icon DRAFT. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
+      },
+      "kind": "historical_day7",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "### D7-07-A — Owner-approved README Mock/Preview screenshots",
+      "section_sha256": "99e33ed04e8a182e42e2864474629b8e633fec01e18d31188cd99c5788f191a0",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "D7-08",
+      "acceptance": "D7-08-A",
+      "index": 0,
+      "original_entry_sha256": "be466dbb23ffc28fed7fa3b644eb4104ba3259db23251baf8f48611a360f7643",
+      "original_evidence": {
+        "acceptance_id": "D7-08-A",
+        "path": "reports/day-7-release-closeout-2026-10-07.md",
+        "log": "reports/day-7-release-closeout-2026-10-07.md",
+        "command": "python3 .artifacts/day7/owner-final-closeout/register-closeout.py",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:43:18.034361+00:00",
+        "scope": "FINAL records implemented scope, deferred work, limitations and proposed v0.2 items; current scoped acceptance and historical checkpoints distinguished; Owner final review completed. Portable path/log carry a sanitized acceptance/execution summary of the original dated evidence and Owner review, not a raw log or a new Live/performance/Archive execution."
+      },
+      "kind": "historical_day7",
+      "report": "reports/day-7-release-closeout-2026-10-07.md",
+      "heading": "### D7-08-A — final report, limitations and scoped acceptance",
+      "section_sha256": "4bdc651ede892741bd2aba145418449d98ef44b85717377cfe5c3a372d088898",
+      "source_revision": "b7ca041e0a07623113534e577301f7c3c313df26",
+      "attribution": "original observation/review only; not rerun"
+    },
+    {
+      "task": "VIS-01",
+      "acceptance": "VIS-01-UNIT",
+      "index": 0,
+      "original_entry_sha256": "5bdedfaa3763564e5b143b9c5cadc4e7895b896942d3748d5abe4530267bd0ad",
+      "original_evidence": {
+        "acceptance_id": "VIS-01-UNIT",
+        "path": ".artifacts/verification.json",
+        "log": ".artifacts/test.log",
+        "check": "unit",
+        "command": "./scripts/test.sh",
+        "exit_code": 0,
+        "status": "PASS",
+        "source_revision": "a0a93a59c1d553a527f75616732fc9b9db90a820",
+        "fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
+        "checked_at": "2026-10-07T10:05:29.254960+00:00",
+        "scope": "Actual automatic rerun after System-only layout repair; source providers/models and existing365tests unchanged. Historical Owner/live/performance acceptance is separate, not rerun by this command.",
+        "prior_evidence_fingerprint": "0298b0278fc08b049dcd62397abbd53efde6ba2023576228f8ec5c917dfb64da"
+      },
+      "kind": "fresh_automatic",
+      "check": "unit"
+    }
+  ],
+  "documents": "Fresh document checks coexist with historical D7-05 RC review; no new human acceptance."
+}
