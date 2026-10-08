@@ -1,15 +1,24 @@
 # MacSoul 视觉资源包 · 从这里开始
 
+## 当前资源维护入口 — 2026-10-08
+
+资源已接入公开 v0.1.0，无需按初始 ZIP 流程重新导入。菜单栏当前使用 **MacSoulMenuTemplateDraft**，并非尚未启用，也不代表正式美术全部定稿。Owner 的 Dock 单项认可、其他视觉条件及增量 verifying 见 [历史视觉 closeout](reports/phase-a-visual-closeout-2026-09-28.md)；后续 Menu Bar/Mock/Live 的实际观察与限制见 [FINAL](reports/FINAL.md) 和 [发行说明](docs/RELEASE.md)。不扩展资源来源、许可证或 Owner 美术批准范围。
+
+以下初始导入、候选说明与未勾 checklist 为 **Historical / Initial integration reference**，不是要求重新接入或全面 PASS。
+
+
+> 公开文本中的 Owner-home 路径前缀已替换为 `<OWNER_HOME>`；命令含义、日期、哈希和历史结果保留。原私有证据与 Git 历史未改写；此项与 distributed App package privacy 分别记录。
+
 版本：0.1 · 整理日期：2026-09-28
 
 这是**现有 macsoul 仓库的增量资源包**，不是第二个项目，也不是新的 Harness。没有修改或打包覆盖你的 AGENTS.md、CLAUDE.md、任务账本、Swift 源码或工程文件。
 
-## 直接放进你的项目
+## Historical — 初始包导入方法
 
 ZIP 内的路径相对于项目根目录，没有多套一个 `macsoul/`。
 
 ```bash
-cd /Users/mrliu/githubWorkspace/macsoul
+cd <OWNER_HOME>/githubWorkspace/macsoul
 unzip -n "$HOME/Downloads/MacSoul-Visual-Assets.zip" -d .
 python3 scripts/verify-visual-assets.py
 ```
@@ -36,12 +45,12 @@ python3 scripts/verify-visual-assets.py
 ## 需要明确的质量边界
 
 - 六张 Soul 原图都检查到真实 alpha 透明通道；预览里的棋盘格不是资源背景。原有蓝紫光晕保留。
-- 菜单栏原稿仍包含星环、星点和面部细节。本包只做单色 alpha 模板化与缩放，**没有重新设计成极简标志**。因此叫 `MacSoulMenuTemplateDraft`，默认不取代已正常工作的菜单栏图标，先在实际菜单栏验收。
+- 菜单栏原稿仍包含星环、星点和面部细节。本包只做单色 alpha 模板化与缩放，**没有重新设计成极简标志**。因此叫 `MacSoulMenuTemplateDraft`，初始导入时建议先验收；后来已启用该 Draft，正式精修仍未获全面批准。
 - App 原图的圆角底板外还有深色、不透明的展示背景；派生图忠实保留它。可用于开发接入，但 Dock 小尺寸、外侧留白/底色仍待验收，不把多尺寸导出当成最终视觉精修。
 - 本包不是 Icon Composer 多层 `.icon` 工程，也没有动效帧、原生 SVG/矢量母稿或 `.icns`。不要把 PNG 改扩展名冒充这些格式。
 - 已执行 PNG/JSON/哈希等静态检查；**未运行 Xcode/actool、App、Dock、菜单栏和 Instruments 验收**。
 
-## 下一条交给 AI 的话
+## Historical — 初始接入 Prompt（当前仓库不重复执行）
 
 ```text
 读取 ASSETS-START-HERE.md 和 prompts/INTEGRATE-VISUAL-ASSETS.md。

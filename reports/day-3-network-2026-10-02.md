@@ -1,5 +1,7 @@
 # Day 3 Network — 2026-10-02
 
+> 公开文本中的 Owner-home 路径前缀已替换为 `<OWNER_HOME>`；命令含义、日期、哈希和历史结果保留。原私有证据与 Git 历史未改写；此项与 distributed App package privacy 分别记录。
+
 Branch: `feature/network`
 Base / current uncommitted revision: `1e3eda82e051abe51bc4668250119b35cfed136b`
 Source/project/script fingerprint: `a638365f05ce3d2bf278754b2de4ea99dbd4eb6b80d810dcc35ae03b0ca27681`
@@ -112,7 +114,7 @@ Tracked changes: Network models/providers/monitor, shared Store/model fields, Ne
 
 ## Prepared acceptance bundle
 
-- Verified App: `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.Network.kZJlBU/MacSoul.app`
+- Verified App: `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.Network.kZJlBU/MacSoul.app`
 - Copied executable SHA-256: `2f65cd8bfe44bcd778fbf897cab88eca41c12965a1df32f73c4f3b3d2429e4d3` (matches current Debug build).
 - Launch: **PENDING**, owner confirmation required to normally exit old PID 87093 at `build-preview/MacSoul.LvD8Hy/MacSoul.app`. No process was terminated.
 
@@ -120,7 +122,7 @@ Tracked changes: Network models/providers/monitor, shared Store/model fields, Ne
 
 Owner approved only normal restart of PID 87093. Exact old executable identity was checked, SIGTERM sent and exit confirmed; no other process was terminated and no SIGKILL used. The prepared binary hash and source fingerprint were rechecked before launch.
 
-- App: `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.Network.kZJlBU/MacSoul.app`
+- App: `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.Network.kZJlBU/MacSoul.app`
 - New PID: **50388**
 - Branch: `feature/network`; HEAD/base `1e3eda82e051abe51bc4668250119b35cfed136b`; Network changes uncommitted, nothing staged.
 - Default initial mode is Developer Preview; owner should select Settings → Live System. Network observations above come from this same source in the explicit Live observer. App UI acceptance remains PENDING.
@@ -165,7 +167,7 @@ D3-04/05/06/07 remain **verifying**; prior Day 2/Dev manual acceptance and origi
 
 ### Prepared bilingual acceptance build
 
-- App: `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.NetworkI18n.a7x0bg8b/MacSoul.app`.
+- App: `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.NetworkI18n.a7x0bg8b/MacSoul.app`.
 - All 11 packaged-file hashes match the verified Debug build, including `MacSoul.debug.dylib` (not merely the unchanged Debug launcher executable).
 - Debug implementation SHA-256: `df94a394548bef76ea1e98df0c60463931410c360ef14209b28b9a9c3fa60b18`.
 - Restart **PENDING** owner confirmation for only old PID 50388; no process has been terminated in this follow-up. Chinese/English Network UI acceptance remains pending.
@@ -175,7 +177,7 @@ D3-04/05/06/07 remain **verifying**; prior Day 2/Dev manual acceptance and origi
 
 Owner authorized normal restart of PID 50388 only. Its exact executable identity was confirmed; SIGTERM exited it successfully. No SIGKILL and no other process termination. The prepared bundle hashes and current source fingerprint were checked before launch.
 
-- New App: `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.NetworkI18n.a7x0bg8b/MacSoul.app`
+- New App: `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.NetworkI18n.a7x0bg8b/MacSoul.app`
 - New PID: **65382**
 - Branch: `feature/network`; source remains uncommitted, nothing staged.
 - Chinese/English Network UI and immediate language switching: **PENDING owner acceptance**. No automated or manual visual PASS inferred from launch.
@@ -240,7 +242,7 @@ D3-04/05/06/07 remain **verifying**. Network manual UI remains **PENDING**. Form
 
 ### Acceptance build prepared
 
-- App: `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.NetworkSwitch.95tbqvkb/MacSoul.app`.
+- App: `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.NetworkSwitch.95tbqvkb/MacSoul.app`.
 - All 11 packaged files match the verified Debug App, including executable and `MacSoul.debug.dylib`.
 - Implementation dylib SHA-256: `dc4e5719219dae9d3b1fe70360b0439fa13a41511479e3af37f2e2b4743920e2`.
 - Restart pending owner confirmation for only PID 65382; no process terminated in this follow-up yet.
@@ -252,7 +254,7 @@ Owner still needs to check native Switch layout/keyboard, OFF for 60–90s, OFF 
 
 Owner approved normal restart of only PID 65382. Exact identity checked, SIGTERM exit confirmed; no SIGKILL or other process termination. Verified bundle file hashes and source fingerprint were checked before launch.
 
-- App: `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.NetworkSwitch.95tbqvkb/MacSoul.app`
+- App: `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.NetworkSwitch.95tbqvkb/MacSoul.app`
 - New PID: **77827**
 - Branch: `feature/network`; no staging, commit, push or PR.
 - Native Switch and bilingual UI acceptance remains **PENDING owner**.

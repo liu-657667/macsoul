@@ -1,5 +1,12 @@
 # MacSoul 资源命名规范 v0.1
 
+## 当前资源维护入口 — 2026-10-08
+
+资源已接入公开 v0.1.0，无需按初始 ZIP 流程重新导入。菜单栏当前使用 **MacSoulMenuTemplateDraft**，并非尚未启用，也不代表正式美术全部定稿。Owner 的 Dock 单项认可、其他视觉条件及增量 verifying 见 [历史视觉 closeout](../reports/phase-a-visual-closeout-2026-09-28.md)；后续 Menu Bar/Mock/Live 的实际观察与限制见 [FINAL](../reports/FINAL.md) 和 [发行说明](RELEASE.md)。不扩展资源来源、许可证或 Owner 美术批准范围。
+
+以下初始导入、候选说明与未勾 checklist 为 **Historical / Initial integration reference**，不是要求重新接入或全面 PASS。
+
+
 ## 1. 品牌与适用范围
 
 品牌方向：已选定的“小幽灵 + 细星环”。本文件规定图片资源的名字、状态映射和调用方式；不覆盖产品范围、监控阈值、配额口径或既有 Soul 状态机。
@@ -22,14 +29,14 @@
 
 | 用途 | 原图相对于 assets-source/ | 实际 asset 名 | 当前状态 |
 |---|---|---|---|
-| App 主图标 | `app-icon/macsoul-app-icon-source.png` | `MacSoulAppIcon` | 开发接入候选；Dock 视觉待验收 |
-| 菜单栏 | `menu-bar/macsoul-menu-template-source.png` | `MacSoulMenuTemplateDraft` | 原稿转换候选；非已批准正式模板 |
-| 正常 | `soul/soul-normal.png` | `MacSoulNormal` | 透明 PNG，可接入检查 |
-| 忙碌 | `soul/soul-busy.png` | `MacSoulBusy` | 透明 PNG，可接入检查 |
-| 脑子过载 | `soul/soul-overload.png` | `MacSoulOverload` | 透明 PNG，可接入检查 |
-| 胃撑 | `soul/soul-bloated.png` | `MacSoulBloated` | 透明 PNG，可接入检查 |
-| 低电量 | `soul/soul-low-battery.png` | `MacSoulLowBattery` | 透明 PNG，可接入检查 |
-| 休息 | `soul/soul-sleeping.png` | `MacSoulSleeping` | 透明 PNG，可接入检查 |
+| App 主图标 | `app-icon/macsoul-app-icon-source.png` | `MacSoulAppIcon` | 已接入；Owner Dock 单项认可，其他条件按账本保留 |
+| 菜单栏 | `menu-bar/macsoul-menu-template-source.png` | `MacSoulMenuTemplateDraft` | 当前使用 Draft；非正式美术全部定稿 |
+| 正常 | `soul/soul-normal.png` | `MacSoulNormal` | 透明 PNG，已接入；具体状态/视觉批准见实际报告 |
+| 忙碌 | `soul/soul-busy.png` | `MacSoulBusy` | 透明 PNG，已接入；具体状态/视觉批准见实际报告 |
+| 脑子过载 | `soul/soul-overload.png` | `MacSoulOverload` | 透明 PNG，已接入；具体状态/视觉批准见实际报告 |
+| 胃撑 | `soul/soul-bloated.png` | `MacSoulBloated` | 透明 PNG，已接入；具体状态/视觉批准见实际报告 |
+| 低电量 | `soul/soul-low-battery.png` | `MacSoulLowBattery` | 透明 PNG，已接入；具体状态/视觉批准见实际报告 |
+| 休息 | `soul/soul-sleeping.png` | `MacSoulSleeping` | 透明 PNG，已接入；具体状态/视觉批准见实际报告 |
 
 预留正式菜单栏名 `MacSoulMenuTemplate`，**本包没有这个 asset**。只有精修与人工小尺寸验收通过后才使用，届时更新调用点、清单和验收证据。
 
@@ -65,7 +72,7 @@ Image("MacSoulNormal")
 彩色 Soul 使用 original；菜单栏候选才使用 template。Apple 定义 template 模式按非透明区域绘制前景色；仅把彩色 PNG 的像素改成黑白，并不能证明它已经适合菜单栏。[A3]
 
 ```swift
-// 仅用于候选预览；不自动替换生产菜单栏。
+// 当前菜单栏使用 Draft；名称不代表正式美术定稿。
 Image("MacSoulMenuTemplateDraft")
     .renderingMode(.template)
     .resizable()

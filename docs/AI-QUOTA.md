@@ -1,5 +1,9 @@
 # AI Quota Integration — Real-Time Without Aggressive Polling
 
+## Current v0.1.0 contract — 2026-10-08
+
+Published [Unsigned Developer Preview](RELEASE.md): exact Codex CLI **0.160.0 / 0.160.1 / 0.162.0-alpha.2** are verified; unknown versions fail closed. UI text/bars show remaining (`100 - usedPercent`), while canonical fields and alert thresholds retain usedPercent. Live summaries render only applicable/reported windows; Week-only never gets an invented 5h row. Claude remains honestly unavailable without a verified installed live source. Owner Live acceptance is recorded in [Day 7](../reports/day-7-release-closeout-2026-10-07.md); natural quota updates and real quota95% events remain NOT_OBSERVED. The dated Day 4 checkpoints below retain their original UNKNOWN / NOT_RUN and version observations; later acceptance does not backfill them.
+
 ## User-facing scope
 Codex and Claude Code each support 5h and 1-week windows, but the App renders only windows applicable to the current account. A Week-only result produces one numeric Week row, never an invented 5h progress bar. This 2026-09-28 owner revision supersedes the earlier four-values-must-appear rule; dated review reports remain historical.
 
@@ -59,12 +63,12 @@ Expose last-updated/source and full reset timestamps in AI Coding details. Overv
 The protocol and canonical QuotaWindow retain validated `usedPercent` in 0–100. Remaining is presentation only, with no clamping of invalid provider data. A valid consumed 0% displays 100% remaining; consumed 100% displays 0% remaining. Alert/Soul eligibility continues to use canonical `usedPercent >= 95`.
 
 ## Alerts
-Optional 95% alerts for 5h/week. 80% may exist but off by default. Deduplicate until the relevant window resets. Alert and Soul eligibility require a fresh, applicable numeric window; absent 5h has no alert or countdown. The Phase A Mock App exposes only eligibility logic and does not send runtime quota notifications.
+Optional 95% alerts for 5h/week. 80% may exist but off by default. Deduplicate until the relevant window resets. Alert and Soul eligibility require a fresh, applicable numeric window; absent 5h has no alert or countdown. Historically the Phase A Mock App exposed only eligibility logic. Current `QuotaAlertEngine` emits bounded in-memory events for eligible fresh Live windows; it adds no system notification permission/subsystem. Actual natural quota95% events remain NOT_OBSERVED.
 
 ## Hardening clarifications
 Main window and Menu Bar render the applicable independent windows from the same snapshot. Data mode (mock/live), availability and freshness are separate. Reset expiry without a new Provider snapshot must not produce 0%.
 A local update notification does not prove immediate cross-client/global visibility; that requires a separate test. Verify installed provider capabilities, response field names, account/bucket mapping and authentication mode before claiming live support.
-During Phase A use fixtures only: Codex Week-only, both windows, unreported window, valid 0%, request failure and stale; Claude follows the same rules. Do the read-only capability spike in a later explicitly started work unit. Preserve existing Claude statusline config before any approved bridge installation; never log full payloads.
+Historical Phase A fixture scope: Codex Week-only, both windows, unreported window, valid 0%, request failure and stale; Claude follows the same rules. The later authorized spikes are recorded below and in the Day 7 report; this historical instruction does not authorize a new live read. Preserve existing Claude statusline config before any approved bridge installation; never log full payloads.
 A fallback UI test passing is not acceptance of live quota retrieval. Record those checks separately.
 
 ## Day 4 first-phase implementation (2026-10-04)

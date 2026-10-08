@@ -1,5 +1,7 @@
 # Day 2 System/Soul 内存口径收尾（2026-09-29）
 
+> 公开文本中的 Owner-home 路径前缀已替换为 `<OWNER_HOME>`；命令含义、日期、哈希和历史结果保留。原私有证据与 Git 历史未改写；此项与 distributed App package privacy 分别记录。
+
 ## 范围与人工反馈
 
 - 当前工作分支 `feature/system-soul`，未提交、未推送；沿用已有 SensorHub 与 Soul 状态机。
@@ -41,7 +43,7 @@
 | `./scripts/test.sh` | PASS，30 个单测、0 失败，exit 0；含纯计算、未知压力文案测试 | `.artifacts/test.log` |
 | `./scripts/verify.sh` | 本轮最终 PASS，exit 0；doctor/build/unit/progress tests/visual assets/ledger 全部 PASS | `.artifacts/verification.json`；最终工作树指纹 `80a56a5b2124c1a26ec0430a44498ea090c4df6ef41a658954d0a8fc73950954` |
 | 原生基本观察 | 首次 CPU 未知；后续 CPU 30.1%；内存 14,786,772,992 / 17,179,869,184 字节（86.1%）；压力事件未到达，保持未知 | `.artifacts/system-observation-closeout.log`；`swiftc MacSoul/Models/MacSoulModels.swift MacSoul/Models/SystemSensors.swift scripts/observe-system.swift -o .artifacts/observe-system && .artifacts/observe-system` |
-| 本修订版人工 UI / Activity Monitor 同时对照 | Memory 数值 PASS，负责人已确认；其他双入口和 Live/Mock 验收见 `reports/day-2-system-soul-2026-09-29.md` | 已正常退出旧版 PID 50871，启动 `/Users/mrliu/githubWorkspace/macsoul/build-preview/MacSoul.BMaNCO/MacSoul.app`（当时 PID 65736）；Debug dylib SHA-256 与本工作树构建产物一致 |
+| 本修订版人工 UI / Activity Monitor 同时对照 | Memory 数值 PASS，负责人已确认；其他双入口和 Live/Mock 验收见 `reports/day-2-system-soul-2026-09-29.md` | 已正常退出旧版 PID 50871，启动 `<OWNER_HOME>/githubWorkspace/macsoul/build-preview/MacSoul.BMaNCO/MacSoul.app`（当时 PID 65736）；Debug dylib SHA-256 与本工作树构建产物一致 |
 | 实机 sleep/wake、真实 warning/critical 压力事件 | NOT_RUN | 未执行压力试验 |
 | Performance（Release、无调试器、持续测量） | NOT_RUN | 无 |
 | 真实 AI Provider | NOT_RUN | 未接入 |

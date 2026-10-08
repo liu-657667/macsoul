@@ -1,6 +1,6 @@
 # MacSoul 一体包 — 首次执行
 
-> 此页保留为未完成 Phase A 项目的首次执行说明。当前仓库已有 Xcode 工程与任务账本；先看 `docs/STATUS.md`，不要将以下初始化措辞解释为进度回退。
+> **Historical / initial setup only.** 以下为初始合并包和未初始化 Phase A 场景的执行说明，不适用于当前已公开发布 v0.1.0 的仓库重新初始化。当前维护从 [CONTINUE](CONTINUE.md)、[RELEASE](../docs/RELEASE.md) 和 Owner 授权开始；历史 verifying 不表示应重开七天计划。下文“包中”“当前”“本次”均指初始场景。
 
 只执行已有 Review 的 Phase A，不一次写完产品。
 

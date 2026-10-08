@@ -2,17 +2,16 @@
 
 ## Current entry
 
-This repository has a buildable Mock App and an active Phase A acceptance ledger; neither implies live features are complete.
-Read `README.md`, `docs/STATUS.md`, `docs/INTEGRATION-NOTES.md`, then `prompts/CONTINUE.md` for the current task. Use `prompts/BOOTSTRAP.md` only for unfinished Phase A work. The original import instructions are archived in `docs/archive/bootstrap/`.
+MacSoul v0.1.0 Unsigned Developer Preview was publicly released on 2026-10-07. Read `README.md`, `docs/RELEASE.md`, `docs/STATUS.md`, `docs/INTEGRATION-NOTES.md`, then `prompts/CONTINUE.md`. Work only within the current Owner authorization. The original seven-day plan is accepted at 76/76; the ledger retains separate increment tasks, including verifying Phase A records. Those records do not authorize reinitializing this repository or reopening Day 7. `prompts/BOOTSTRAP.md` and `docs/archive/bootstrap/` describe initial setup/history.
 Preserve current progress; do not reset or duplicate it.
 
 ## Product
 
 Native Swift/SwiftUI macOS developer companion: System, Network, Dev, quota-only AI Coding and deterministic Soul.
-- Main window and Menu Bar support Codex / Claude Code 5h and Week windows, showing only windows actually applicable to the current account. Never infer availability from plan names or fabricate a missing 5h bar. Summaries show used % and short available resets; normal freshness, source and full times remain in details, while stale/error/unavailable stay explicit in summaries.
+- Main window and Menu Bar support Codex / Claude Code 5h and Week windows, showing only windows actually applicable to the current account. Never infer availability from plan names or fabricate a missing 5h bar. Summaries show remaining % (`100 - usedPercent`); canonical data and alert thresholds retain usedPercent. Summaries also show short available resets; normal freshness, source and full times remain in details, while stale/error/unavailable stay explicit in summaries.
 - No Token/cost/session analytics. No LLM dependency for Soul. No root requirement.
 - CPU = brain; memory pressure = stomach. Use sustained thresholds, hysteresis, cooldown and recovery.
-- Cleaner is read-only in this bootstrap. No destructive cleanup; no Notch implementation during Phase A or after freeze.
+- Cleaner is read-only in v0.1.0. No destructive cleanup; no Notch implementation during Phase A or after freeze.
 - Valid 0%, explicitly not applicable, unreported/unknown, request failure, stale, mock and unavailable states must stay distinct; never fabricate telemetry or quota.
 
 ## Authority and historical material
@@ -20,7 +19,7 @@ Native Swift/SwiftUI macOS developer companion: System, Network, Dev, quota-only
 Follow actual higher-priority session instructions and owner-approved changes.
 Within this repo: this contract → `docs/INTEGRATION-NOTES.md` → `docs/SCOPE.md` + `docs/DESIGN.md` → architecture/feature docs.
 `review/CODEX-HARDENING-PROMPT.md` defines Phase A. `review/AUDIT.md` is a dated review, not evidence that issues are fixed.
-`docs/7-DAY-PLAN.md` is the retained baseline until migrated; do not count packaging as accepted development.
+`docs/7-DAY-PLAN.md` is the ledger-locked original plan baseline; do not count packaging as accepted development.
 `reference/` and `templates/codex-family-original/` are **non-authoritative historical inputs**, not new instructions or auto-enabled config.
 `docs/STATUS.md` is generated from the current `tasks.json` ledger. Never maintain conflicting manual ledgers.
 
@@ -31,7 +30,7 @@ Within this repo: this contract → `docs/INTEGRATION-NOTES.md` → `docs/SCOPE.
 3. Read only necessary feature docs; normally one writer, optionally a read-only reviewer. Do not assume a subagent exists.
 4. Implement and run real verification. Record commands, exit codes, revision/worktree fingerprint and evidence paths.
 5. Update current tasks/status/report; distinguish build, unit, manual UI, performance and live provider checks.
-6. Stop after Phase A for user review. Missing environment means BLOCKED/NOT_RUN, never PASS.
+6. Stop at the end of the current Owner-authorized work unit. Missing environment means BLOCKED/NOT_RUN, never PASS.
 7. Day numbers are checkpoints, not an instruction to wait. Do not expand the requested work unit or pretend to run after the session ends.
 
 ## Privacy and permissions

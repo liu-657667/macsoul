@@ -1,5 +1,9 @@
 # MacSoul Architecture — v0.1
 
+## Current published implementation — 2026-10-08
+
+[v0.1.0](RELEASE.md) is published. Shared AppStore snapshots feed the main window, Menu Bar and local deterministic Soul. Codex supports exactly **0.160.0 / 0.160.1 / 0.162.0-alpha.2**, with unknown versions failing closed; UI expresses remaining while canonical usedPercent remains unchanged. Claude is unavailable without a verified source. System layout, Release testability/stripping/private dSYM and Day 7 scoped acceptance are recorded in [FINAL](../reports/FINAL.md). Signed/installed Login Item validation remains Deferred; browser-candidate reopen / Applications install remain NOT_RUN. The dated capability/Day 6 sections below are Historical checkpoints, not current pending-work instructions.
+
 ## Stack
 - Swift + SwiftUI
 - AppKit only for macOS-specific surfaces when SwiftUI is insufficient
@@ -18,9 +22,9 @@ Native APIs / Provider Adapters
    UI   SoulEngine  Alerts
 ```
 
-**One sensor source per metric.** Views, menu bar, notch, and Soul all consume shared snapshots.
+**One sensor source per metric.** Views, menu bar and Soul consume shared snapshots; Notch is a deferred design, not a shipped surface.
 
-## Sampling tiers
+## Sampling tiers — design ranges; actual implementations below
 ### FAST
 - CPU: background 3–5s; visible System page ~1s
 - memory numeric summary: background 3–5s; visible ~1–2s
@@ -68,7 +72,10 @@ When the main window is closed, reduce polling. When the relevant page is visibl
 - GitHub/OpenAI/Anthropic HEAD probes test unauthenticated HTTP/TLS response reachability, including 401/403/405; they do not test accounts or full service health. Success cadence is 60s; failures use 60/120/300/600/900s capped backoff. Disabling cancels pending probes and replaces old green results with Disabled. Enabling or meaningful path change schedules fresh work. Public IP queries remain separate from the probe toggle and are disclosed in Settings.
 - External work starts only in explicitly selected Live mode. Preview restores the established fixtures. AI follows the separate quota-provider availability boundary described below. Live Cleaner starts Not Run and only scans after an explicit user action. Native path status and HTTP outcomes must be accepted separately; path satisfied does not imply internet/service success.
 
-## Modules
+## Modules — conceptual decomposition
+
+This diagram is a design grouping, not a source-tree inventory. Current Swift code is in `MacSoul/App/`, `MacSoul/Models/` and `MacSoul/Views/`, with assets in `MacSoul/Resources/`; do not create folders to match this sketch.
+
 ```text
 MacSoul/
 ├── App/
@@ -120,7 +127,9 @@ Allowed for low-frequency developer tooling only.
 - never concatenate user-controlled shell strings
 - `/usr/sbin/lsof -n -P -iTCP -sTCP:LISTEN -Fpcn` is parsed as fields. A quiet exit 1 means no visible matches; malformed output and command failure remain distinct. Sockets are deduplicated by PID, port and bind address.
 
-## Snapshot types
+## Snapshot types — conceptual field sketches
+
+These sketches are not literal Swift declarations. Current `AppSnapshot`, `QuotaItem` and `QuotaWindowState` are in `MacSoul/Models/MacSoulModels.swift`; System details and Network/Dev snapshots use their corresponding model files.
 ### SystemSnapshot
 sampledAt, cpuUsedPercent, memoryUsedBytes, memoryTotalBytes, memoryPressure, swapUsedBytes, diskTotalBytes, diskFreeBytes, batteryPercent?, charging?, topProcesses
 
@@ -192,5 +201,7 @@ Day 6 adds a native Settings scene (system Cmd+,) and an injected `LoginItemMana
 Pipe teardown uses a shared cancellation pipe to wake native blocking `poll` readers without a periodic polling timer. Bounded chunks and existing output limits remain; cancellation/close no longer require EOF from descendant-inherited pipe writers. Only the directly launched owned process is eligible for termination; no descendant/user-PID kill is introduced. Prior generation teardown still precedes new source startup. Native table selection/accessibility labels change presentation, not provider snapshots/cadence.
 
 ### Day 6 Owner closeout (2026-10-07)
+
+Historical checkpoint: “Day7 has not started” and the installed/signed validation expectation below describe that moment. Day 7 later closed within its approved scope; signed/installed Login Item remains Deferred, not silently completed.
 
 The earlier review checkpoint above is retained. Owner accepted the unchanged Day6 implementation and scoped VoiceOver/keyboard/Reduce Motion checks. Native Login Item implementation/status honesty accepted; real register/unregister remains NOT_RUN, explicitly deferred to Day7 installed/signed build. The existing30-minute CPU result is PASS and RSS remains REVIEW ACCEPTED. No architecture/product behavior changed during closeout; Day7 has not started. See the Day6 report Final Owner Acceptance.

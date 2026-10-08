@@ -7,4 +7,4 @@
 - `macsoul-concept.png`：之前生成的产品概念图；不是 App 截图，不是精确 UI/安全/版本契约。
 
 不要读取整个参考区作为启动上下文。旧模型名称、静态数字、旧计划只保留历史意义。
-所有 Swift 源码仍原样位于根目录 `MacSoul/`，便于对照 `review/AUDIT.md` 的原始位置。
+初始合并包制作时，Swift 源码原样保留于 `MacSoul/`，以便对照当时 `review/AUDIT.md`。后续工程已实现并发布 v0.1.0；不能把该初始事实当作当前源码未改声明。当前入口见 [RELEASE](../docs/RELEASE.md) 和 [CONTINUE](../prompts/CONTINUE.md)。

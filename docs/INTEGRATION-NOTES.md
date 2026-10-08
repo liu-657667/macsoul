@@ -1,5 +1,13 @@
 # 一体包合并说明与冲突裁决
 
+## Current maintenance entry — 2026-10-08
+
+v0.1.0 已公开发布为 UNSIGNED / UNNOTARIZED Pre-release。当前入口见 [README](../README.md)、[发行状态](RELEASE.md)、[继续维护](../prompts/CONTINUE.md) 与 [最终报告导航](../reports/FINAL.md)。原七天计划 48 项 done、76/76；全账本 59 项中 51 done、8 verifying，后者保留历史增量验收状态，不自动重开 Day 7。以当前 Owner 授权决定工作范围。
+
+## Historical — initial All-in-One integration reference
+
+以下记录属于初始合并与 Phase A 检查点，包括当时的“当前状态”，不覆盖后续接受、仓库集成和公开发行。持续有效的语义与权限规则仍保留。
+
 > 后续负责人修正（2026-09-28）：AI 配额窗口按账户实际适用情况动态展示；本页关于双窗口的原始合并记录仅作历史背景。当前规范见 `docs/DESIGN.md` 与 `docs/AI-QUOTA.md`。
 
 版本：All-in-One 1.0 / 2026-09-28。仅对交付文件做整理，不代表你的本地仓库已经变更。
@@ -45,5 +53,5 @@ review/AUDIT.md 为历史发现清单，templates/reference 为非活动参考�
 - reset 到时只过期，未刷新不自行清零。跨客户端“实时”必须独立验证。
 - 内存压力优先于占用比例；网络 hint 不等于路由证明；监听端口不等于冲突。
 - 仅扫描到目录大小，不等于安全可释放空间；不自行判定整个 Maven 仓库可删除。
-- 包中所有截图/数值都是概念或 Mock；实际版本、账户能力、模型/effort 以本机验证为准。
+- 初始合并包中的所有截图/数值都是概念或 Mock；实际版本、账户能力、模型/effort 以本机验证为准。
 - 技术优先级、7 天时间预算需如实重估，不能靠删任务或降低质量制造追回进度。

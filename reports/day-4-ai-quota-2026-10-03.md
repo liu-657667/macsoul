@@ -1,5 +1,7 @@
 # Day 4 — AI Quota, first phase
 
+> 公开文本中的 Owner-home 路径前缀已替换为 `<OWNER_HOME>`；命令含义、日期、哈希和历史结果保留。原私有证据与 Git 历史未改写；此项与 distributed App package privacy 分别记录。
+
 Checkpoint filename requested by Owner: 2026-10-03. Execution date: 2026-10-04 (Asia/Shanghai).
 
 ## Scope / revision
@@ -246,7 +248,7 @@ Owner authorization covers launching this build and the approved read-only Live 
 
 - Previous MacSoul previews were quit normally through their App UI. No SIGKILL, killall, pkill or termination of user Codex/ChatGPT/IDE/Terminal processes.
 - Verified current App PID: **54235**.
-- Actual executable: `/Users/mrliu/githubWorkspace/macsoul/.artifacts/DerivedData/Build/Products/Debug/MacSoul.app/Contents/MacOS/MacSoul`.
+- Actual executable: `<OWNER_HOME>/githubWorkspace/macsoul/.artifacts/DerivedData/Build/Products/Debug/MacSoul.app/Contents/MacOS/MacSoul`.
 - New App initially displayed Developer Preview fixtures with remaining text/progress. Preview UI is not real Provider evidence.
 - Native UI automation failed when selecting Settings with `Sky Computer Use native pipe closed before response`. A reset and bounded reconnect attempt returned the same error. Process observation confirmed the correct App remains running; this does not establish an App crash.
 - At the last process observation, the App had **no child process**. Settings → Live was not confirmed, and no new app-server/read was initiated by the agent in this checkpoint. Owner was asked to perform the UI switch manually; no credential access, account/profile request or alternative UI automation was introduced.

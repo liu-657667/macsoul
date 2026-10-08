@@ -15,10 +15,10 @@
 此表保留你的偏好，不是本次对三种模型已在你账户可用的证明，也不是实测耗额/性能结论。
 Claude Code 用其自身可用模型承担相同角色，不照抄 Codex model ID。
 
-## 当前活动配置
+## 仓库配置与历史建议
 
-`.codex/config.toml` 只保留 `approval_policy = "on-request"` 和 `sandbox_mode = "workspace-write"`。
-不强制 model/effort，不开新并行 agent，不更改全局设置。
+2026-10-08 用 `git ls-files .codex/config.toml` 确认：仓库未跟踪该文件。个人机器可能有本地配置，但不能写成所有克隆都具备的仓库默认。初始合并包建议 `approval_policy = "on-request"` / `sandbox_mode = "workspace-write"`，仅为历史建议；当前实际权限以会话生效设置为准。
+本文不创建配置、不强制 model/effort、不启用并行 agent、不更改 sandbox / approval 或全局设置。
 旧文件在 `templates/codex-family-original/`；不要未经核验直接复制回活动配置。
 
 ## 本机核验
