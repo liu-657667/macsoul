@@ -45,3 +45,122 @@ RED、连续两个 YELLOW，或 carry-over 超过次日容量约 40% 时进入 R
 ## 可执行账本与历史证据归属
 
 `tasks.json` 为唯一状态写入源。原七天计划 48 个计分项、76 点按原文迁移，Phase A 的 A1–A4 为 0 个新增原计划点。`python3 scripts/generate_status.py` 生成状态页；`python3 scripts/verify_progress.py` 检查依赖、基线、状态、延期批准、done 证据及指纹。`./scripts/verify.sh` 保存本机 build/unit 与检查日志。证据目录 `.artifacts/` 被 Git 忽略；跨机器需要重新执行验证。人工 UI 确认必须单独记录，不由截图或 Agent 浏览代替。
+
+## Fixed v0.1.0 maintenance contract
+
+This is one fixed maintenance contract, not a general evidence migration framework.
+Review checkpoint (2026-10-08): the candidate had no final Owner authorization.
+That dated checkpoint does not determine a future decision record’s actual state.
+Default validation still requires current full-fingerprint evidence. The unchanged
+`tasks.json` keeps all original task/evidence/history/human flags and the eight
+verifying states; generated STATUS describes those states, not approval of this
+candidate.
+
+The historical complete-input baseline is
+`b7ca041e0a07623113534e577301f7c3c313df26`, fingerprint
+`1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067`.
+The implementation base is PR #13's actual merge commit
+`51f0c0d3a1361ac5ac7ceac52b84175f71ff78e0`. The old five-file candidate and
+its `8dd20…` fingerprint are historical, not the new implementation identity.
+
+[The declaration](evidence/v0.1.0-doc-maintenance.json) lists the exact payload,
+complete before/after components and all 70 original evidence entries. Its target
+is calculated after implementation. `verify_doc_maintenance.py prepare` explicitly
+fetches only missing fixed public objects; validation itself has no network path.
+Missing or mismatched objects fail. Full baseline bytes are independently hashed,
+then compared with current input names/content. Product/resources/tests/project,
+locked plan, ledger and all content outside the explicit payload remain unchanged.
+
+The payload digest is SHA256 of canonical UTF-8 sorted JSON path/before/after
+file-SHA256 and Git mode records, relative to the implementation base. It includes all ten
+implementation files and generated STATUS; the external declaration and fixed decision record are excluded.
+The declaration's own exact-byte SHA256 is recorded outside it, alongside the
+complete delivery patch SHA256. Neither is embedded into itself. No fingerprint
+inputs/exclusions change. No unknown successor, chain, wildcard, new task or
+mapping outside the enumerated entries can reuse this exception.
+
+48 references map exact task/acceptance/index/original-entry hash/check/command to
+one real new automatic manifest, not 48 independent runs. The runner records
+actual revision, full fingerprint, payload/declaration identity, commands, exit
+codes and log hashes after execution. Doctor/build/unit/progress/assets/document
+checks precede ledger; ledger's result is appended afterward, never predeclared.
+The 15 scope and 7 Day 7 report references bind fixed baseline report sections,
+original source/time/result/scope and entry identity. They retain historical
+Owner/Live/performance/Archive attribution; new CI cannot manufacture those runs.
+Historical D7-05 RC/version/license review coexists with new document consistency,
+link and generator checks. Raw RSS REVIEW, finite Owner REVIEW ACCEPTED and all
+NOT_RUN / NOT_OBSERVED / Deferred boundaries stay unchanged.
+
+Integrity PASS is separate from authorization. Coverage requires an explicit,
+externally reviewed decision binding from/to fingerprints, both fixed revisions,
+payload SHA256 and exact declaration SHA256 plus a real, nonblank review reference.
+
+The only future decision location is `docs/evidence/v0.1.0-owner-decision.json`,
+a separate ordinary file (Git mode 100644). This candidate ships no decision file;
+the previous PENDING template is retained only in ignored historical evidence.
+Absence means `PENDING_FINAL_OWNER_DECISION`. If present, the actual record must
+be an exact JSON object with these keys: `decision`, `review_reference`,
+`historical_baseline`, `implementation_base`, `from_fingerprint`, `to_fingerprint`,
+`payload_sha256`, `declaration_sha256`. PENDING requires a null review reference;
+ACCEPTED requires an actual nonblank string. All identity fields must equal the
+independently verified fixed declaration. Unknown fields, wrong identity, invalid
+structure, symlinks or executable modes fail. The declaration lists this one
+future path explicitly; no directory-wide exemption exists.
+
+The record is excluded from existing fingerprint inputs and the ten-file payload,
+independently hashed when present in the review object/manifest, and never hashes
+itself. Only a later explicit Owner decision and recording authorization may
+create an ACCEPTED record with the real review reference and unchanged identity
+tuple. The runner neither creates nor modifies it. JSON identity comparison does
+**not** authenticate the Owner; recording the external decision remains human
+governance, and old RC acceptance or implementation permission is insufficient.
+
+Existing CI already calls `./scripts/verify.sh`; no workflow change is needed.
+When the fixed file exists the runner explicitly forwards it to ledger. Equivalent
+explicit usage is `./scripts/verify.sh --owner-decision docs/evidence/v0.1.0-owner-decision.json`.
+Direct ledger also reads the same default fixed file, or the identical explicit
+argument. Unknown arguments/arbitrary paths fail. Missing, PENDING, mismatched,
+illegal or TEST_FIXTURE_ONLY decisions do not enable coverage. The actual argv,
+command, record digest/state, exit and log digest are recorded. A failed current
+manifest creation cannot reuse a prior manifest.
+
+The delivered patch has no decision file. A later separately authorized record
+creates a new record/tree/patch identity; the reviewed implementation payload and
+declaration remain unchanged. The record does not contain its own hash, patch
+hash or review-object hash, avoiding self-reference. It cannot authorize a new
+implementation, arbitrary successor, mapping or outside file.
+
+Run `python3 scripts/verify_doc_maintenance.py check` for offline integrity/docs,
+and `./scripts/verify.sh` for current automatic checks. Without the exact real
+Owner decision, ledger exit1 with PENDING_FINAL_OWNER_DECISION is refusal, not a
+completed transition. Under a valid separately recorded decision the same code
+path can pass; no script or protocol text change is required to use it.
+
+Tests retain the original six negative structural cases, real 51-done/70-entry
+mapping fixtures, both non-main checkout shapes and exact missing-object reasons.
+The normal shell runner is exercised with real integrity/mapping/ledger logic,
+heavy command outcomes simulated through ignored tools in a temporary repository,
+and a test-only injected decision reader that explicitly marks simulation. It does
+not alter production scripts or add a production bypass flag. Without that test
+injection, production CLI still rejects TEST_FIXTURE_ONLY records. These simulated
+runner PASS results are neither fresh actual build/unit results nor Owner approval.
+
+### Complete scope and immutable object rules
+
+Read fixed Git commit/tree/blob objects directly with replacement objects disabled; export-ignore does not filter
+the baseline. Compare all paths in implementation base, HEAD, index and working
+files, including outside fingerprint inputs. The candidate changes eleven paths (ten payload files and declaration); the
+future decision is a twelfth individually constrained path, currently absent.
+Outside paths must retain baseline content, Git mode and type in all three states;
+new untracked, staged or committed paths fail. Payload index/HEAD may match base
+or exact current candidate; a third staged version fails. Decision-only updates
+retain the exact identity tuple. Conflicts, symlinks (including ancestors/ignored
+targets), nonregular files and record executable modes fail. Missing baseline
+objects fail offline; only the explicit prepare entry can fetch them.
+
+Shallow fixtures explicitly accept shallow-root updates from the prepared local source and fetch the fixed implementation SHA into a new detached
+repository, independent of main/current branch. Missing historical objects fail
+until explicitly prepared. Runner positive argument probes use isolated stub
+dependencies only; the production CLI always rejects TEST_FIXTURE_ONLY records.
+
+The runner records baseline preparation separately from document-check exit codes; a failed manifest receipt write also fails the runner. No failed preparation is mislabeled as the document-check command outcome.
