@@ -68,12 +68,17 @@ complete before/after components and all 70 original evidence entries. Its targe
 is calculated after implementation. `verify_doc_maintenance.py prepare` explicitly
 fetches only missing fixed public objects; validation itself has no network path.
 Missing or mismatched objects fail. Full baseline bytes are independently hashed,
-then compared with current input names/content. Product/resources/tests/project,
+then compared with current input names/content. Production/resources/project,
 locked plan, ledger and all content outside the explicit payload remain unchanged.
+The only product-test exception is `MacSoulTests/NetworkTests.swift`: the
+Owner-authorized CI-02 completion synchronization and deterministic fake-client
+regression. Its exact before/after bytes and modes are a distinct payload entry;
+other product tests remain unchanged. This does not change runtime behavior or
+reopen RC human/Live/performance/Archive acceptance.
 
 The payload digest is SHA256 of canonical UTF-8 sorted JSON path/before/after
-file-SHA256 and Git mode records, relative to the implementation base. It includes all ten
-implementation files and generated STATUS; the external declaration and fixed decision record are excluded.
+file-SHA256 and Git mode records, relative to the implementation base. It includes the eleven
+implementation payload paths (including generated STATUS and the one explicit test file); the external declaration and fixed decision record are excluded.
 The declaration's own exact-byte SHA256 is recorded outside it, alongside the
 complete delivery patch SHA256. Neither is embedded into itself. No fingerprint
 inputs/exclusions change. No unknown successor, chain, wildcard, new task or
@@ -107,7 +112,7 @@ independently verified fixed declaration. Unknown fields, wrong identity, invali
 structure, symlinks or executable modes fail. The declaration lists this one
 future path explicitly; no directory-wide exemption exists.
 
-The record is excluded from existing fingerprint inputs and the ten-file payload,
+The record is excluded from existing fingerprint inputs and the eleven-path payload,
 independently hashed when present in the review object/manifest, and never hashes
 itself. Only a later explicit Owner decision and recording authorization may
 create an ACCEPTED record with the real review reference and unchanged identity
@@ -149,8 +154,12 @@ runner PASS results are neither fresh actual build/unit results nor Owner approv
 
 Read fixed Git commit/tree/blob objects directly with replacement objects disabled; export-ignore does not filter
 the baseline. Compare all paths in implementation base, HEAD, index and working
-files, including outside fingerprint inputs. The candidate changes eleven paths (ten payload files and declaration); the
-future decision is a twelfth individually constrained path, currently absent.
+files, including outside fingerprint inputs. The CI-01/CI-02 candidate changes twelve paths (eleven payload files and declaration);
+the future decision is a thirteenth individually constrained path, currently absent.
+The real Owner decision committed at `112e4dc78d6165bcc0145ead3241470a363ee891`
+binds only the earlier exact candidate. It is retained as history there, excluded
+from this candidate, and cannot authorize these new bytes. This remains a direct
+original RC fingerprint → exact new candidate mapping, not a migration chain.
 Outside paths must retain baseline content, Git mode and type in all three states;
 new untracked, staged or committed paths fail. Payload index/HEAD may match base
 or exact current candidate; a third staged version fails. Decision-only updates
@@ -158,9 +167,14 @@ retain the exact identity tuple. Conflicts, symlinks (including ancestors/ignore
 targets), nonregular files and record executable modes fail. Missing baseline
 objects fail offline; only the explicit prepare entry can fetch them.
 
-Shallow fixtures explicitly accept shallow-root updates from the prepared local source and fetch the fixed implementation SHA into a new detached
-repository, independent of main/current branch. Missing historical objects fail
-until explicitly prepared. Runner positive argument probes use isolated stub
+Shallow fixtures transport both fixed baseline and implementation commits from
+the explicitly prepared local source before checkout, validating their commit,
+tree and blob objects. Initial clones use `--no-local`, with no shared-object
+alternates. Depth-one committed descendant feature and detached two-parent
+synthetic-merge topologies reproduce the previous missing-implementation checkout
+failure and verify the repair without any local main or advertised base refs.
+Full progress tests also run in both isolated committed shapes. Missing historical
+objects and incorrect objects continue to fail; validators never fetch network. Runner positive argument probes use isolated stub
 dependencies only; the production CLI always rejects TEST_FIXTURE_ONLY records.
 
 The runner records baseline preparation separately from document-check exit codes; a failed manifest receipt write also fails the runner. No failed preparation is mislabeled as the document-check command outcome.

@@ -3,9 +3,16 @@
   "historical_baseline": "b7ca041e0a07623113534e577301f7c3c313df26",
   "implementation_base": "51f0c0d3a1361ac5ac7ceac52b84175f71ff78e0",
   "from_fingerprint": "1c60e81ec22795ba49bac7877309e57f534e2bc1d21911dcddef9adb171fb067",
-  "to_fingerprint": "53c4e59a93e4eb25d39afb2da3d8e1476055ea6a76ff3210549cabc59e20655b",
+  "to_fingerprint": "0876653d7cf31e78a171304d1421517157a3e918e98931b5da2b7231800487fe",
   "payload_encoding": "canonical UTF-8 sorted JSON path/before/after SHA256 and Git mode records; declaration excluded",
   "payload": [
+    {
+      "path": "MacSoulTests/NetworkTests.swift",
+      "before_sha256": "dab057f4fa50005aa11bb5452df537edca80465c154ad07ec15b1039aeb781fa",
+      "after_sha256": "97da2a7a908b76ae745159a35dd76e73bcf71fc9352930fadc0c6d3492bfd5a7",
+      "before_mode": "100644",
+      "after_mode": "100644"
+    },
     {
       "path": "docs/DESIGN.md",
       "before_sha256": "aa3012dfc794873fc54379be0eb57e6a90548c2f41629038da346a631037acce",
@@ -16,7 +23,7 @@
     {
       "path": "docs/PROGRESS-PROTOCOL.md",
       "before_sha256": "aff551d9a0d8c9df590c96e743fda473795d170994cd00d981612f7d34693340",
-      "after_sha256": "32bc0b2c57e39f49d64831197d02aa6185eca017ec69136eafce0761052a41bd",
+      "after_sha256": "3d274c8d5b92970ae8649dbf92fcbe4433fd0b5deedbdd570a19d992457a036f",
       "before_mode": "100644",
       "after_mode": "100644"
     },
@@ -51,7 +58,7 @@
     {
       "path": "scripts/test_progress.py",
       "before_sha256": "ad362ee272962c385e8703c4903e405bfd22812d9caaed934d955c9c7b9d5c3a",
-      "after_sha256": "55335206ef5430c63d5fcd8336372c12896c5274614750e87c56dedd148cd77a",
+      "after_sha256": "8aea89081b9ccca982a94761b1c3772dc827b7cce8ff6929abee434a06d6e9e0",
       "before_mode": "100644",
       "after_mode": "100644"
     },
@@ -65,7 +72,7 @@
     {
       "path": "scripts/verify_doc_maintenance.py",
       "before_sha256": null,
-      "after_sha256": "fc93a91bec14b62dce7ee03968ecc99e98578e0772e98a63b653042dbbef2da4",
+      "after_sha256": "9f2b387b7f61dcf05db7e939a247f597a47674b2f524ad159bf3cc26c64ce2c2",
       "before_mode": null,
       "after_mode": "100644"
     },
@@ -77,10 +84,11 @@
       "after_mode": "100644"
     }
   ],
-  "payload_sha256": "022f713f1b7ef6a728b63da6b47b80f4c22a3da62cc15ea0e7b12bf4dbd225d7",
+  "payload_sha256": "ef848baa58d5878f135258485c8df6ab61aa766f5872fc214f3d3eb3f2c862aa",
   "declaration_path": "docs/evidence/v0.1.0-doc-maintenance.json",
   "owner_decision_path": "docs/evidence/v0.1.0-owner-decision.json",
   "allowlist": [
+    "MacSoulTests/NetworkTests.swift",
     "docs/DESIGN.md",
     "docs/PROGRESS-PROTOCOL.md",
     "docs/SCOPE.md",
@@ -556,7 +564,7 @@
     {
       "path": "MacSoulTests/NetworkTests.swift",
       "before": "dab057f4fa50005aa11bb5452df537edca80465c154ad07ec15b1039aeb781fa",
-      "after": "dab057f4fa50005aa11bb5452df537edca80465c154ad07ec15b1039aeb781fa"
+      "after": "97da2a7a908b76ae745159a35dd76e73bcf71fc9352930fadc0c6d3492bfd5a7"
     },
     {
       "path": "MacSoulTests/QuotaTests.swift",
@@ -646,7 +654,7 @@
     {
       "path": "scripts/test_progress.py",
       "before": "ad362ee272962c385e8703c4903e405bfd22812d9caaed934d955c9c7b9d5c3a",
-      "after": "55335206ef5430c63d5fcd8336372c12896c5274614750e87c56dedd148cd77a"
+      "after": "8aea89081b9ccca982a94761b1c3772dc827b7cce8ff6929abee434a06d6e9e0"
     },
     {
       "path": "scripts/verify-visual-assets.py",
@@ -661,7 +669,7 @@
     {
       "path": "scripts/verify_doc_maintenance.py",
       "before": null,
-      "after": "fc93a91bec14b62dce7ee03968ecc99e98578e0772e98a63b653042dbbef2da4"
+      "after": "9f2b387b7f61dcf05db7e939a247f597a47674b2f524ad159bf3cc26c64ce2c2"
     },
     {
       "path": "scripts/verify_progress.py",

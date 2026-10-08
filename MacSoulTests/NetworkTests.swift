@@ -24,6 +24,20 @@ private actor FakeNetworkHTTP: NetworkHTTPClient {
     var held = false
     var waiting: [UUID: CheckedContinuation<NetworkHTTPResponse, Error>] = [:]
     var cancellations = 0
+    // Test-only entry gate: IPv4 may publish before IPv6 even enters its request.
+    private var delayedHosts: Set<String> = []
+    private var entryWaiters: [UUID: (String, CheckedContinuation<Void, Error>)] = [:]
+    func delayEntry(_ url: URL) { delayedHosts.insert(url.host!) }
+    func pendingEntryCount() -> Int { entryWaiters.count }
+    func releaseEntry(_ url: URL) {
+        delayedHosts.remove(url.host!)
+        for (id, entry) in entryWaiters.filter({ $0.value.0 == url.host! }) {
+            entryWaiters.removeValue(forKey: id); entry.1.resume()
+        }
+    }
+    private func cancelEntry(_ id: UUID) {
+        entryWaiters.removeValue(forKey: id)?.1.resume(throwing: CancellationError())
+    }
     func set(_ url: URL, status: Int = 200, text: String = "") {
         answers[url.host!] = .success(NetworkHTTPResponse(status: status, body: Data(text.utf8)))
     }
@@ -36,6 +50,16 @@ private actor FakeNetworkHTTP: NetworkHTTPClient {
     func cancel(_ id: UUID) { if let value = waiting.removeValue(forKey: id) { cancellations += 1; value.resume(throwing: CancellationError()) } }
     func request(url: URL, method: String, maxBytes: Int) async throws -> NetworkHTTPResponse {
         try Task.checkCancellation()
+        if delayedHosts.contains(url.host!) {
+            let id = UUID()
+            try await withTaskCancellationHandler {
+                try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                    if Task.isCancelled { continuation.resume(throwing: CancellationError()) }
+                    else { entryWaiters[id] = (url.host!, continuation) }
+                }
+            } onCancel: { Task { await self.cancelEntry(id) } }
+            try Task.checkCancellation()
+        }
         calls.append(Call(url: url, method: method, maxBytes: maxBytes))
         if held {
             let id = UUID()
@@ -317,9 +341,43 @@ final class NetworkTests: XCTestCase {
         await h.client.fail(PublicIPProvider.endpoint(.ipv4), error: .http)
         h.time.set(4); h.monitor.refresh(); h.monitor.refresh(); h.monitor.refresh()
         await eventually { h.monitor.snapshot.ipv4.failure == .http }
+        // One family result is not batch completion. Bound the fake work wait,
+        // then join the existing batch before asserting its dual-stack total.
+        await eventually { !h.monitor.snapshot.ipv4.checking && !h.monitor.snapshot.ipv6.checking }
+        await h.monitor.waitForCurrentWork()
         let calls = await h.client.ipCount(); XCTAssertEqual(calls, 4)
         XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .stale); XCTAssertEqual(h.monitor.snapshot.ipv4.address, "192.0.2.1")
         XCTAssertEqual(h.path.starts, 1)
+        await h.stop()
+    }
+    @MainActor func testRefreshWaitsForDelayedIPv6BatchCompletion() async {
+        let h = NetworkHarness(); await connected(h, probes: false)
+        let ipv6 = PublicIPProvider.endpoint(.ipv6)
+        await h.client.fail(PublicIPProvider.endpoint(.ipv4), error: .http)
+        await h.client.delayEntry(ipv6)
+        h.time.set(4); h.monitor.refresh(); h.monitor.refresh(); h.monitor.refresh()
+        await eventually { h.monitor.snapshot.ipv4.failure == .http }
+        await eventually { await h.client.pendingEntryCount() == 1 }
+        // The old completion predicate is now true, but its count assertion is not.
+        let partialCalls = await h.client.ipCount(); XCTAssertEqual(partialCalls, 3)
+        XCTAssertTrue(h.monitor.snapshot.ipv6.checking)
+        var waiterStarted = false, batchCompleted = false
+        let currentBatch = Task { @MainActor in
+            waiterStarted = true
+            await h.monitor.waitForCurrentWork()
+            batchCompleted = true
+        }
+        await eventually { waiterStarted }
+        XCTAssertFalse(batchCompleted)
+        await h.client.releaseEntry(ipv6)
+        await eventually { batchCompleted && !h.monitor.snapshot.ipv4.checking && !h.monitor.snapshot.ipv6.checking }
+        await currentBatch.value
+        let calls = await h.client.ipCount(); XCTAssertEqual(calls, 4)
+        XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .stale)
+        XCTAssertEqual(h.monitor.snapshot.ipv4.address, "192.0.2.1")
+        XCTAssertEqual(h.monitor.snapshot.ipv4.failure, .http)
+        XCTAssertEqual(h.path.starts, 1)
+        let waiting = await h.client.pendingEntryCount(); XCTAssertEqual(waiting, 0)
         await h.stop()
     }
     @MainActor func testDisableProbesCancelsPendingButNotPublicIP() async {

@@ -23,6 +23,7 @@ PAYLOAD = (
     'scripts/generate_status.py', 'docs/STATUS.md', 'docs/PROGRESS-PROTOCOL.md',
     'scripts/verify_progress.py', 'scripts/test_progress.py', 'scripts/verify.sh',
     'scripts/verify_doc_maintenance.py',
+    'MacSoulTests/NetworkTests.swift',
 )
 CHECKS = {
     'doctor': ('./scripts/doctor.sh', '.artifacts/doctor.log'),
@@ -193,8 +194,10 @@ def describe(root, data=None):
     changed = [v for v in components if v['before'] != v['after']]
     if any(v['path'] not in PAYLOAD for v in changed):
         raise ValueError('fingerprint component changed outside payload')
-    if any(historical[p] != current[p] for p in historical if p.startswith(('MacSoul/', 'MacSoulTests/', 'MacSoul.xcodeproj/'))):
-        raise ValueError('accepted product/test/project content changed')
+    if any(historical[p] != current[p] for p in historical
+           if p.startswith(('MacSoul/', 'MacSoulTests/', 'MacSoul.xcodeproj/'))
+           and p != 'MacSoulTests/NetworkTests.swift'):
+        raise ValueError('accepted product/other-test/project content changed')
     baseline_data = json.loads(historical['tasks.json'])
     if current['tasks.json'] != historical['tasks.json'] or (data is not None and data != baseline_data):
         raise ValueError('original task/evidence/human flags changed')

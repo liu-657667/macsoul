@@ -32,16 +32,25 @@ import hashlib
 import shutil
 import tempfile
 from verify_doc_maintenance import (BASELINE, IMPLEMENTATION_BASE, FROM, DECLARATION,
-                                   PAYLOAD, CHECKS, OWNER_DECISION, decision_identity, canonical, describe, sha)
+                                   PAYLOAD, CHECKS, OWNER_DECISION, decision_identity, canonical, describe, sha, tree_entries)
+
+def initial_fixture(source, fixture):
+    # Transport only from the explicitly prepared LOCAL source. Never depend on
+    # advertised branches, main, alternates, network or a caller's object cache.
+    subprocess.run(['git', 'clone', '--quiet', '--no-local', '--no-checkout',
+                    str(source), str(fixture)], check=True)
+    subprocess.run(['git', '-C', str(fixture), 'fetch', '--quiet', '--update-shallow',
+                    '--no-tags', str(source), BASELINE, IMPLEMENTATION_BASE], check=True)
+    for revision in (BASELINE, IMPLEMENTATION_BASE):
+        tree_entries(fixture, revision)  # Exact commit/tree/blob identities required.
+    assert not (fixture/'.git/objects/info/alternates').exists()
+    subprocess.run(['git', '-C', str(fixture), 'checkout', '--quiet', '--detach',
+                    IMPLEMENTATION_BASE], check=True)
+
 
 with tempfile.TemporaryDirectory(prefix='macsoul-progress-fixture-') as directory:
     fixture = Path(directory)/'repo'
-    subprocess.run(['git', 'clone', '--quiet', '--shared', '--no-checkout', str(ROOT), str(fixture)], check=True)
-    # A shallow source may hold the explicitly prepared baseline only at FETCH_HEAD.
-    # Clone does not advertise that object; transport this exact local object,
-    # without silently fetching the network from a validation/test function.
-    subprocess.run(['git', '-C', str(fixture), 'fetch', '--quiet', '--update-shallow', '--no-tags', str(ROOT), BASELINE], check=True)
-    subprocess.run(['git', '-C', str(fixture), 'checkout', '--quiet', '--detach', IMPLEMENTATION_BASE], check=True)
+    initial_fixture(ROOT, fixture)
     artifact = fixture/'.artifacts'; artifact.mkdir()
     real_done = json.loads((fixture/'tasks.json').read_text())
     assert sum(t['status']=='done' for t in real_done['tasks']) == 51
@@ -238,32 +247,63 @@ with tempfile.TemporaryDirectory(prefix='macsoul-progress-fixture-') as director
     reset()
     if (fixture/OWNER_DECISION).exists(): (fixture/OWNER_DECISION).unlink()
     manifest=write_manifest(target,declaration)
-    # Build from prepared exact implementation object, never a caller branch name.
-    # Exercise detached/no main and feature-only source repositories independently.
-    for scenario in ('detached-no-main','feature-only'):
-        source=Path(directory)/('source-'+scenario)
-        subprocess.run(['git','init','--quiet',str(source)],check=True)
-        subprocess.run(['git','-C',str(source),'fetch','--quiet','--update-shallow','--no-tags',str(ROOT),IMPLEMENTATION_BASE],check=True)
-        subprocess.run(['git','-C',str(source),'checkout','--quiet','--detach','FETCH_HEAD'],check=True)
-        if scenario=='feature-only':
-            subprocess.run(['git','-C',str(source),'switch','--quiet','-c','fixture-feature'],check=True)
-        assert subprocess.check_output(['git','-C',str(source),'branch','--list','main'])==b''
+    # Reproduce the committed descendant shapes from Push and synthetic-merge CI.
+    # Local TEST ONLY commits; neither fixed base has an advertised branch ref.
+    source = Path(directory)/'topology-source'
+    subprocess.run(['git','init','--quiet',str(source)],check=True)
+    subprocess.run(['git','-C',str(source),'fetch','--quiet','--update-shallow',
+                    '--no-tags',str(ROOT),BASELINE,IMPLEMENTATION_BASE],check=True)
+    subprocess.run(['git','-C',str(source),'checkout','--quiet','--detach',IMPLEMENTATION_BASE],check=True)
+    subprocess.run(['git','-C',str(source),'switch','--quiet','-c','fixture-feature'],check=True)
+    for path in set(PAYLOAD)|{DECLARATION}:
+        (source/path).parent.mkdir(parents=True,exist_ok=True)
+        shutil.copyfile(ROOT/path,source/path)
+    subprocess.run(['git','-C',str(source),'add',*PAYLOAD,DECLARATION],check=True)
+    identity=['-c','user.name=Fixture','-c','user.email=fixture@example.invalid']
+    subprocess.run(['git','-C',str(source),*identity,'commit','--quiet','-m','TEST ONLY descendant candidate'],check=True)
+    feature=subprocess.check_output(['git','-C',str(source),'rev-parse','HEAD'],text=True).strip()
+    candidate_tree=subprocess.check_output(['git','-C',str(source),'rev-parse','HEAD^{tree}'],text=True).strip()
+    merge=subprocess.check_output(['git','-C',str(source),*identity,'commit-tree',candidate_tree,
+                                  '-p',IMPLEMENTATION_BASE,'-p',feature],input='TEST ONLY synthetic merge\n',text=True).strip()
+    for scenario,revision in (('feature-descendant',feature),('detached-synthetic-merge',merge)):
         shallow=Path(directory)/('shallow-'+scenario)
         subprocess.run(['git','init','--quiet',str(shallow)],check=True)
-        subprocess.run(['git','-C',str(shallow),'fetch','--quiet','--update-shallow','--depth','1','--no-tags',str(source),IMPLEMENTATION_BASE],check=True)
+        subprocess.run(['git','-C',str(shallow),'fetch','--quiet','--depth','1','--no-tags',str(source),revision],check=True)
         subprocess.run(['git','-C',str(shallow),'checkout','--quiet','--detach','FETCH_HEAD'],check=True)
-        if scenario=='feature-only':
+        if scenario=='feature-descendant':
             subprocess.run(['git','-C',str(shallow),'switch','--quiet','-c','fixture-feature'],check=True)
-        for path in set(PAYLOAD)|{DECLARATION}:
-            (shallow/path).parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(fixture/path,shallow/path)
+        assert subprocess.check_output(['git','-C',str(shallow),'branch','--list','main'])==b''
+        assert subprocess.check_output(['git','-C',str(shallow),'rev-parse','--is-shallow-repository'],text=True).strip()=='true'
+        assert not (shallow/'.git/objects/info/alternates').exists()
         missing=verify(real_done,root=shallow,owner_decision=decision)
-        assert any('missing fixed baseline object: '+BASELINE in e for e in missing), missing
-        assert subprocess.run(['git','-C',str(shallow),'cat-file','-e',BASELINE],capture_output=True).returncode != 0
-        subprocess.run(['git','-C',str(shallow),'fetch','--quiet','--update-shallow','--no-tags',str(ROOT),BASELINE],check=True)
-        assert maintenance.integrity(shallow)[0] == declaration
+        assert any('missing fixed baseline object: '+BASELINE in e for e in missing),missing
+        subprocess.run(['git','-C',str(shallow),'fetch','--quiet','--update-shallow',
+                        '--no-tags',str(ROOT),BASELINE,IMPLEMENTATION_BASE],check=True)
+        assert maintenance.integrity(shallow)[0]==declaration
+        # Prepared objects exist, but no refs advertise either exact fixed base.
+        refs=subprocess.check_output(['git','-C',str(shallow),'show-ref'],text=True) if scenario=='feature-descendant' else ''
+        assert BASELINE not in refs and IMPLEMENTATION_BASE not in refs
+        legacy=Path(directory)/('legacy-'+scenario)
+        subprocess.run(['git','clone','--quiet','--no-local','--no-checkout',str(shallow),str(legacy)],check=True)
+        subprocess.run(['git','-C',str(legacy),'fetch','--quiet','--update-shallow','--no-tags',str(shallow),BASELINE],check=True)
+        assert subprocess.run(['git','-C',str(legacy),'cat-file','-e',IMPLEMENTATION_BASE],capture_output=True).returncode!=0
+        failed=subprocess.run(['git','-C',str(legacy),'checkout','--quiet','--detach',IMPLEMENTATION_BASE],capture_output=True,text=True)
+        assert failed.returncode==128 and 'unable to read tree' in failed.stderr,(scenario,failed)
+        repaired=Path(directory)/('repaired-'+scenario)
+        initial_fixture(shallow,repaired)
+        assert subprocess.check_output(['git','-C',str(repaired),'rev-parse','HEAD'],text=True).strip()==IMPLEMENTATION_BASE
+        assert tree_entries(repaired,BASELINE) and tree_entries(repaired,IMPLEMENTATION_BASE)
+        checks_run.append('shallow '+scenario+': legacy missing implementation checkout fails 128; repaired exact objects/checkout PASS (no alternates/main)')
+        # The parent itself also supports actual complete done-evidence validation.
         shutil.copytree(artifact,shallow/'.artifacts')
+        receipt=json.loads((shallow/'.artifacts/verification.json').read_text());receipt['git_revision']=revision
+        (shallow/'.artifacts/verification.json').write_text(json.dumps(receipt))
         assert not verify(real_done,root=shallow,owner_decision=decision)
-        checks_run.append('shallow '+scenario+': missing baseline refused; explicit fixed-object preparation succeeds')
+    # A wrong commit object is refused, rather than succeeding at clone alone.
+    try: tree_entries(fixture,'0'*40)
+    except ValueError as error: assert 'missing fixed baseline object' in str(error)
+    else: raise AssertionError('wrong fixed commit unexpectedly accepted')
+    checks_run.append('wrong fixed commit object explicitly rejected')
     # Integrity must recompute baseline bytes, not trust its declaration fingerprint.
     from unittest.mock import patch
     import verify_doc_maintenance as maintenance
