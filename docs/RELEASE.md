@@ -1,27 +1,35 @@
 # MacSoul v0.1.0 release guide
 
-## Current release preparation
+## Current public release / 当前公开发行状态
 
-**v0.1.0 UNSIGNED / UNNOTARIZED Developer Preview — not publicly released.** Day 7 local RC acceptance and repository integration are complete: [PR #10](https://github.com/liu-657667/macsoul/pull/10) merged; [main CI 37614072470](https://github.com/liu-657667/macsoul/actions/runs/37614072470) SUCCESS. The current phase prepares a minimal native DMG, a byte-identical copy of the accepted ZIP, checksums, public documentation and an unpublished Release draft. Public tag and Publish Release require final Owner approval. Signing/notarization is outside this phase.
+**v0.1.0 UNSIGNED / UNNOTARIZED Developer Preview was publicly released on 2026-10-07.** [Official Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) — published at **2026-10-07T12:44:17Z**, `draft=false`, `prerelease=true`, **not Latest**. Tag `v0.1.0` is fixed at commit `2075572faafa5989ce3fd6ff7e6d7393365d8b99`; later documentation commits advance main without moving this tag. Day 7 local RC acceptance and repository integration remain complete: [PR #10](https://github.com/liu-657667/macsoul/pull/10) merged; [main CI 37614072470](https://github.com/liu-657667/macsoul/actions/runs/37614072470) SUCCESS. Signing/notarization remains NOT_RUN.
+
+v0.1.0 已于 2026-10-07 公开发布，为 Pre-release、非 Latest；仍未签名、未公证。发行 tag 固定在上述提交，后续文档同步只推进 main，不重开 Day 7 验收。
+
+| Public asset | Bytes | SHA256 |
+|---|---:|---|
+| [MacSoul-v0.1.0-macos-universal-unsigned.dmg](https://github.com/liu-657667/macsoul/releases/download/v0.1.0/MacSoul-v0.1.0-macos-universal-unsigned.dmg) | 6,437,720 | `57bc9d89432d681348e5e58346f5c9d77964b236304c2297c6d8aa689e7b3154` |
+| [MacSoul-v0.1.0-unsigned.zip](https://github.com/liu-657667/macsoul/releases/download/v0.1.0/MacSoul-v0.1.0-unsigned.zip) | 6,062,427 | `6b541098d2cddcab546fecad4d5a48b09e1c837892ea0af68a912ff634e3f177` |
+| [SHA256SUMS.txt](https://github.com/liu-657667/macsoul/releases/download/v0.1.0/SHA256SUMS.txt) | 204 | `59466571dac5e194ac6b5119fddb7520e04d4640495c1a2d70467b9c11627632` |
 
 ### Download and install / 下载与安装
 
-After publication, use [GitHub Releases](https://github.com/liu-657667/macsoul/releases). Until then, candidate attachments are available only to authorized draft reviewers.
+Use the public assets on the [v0.1.0 GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) or the direct links above; no sign-in is required.
 
-1. Download `MacSoul-v0.1.0-macos-universal-unsigned.dmg` (recommended) or `MacSoul-v0.1.0-unsigned.zip`, plus `SHA256SUMS.txt`.
+1. Download [MacSoul-v0.1.0-macos-universal-unsigned.dmg](https://github.com/liu-657667/macsoul/releases/download/v0.1.0/MacSoul-v0.1.0-macos-universal-unsigned.dmg) (recommended) or [MacSoul-v0.1.0-unsigned.zip](https://github.com/liu-657667/macsoul/releases/download/v0.1.0/MacSoul-v0.1.0-unsigned.zip), plus [SHA256SUMS.txt](https://github.com/liu-657667/macsoul/releases/download/v0.1.0/SHA256SUMS.txt).
 2. In the download directory, run `shasum -a 256 -c SHA256SUMS.txt` if both packages are present, or compare the chosen file's `shasum -a 256` output with its checksum entry.
-3. Open the DMG and drag `MacSoul.app` to `Applications`; alternatively extract the ZIP and copy the App. No Xcode or compilation is required. Quit an older MacSoul instance before opening the candidate.
-4. Launch MacSoul. It defaults to Developer Preview / mock data; Live System is an explicit Settings choice.
+3. Open the DMG and drag `MacSoul.app` to `Applications`; alternatively extract the ZIP and copy the App. No Xcode or compilation is required. Normally quit other MacSoul instances before opening the App.
+4. Launch MacSoul and confirm or choose Developer Preview / mock data in Settings; existing preferences may retain the previous mode. Live System is an explicit Settings choice. Owner package-smoke confirmation covers mock mode.
 5. This App has no Developer ID signature or Apple notarization. If first opening is blocked, only after trusting the source and checksum, follow [Apple's per-App opening instructions](https://support.apple.com/en-us/102445): try opening, then System Settings → Privacy & Security → Open Anyway, if offered. Do not disable global protection or remove quarantine. A damaged-app message or abnormal exit requires separate investigation.
 
-公开发布后下载 DMG（推荐）或 ZIP（备用）及校验文件；核对 SHA-256，打开 DMG，将 App 拖入 Applications 后启动。无需 Xcode。默认模拟模式。未签名、未公证的首次打开可能被拦截；确认来源和校验值可信后，按上面的 Apple 官方逐 App 说明操作，不关闭全局保护。当前没有公开二进制 Release。
+从 [正式 Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) 或上方直链下载 DMG（推荐）或 ZIP（备用）及校验文件，无需登录；核对 SHA-256，正常退出其它 MacSoul 实例，打开 DMG，将 App 拖入 Applications 后启动，或解压 ZIP 后复制 App。无需 Xcode 或自行编译。启动后在设置中确认或选择「开发预览」以使用模拟数据；已有设置可能保留先前模式，需要实时数据时再明确选择「实时系统」。未签名、未公证的首次打开可能被拦截；确认来源和校验值可信后，按上面的 Apple 官方逐 App 说明操作，不关闭全局保护或清除 quarantine；损坏提示、架构错误或异常退出需另行调查。
 
 ### Requirements and limits
 
 - Minimum deployment target: macOS 13.0; Universal includes arm64 + x86_64. Existing Owner observations were on Apple Silicon; Intel hardware and all supported OS versions are not claimed tested.
 - Codex exact verified CLI versions: **0.160.0 / 0.160.1 / 0.162.0-alpha.2**. Unknown versions fail closed. Claude without a verified real quota source remains honestly unavailable.
 - Cleaner is read-only, with deletion NOT_IMPLEMENTED BY DESIGN. Region NOT_COLLECTED. Signed/installed Login Item validation remains deferred; App Store Connect privacy validation, signing/notarization, stress/specialized tests are NOT_RUN. Natural quota-update notifications and real critical / quota95% events remain NOT_OBSERVED.
-- No App Store, Homebrew or automatic updates. No public distribution, signed installer or Gatekeeper PASS is claimed during preparation.
+- The unsigned Developer Preview is publicly available. No App Store, Homebrew or automatic updates; no signed installer or Gatekeeper PASS is claimed.
 - Prior local validation for the accepted source: **365 tests / 0 failures / 0 skips**, not rerun for packaging. Successful repository CI reports unit PASS / exit 0 without exposing test counts; its manual_ui / performance / live_provider remain NOT_RUN.
 - Owner Live PASS, CPU PASS and package privacy PASS remain accepted. Five-minute CPU avg / p95 / max: **0.012488% / 0.039502% / 0.063822%**. RSS start / end / avg / max: **100.483 / 79.479 / 88.107 / 100.483 decimal MB**; first / middle / final-third means: **93.502 / 89.300 / 81.833 MB**. Original result: **RSS REVIEW**. Owner decision: **RSS REVIEW ACCEPTED by Owner for this finite v0.1.0 RC observation.** The 100 MB target and 150 MB investigation threshold remain unchanged; no all-run <100 MB or no-memory-leak claim.
 
@@ -31,9 +39,22 @@ After publication, use [GitHub Releases](https://github.com/liu-657667/macsoul/r
 - Executable SHA256: `7224f208d58b45612c3482b24ee7ec637c4f6c725fb0cde4a49fc4aabac60200`
 - Original ZIP SHA256: `6b541098d2cddcab546fecad4d5a48b09e1c837892ea0af68a912ff634e3f177` — **6,062,427 bytes**
 
+### Public verification and Owner observation / 公开验证与 Owner 观察
+
+- Public page and all three attachments were accessible anonymously without GitHub token, Authorization or login cookie. Download sizes, SHA256 and SHA256SUMS.txt contents matched; the downloaded DMG mounted read-only, and all 7 App files in both DMG and ZIP matched the accepted Archive. These are publication/file-identity checks, not new browser-opening or Gatekeeper PASS evidence.
+- Browser-candidate first opening: **BLOCKED_OBSERVED**. Owner personally allowed this App through the Privacy & Security per-App exception, then confirmed the mock main window, clear mock label, Menu Bar popover and normal Quit. Record only this actual scope.
+- Browser-candidate **reopen: NOT_RUN**; **Applications installation check: NOT_RUN**. Earlier local candidate smoke is separate and cannot substitute for these checks. Still **UNSIGNED / UNNOTARIZED**; no Gatekeeper PASS.
+- 公开页面及三个附件的匿名下载、大小、SHA256、校验文件内容核对通过；下载 DMG 可只读挂载，DMG / ZIP 中全部 7 个 App 文件匹配已接受 Archive。首次 **BLOCKED_OBSERVED** 保留；Owner 本人应用逐 App 安全例外后，确认模拟主窗口、清晰模拟标识、菜单栏及正常退出。该浏览器候选 reopen 和 Applications 安装检查仍为 **NOT_RUN**；仍未签名、未公证，不宣称 Gatekeeper PASS。
+
+Build, unit, package, UI, performance, signing, notarization and publication remain distinct checks. Public tag, Release body and three attachments remain unchanged by this documentation sync.
+
+## Historical unsigned release preparation (completed before publication)
+
+**Historical / superseded scope, not current instructions.** Before Owner authorized public publication, preparation covered a minimal native DMG, a byte-identical copy of the accepted ZIP, checksums, public documentation and an unpublished Release draft. At that checkpoint, public tag and Publish Release awaited final Owner approval. That approval and publication subsequently occurred as recorded above; the original preparation workflow below is retained, not an instruction to rebuild or republish.
+
 Reuse the accepted Archive App unchanged; copy the original ZIP bytes. A new DMG gets its own SHA256/size. Use a fresh ignored output directory and compare every mounted App file, PrivacyInfo and ThirdPartyNotices with the accepted inputs; corrected per-slice scanner must show zero owner-home prefixes and no N_SO/N_OSO/N_AST debug map. Distribute only App + Applications symlink in the DMG; no dSYM, Archive, source, logs or private evidence.
 
-### Separate validation records
+### Historical separate validation records
 
 Record individually: DMG mount; mounted App identity/privacy; local Preview launch/main/Menu Bar/normal Quit/reopen; authenticated Draft attachment download/hash; actual browser download/quarantine/first opening; post-publication anonymous download. Local or authenticated command-line download is not browser/Gatekeeper evidence. Public anonymous download stays NOT_RUN before publication. Current run results belong in the PR body, ignored evidence and Release draft, not rewritten historical reports.
 
@@ -41,7 +62,7 @@ An unpublished draft uses proposed tag `v0.1.0`, exact CI-passed final main SHA,
 
 Build, unit, package, UI, performance, signing, notarization and publication remain distinct checks.
 
-## A. Historical Day 7 Archive procedure (already completed; do not rerun for this packaging phase)
+## A. Historical Day 7 Archive procedure (already completed; do not rerun for documentation sync)
 
 Requirements: macOS, full Xcode, Python 3. Version `0.1.0`, build `1`, bundle ID `local.macsoul.app`, `CODE_SIGNING_ALLOWED=NO`. The generator and checked-in project agree. No Developer Team, entitlements or signing are added.
 
@@ -87,7 +108,7 @@ Current System-layout Archive/source verification365passed/0failed/0skipped, act
 
 Earlier build-product packages and their zero-path claims remain historical **SUPERSEDED** records: independent extraction reproduced178LC_SYMTAB debug-map references. The corrected scanner is current authority. Failed artifacts are preserved, not overwritten or manually stripped.
 
-The accepted candidate remains **UNSIGNED / UNNOTARIZED**. Public tag / publication await final Owner authorization; browser/Gatekeeper observation and installed/signed Login Item verification remain separate. The earlier NOT FOR PUBLIC DISTRIBUTION checkpoint predates this authorized unsigned Developer Preview preparation.
+**Historical pre-publication scope:** The accepted candidate remained **UNSIGNED / UNNOTARIZED**. At this checkpoint, public tag / publication awaited final Owner authorization; browser/Gatekeeper observation and installed/signed Login Item verification were separate. The earlier NOT FOR PUBLIC DISTRIBUTION checkpoint predated the subsequently authorized unsigned Developer Preview preparation and public release. Current publication and browser observations are recorded above; signing and installed/signed Login Item validation remain unexecuted/deferred.
 
 ## B. Future Developer ID / notarization path (outside this phase)
 
@@ -125,8 +146,8 @@ xcrun stapler validate '<SIGNED_APP_PATH>'
 spctl --assess --type execute --verbose=2 '<SIGNED_APP_PATH>'
 ```
 
-Require an Accepted notarization result; investigate rejected logs privately and sanitize any retained evidence. Staple and assess the final App, then recreate the final zip/DMG and calculate its SHA-256. Independently verify the downloaded artifact and real launch/quit/reopen. Gatekeeper checks are NOT_RUN for the current unsigned candidate.
+Require an Accepted notarization result; investigate rejected logs privately and sanitize any retained evidence. Staple and assess the final App, then recreate the final zip/DMG and calculate its SHA-256. Independently verify the downloaded artifact and real launch/quit/reopen. Formal signed-App Gatekeeper assessment remains NOT_RUN; the observed unsigned first-open block and Owner-applied per-App exception are recorded separately above, without a Gatekeeper PASS claim.
 
-Historical Day 7 did not create a tag, Release or DMG. This later preparation authorizes DMG and an unpublished draft only; public tag / publication remain separately gated. No signing, notarization submission or repository-rule change is authorized.
+**Historical authorization boundary:** Day 7 did not create a tag, Release or DMG. The later preparation initially authorized only a DMG and unpublished draft, with public tag / publication separately gated. Owner subsequently authorized v0.1.0 publication, now completed as recorded at the top. Signing, notarization submission and repository-rule changes remain outside the authorized scope.
 
 Official references: [Developer ID](https://developer.apple.com/developer-id/), [custom notarization workflow](https://developer.apple.com/documentation/security/customizing-the-notarization-workflow). These describe signing/hardened runtime and notarytool/stapling; reading them does not constitute executing the signing plan.

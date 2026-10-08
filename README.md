@@ -18,7 +18,7 @@ MacSoul 希望把系统状态、AI 编程额度、网络和本地开发环境放
 
 **有趣的反馈是入口，清楚、可信的数据才是目的。**
 
-> **v0.1.0 Unsigned Developer Preview 发行准备，当前未公开发布。** 默认 Developer Preview 使用模拟数据；设置中选择「实时系统」后，System、Network、Dev 使用共享实时快照，Codex 使用已验证版本的 App Server。Claude 无已验证的真实配额来源时明确不可用。Cleaner 只在显式 Scan 时只读扫描；没有删除。Day 2–5 的自动与 Owner 人工验收记录已保留，Day 6 已按 Owner 批准的验收边界收口，Day 7 本地 unsigned RC 已获 Owner scoped final review 接受；截图集与最终 Live 回归 PASS，CPU PASS、RSS REVIEW ACCEPTED，PR #10 已合并，main CI 已通过；本阶段准备未签名、未公证的预编译 DMG / ZIP，公开发布等待 Owner 最终确认。
+> **MacSoul v0.1.0 Unsigned Developer Preview 已于 2026-10-07 公开发布。** 从 [GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) 下载预编译 Universal DMG 或 ZIP，无需安装 Xcode 或自行编译。当前版本未签名、未公证，首次打开可能受到 macOS 拦截；安装方法与验证边界见下方说明。
 
 ![MacSoul 产品概念主视觉，非当前 App 截图](assets-source/reference/macsoul-product-hero.png)
 
@@ -77,13 +77,17 @@ MacSoul 的目标是展示账户实际提供的额度窗口，而不是根据套
 
 实时 Soul 联动使用本地规则、持续阈值、冷却与恢复反馈，不依赖大模型生成吐槽；CPU 瞬时尖峰不会直接触发状态切换。
 
-## 预编译 App：发行准备中
+## 预编译 App：v0.1.0 已公开发布
 
-候选下载文件为 `MacSoul-v0.1.0-macos-universal-unsigned.dmg`（推荐）、`MacSoul-v0.1.0-unsigned.zip`（备用）及 `SHA256SUMS.txt`。公开发布后从 [GitHub Releases](https://github.com/liu-657667/macsoul/releases) 下载；当前没有公开二进制 Release。使用预编译 App 不需要安装 Xcode 或自行编译。
+从 [v0.1.0 GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) 下载以下公开附件；该版本为 **Pre-release、非 Latest**。使用预编译 App 不需要安装 Xcode 或自行编译。
 
-macOS 最低部署目标为 13.0；Universal 包含 arm64 与 x86_64，不代表已完成 Intel 实机或所有 macOS 版本测试。校验下载后打开 DMG，将 MacSoul 拖到 Applications，再启动。App 默认使用模拟数据。
+- [Universal DMG（推荐）](https://github.com/liu-657667/macsoul/releases/download/v0.1.0/MacSoul-v0.1.0-macos-universal-unsigned.dmg)
+- [ZIP（备用）](https://github.com/liu-657667/macsoul/releases/download/v0.1.0/MacSoul-v0.1.0-unsigned.zip)
+- [SHA256SUMS.txt（校验文件）](https://github.com/liu-657667/macsoul/releases/download/v0.1.0/SHA256SUMS.txt)
 
-**UNSIGNED / UNNOTARIZED：首次打开可能被系统拦截。** 仅在确认来源和校验值可信后，按 [Apple 官方逐 App 打开说明](https://support.apple.com/en-us/102445)操作；不要关闭全局保护。真实浏览器下载后的 quarantine / 首次打开和公开匿名下载须独立验证，当前不宣称 Gatekeeper PASS。不提供 App Store、Homebrew 或自动更新。完整步骤和验收边界见[发布指南](docs/RELEASE.md)。
+macOS 最低部署目标为 13.0；Universal 包含 arm64 与 x86_64，不代表已完成 Intel 实机或所有 macOS 版本测试。下载包及校验文件并核对 SHA-256 后，打开 DMG，将 MacSoul 拖到 Applications；ZIP 可解压后复制 App。先正常退出其它 MacSoul 实例。启动后在设置中确认或选择「开发预览」以使用模拟数据；已有设置可能保留先前模式，需要真实系统信息时再明确选择「实时系统」。
+
+**UNSIGNED / UNNOTARIZED：首次打开可能被系统拦截。** 仅在确认来源和校验值可信后，按 [Apple 官方逐 App 打开说明](https://support.apple.com/en-us/102445)操作：尝试打开后，在系统设置 → 隐私与安全性中使用「仍要打开」（如可用）；不要关闭全局保护或清除 quarantine。首次 **BLOCKED_OBSERVED** 已记录；Owner 本人应用逐 App 安全例外后，确认浏览器候选的模拟主窗口、清晰模拟标识、菜单栏及正常退出。该候选 reopen 和 Applications 安装检查仍为 **NOT_RUN**，不宣称 Gatekeeper PASS。损坏提示或异常退出需另行调查。不提供 App Store、Homebrew 或自动更新。完整步骤和验证边界见[发布指南](docs/RELEASE.md)。
 
 ## 从源码体验开发预览
 
@@ -106,7 +110,7 @@ open MacSoul.xcodeproj
 
 运行预览脚本前，请先正常退出已运行的 MacSoul。应用默认使用开发预览数据；在 **Settings → 系统数据来源** 可选择「实时系统」，启用真实 System/Dev/Network 和已验证 AI Provider。切回开发预览后，可选择 `Codex: Week only`、高 CPU、内存压力等模拟场景；这些场景不会修改真实账户套餐，也不会给电脑制造真实高负载。
 
-以上命令供源码开发使用；预编译发行包的准备不等于已公开发布。
+以上命令供源码开发使用；体验已公开的 v0.1.0 预编译 App 可直接使用上方下载链接，无需运行这些命令。
 
 ## 隐私与产品边界
 
@@ -136,15 +140,15 @@ Day 5 在 Mac14,9、12 logical CPUs、16 GiB、macOS 27.0.1 / Xcode 27、unsigne
 
 | 阶段 | 交付重点 |
 |---|---|
-| **当前：核心能力已集成** | System / Dev / Network / Codex、只读 Cleaner；Day 6 review、无障碍、设置与持续性能验收已收口 |
-| **下一步：发布准备** | Day 7 本地 unsigned RC 与 PR #10 仓库集成已完成；准备未签名、未公证的 DMG / ZIP 和 Release 草稿，公开 tag / 发布待 Owner 最终确认 |
+| **已完成：核心能力集成** | System / Dev / Network / Codex、只读 Cleaner；Day 6 review、无障碍、设置与持续性能验收已收口 |
+| **当前：v0.1.0 已公开发布** | [Unsigned Developer Preview](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) 于 2026-10-07 公开发布；Pre-release、非 Latest，Universal DMG / ZIP 与校验文件可公开下载；仍未签名、未公证 |
 | **v0.2.0 计划** | 单独设计 Cleaner cleanup/Trash/确认、Maven/Gradle Build Tools、Docker 扩展，不是现有功能 |
 
 [当前任务状态](docs/STATUS.md)是开发进度入口。截图、自动测试、真实功能、性能和全量交互验收分别记录。菜单栏小图标保持 DRAFT；[Day 6 安全 Preview 截图 checklist](reports/day-6-review-hardening-2026-10-07.md)已获接受，D7-07 实机截图已采集并完成隐私检查，已获 Owner 审核，不以概念图代替；GIF 为可选。
 
-## 发布候选状态
+## 公开发行与既有 RC 验收状态
 
-版本 0.1.0 / build 1 的本地 unsigned Release、zip、解压资源与 SHA-256 核对已通过；截图集 Owner 审核已通过；最终 Owner Live 回归 PASS，CPU PASS、RSS REVIEW ACCEPTED；接受范围仅本地 unsigned RC，[PR #10](https://github.com/liu-657667/macsoul/pull/10) 已正常合并，[main CI 37614072470](https://github.com/liu-657667/macsoul/actions/runs/37614072470) SUCCESS。此次 CI 与此前本地 365 tests / 0 failures / 0 skips 分开记录；CI 成功日志未暴露测试计数。构建、测试、打包、签名、公证和公开发布分别记录。见[发布指南](docs/RELEASE.md)、[最终报告](reports/FINAL.md)与[更新记录](CHANGELOG.md)。尚无公开 Release、签名安装包或 Gatekeeper 验证声明。
+版本 0.1.0 / build 1 的本地 unsigned Release、zip、解压资源与 SHA-256 核对已通过；截图集 Owner 审核已通过；最终 Owner Live 回归 PASS，CPU PASS、RSS REVIEW ACCEPTED；接受范围仅本地 unsigned RC，[PR #10](https://github.com/liu-657667/macsoul/pull/10) 已正常合并，[main CI 37614072470](https://github.com/liu-657667/macsoul/actions/runs/37614072470) SUCCESS。此次 CI 与此前本地 365 tests / 0 failures / 0 skips 分开记录；CI 成功日志未暴露测试计数。构建、测试、打包、签名、公证和公开发布分别记录。见[发布指南](docs/RELEASE.md)、[最终报告](reports/FINAL.md)与[更新记录](CHANGELOG.md)。[v0.1.0 Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) 已公开；三个附件的匿名下载、大小、SHA256 与校验文件内容核对通过，DMG 可挂载，DMG / ZIP 中全部 7 个 App 文件匹配已接受 Archive。公开发行没有扩大既有 RC 的有限验收范围；仍无签名安装包或 Gatekeeper PASS 声明。
 
 ## 参与开发
 

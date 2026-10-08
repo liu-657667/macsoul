@@ -18,7 +18,7 @@ MacSoul aims to bring system health, AI coding quotas, network information and y
 
 **Personality gets your attention. Clear, trustworthy information is the point.**
 
-> **v0.1.0 Unsigned Developer Preview preparation; not publicly released.** Developer Preview uses mock data by default. Live System enables shared System, Network and Dev snapshots and the verified Codex App Server integration. Claude stays unavailable without a verified live quota source. Cleaner scans read-only only on explicit Scan; there is no deletion. Day 2–5 automated and Owner acceptance records are retained. Day 6 is closed within the Owner-approved acceptance boundary; Day 7 local unsigned RC has completed Owner scoped final review. Screenshots and final Live regression PASS; CPU PASS, RSS REVIEW ACCEPTED. PR #10 is merged and main CI passed. This phase prepares precompiled unsigned, unnotarized DMG / ZIP downloads; public release awaits final Owner approval.
+> **MacSoul v0.1.0 Unsigned Developer Preview was publicly released on 2026-10-07.** Download the precompiled Universal DMG or ZIP from the [GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0); no Xcode or compilation is required. This release is unsigned and unnotarized, so macOS may block first opening. See the installation instructions and validation limits below.
 
 ![MacSoul product concept artwork, not a screenshot of the current app](assets-source/reference/macsoul-product-hero.png)
 
@@ -77,13 +77,17 @@ Normal, busy, overloaded, too full, low energy and resting are expressions of th
 
 Live Soul behavior uses local rules, sustained thresholds, cooldowns and recovery rather than an LLM generating comments. A momentary CPU spike does not directly change Soul state.
 
-## Precompiled App: release preparation
+## Precompiled App: v0.1.0 is publicly available
 
-Candidate downloads are `MacSoul-v0.1.0-macos-universal-unsigned.dmg` (recommended), `MacSoul-v0.1.0-unsigned.zip` (alternative) and `SHA256SUMS.txt`. Once published, download from [GitHub Releases](https://github.com/liu-657667/macsoul/releases); no public binary Release exists yet. The precompiled App does not require Xcode or compilation.
+Download these public assets from the [v0.1.0 GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0); this is a **Pre-release, not Latest**. The precompiled App does not require Xcode or compilation.
 
-The minimum deployment target is macOS 13.0. Universal contains arm64 and x86_64; it does not claim Intel hardware testing or coverage of every macOS version. Verify the download, open the DMG, drag MacSoul to Applications and launch it. The App defaults to mock data.
+- [Universal DMG (recommended)](https://github.com/liu-657667/macsoul/releases/download/v0.1.0/MacSoul-v0.1.0-macos-universal-unsigned.dmg)
+- [ZIP (alternative)](https://github.com/liu-657667/macsoul/releases/download/v0.1.0/MacSoul-v0.1.0-unsigned.zip)
+- [SHA256SUMS.txt (checksums)](https://github.com/liu-657667/macsoul/releases/download/v0.1.0/SHA256SUMS.txt)
 
-**UNSIGNED / UNNOTARIZED: macOS may block first opening.** Only after trusting the source and checksums, follow [Apple's per-App opening guidance](https://support.apple.com/en-us/102445); do not disable global protection. Browser download quarantine / first opening and public anonymous downloads require separate observation; no Gatekeeper PASS is claimed. No App Store, Homebrew or automatic updates. See the [release guide](docs/RELEASE.md) for steps and validation boundaries.
+The minimum deployment target is macOS 13.0. Universal contains arm64 and x86_64; it does not claim Intel hardware testing or coverage of every macOS version. Download the package and checksums and verify SHA-256, then open the DMG and drag MacSoul to Applications; alternatively extract the ZIP and copy the App. Normally quit other MacSoul instances first. After launch, confirm or choose Developer Preview / mock data in Settings; existing preferences may retain the previous mode. Explicitly choose Live System when real system information is wanted.
+
+**UNSIGNED / UNNOTARIZED: macOS may block first opening.** Only after trusting the source and checksums, follow [Apple's per-App opening guidance](https://support.apple.com/en-us/102445): attempt opening, then System Settings → Privacy & Security → Open Anyway, if offered. Do not disable global protection or remove quarantine. Initial **BLOCKED_OBSERVED** is retained. After personally applying a per-App security exception, Owner confirmed the browser candidate's mock main window, clear mock label, menu bar and normal Quit. Reopen and Applications installation checks for that candidate remain **NOT_RUN**; no Gatekeeper PASS is claimed. Damage or abnormal exit needs separate investigation. No App Store, Homebrew or automatic updates. See the [release guide](docs/RELEASE.md) for steps and validation boundaries.
 
 ## Run the developer preview from source
 
@@ -106,7 +110,7 @@ open MacSoul.xcodeproj
 
 Quit any running MacSoul instance before using the preview script. The app starts with mock data. Choose **Settings → System data source → Live System** for live System/Dev/Network and verified AI providers. Back in Developer Preview, try `Codex: Week only`, high CPU and memory-pressure scenarios. These fixtures neither alter a real subscription nor place the machine under load.
 
-The commands above are for source development; preparing precompiled artifacts does not mean they have been publicly released.
+The commands above are for source development; use the public download links above to try the v0.1.0 precompiled App without running these commands.
 
 ## Privacy and boundaries
 
@@ -136,15 +140,15 @@ Finite runs do not guarantee <0.5% on every machine or prove that future leaks a
 
 | Stage | Focus |
 |---|---|
-| **Now: core integrations** | System / Dev / Network / Codex, read-only Cleaner; Day 6 review, accessibility, Settings and sustained-performance acceptance closed |
-| **Next: distribution preparation** | Day 7 local unsigned RC and PR #10 integration completed; preparing unsigned, unnotarized DMG / ZIP and Release draft; public tag / publication await final Owner approval |
+| **Completed: core integrations** | System / Dev / Network / Codex, read-only Cleaner; Day 6 review, accessibility, Settings and sustained-performance acceptance closed |
+| **Now: v0.1.0 publicly released** | [Unsigned Developer Preview](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) published on 2026-10-07; Pre-release, not Latest; public Universal DMG / ZIP and checksums; still unsigned and unnotarized |
 | **v0.2.0 plans** | Separately design Cleaner cleanup/Trash/confirmation, Maven/Gradle Build Tools and Docker extensions; not current capabilities |
 
 [Task status](docs/STATUS.md) is the progress entry. Screenshots, automated tests, real features, performance and full interaction acceptance are separate. The small menu icon remains DRAFT; the [Day 6 safe Preview screenshot checklist](reports/day-6-review-hardening-2026-10-07.md) is accepted; real Preview screenshots have been collected and privacy checked for D7-07; Owner screenshot approval passed, never replaced by concept artwork. GIF is optional.
 
-## Release-candidate status
+## Public release and existing RC acceptance status
 
-The local unsigned 0.1.0 / build 1 Release, zip, extraction/resources and SHA-256 checks passed; Owner screenshot approval passed; final Owner Live regression PASS, CPU PASS and RSS REVIEW ACCEPTED for this local unsigned RC; [PR #10](https://github.com/liu-657667/macsoul/pull/10) merged normally; [main CI 37614072470](https://github.com/liu-657667/macsoul/actions/runs/37614072470) SUCCESS. This CI is distinct from the earlier local 365 tests / 0 failures / 0 skips; successful CI logs did not expose test counts. Build, test, package, signing, notarization and publication are tracked separately. See the [release guide](docs/RELEASE.md), [final report](reports/FINAL.md) and [changelog](CHANGELOG.md). No public Release, signed installer or Gatekeeper verification is claimed.
+The local unsigned 0.1.0 / build 1 Release, zip, extraction/resources and SHA-256 checks passed; Owner screenshot approval passed; final Owner Live regression PASS, CPU PASS and RSS REVIEW ACCEPTED for this local unsigned RC; [PR #10](https://github.com/liu-657667/macsoul/pull/10) merged normally; [main CI 37614072470](https://github.com/liu-657667/macsoul/actions/runs/37614072470) SUCCESS. This CI is distinct from the earlier local 365 tests / 0 failures / 0 skips; successful CI logs did not expose test counts. Build, test, package, signing, notarization and publication are tracked separately. See the [release guide](docs/RELEASE.md), [final report](reports/FINAL.md) and [changelog](CHANGELOG.md). The [v0.1.0 Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) is public. Anonymous downloads of all three assets, sizes, SHA256 and checksum contents passed; the DMG mounts and all 7 App files in DMG / ZIP match the accepted Archive. Publication does not expand the finite existing RC acceptance scope. No signed installer or Gatekeeper PASS is claimed.
 
 ## Contributing
 
