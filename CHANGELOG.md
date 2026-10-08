@@ -1,8 +1,8 @@
 # Changelog
 
-## [0.1.0] - Unreleased
+## [0.1.0] - 2026-10-07
 
-v0.1.0 Unsigned / Unnotarized Developer Preview is in release preparation, not publicly released. The release date remains unconfirmed. Candidate distribution uses a precompiled Universal DMG with the accepted ZIP as an alternative; no Xcode is required for users.
+v0.1.0 Unsigned / Unnotarized Developer Preview was [publicly released](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) on 2026-10-07 as a **Pre-release, not Latest**. Distribution uses a precompiled Universal DMG with the accepted ZIP as an alternative, plus SHA256SUMS.txt; no Xcode is required for users.
 
 ### Features
 
@@ -33,4 +33,4 @@ v0.1.0 Unsigned / Unnotarized Developer Preview is in release preparation, not p
 - Unsigned, unnotarized; first opening may be blocked by macOS. Browser/quarantine and public anonymous download results are separate from local package validation; no Gatekeeper PASS claim.
 - Minimum deployment target macOS 13.0; Universal arm64 + x86_64 is not Intel hardware validation.
 - Signed/installed Login Item validation remains deferred. Signing/notarization and App Store Connect privacy validation are NOT_RUN; no App Store, Homebrew or automatic update distribution.
-- Public tag / Release publication await final Owner authorization. See [release guide](docs/RELEASE.md).
+- The public [v0.1.0 Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) remains UNSIGNED / UNNOTARIZED. Browser-candidate reopen and Applications installation checks are NOT_RUN. See [release guide](docs/RELEASE.md).
