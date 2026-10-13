@@ -32,7 +32,7 @@ struct NetworkClock: Sendable {
          local: any LocalNetworkProviding = NativeLocalNetworkProvider(),
          clock: NetworkClock = NetworkClock(), onSnapshot: @escaping (NetworkSnapshot) -> Void) {
         pathProvider = path ?? NativeNetworkPathProvider()
-        ipProvider = PublicIPProvider(client: client)
+        ipProvider = PublicIPProvider(client: client, clock: clock)
         connectivity = ConnectivityProvider(client: client)
         localProvider = local; self.clock = clock; publish = onSnapshot
     }
@@ -181,13 +181,25 @@ struct NetworkClock: Sendable {
 
     private func readPublicIP() {
         let token = generation, prior = cancelledWork, provider = ipProvider
-        snapshot.ipv4.checking = true; snapshot.ipv6.checking = true; publish(snapshot)
+        let families = IPFamily.allCases.filter { family in
+            family == .ipv4 ? snapshot.path.supportsIPv4 : snapshot.path.supportsIPv6
+        }
+        for family in IPFamily.allCases {
+            if family == .ipv4 {
+                if families.contains(family) { snapshot.ipv4.beginAttempt(at: clock.now()) }
+                else { snapshot.ipv4.invalidate(.unsupported) }
+            } else {
+                if families.contains(family) { snapshot.ipv6.beginAttempt(at: clock.now()) }
+                else { snapshot.ipv6.invalidate(.unsupported) }
+            }
+        }
+        publish(snapshot)
         ipTask = Task { [weak self] in
             await prior?.value
             guard !Task.isCancelled else { return }
-            // A single batch task permits one request per family, independently.
-            await withTaskGroup(of: (IPFamily, Result<String, NetworkFailure>).self) { group in
-                for family in IPFamily.allCases {
+            // One batch, at most two serial provider queries per supported family.
+            await withTaskGroup(of: (IPFamily, Result<PublicIPResult, NetworkFailure>).self) { group in
+                for family in families {
                     group.addTask {
                         do { return (family, .success(try await provider.fetch(family))) }
                         catch { return (family, .failure(networkFailure(error))) }

@@ -14,13 +14,11 @@ struct NetworkView: View {
                     LabeledContent(language.text("Low Data Mode"), value: boolean(network.path.constrained))
                 }
                 Section(language.text("Public exit IP")) {
-                    LabeledContent("IPv4", value: network.ipv4.display(language, now: store.displayNow))
-                    LabeledContent("IPv6", value: network.ipv6.display(language, now: store.displayNow))
-                    Text("\(language.text("Source")) · IPv4: \(network.ipv4.source) · IPv6: \(network.ipv6.source)").font(.caption).foregroundStyle(MacSoulTheme.supportingText)
-                    LabeledContent(language.text("IPv4 updated"), value: language.sampledTime(network.ipv4.sampledAt))
-                    LabeledContent(language.text("IPv6 updated"), value: language.sampledTime(network.ipv6.sampledAt))
+                    publicIPDetails("IPv4", reading: network.ipv4)
+                    Divider()
+                    publicIPDetails("IPv6", reading: network.ipv6)
                     LabeledContent(language.text("Region"), value: language.text(network.region))
-                    Text(language.text("Public IP requests go to ipify; this is the provider-observed exit, not a device location."))
+                    Text(language.text("Primary: IPinfo · Fallback: ident.me. Each service can observe the request's public exit IP; no device location is collected."))
                         .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
                 }
                 Section(language.text("Proxy")) {
@@ -70,6 +68,19 @@ struct NetworkView: View {
         }.formStyle(.grouped).navigationTitle(language.text("Network"))
     }
     private func boolean(_ value: Bool?) -> String { language.text(value.map { $0 ? "Yes" : "No" } ?? "Unavailable") }
+    @ViewBuilder private func publicIPDetails(_ family: String, reading: PublicIPReading) -> some View {
+        LabeledContent(family, value: reading.display(language, now: store.displayNow))
+        LabeledContent(language.text("Status"), value: reading.statusDisplay(language, now: store.displayNow))
+        LabeledContent(language.text("Last successful source"), value: reading.sourceDisplay(language))
+        LabeledContent(language.text("Last successful lookup"), value: language.sampledTime(reading.sampledAt))
+        LabeledContent(language.text("Last lookup attempt"), value: language.sampledTime(reading.attemptedAt))
+        if let failure = reading.failure {
+            LabeledContent(language.text("Latest failure"), value: language.networkText(failure))
+            if let failedAt = reading.failedAt {
+                LabeledContent(language.text("Last failed lookup"), value: language.sampledTime(failedAt))
+            }
+        }
+    }
     @ViewBuilder private func proxyDetails(_ title: String, reading: ProxyReading, system: Bool = false) -> some View {
         Text(language.text(title)).font(.headline)
         Text(reading.display(language, system: system))
@@ -108,6 +119,15 @@ struct NetworkSummary: View {
     }
 }
 extension PublicIPReading {
+    func statusDisplay(_ language: MacSoulLanguage, now: Date) -> String {
+        let expired = sampledAt.map { now.timeIntervalSince($0) >= NetworkSchedule.ipTTL } ?? true
+        let status = address == nil ? "Unavailable" : freshness == .stale || expired ? "Stale" : "Fresh"
+        return (checking ? language.text("Querying…") + " · " : "") + language.text(status)
+    }
+    func sourceDisplay(_ language: MacSoulLanguage) -> String {
+        guard address != nil, sampledAt != nil, let source else { return language.text("Not sampled") }
+        return source.displayName
+    }
     func display(_ language: MacSoulLanguage, now: Date) -> String {
         if let address {
             let expired = sampledAt.map { now.timeIntervalSince($0) >= NetworkSchedule.ipTTL } ?? true
@@ -115,9 +135,12 @@ extension PublicIPReading {
             return ([address, language.text("Stale")] + (failure.map { [language.networkText($0)] } ?? []))
                 .joined(separator: " · ")
         }
-        if checking { return language.text("Checking…") }
-        return failure.map { language.networkText($0) } ?? language.text("Unavailable")
+        if checking { return language.text("Querying…") }
+        return language.text("Unavailable") + (failure.map { " · " + language.networkText($0) } ?? "")
     }
+}
+extension PublicIPSource {
+    var displayName: String { self == .ipinfo ? "IPinfo" : "ident.me" }
 }
 extension ProxyReading {
     func display(_ language: MacSoulLanguage, system: Bool = false) -> String {
@@ -170,6 +193,8 @@ extension MacSoulLanguage {
         case .tooLarge: text("Response too large")
         case .unavailable: text("Unavailable")
         case .offline: text("Offline")
+        case .tls: text("TLS validation failed")
+        case .unsupported: text("Not supported by this network")
         }
     }
     func networkText(_ state: ProbeState) -> String {

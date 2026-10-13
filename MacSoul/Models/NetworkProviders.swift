@@ -52,7 +52,7 @@ import Darwin
     }
 }
 
-struct NetworkHTTPResponse { let status: Int; let body: Data }
+struct NetworkHTTPResponse: Sendable { let status: Int; let body: Data }
 protocol NetworkHTTPClient: Sendable {
     func request(url: URL, method: String, maxBytes: Int) async throws -> NetworkHTTPResponse
 }
@@ -69,6 +69,8 @@ struct EphemeralNetworkHTTPClient: NetworkHTTPClient {
         return config
     }
     func request(url: URL, method: String, maxBytes: Int) async throws -> NetworkHTTPResponse {
+        guard url.scheme?.lowercased() == "https", url.user == nil, url.password == nil,
+              ["GET", "HEAD"].contains(method), maxBytes >= 0 else { throw NetworkFailure.malformed }
         let session = URLSession(configuration: Self.configuration(), delegate: NoNetworkRedirects(), delegateQueue: nil)
         defer { session.invalidateAndCancel() }
         return try await withTaskCancellationHandler {
@@ -93,20 +95,33 @@ struct EphemeralNetworkHTTPClient: NetworkHTTPClient {
         }
     }
 }
-private final class NoNetworkRedirects: NSObject, URLSessionTaskDelegate {
+final class NoNetworkRedirects: NSObject, URLSessionTaskDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask,
                     willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest,
                     completionHandler: @escaping (URLRequest?) -> Void) { completionHandler(nil) }
 }
 
 struct PublicIPProvider: Sendable {
+    // Both families have their own fixed budget. There is no recursive retry.
+    static let attemptTimeout: TimeInterval = 5
+    static let totalTimeout: TimeInterval = 10
     let client: any NetworkHTTPClient
-    init(client: any NetworkHTTPClient = EphemeralNetworkHTTPClient()) { self.client = client }
-    static func endpoint(_ family: IPFamily) -> URL {
-        URL(string: family == .ipv4 ? "https://api.ipify.org" : "https://api6.ipify.org")!
+    let clock: NetworkClock
+    init(client: any NetworkHTTPClient = EphemeralNetworkHTTPClient(), clock: NetworkClock = NetworkClock()) {
+        self.client = client; self.clock = clock
+    }
+    static func endpoint(_ family: IPFamily, source: PublicIPSource = .ipinfo) -> URL {
+        switch (source, family) {
+        case (.ipinfo, .ipv4): URL(string: "https://v4.api.ipinfo.io/ip")!
+        case (.ipinfo, .ipv6): URL(string: "https://v6.api.ipinfo.io/ip")!
+        case (.identMe, .ipv4): URL(string: "https://4.ident.me")!
+        case (.identMe, .ipv6): URL(string: "https://6.ident.me")!
+        }
     }
     static func parse(_ data: Data, family: IPFamily) throws -> String {
         guard data.count <= 1024 else { throw NetworkFailure.tooLarge }
+        // inet_pton sees a C string: reject embedded terminators before decoding/trimming.
+        guard !data.contains(0) else { throw NetworkFailure.malformed }
         guard let text = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines),
               !text.isEmpty, !text.contains("%") else { throw NetworkFailure.malformed }
         if family == .ipv4 {
@@ -124,10 +139,40 @@ struct PublicIPProvider: Sendable {
         guard valid == 1 else { throw NetworkFailure.malformed }
         return text
     }
-    func fetch(_ family: IPFamily) async throws -> String {
-        let response = try await client.request(url: Self.endpoint(family), method: "GET", maxBytes: 1024)
-        guard (200...299).contains(response.status) else { throw NetworkFailure.http }
-        return try Self.parse(response.body, family: family)
+    func fetch(_ family: IPFamily) async throws -> PublicIPResult {
+        let deadline = clock.uptime() + Self.totalTimeout
+        var lastFailure = NetworkFailure.unavailable
+        for source in [PublicIPSource.ipinfo, .identMe] {
+            try Task.checkCancellation()
+            let remaining = min(Self.attemptTimeout, deadline - clock.uptime())
+            guard remaining > 0 else { throw NetworkFailure.timeout }
+            do {
+                let response = try await request(Self.endpoint(family, source: source), timeout: remaining)
+                try Task.checkCancellation()
+                guard clock.uptime() < deadline else { throw NetworkFailure.timeout }
+                guard (200...299).contains(response.status) else { throw NetworkFailure.http }
+                return PublicIPResult(address: try Self.parse(response.body, family: family), source: source)
+            } catch {
+                // Lifecycle cancellation must not start a fallback on an obsolete path.
+                if Task.isCancelled || error is CancellationError || (error as? URLError)?.code == .cancelled {
+                    throw CancellationError()
+                }
+                lastFailure = publicIPFailure(error)
+            }
+        }
+        throw lastFailure
+    }
+    private func request(_ url: URL, timeout: TimeInterval) async throws -> NetworkHTTPResponse {
+        // Cancellation is cooperative. Scope exit joins both children, even after
+        // the deadline wins; it cannot guarantee a wall-clock return bound for a
+        // client that delays cancellation. Never detach that request to return early.
+        try await withThrowingTaskGroup(of: NetworkHTTPResponse.self) { group in
+            defer { group.cancelAll() }
+            group.addTask { try await client.request(url: url, method: "GET", maxBytes: 1024) }
+            group.addTask { try await clock.sleep(timeout); try Task.checkCancellation(); throw NetworkFailure.timeout }
+            guard let response = try await group.next() else { throw CancellationError() }
+            return response
+        }
     }
 }
 func networkFailure(_ error: Error) -> NetworkFailure {
@@ -137,6 +182,13 @@ func networkFailure(_ error: Error) -> NetworkFailure {
         if urlError.code == .notConnectedToInternet { return .offline }
     }
     return .transport // Never publish error descriptions containing a URL or payload.
+}
+func publicIPFailure(_ error: Error) -> NetworkFailure {
+    if let urlError = error as? URLError,
+       [.secureConnectionFailed, .serverCertificateHasBadDate, .serverCertificateUntrusted,
+        .serverCertificateHasUnknownRoot, .serverCertificateNotYetValid,
+        .clientCertificateRejected, .clientCertificateRequired].contains(urlError.code) { return .tls }
+    return networkFailure(error)
 }
 
 struct ConnectivityProvider: Sendable {

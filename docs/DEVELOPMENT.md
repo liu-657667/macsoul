@@ -91,3 +91,11 @@ README 发布新能力之前，应检查对应代码是否已进入目标分支�
 ## 7. Release candidate
 
 Day 7 构建、unsigned 打包与 Owner signing/notarization plan 见[发布指南](RELEASE.md)。对外贡献见[贡献指南](../CONTRIBUTING.md)，最终事实与未执行项目见[最终报告](../reports/FINAL.md)。签名、公证、安装与发布均需单独授权。
+
+## Issue #18：v0.1.1 本地候选验证
+
+当前分支的公网 IP 主备查询是未发布候选，未重新打开 v0.1.0 验收。NetworkTests 使用 Mock HTTP、显式请求/结果握手和已注册的假时钟等待票据，覆盖两种地址族、单次回退、5 秒单次/10 秒总预算、TLS/状态/格式/长度、历史地址与来源、网络切换及 sleep stop/wake start 的旧结果隔离；NetworkPresentationTests 检查中英文来源/时间/状态文案。Preview 单独检查零 HTTP。测试不访问真实 IPinfo/ident.me，也不持久化真实公网 IP。
+
+受限回退改变了真实请求上限：冷却测试仍精确断言两个双栈批次共 **4 次主源查询**，并单独断言一次失败触发的备用请求，因此该场景实际为 **5 次 HTTP GET**；不放宽为“大于等于”或删掉计数。原 3/6/9 probe、TTL、debounce、取消、清理及延后 IPv6 的业务断言保留。
+
+优先定向 Network 测试，再运行必要的完整单测和 Debug build；每次结果使用自己的 ignored 日志与 xcresult，不能复用历史计数。旧 v0.1.0 维护 validator/ledger 的固定批准不覆盖新产品 fingerprint；拒绝须原样记录，不改旧声明、决定或校验规则来通过。真实服务可达性、目标 Mac 代理/TLS/IPv6、Network 页面截图与 macOS sleep/wake 行为待 Owner 单独执行；本轮不触发 GitHub CI 或关闭 Issue。

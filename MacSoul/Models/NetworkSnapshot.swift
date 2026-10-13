@@ -18,29 +18,40 @@ struct NetworkPathReading: Equatable {
 enum NetworkFailure: String, Error, Equatable {
     case timeout = "Timeout", transport = "Transport failed", http = "HTTP failed"
     case malformed = "Invalid response", tooLarge = "Response too large", unavailable = "Unavailable", offline = "Offline"
+    case tls = "TLS validation failed", unsupported = "Not supported by this network"
 }
-enum IPFamily: CaseIterable { case ipv4, ipv6 }
+enum IPFamily: CaseIterable, Sendable { case ipv4, ipv6 }
+enum PublicIPSource: String, Sendable { case ipinfo, identMe }
+struct PublicIPResult: Sendable {
+    let address: String
+    let source: PublicIPSource
+}
 struct PublicIPReading: Equatable {
     var address: String? = nil
     var sampledAt: Date? = nil
     var attemptedAt: Date? = nil
     var freshness: Freshness = .unavailable
     var failure: NetworkFailure? = nil
+    var failedAt: Date? = nil
     var checking = false
-    let source: String
-    mutating func apply(_ result: Result<String, NetworkFailure>, at date: Date) {
-        attemptedAt = date; checking = false
+    // Only a successful result changes source; stale addresses retain their provenance.
+    var source: PublicIPSource? = nil
+    mutating func beginAttempt(at date: Date) { attemptedAt = date; checking = true }
+    mutating func apply(_ result: Result<PublicIPResult, NetworkFailure>, at date: Date) {
+        checking = false
         switch result {
-        case .success(let address):
-            self.address = address; sampledAt = date; freshness = .fresh; failure = nil
+        case .success(let result):
+            address = result.address; source = result.source
+            sampledAt = date; freshness = .fresh; failure = nil; failedAt = nil
         case .failure(let failure):
-            self.failure = failure; freshness = address == nil ? .unavailable : .stale
+            self.failure = failure; failedAt = date; freshness = address == nil ? .unavailable : .stale
         }
     }
     mutating func invalidate(_ failure: NetworkFailure? = nil) {
         checking = false
         freshness = address == nil ? .unavailable : .stale
         self.failure = failure
+        failedAt = nil // Path invalidation is not a completed HTTP attempt.
     }
     func label(now: Date) -> String {
         if let address {
@@ -49,7 +60,7 @@ struct PublicIPReading: Equatable {
             let suffix = stale ? " · Stale" + (failure.map { " · " + $0.rawValue } ?? "") : ""
             return address + suffix
         }
-        return checking ? "Checking…" : failure?.rawValue ?? "Unavailable"
+        return checking ? "Querying…" : "Unavailable" + (failure.map { " · " + $0.rawValue } ?? "")
     }
 }
 
@@ -111,8 +122,8 @@ struct ProbeReading: Equatable, Identifiable {
 }
 struct NetworkSnapshot: Equatable {
     var path = NetworkPathReading()
-    var ipv4 = PublicIPReading(source: "ipify · api.ipify.org")
-    var ipv6 = PublicIPReading(source: "ipify · api6.ipify.org")
+    var ipv4 = PublicIPReading()
+    var ipv6 = PublicIPReading()
     var environmentProxy = ProxyReading(state: .unavailable)
     var systemProxy = ProxyReading(state: .unavailable)
     var tunnel = TunnelReading(available: false)
