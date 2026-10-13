@@ -13,17 +13,15 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - name: Verify MacSoul
-        run: ./scripts/verify.sh
+        with:
+          fetch-depth: 0
+      - name: Verify current v0.1.1 and frozen historical integrity
+        run: ./scripts/verify-v0.1.1.sh
       - name: Print verification logs on failure
         if: failure()
         shell: bash
         run: |
-          for file in \
-            .artifacts/doctor.log \
-            .artifacts/build.log \
-            .artifacts/test.log \
-            .artifacts/progress-verify.log
+          for file in .artifacts/v0.1.1-verification.json .artifacts/v0.1.1-runs/*/*.log
           do
             if [[ -f "$file" ]]; then
               echo "::group::$file"
