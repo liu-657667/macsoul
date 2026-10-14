@@ -59,6 +59,7 @@ private actor FakeNetworkHTTP: NetworkHTTPClient {
     }
     func heldCount() -> Int { waiting.count }
     func release(_ url: URL, text: String) {
+        trace?.record("request-release time=\(time?.uptime() ?? 0) address=\(text)")
         heldHosts.remove(url.host!); ignoreCancellationHosts.remove(url.host!)
         for (id, entry) in waiting.filter({ $0.value.0 == url }) {
             waiting.removeValue(forKey: id)
@@ -73,6 +74,7 @@ private actor FakeNetworkHTTP: NetworkHTTPClient {
     func cancelledCount() -> Int { cancellations }
     func cancel(_ id: UUID) {
         guard let value = waiting[id] else { return }
+        trace?.record("request-cancellation time=\(time?.uptime() ?? 0) service=\(value.0.host ?? "fake")")
         cancellations += 1
         if ignoreCancellationHosts.contains(value.0.host!) { return }
         waiting.removeValue(forKey: id); value.1.resume(throwing: CancellationError())
@@ -217,15 +219,20 @@ private final class ManualNetworkSleeper: @unchecked Sendable {
     let path = FakeNetworkPath()
     let time = ManualNetworkTime()
     lazy var entryGate = NetworkSleepEntryGate(trace: time.trace)
+    lazy var timerWakeGate = NetworkSleepEntryGate(trace: time.trace)
     lazy var client = FakeNetworkHTTP(trace: time.trace, time: time)
     lazy var sleeper = ManualNetworkSleeper(time: time)
     lazy var monitor = NetworkMonitor(path: path, client: client, local: FakeLocalNetwork(),
         clock: NetworkClock(now: { [time] in time.date() }, uptime: { [time] in time.uptime() },
-                            sleep: { [time, sleeper, entryGate] seconds in
+                            sleep: { [time, sleeper, entryGate, timerWakeGate] seconds in
                                 time.trace.record("sleep-entry time=\(time.uptime()) seconds=\(seconds)")
                                 try await entryGate.enter(seconds)
                                 try await sleeper.wait(seconds: seconds)
-                            }), onSnapshot: { _ in })
+                                time.trace.record("timer-fired-before-callback time=\(time.uptime()) seconds=\(seconds)")
+                                try await timerWakeGate.enter(seconds)
+                            }), onSnapshot: { [time] snapshot in
+                                time.trace.record("snapshot-published time=\(time.uptime()) path=\(snapshot.path.interfaces) address=\(snapshot.ipv4.address ?? "nil") freshness=\(snapshot.ipv4.freshness) checking=\(snapshot.ipv4.checking) attempted=\(snapshot.ipv4.attemptedAt?.timeIntervalSince1970 ?? -1)")
+                            })
     func online(_ kind: NetworkInterfaceKind = .wifi) {
         time.trace.record("path time=\(time.uptime()) kind=\(kind)")
         path.send(NetworkPathReading(state: .satisfied, interfaces: [kind], interfaceNames: ["en0"],
@@ -246,10 +253,11 @@ private final class ManualNetworkSleeper: @unchecked Sendable {
         await stop(); return false
     }
     func stop() async {
-        monitor.stop(); entryGate.release(); await monitor.waitForStop()
+        monitor.stop(); entryGate.release(); timerWakeGate.release(); await monitor.waitForStop()
         // Stop does not join timers. Synchronous cancellation already removed
         // their entries; gated entries observe Task.isCancelled before registration.
         XCTAssertEqual(sleeper.count(), 0); XCTAssertEqual(entryGate.count(), 0)
+        XCTAssertEqual(timerWakeGate.count(), 0)
         time.trace.dump()
     }
 }
@@ -623,20 +631,56 @@ final class NetworkTests: XCTestCase {
     }
     @MainActor func testPathChangeCancelsFallbackAndRejectsLateOldAddress() async {
         let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
+        let initialSample = h.monitor.snapshot.ipv4.sampledAt
+        let primary = PublicIPProvider.endpoint(.ipv4)
         let fallback = PublicIPProvider.endpoint(.ipv4, source: .identMe)
-        await h.client.fail(PublicIPProvider.endpoint(.ipv4), error: .transport)
+        await h.client.fail(primary, error: .transport)
         await h.client.hold(fallback, ignoringCancellation: true)
         h.time.set(4); h.monitor.refresh()
         guard await eventually({ await h.client.heldCount() == 1 }) else { await h.stop(); return }
+        let previousPrimaryRequests = await h.client.primaryIPCount()
+        // Reproduce the gap after timer wake but before the new batch starts.
+        // Neither stale checking=false nor joining a nil ipTask proves completion.
+        h.timerWakeGate.hold(0.75)
         h.online(.ethernet)
         XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .stale)
         guard await eventually({ await h.client.cancelledCount() == 1 }) else { await h.client.release(fallback, text: "198.51.100.99"); await h.stop(); return }
-        await h.client.set(PublicIPProvider.endpoint(.ipv4), text: "192.0.2.22")
+        await h.client.set(primary, text: "192.0.2.22")
         await h.client.release(fallback, text: "198.51.100.99")
-        guard await h.advance(4.75, registered: 4.75), await completed(h) else { return }
+        // Hold the new response too: request entry is not result publication.
+        await h.client.hold(primary)
+        guard await h.advance(4.75, registered: 4.75),
+              await eventually({ h.timerWakeGate.count() == 1 }) else { await h.client.release(primary, text: "192.0.2.22"); await h.stop(); return }
+        let beforeCallback = await h.client.primaryIPCount()
+        XCTAssertEqual(beforeCallback, previousPrimaryRequests)
+        XCTAssertEqual(h.monitor.snapshot.ipv4.attemptedAt, Date(timeIntervalSince1970: 4))
+        XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .stale)
+        h.time.trace.record("assertion-before-new-batch primaryCount=\(beforeCallback) checking=\(h.monitor.snapshot.ipv4.checking)")
+        h.timerWakeGate.release()
+        let attempt = Date(timeIntervalSince1970: 4.75)
+        // Both actual primary calls must belong to the new path's attempt.
+        guard await eventually({
+            let entered = await h.client.primaryIPCount()
+            let held = await h.client.heldCount()
+            return entered == previousPrimaryRequests + 2
+            && h.monitor.snapshot.path.interfaces == [.ethernet]
+            && h.monitor.snapshot.ipv4.attemptedAt == attempt
+            && h.monitor.snapshot.ipv6.attemptedAt == attempt
+            && held == 1 }) else { await h.client.release(primary, text: "192.0.2.22"); await h.stop(); return }
+        h.time.trace.record("new-batch-request-handshake time=\(h.time.uptime())")
+        XCTAssertTrue(h.monitor.snapshot.ipv4.checking)
+        XCTAssertEqual(h.monitor.snapshot.ipv4.sampledAt, initialSample)
+        await h.client.release(primary, text: "192.0.2.22")
+        // A publication from the old generation cannot satisfy these timestamps.
+        guard await eventually({ !h.monitor.snapshot.ipv4.checking && !h.monitor.snapshot.ipv6.checking
+            && h.monitor.snapshot.ipv4.sampledAt == attempt
+            && h.monitor.snapshot.ipv6.sampledAt == attempt }), await completed(h) else { await h.stop(); return }
+        h.time.trace.record("assertion-after-new-publication address=\(h.monitor.snapshot.ipv4.address ?? "nil") freshness=\(h.monitor.snapshot.ipv4.freshness)")
         XCTAssertEqual(h.monitor.snapshot.ipv4.address, "192.0.2.22")
         XCTAssertEqual(h.monitor.snapshot.ipv4.source, .ipinfo)
         XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .fresh)
+        let finalPrimaryRequests = await h.client.primaryIPCount()
+        XCTAssertEqual(finalPrimaryRequests, previousPrimaryRequests + 2)
         XCTAssertEqual(h.path.starts, 1)
         await h.stop()
     }
