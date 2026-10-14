@@ -6,11 +6,28 @@
 - `./scripts/test.sh`: XCTest suite and local xcresult.
 - `python3 scripts/verify-visual-assets.py`: bundled asset hashes, sizes and catalog references.
 - `./scripts/verify.sh`: all fixed checks plus `.artifacts/verification.json`; regenerates local command evidence before checking the ledger, including on a fresh clone.
+- `./scripts/verify-v0.1.1.sh`: current v0.1.1 doctor, unsigned Debug build, Network and full unit tests, assets, script tests, readonly progress/STATUS, document links and Git/input consistency. Each run has fresh logs and an independent receipt under ignored `.artifacts/v0.1.1-runs/`; `.artifacts/v0.1.1-verification.json` points to the latest result. This entry preserves the old validator's actual current-source refusal and runs unchanged maintenance/progress checks only at fixed historical revision `d5084ba95d648bb3bc4a1c4975318e9cb822e4b8`. Historical checks do not accept the current product or transfer old Owner/Live/performance evidence.
 - `python3 scripts/verify_progress.py`: ledger invariants/current evidence.
 - `python3 scripts/generate_status.py`: regenerate STATUS from `tasks.json`.
 - `python3 scripts/check_bundle.py`: historical starter-package check. It resolves moved files under `docs/archive/bootstrap/` but intentionally keeps the original manifest and reports changed source bytes or the missing original `.codex/config.toml`; it is not a current build gate.
 
 Build/test/verification scripts do not install tools or change global configuration; unit tests use injected Network providers. The optional Network observer below contacts external providers only with explicit opt-in. Logs and DerivedData stay in ignored `.artifacts/`.
+
+The v0.1.1 runner captures HEAD/tree, branch or detached checkout, index and a
+complete tracked/nonignored-untracked content/mode inventory, including README,
+docs and workflow inputs beyond the unchanged legacy fingerprint. Local dirty
+candidates are explicit; GitHub Actions requires a clean checkout throughout.
+Input changes, missing evidence, failed commands or inconsistent test summaries
+fail verification. Receipts check consistency, not authentication. Manual UI,
+Live and performance remain NOT_RUN, with Owner UI/Live PENDING_OWNER. Local
+success does not imply remote CI. The `macos` workflow job name remains intact.
+Fixed historical commit closures are explicitly fetched into a fresh empty
+repository; a shallow/incomplete source uses the declared public repository.
+Exact objects and a complete historical closure are required, without shared
+alternates, local-main dependency or old ignored evidence. No IP provider is
+called by this entry. `python3 scripts/test_v011_verification.py` exercises the
+new receipt/identity/failure safeguards using isolated simulation fixtures;
+their simulated results are not product or Owner acceptance.
 
 
 ## Historical Network read-only observation — initial standalone source list

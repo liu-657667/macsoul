@@ -23,9 +23,11 @@ private actor FakeNetworkHTTP: NetworkHTTPClient {
     private let time: ManualNetworkTime?
     init(trace: NetworkTestTrace? = nil, time: ManualNetworkTime? = nil) { self.trace = trace; self.time = time }
     var calls: [Call] = []
-    var answers: [String: Result<NetworkHTTPResponse, NetworkFailure>] = [:]
+    var answers: [String: Result<NetworkHTTPResponse, Error>] = [:]
     var held = false
-    var waiting: [UUID: CheckedContinuation<NetworkHTTPResponse, Error>] = [:]
+    var waiting: [UUID: (URL, CheckedContinuation<NetworkHTTPResponse, Error>)] = [:]
+    private var heldHosts: Set<String> = []
+    private var ignoreCancellationHosts: Set<String> = []
     var cancellations = 0
     // Test-only entry gate: IPv4 may publish before IPv6 even enters its request.
     private var delayedHosts: Set<String> = []
@@ -45,12 +47,38 @@ private actor FakeNetworkHTTP: NetworkHTTPClient {
         answers[url.host!] = .success(NetworkHTTPResponse(status: status, body: Data(text.utf8)))
     }
     func fail(_ url: URL, error: NetworkFailure) { answers[url.host!] = .failure(error) }
+    func failURL(_ url: URL, code: URLError.Code) { answers[url.host!] = .failure(URLError(code)) }
+    func failFamily(_ family: IPFamily, error: NetworkFailure) {
+        fail(PublicIPProvider.endpoint(family), error: error)
+        fail(PublicIPProvider.endpoint(family, source: .identMe), error: error)
+    }
     func hold() { held = true }
+    func hold(_ url: URL, ignoringCancellation: Bool = false) {
+        heldHosts.insert(url.host!)
+        if ignoringCancellation { ignoreCancellationHosts.insert(url.host!) }
+    }
+    func heldCount() -> Int { waiting.count }
+    func release(_ url: URL, text: String) {
+        trace?.record("request-release time=\(time?.uptime() ?? 0) address=\(text)")
+        heldHosts.remove(url.host!); ignoreCancellationHosts.remove(url.host!)
+        for (id, entry) in waiting.filter({ $0.value.0 == url }) {
+            waiting.removeValue(forKey: id)
+            entry.1.resume(returning: NetworkHTTPResponse(status: 200, body: Data(text.utf8)))
+        }
+    }
     func count() -> Int { calls.count }
     func probeCount() -> Int { calls.filter { $0.method == "HEAD" }.count }
     func ipCount() -> Int { calls.filter { $0.method == "GET" }.count }
+    func primaryIPCount() -> Int { calls.filter { $0.method == "GET" && $0.url.host?.hasSuffix("api.ipinfo.io") == true }.count }
+    func recordedCalls() -> [Call] { calls }
     func cancelledCount() -> Int { cancellations }
-    func cancel(_ id: UUID) { if let value = waiting.removeValue(forKey: id) { cancellations += 1; value.resume(throwing: CancellationError()) } }
+    func cancel(_ id: UUID) {
+        guard let value = waiting[id] else { return }
+        trace?.record("request-cancellation time=\(time?.uptime() ?? 0) service=\(value.0.host ?? "fake")")
+        cancellations += 1
+        if ignoreCancellationHosts.contains(value.0.host!) { return }
+        waiting.removeValue(forKey: id); value.1.resume(throwing: CancellationError())
+    }
     func request(url: URL, method: String, maxBytes: Int) async throws -> NetworkHTTPResponse {
         try Task.checkCancellation()
         if delayedHosts.contains(url.host!) {
@@ -66,17 +94,18 @@ private actor FakeNetworkHTTP: NetworkHTTPClient {
         trace?.record("request-enter time=\(time?.uptime() ?? 0) method=\(method) service=\(url.host ?? "fake")")
         defer { trace?.record("request-complete time=\(time?.uptime() ?? 0) method=\(method) service=\(url.host ?? "fake")") }
         calls.append(Call(url: url, method: method, maxBytes: maxBytes))
-        if held {
+        if held || heldHosts.contains(url.host!) {
             let id = UUID()
             return try await withTaskCancellationHandler {
                 try await withCheckedThrowingContinuation { continuation in
                     if Task.isCancelled { continuation.resume(throwing: CancellationError()) }
-                    else { waiting[id] = continuation }
+                    else { waiting[id] = (url, continuation) }
                 }
             } onCancel: { Task { await self.cancel(id) } }
         }
         if let answer = answers[url.host!] { return try answer.get() }
-        return NetworkHTTPResponse(status: 200, body: Data((url.host == "api.ipify.org" ? "192.0.2.1" : "2001:db8::1").utf8))
+        let ipv4 = url == PublicIPProvider.endpoint(.ipv4) || url == PublicIPProvider.endpoint(.ipv4, source: .identMe)
+        return NetworkHTTPResponse(status: 200, body: Data((ipv4 ? "192.0.2.1" : "2001:db8::1").utf8))
     }
 }
 private final class NetworkTestTrace: @unchecked Sendable {
@@ -190,15 +219,20 @@ private final class ManualNetworkSleeper: @unchecked Sendable {
     let path = FakeNetworkPath()
     let time = ManualNetworkTime()
     lazy var entryGate = NetworkSleepEntryGate(trace: time.trace)
+    lazy var timerWakeGate = NetworkSleepEntryGate(trace: time.trace)
     lazy var client = FakeNetworkHTTP(trace: time.trace, time: time)
     lazy var sleeper = ManualNetworkSleeper(time: time)
     lazy var monitor = NetworkMonitor(path: path, client: client, local: FakeLocalNetwork(),
         clock: NetworkClock(now: { [time] in time.date() }, uptime: { [time] in time.uptime() },
-                            sleep: { [time, sleeper, entryGate] seconds in
+                            sleep: { [time, sleeper, entryGate, timerWakeGate] seconds in
                                 time.trace.record("sleep-entry time=\(time.uptime()) seconds=\(seconds)")
                                 try await entryGate.enter(seconds)
                                 try await sleeper.wait(seconds: seconds)
-                            }), onSnapshot: { _ in })
+                                time.trace.record("timer-fired-before-callback time=\(time.uptime()) seconds=\(seconds)")
+                                try await timerWakeGate.enter(seconds)
+                            }), onSnapshot: { [time] snapshot in
+                                time.trace.record("snapshot-published time=\(time.uptime()) path=\(snapshot.path.interfaces) address=\(snapshot.ipv4.address ?? "nil") freshness=\(snapshot.ipv4.freshness) checking=\(snapshot.ipv4.checking) attempted=\(snapshot.ipv4.attemptedAt?.timeIntervalSince1970 ?? -1)")
+                            })
     func online(_ kind: NetworkInterfaceKind = .wifi) {
         time.trace.record("path time=\(time.uptime()) kind=\(kind)")
         path.send(NetworkPathReading(state: .satisfied, interfaces: [kind], interfaceNames: ["en0"],
@@ -219,10 +253,11 @@ private final class ManualNetworkSleeper: @unchecked Sendable {
         await stop(); return false
     }
     func stop() async {
-        monitor.stop(); entryGate.release(); await monitor.waitForStop()
+        monitor.stop(); entryGate.release(); timerWakeGate.release(); await monitor.waitForStop()
         // Stop does not join timers. Synchronous cancellation already removed
         // their entries; gated entries observe Task.isCancelled before registration.
         XCTAssertEqual(sleeper.count(), 0); XCTAssertEqual(entryGate.count(), 0)
+        XCTAssertEqual(timerWakeGate.count(), 0)
         time.trace.dump()
     }
 }
@@ -344,6 +379,368 @@ final class NetworkTests: XCTestCase {
         time.trace.dump()
     }
 
+    func testIPinfoSuccessPerFamilyUsesOnlyPrimaryAndPlainTextEndpoint() async throws {
+        for family in IPFamily.allCases {
+            let client = FakeNetworkHTTP()
+            let result = try await PublicIPProvider(client: client).fetch(family)
+            XCTAssertEqual(result.address, family == .ipv4 ? "192.0.2.1" : "2001:db8::1")
+            XCTAssertEqual(result.source, .ipinfo)
+            let calls = await client.recordedCalls(); XCTAssertEqual(calls.count, 1)
+            XCTAssertEqual(calls.first?.url, PublicIPProvider.endpoint(family))
+            XCTAssertEqual(calls.first?.method, "GET"); XCTAssertEqual(calls.first?.maxBytes, 1024)
+            XCTAssertEqual(calls.first?.url.path, "/ip"); XCTAssertNil(calls.first?.url.query)
+        }
+    }
+    func testPrimaryFailuresUseExactlyOneIndependentFallback() async throws {
+        for family in IPFamily.allCases {
+            for failure in [NetworkFailure.transport, .timeout, .http, .malformed, .tooLarge, .tls] {
+                let client = FakeNetworkHTTP(), primary = PublicIPProvider.endpoint(family)
+                switch failure {
+                case .http: await client.set(primary, status: 503)
+                case .malformed: await client.set(primary, text: "not an IP")
+                case .tooLarge: await client.set(primary, text: String(repeating: "x", count: 1025))
+                case .tls: await client.failURL(primary, code: .serverCertificateUntrusted)
+                default: await client.fail(primary, error: failure)
+                }
+                let result = try await PublicIPProvider(client: client).fetch(family)
+                XCTAssertEqual(result.source, .identMe)
+                XCTAssertEqual(result.address, family == .ipv4 ? "192.0.2.1" : "2001:db8::1")
+                let calls = await client.recordedCalls()
+                XCTAssertEqual(calls.map(\.url), [primary, PublicIPProvider.endpoint(family, source: .identMe)])
+                XCTAssertTrue(calls.allSatisfy { $0.method == "GET" && $0.maxBytes == 1024 && $0.url.scheme == "https" })
+            }
+        }
+    }
+    func testBothSourcesRejectBadHTTPFormatAndLengthWithoutThirdRequest() async {
+        for failure in [NetworkFailure.http, .malformed, .tooLarge] {
+            let client = FakeNetworkHTTP()
+            for source in [PublicIPSource.ipinfo, .identMe] {
+                let url = PublicIPProvider.endpoint(.ipv4, source: source)
+                switch failure {
+                case .http: await client.set(url, status: 302, text: "192.0.2.8")
+                case .malformed: await client.set(url, text: "2001:db8::1")
+                default: await client.set(url, text: String(repeating: " ", count: 1025) + "192.0.2.8")
+                }
+            }
+            do { _ = try await PublicIPProvider(client: client).fetch(.ipv4); XCTFail("Invalid responses accepted") }
+            catch { XCTAssertEqual(networkFailure(error), failure) }
+            let count = await client.ipCount(); XCTAssertEqual(count, 2)
+        }
+    }
+    func testTLSFailuresAreSanitizedAndFallbackAlsoMustValidateTLS() async {
+        let client = FakeNetworkHTTP()
+        for source in [PublicIPSource.ipinfo, .identMe] {
+            await client.failURL(PublicIPProvider.endpoint(.ipv4, source: source), code: .serverCertificateUntrusted)
+        }
+        do { _ = try await PublicIPProvider(client: client).fetch(.ipv4); XCTFail("TLS failure ignored") }
+        catch { XCTAssertEqual(networkFailure(error), .tls) }
+        let calls = await client.recordedCalls(); XCTAssertEqual(calls.count, 2)
+        XCTAssertTrue(calls.allSatisfy { $0.url.scheme == "https" })
+        for code in [URLError.Code.secureConnectionFailed, .serverCertificateHasBadDate, .serverCertificateUntrusted,
+                     .serverCertificateHasUnknownRoot, .serverCertificateNotYetValid, .clientCertificateRejected, .clientCertificateRequired] {
+            XCTAssertEqual(publicIPFailure(URLError(code)), .tls)
+        }
+    }
+    func testHTTPAndCredentialURLsAreRejectedBeforeSessionStarts() async {
+        for text in ["http://example.test", "https://user:secret@example.test"] {
+            do { _ = try await EphemeralNetworkHTTPClient().request(url: URL(string: text)!, method: "GET", maxBytes: 1024); XCTFail() }
+            catch { XCTAssertEqual(networkFailure(error), .malformed) }
+        }
+    }
+    func testCrossSiteRedirectIsRefusedWithoutStartingNetworkRequest() {
+        let original = PublicIPProvider.endpoint(.ipv4)
+        let session = URLSession(configuration: EphemeralNetworkHTTPClient.configuration())
+        defer { session.invalidateAndCancel() }
+        let task = session.dataTask(with: original) // Never resume: delegate policy only.
+        let redirect = URLRequest(url: PublicIPProvider.endpoint(.ipv4, source: .identMe))
+        let response = HTTPURLResponse(url: original, statusCode: 302, httpVersion: nil, headerFields: nil)!
+        var destination: URLRequest? = redirect
+        NoNetworkRedirects().urlSession(session, task: task, willPerformHTTPRedirection: response,
+                                        newRequest: redirect) { destination = $0 }
+        XCTAssertNil(destination)
+    }
+    @MainActor func testTwoHeldRequestsRespectFiveSecondAttemptAndTenSecondFamilyBudget() async {
+        let time = ManualNetworkTime(), client = FakeNetworkHTTP()
+        let sleeper = ManualNetworkSleeper(time: time)
+        let clock = NetworkClock(now: { time.date() }, uptime: { time.uptime() }, sleep: { try await sleeper.wait(seconds: $0) })
+        await client.hold()
+        var finished = false
+        let task = Task { @MainActor in
+            defer { finished = true }
+            do { _ = try await PublicIPProvider(client: client, clock: clock).fetch(.ipv4); XCTFail() }
+            catch { XCTAssertEqual(networkFailure(error), .timeout) }
+        }
+        guard await eventually({ await client.heldCount() == 1 && sleeper.ticket(deadline: 5) != nil }),
+              let first = sleeper.ticket(deadline: 5) else { task.cancel(); return }
+        XCTAssertTrue(sleeper.advance(to: 5, requiring: first))
+        guard await eventually({
+            let calls = await client.ipCount(), held = await client.heldCount()
+            return calls == 2 && held == 1 && sleeper.ticket(deadline: 10) != nil
+        }),
+              let second = sleeper.ticket(deadline: 10) else { task.cancel(); return }
+        XCTAssertTrue(sleeper.advance(to: 9.999, requiring: second)); XCTAssertFalse(finished)
+        XCTAssertTrue(sleeper.advance(to: 10, requiring: second))
+        guard await eventually({ finished }) else { task.cancel(); return }
+        await task.value
+        let calls = await client.ipCount(), cancellations = await client.cancelledCount(), pending = await client.heldCount()
+        XCTAssertEqual(calls, 2); XCTAssertEqual(cancellations, 2); XCTAssertEqual(pending, 0)
+        XCTAssertEqual(time.uptime(), PublicIPProvider.totalTimeout); XCTAssertEqual(sleeper.count(), 0)
+    }
+    @MainActor func testCancellationDuringPrimaryDoesNotStartFallback() async {
+        let client = FakeNetworkHTTP(); await client.hold()
+        var finished = false
+        let task = Task { @MainActor in
+            defer { finished = true }
+            do { _ = try await PublicIPProvider(client: client).fetch(.ipv4); XCTFail() }
+            catch { XCTAssertTrue(error is CancellationError) }
+        }
+        guard await eventually({ await client.heldCount() == 1 }) else { task.cancel(); return }
+        task.cancel()
+        guard await eventually({ finished }) else { return }
+        await task.value
+        let calls = await client.ipCount(), pending = await client.heldCount()
+        XCTAssertEqual(calls, 1); XCTAssertEqual(pending, 0)
+    }
+    @MainActor func testTimeoutJoinsDelayedClientAndExpiredBudgetDoesNotStartFallback() async {
+        let time = ManualNetworkTime(), client = FakeNetworkHTTP()
+        let sleeper = ManualNetworkSleeper(time: time)
+        let clock = NetworkClock(now: { time.date() }, uptime: { time.uptime() }, sleep: { try await sleeper.wait(seconds: $0) })
+        let primary = PublicIPProvider.endpoint(.ipv4)
+        await client.hold(primary, ignoringCancellation: true)
+        var finished = false
+        let task = Task { @MainActor in
+            defer { finished = true }
+            do { _ = try await PublicIPProvider(client: client, clock: clock).fetch(.ipv4); XCTFail("Late success must not escape timeout") }
+            catch { XCTAssertEqual(networkFailure(error), .timeout) }
+        }
+        // Always release the deliberately uncooperative fake on a failed handshake.
+        guard await eventually({ await client.heldCount() == 1 && sleeper.ticket(deadline: 5) != nil }),
+              let deadline = sleeper.ticket(deadline: 5) else {
+            task.cancel(); await client.release(primary, text: "192.0.2.9"); return
+        }
+        XCTAssertTrue(sleeper.advance(to: 5, requiring: deadline))
+        guard await eventually({ await client.cancelledCount() == 1 }) else {
+            task.cancel(); await client.release(primary, text: "192.0.2.9"); return
+        }
+        // The timeout child finished and cancelled HTTP, but the group is still joining it.
+        XCTAssertFalse(finished)
+        var calls = await client.ipCount(), pending = await client.heldCount()
+        XCTAssertEqual(calls, 1); XCTAssertEqual(pending, 1)
+        time.set(11) // Explicit cleanup delay beyond the entire family's budget.
+        await client.release(primary, text: "192.0.2.9")
+        guard await eventually({ finished }) else { task.cancel(); return }
+        await task.value
+        calls = await client.ipCount(); pending = await client.heldCount()
+        XCTAssertEqual(calls, 1); XCTAssertEqual(pending, 0); XCTAssertEqual(sleeper.count(), 0)
+    }
+    @MainActor func testCancellationJoinsDelayedClientWithoutPublishingSuccessOrFallback() async {
+        let time = ManualNetworkTime(), client = FakeNetworkHTTP()
+        let sleeper = ManualNetworkSleeper(time: time)
+        let clock = NetworkClock(now: { time.date() }, uptime: { time.uptime() }, sleep: { try await sleeper.wait(seconds: $0) })
+        let primary = PublicIPProvider.endpoint(.ipv4)
+        await client.hold(primary, ignoringCancellation: true)
+        var finished = false
+        let task = Task { @MainActor in
+            defer { finished = true }
+            do { _ = try await PublicIPProvider(client: client, clock: clock).fetch(.ipv4); XCTFail("Cancelled late success must not be published") }
+            catch { XCTAssertTrue(error is CancellationError) }
+        }
+        guard await eventually({ await client.heldCount() == 1 && sleeper.ticket(deadline: 5) != nil }) else {
+            task.cancel(); await client.release(primary, text: "192.0.2.9"); return
+        }
+        task.cancel()
+        guard await eventually({ await client.cancelledCount() == 1 }) else {
+            await client.release(primary, text: "192.0.2.9"); return
+        }
+        XCTAssertFalse(finished)
+        let held = await client.heldCount(); XCTAssertEqual(held, 1)
+        await client.release(primary, text: "192.0.2.9")
+        guard await eventually({ finished }) else { return }
+        await task.value
+        let calls = await client.ipCount(), pending = await client.heldCount()
+        XCTAssertEqual(calls, 1); XCTAssertEqual(pending, 0); XCTAssertEqual(sleeper.count(), 0)
+    }
+
+    @MainActor func testFallbackSuccessUpdatesSourceAndSuccessTimeButNotAttemptStart() async {
+        let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
+        let original = h.monitor.snapshot.ipv4.sampledAt
+        let fallback = PublicIPProvider.endpoint(.ipv4, source: .identMe)
+        await h.client.fail(PublicIPProvider.endpoint(.ipv4), error: .transport)
+        await h.client.hold(fallback)
+        h.time.set(4); h.monitor.refresh(); h.monitor.refresh(); h.monitor.refresh()
+        guard await eventually({ await h.client.heldCount() == 1 }) else { await h.stop(); return }
+        XCTAssertEqual(h.monitor.snapshot.ipv4.attemptedAt, Date(timeIntervalSince1970: 4))
+        XCTAssertEqual(h.monitor.snapshot.ipv4.source, .ipinfo)
+        XCTAssertEqual(h.monitor.snapshot.ipv4.sampledAt, original)
+        XCTAssertTrue(h.monitor.snapshot.ipv4.checking)
+        h.time.set(4.5); await h.client.release(fallback, text: "198.51.100.8")
+        guard await completed(h) else { return }
+        let ip = h.monitor.snapshot.ipv4
+        XCTAssertEqual(ip.address, "198.51.100.8"); XCTAssertEqual(ip.source, .identMe)
+        XCTAssertEqual(ip.freshness, .fresh); XCTAssertNil(ip.failure); XCTAssertNil(ip.failedAt)
+        XCTAssertEqual(ip.sampledAt, Date(timeIntervalSince1970: 4.5))
+        XCTAssertEqual(ip.attemptedAt, Date(timeIntervalSince1970: 4))
+        let calls = await h.client.ipCount(); XCTAssertEqual(calls, 5)
+        await h.stop()
+    }
+    @MainActor func testBothSourcesFailPreservesHistoricalAddressTimeAndSource() async {
+        let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
+        let original = h.monitor.snapshot.ipv4
+        await h.client.failFamily(.ipv4, error: .transport)
+        h.time.set(4); h.monitor.refresh()
+        guard await completed(h) else { return }
+        let reading = h.monitor.snapshot.ipv4
+        XCTAssertEqual(reading.address, original.address); XCTAssertEqual(reading.source, original.source)
+        XCTAssertEqual(reading.sampledAt, original.sampledAt); XCTAssertEqual(reading.freshness, .stale)
+        XCTAssertEqual(reading.failure, .transport); XCTAssertFalse(reading.checking)
+        XCTAssertEqual(reading.attemptedAt, Date(timeIntervalSince1970: 4))
+        XCTAssertEqual(reading.failedAt, Date(timeIntervalSince1970: 4))
+        await h.stop()
+    }
+    @MainActor func testNoHistoricalSuccessStaysUnavailableWithoutInventingSource() async {
+        let h = NetworkHarness(); await h.client.failFamily(.ipv4, error: .transport)
+        h.monitor.start(probesEnabled: false); h.online()
+        guard await h.advance(0.75, registered: 0.75), await completed(h) else { return }
+        let ip = h.monitor.snapshot.ipv4
+        XCTAssertNil(ip.address); XCTAssertNil(ip.sampledAt); XCTAssertNil(ip.source)
+        XCTAssertEqual(ip.freshness, .unavailable); XCTAssertEqual(ip.failure, .transport)
+        XCTAssertEqual(h.monitor.snapshot.ipv6.freshness, .fresh)
+        await h.stop()
+    }
+    @MainActor func testIPv4PublishesWhileIPv6FallbackIsStillPending() async {
+        let h = NetworkHarness()
+        await h.client.fail(PublicIPProvider.endpoint(.ipv6), error: .transport)
+        await h.client.hold(PublicIPProvider.endpoint(.ipv6, source: .identMe))
+        h.monitor.start(probesEnabled: false); h.online()
+        guard await h.advance(0.75, registered: 0.75),
+              await eventually({ (await h.client.heldCount()) == 1 && h.monitor.snapshot.ipv4.freshness == .fresh }) else { await h.stop(); return }
+        XCTAssertEqual(h.monitor.snapshot.ipv4.source, .ipinfo); XCTAssertNil(h.monitor.snapshot.ipv4.failure)
+        XCTAssertTrue(h.monitor.snapshot.ipv6.checking); XCTAssertNil(h.monitor.snapshot.ipv6.source)
+        await h.stop()
+    }
+    @MainActor func testUnsupportedIPv6MakesNoIPv6RequestAndKeepsIPv4Fresh() async {
+        let h = NetworkHarness(); h.monitor.start(probesEnabled: false)
+        h.path.send(NetworkPathReading(state: .satisfied, supportsIPv4: true, supportsIPv6: false))
+        guard await h.advance(0.75, registered: 0.75), await completed(h) else { return }
+        XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .fresh)
+        XCTAssertEqual(h.monitor.snapshot.ipv6.freshness, .unavailable)
+        XCTAssertEqual(h.monitor.snapshot.ipv6.failure, .unsupported)
+        XCTAssertNil(h.monitor.snapshot.ipv6.attemptedAt); XCTAssertNil(h.monitor.snapshot.ipv6.source)
+        let calls = await h.client.recordedCalls(); XCTAssertEqual(calls.filter { $0.method == "GET" }.map(\.url), [PublicIPProvider.endpoint(.ipv4)])
+        await h.stop()
+    }
+    @MainActor func testPathChangeCancelsFallbackAndRejectsLateOldAddress() async {
+        let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
+        let initialSample = h.monitor.snapshot.ipv4.sampledAt
+        let primary = PublicIPProvider.endpoint(.ipv4)
+        let fallback = PublicIPProvider.endpoint(.ipv4, source: .identMe)
+        await h.client.fail(primary, error: .transport)
+        await h.client.hold(fallback, ignoringCancellation: true)
+        h.time.set(4); h.monitor.refresh()
+        guard await eventually({ await h.client.heldCount() == 1 }) else { await h.stop(); return }
+        let previousPrimaryRequests = await h.client.primaryIPCount()
+        // Reproduce the gap after timer wake but before the new batch starts.
+        // Neither stale checking=false nor joining a nil ipTask proves completion.
+        h.timerWakeGate.hold(0.75)
+        h.online(.ethernet)
+        XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .stale)
+        guard await eventually({ await h.client.cancelledCount() == 1 }) else { await h.client.release(fallback, text: "198.51.100.99"); await h.stop(); return }
+        await h.client.set(primary, text: "192.0.2.22")
+        await h.client.release(fallback, text: "198.51.100.99")
+        // Hold the new response too: request entry is not result publication.
+        await h.client.hold(primary)
+        guard await h.advance(4.75, registered: 4.75),
+              await eventually({ h.timerWakeGate.count() == 1 }) else { await h.client.release(primary, text: "192.0.2.22"); await h.stop(); return }
+        let beforeCallback = await h.client.primaryIPCount()
+        XCTAssertEqual(beforeCallback, previousPrimaryRequests)
+        XCTAssertEqual(h.monitor.snapshot.ipv4.attemptedAt, Date(timeIntervalSince1970: 4))
+        XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .stale)
+        h.time.trace.record("assertion-before-new-batch primaryCount=\(beforeCallback) checking=\(h.monitor.snapshot.ipv4.checking)")
+        h.timerWakeGate.release()
+        let attempt = Date(timeIntervalSince1970: 4.75)
+        // Both actual primary calls must belong to the new path's attempt.
+        guard await eventually({
+            let entered = await h.client.primaryIPCount()
+            let held = await h.client.heldCount()
+            return entered == previousPrimaryRequests + 2
+            && h.monitor.snapshot.path.interfaces == [.ethernet]
+            && h.monitor.snapshot.ipv4.attemptedAt == attempt
+            && h.monitor.snapshot.ipv6.attemptedAt == attempt
+            && held == 1 }) else { await h.client.release(primary, text: "192.0.2.22"); await h.stop(); return }
+        h.time.trace.record("new-batch-request-handshake time=\(h.time.uptime())")
+        XCTAssertTrue(h.monitor.snapshot.ipv4.checking)
+        XCTAssertEqual(h.monitor.snapshot.ipv4.sampledAt, initialSample)
+        await h.client.release(primary, text: "192.0.2.22")
+        // A publication from the old generation cannot satisfy these timestamps.
+        guard await eventually({ !h.monitor.snapshot.ipv4.checking && !h.monitor.snapshot.ipv6.checking
+            && h.monitor.snapshot.ipv4.sampledAt == attempt
+            && h.monitor.snapshot.ipv6.sampledAt == attempt }), await completed(h) else { await h.stop(); return }
+        h.time.trace.record("assertion-after-new-publication address=\(h.monitor.snapshot.ipv4.address ?? "nil") freshness=\(h.monitor.snapshot.ipv4.freshness)")
+        XCTAssertEqual(h.monitor.snapshot.ipv4.address, "192.0.2.22")
+        XCTAssertEqual(h.monitor.snapshot.ipv4.source, .ipinfo)
+        XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .fresh)
+        let finalPrimaryRequests = await h.client.primaryIPCount()
+        XCTAssertEqual(finalPrimaryRequests, previousPrimaryRequests + 2)
+        XCTAssertEqual(h.path.starts, 1)
+        await h.stop()
+    }
+    @MainActor func testSleepStopAndWakeStartRejectLateOldFallbackResult() async {
+        // AppStore sleep/wake calls these same stop/start lifecycle boundaries.
+        let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
+        let fallback = PublicIPProvider.endpoint(.ipv4, source: .identMe)
+        await h.client.fail(PublicIPProvider.endpoint(.ipv4), error: .transport)
+        await h.client.hold(fallback, ignoringCancellation: true)
+        h.time.set(4); h.monitor.refresh()
+        guard await eventually({ await h.client.heldCount() == 1 }) else { await h.stop(); return }
+        h.monitor.stop(); XCTAssertNil(h.monitor.snapshot.ipv4.address)
+        guard await eventually({ await h.client.cancelledCount() == 1 }) else { await h.client.release(fallback, text: "198.51.100.99"); await h.stop(); return }
+        h.monitor.start(probesEnabled: false); h.online()
+        await h.client.set(PublicIPProvider.endpoint(.ipv4), text: "192.0.2.33")
+        await h.client.release(fallback, text: "198.51.100.99")
+        guard await h.advance(4.75, registered: 4.75), await completed(h) else { return }
+        XCTAssertEqual(h.monitor.snapshot.ipv4.address, "192.0.2.33")
+        XCTAssertEqual(h.monitor.snapshot.ipv4.source, .ipinfo); XCTAssertEqual(h.path.starts, 2)
+        await h.stop()
+    }
+    @MainActor func testPreviewRefreshAndNavigationNeverStartsNetworkOrHTTP() async {
+        let client = FakeNetworkHTTP(), path = FakeNetworkPath()
+        let store = AppStore(networkPath: path, networkHTTP: client, networkLocal: FakeLocalNetwork())
+        let window = UUID()
+        store.setWindow(window, visible: true, section: .network)
+        store.refreshNetwork(); store.refreshNetwork()
+        path.send(NetworkPathReading(state: .satisfied, supportsIPv4: true, supportsIPv6: true))
+        store.suspendForSleep(); store.resumeAfterWake()
+        store.setWindow(window, visible: false, section: .network)
+        XCTAssertEqual(store.snapshot.networkMode, .mock); XCTAssertEqual(store.networkStarts, 0); XCTAssertEqual(path.starts, 0)
+        let calls = await client.count(); XCTAssertEqual(calls, 0)
+    }
+
+    func testPublicIPv4RejectsNULBeforeDuringAndAfterAddress() {
+        for text in ["192.0.2.8\0illegal", "192.0.2.8\0", "\0192.0.2.8", "192.0.\02.8", " 192.0.2.8\0\n"] {
+            XCTAssertThrowsError(try PublicIPProvider.parse(Data(text.utf8), family: .ipv4)) {
+                XCTAssertEqual($0 as? NetworkFailure, .malformed)
+            }
+        }
+    }
+    func testPublicIPv6RejectsNULBeforeDuringAndAfterAddress() {
+        for text in ["2001:db8::1\0illegal", "2001:db8::1\0", "\02001:db8::1", "2001:db8:\0:1", " 2001:db8::1\0\n"] {
+            XCTAssertThrowsError(try PublicIPProvider.parse(Data(text.utf8), family: .ipv6)) {
+                XCTAssertEqual($0 as? NetworkFailure, .malformed)
+            }
+        }
+    }
+    func testPrimaryNULResponseUsesValidatedFallbackForBothFamilies() async throws {
+        for family in IPFamily.allCases {
+            let client = FakeNetworkHTTP()
+            await client.set(PublicIPProvider.endpoint(family), text: family == .ipv4 ? "192.0.2.8\0invalid" : "2001:db8::8\0invalid")
+            let result = try await PublicIPProvider(client: client).fetch(family)
+            XCTAssertEqual(result.source, .identMe)
+            XCTAssertEqual(result.address, family == .ipv4 ? "192.0.2.1" : "2001:db8::1")
+            let calls = await client.recordedCalls()
+            XCTAssertEqual(calls.map(\.url), [PublicIPProvider.endpoint(family), PublicIPProvider.endpoint(family, source: .identMe)])
+        }
+    }
+
     func testPublicIPv4Parser() throws {
         XCTAssertEqual(try PublicIPProvider.parse(Data(" 192.0.2.8\n".utf8), family: .ipv4), "192.0.2.8")
         for value in ["256.0.0.1", "1.2.3", "192.0.2.8 extra", "<html>", "2001:db8::1", "01.2.3.4"] {
@@ -362,9 +759,10 @@ final class NetworkTests: XCTestCase {
     func testHTTPFailuresDistinctFromTimeout() async {
         let client = FakeNetworkHTTP(), url = PublicIPProvider.endpoint(.ipv4)
         await client.set(url, status: 503)
+        await client.set(PublicIPProvider.endpoint(.ipv4, source: .identMe), status: 503)
         do { _ = try await PublicIPProvider(client: client).fetch(.ipv4); XCTFail() }
         catch { XCTAssertEqual(error as? NetworkFailure, .http) }
-        await client.fail(url, error: .timeout)
+        await client.failFamily(.ipv4, error: .timeout)
         do { _ = try await PublicIPProvider(client: client).fetch(.ipv4); XCTFail() }
         catch { XCTAssertEqual(networkFailure(error), .timeout) }
         XCTAssertEqual(networkFailure(URLError(.timedOut)), .timeout)
@@ -377,10 +775,10 @@ final class NetworkTests: XCTestCase {
         XCTAssertEqual(config.timeoutIntervalForRequest, 4); XCTAssertEqual(config.timeoutIntervalForResource, 5)
     }
     func testFreshStaleAndNeverSuccessfulIP() {
-        var value = PublicIPReading(source: "fake")
+        var value = PublicIPReading()
         value.apply(.failure(.timeout), at: Date(timeIntervalSince1970: 0))
         XCTAssertNil(value.address); XCTAssertEqual(value.freshness, .unavailable)
-        value.apply(.success("192.0.2.1"), at: Date(timeIntervalSince1970: 1))
+        value.apply(.success(PublicIPResult(address: "192.0.2.1", source: .ipinfo)), at: Date(timeIntervalSince1970: 1))
         XCTAssertFalse(value.label(now: Date(timeIntervalSince1970: 300)).contains("Stale"))
         XCTAssertTrue(value.label(now: Date(timeIntervalSince1970: 301)).contains("Stale"))
         value.apply(.failure(.http), at: Date(timeIntervalSince1970: 302))
@@ -510,7 +908,7 @@ final class NetworkTests: XCTestCase {
         await h.stop()
     }
     @MainActor func testIPv4SuccessDoesNotDependOnIPv6() async {
-        let h = NetworkHarness(); await h.client.fail(PublicIPProvider.endpoint(.ipv6), error: .timeout)
+        let h = NetworkHarness(); await h.client.failFamily(.ipv6, error: .timeout)
         guard await connected(h, probes: false) else { return }
         await eventually { !h.monitor.snapshot.ipv6.checking }
         XCTAssertEqual(h.monitor.snapshot.ipv4.address, "192.0.2.1")
@@ -518,7 +916,7 @@ final class NetworkTests: XCTestCase {
         await h.stop()
     }
     @MainActor func testIPv6SuccessDoesNotDependOnIPv4() async {
-        let h = NetworkHarness(); await h.client.fail(PublicIPProvider.endpoint(.ipv4), error: .transport)
+        let h = NetworkHarness(); await h.client.failFamily(.ipv4, error: .transport)
         h.monitor.start(probesEnabled: false); h.online()
         guard await h.advance(0.75, registered: 0.75) else { return }
         await eventually { h.monitor.snapshot.ipv6.freshness == .fresh && !h.monitor.snapshot.ipv4.checking }
@@ -546,13 +944,15 @@ final class NetworkTests: XCTestCase {
     }
     @MainActor func testRefreshStaleFailureAndManualCooldown() async {
         let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
-        await h.client.fail(PublicIPProvider.endpoint(.ipv4), error: .http)
+        await h.client.failFamily(.ipv4, error: .http)
         h.time.set(4); h.monitor.refresh(); h.monitor.refresh(); h.monitor.refresh()
         await eventually { h.monitor.snapshot.ipv4.failure == .http }
         // One family result is not batch completion. Bound the fake work wait,
         // then join the existing batch before asserting its dual-stack total.
         guard await completed(h) else { return }
-        let calls = await h.client.ipCount(); XCTAssertEqual(calls, 4)
+        // Still exactly two dual-stack batches (4 primary queries); one required fallback adds one wire request.
+        let primary = await h.client.primaryIPCount(); XCTAssertEqual(primary, 4)
+        let calls = await h.client.ipCount(); XCTAssertEqual(calls, 5)
         XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .stale); XCTAssertEqual(h.monitor.snapshot.ipv4.address, "192.0.2.1")
         XCTAssertEqual(h.path.starts, 1)
         await h.stop()
@@ -560,13 +960,14 @@ final class NetworkTests: XCTestCase {
     @MainActor func testRefreshWaitsForDelayedIPv6BatchCompletion() async {
         let h = NetworkHarness(); guard await connected(h, probes: false) else { return }
         let ipv6 = PublicIPProvider.endpoint(.ipv6)
-        await h.client.fail(PublicIPProvider.endpoint(.ipv4), error: .http)
+        await h.client.failFamily(.ipv4, error: .http)
         await h.client.delayEntry(ipv6)
         h.time.set(4); h.monitor.refresh(); h.monitor.refresh(); h.monitor.refresh()
         await eventually { h.monitor.snapshot.ipv4.failure == .http }
         await eventually { await h.client.pendingEntryCount() == 1 }
         // The old completion predicate is now true, but its count assertion is not.
-        let partialCalls = await h.client.ipCount(); XCTAssertEqual(partialCalls, 3)
+        let partialPrimary = await h.client.primaryIPCount(); XCTAssertEqual(partialPrimary, 3)
+        let partialCalls = await h.client.ipCount(); XCTAssertEqual(partialCalls, 4)
         XCTAssertTrue(h.monitor.snapshot.ipv6.checking)
         var waiterStarted = false, batchCompleted = false
         let currentBatch = Task { @MainActor in
@@ -579,7 +980,8 @@ final class NetworkTests: XCTestCase {
         await h.client.releaseEntry(ipv6)
         guard await eventually({ batchCompleted && !h.monitor.snapshot.ipv4.checking && !h.monitor.snapshot.ipv6.checking }) else { await h.stop(); currentBatch.cancel(); return }
         await currentBatch.value
-        let calls = await h.client.ipCount(); XCTAssertEqual(calls, 4)
+        let primary = await h.client.primaryIPCount(); XCTAssertEqual(primary, 4)
+        let calls = await h.client.ipCount(); XCTAssertEqual(calls, 5)
         XCTAssertEqual(h.monitor.snapshot.ipv4.freshness, .stale)
         XCTAssertEqual(h.monitor.snapshot.ipv4.address, "192.0.2.1")
         XCTAssertEqual(h.monitor.snapshot.ipv4.failure, .http)
@@ -732,9 +1134,9 @@ final class NetworkPresentationTests: XCTestCase {
                        ["Wi-Fi", "有线以太网", "蜂窝网络", "回环", "其他"])
     }
     func testAllNetworkFailuresChinese() {
-        let values: [NetworkFailure] = [.timeout, .transport, .http, .malformed, .tooLarge, .unavailable, .offline]
+        let values: [NetworkFailure] = [.timeout, .transport, .http, .malformed, .tooLarge, .unavailable, .offline, .tls, .unsupported]
         XCTAssertEqual(values.map { chinese.networkText($0) },
-                       ["探测超时", "传输失败", "HTTP 请求失败", "响应格式无效", "响应超出限制", "不可用", "离线"])
+                       ["探测超时", "传输失败", "HTTP 请求失败", "响应格式无效", "响应超出限制", "不可用", "离线", "TLS 验证失败", "当前网络不支持"])
     }
     func testAllProbeStatesChinese() {
         let values: [ProbeState] = [.disabled, .checking, .reachable, .timeout, .offline, .transportFailed, .unavailable]
@@ -751,12 +1153,39 @@ final class NetworkPresentationTests: XCTestCase {
         XCTAssertFalse(value.contains("年"))
     }
     func testLanguageSwitchRendersSameSnapshotWithoutMutation() {
-        let reading = PublicIPReading(sampledAt: date, failure: .transport, source: "api.ipify.org")
-        XCTAssertEqual(reading.display(english, now: date), "Transport failed")
-        XCTAssertEqual(reading.display(chinese, now: date), "传输失败")
-        XCTAssertEqual(reading.display(english, now: date), "Transport failed")
+        let reading = PublicIPReading(sampledAt: date, failure: .transport, source: .ipinfo)
+        XCTAssertEqual(reading.display(english, now: date), "Unavailable · Transport failed")
+        XCTAssertEqual(reading.display(chinese, now: date), "不可用 · 传输失败")
+        XCTAssertEqual(reading.display(english, now: date), "Unavailable · Transport failed")
         XCTAssertEqual(reading.sampledAt, date)
         XCTAssertNotEqual(chinese.dateTime(date, timeZone: utc), english.dateTime(date, timeZone: utc))
+    }
+    func testSuccessfulSourceAndHistoryStatusAreLocalizedWithoutInventedFallback() {
+        var reading = PublicIPReading()
+        XCTAssertEqual(reading.sourceDisplay(chinese), "未采样")
+        XCTAssertEqual(reading.statusDisplay(english, now: date), "Unavailable")
+        reading.beginAttempt(at: date)
+        XCTAssertEqual(reading.statusDisplay(chinese, now: date), "正在查询… · 不可用")
+        reading.apply(.success(PublicIPResult(address: "192.0.2.8", source: .identMe)), at: date.addingTimeInterval(1))
+        XCTAssertEqual(reading.sourceDisplay(english), "ident.me")
+        XCTAssertEqual(reading.sourceDisplay(chinese), "ident.me")
+        XCTAssertEqual(reading.statusDisplay(chinese, now: date.addingTimeInterval(2)), "新鲜")
+        reading.beginAttempt(at: date.addingTimeInterval(4))
+        reading.apply(.failure(.tls), at: date.addingTimeInterval(5))
+        XCTAssertEqual(reading.sourceDisplay(chinese), "ident.me") // Last successful source, not a new success.
+        XCTAssertEqual(reading.statusDisplay(chinese, now: date.addingTimeInterval(5)), "已过期")
+        XCTAssertEqual(reading.display(english, now: date.addingTimeInterval(5)), "192.0.2.8 · Stale · TLS validation failed")
+        XCTAssertEqual(reading.sampledAt, date.addingTimeInterval(1))
+        XCTAssertEqual(reading.attemptedAt, date.addingTimeInterval(4))
+        XCTAssertEqual(reading.failedAt, date.addingTimeInterval(5))
+        XCTAssertEqual(PublicIPSource.ipinfo.displayName, "IPinfo")
+    }
+    func testPublicIPDetailLabelsAndDisclosureHaveEquivalentChineseCopy() {
+        let keys = ["Last successful source", "Last successful lookup", "Last lookup attempt", "Latest failure", "Last failed lookup"]
+        XCTAssertEqual(keys.map { chinese.text($0) }, ["最近成功来源", "最近成功采集时间", "最近尝试采集时间", "最近失败原因", "最近失败时间"])
+        XCTAssertEqual(keys.map { english.text($0) }, keys)
+        XCTAssertTrue(chinese.text("Primary: IPinfo · Fallback: ident.me. Each service can observe the request's public exit IP; no device location is collected.").contains("不采集设备物理位置"))
+        XCTAssertEqual(chinese.networkText(NetworkFailure.unsupported), "当前网络不支持")
     }
     func testProxyContextsChinese() {
         var snapshot = NetworkSnapshot()
@@ -778,14 +1207,14 @@ final class NetworkPresentationTests: XCTestCase {
         XCTAssertEqual(ProxyReading(invalidKeys: ["HTTP_PROXY"]).display(chinese), "代理配置无效")
     }
     func testPublicIPPresentationPreservesTTLAndErrorSemantics() {
-        var reading = PublicIPReading(address: "192.0.2.1", sampledAt: date, freshness: .fresh, source: "api.ipify.org")
+        var reading = PublicIPReading(address: "192.0.2.1", sampledAt: date, freshness: .fresh, source: .ipinfo)
         XCTAssertEqual(reading.display(chinese, now: date.addingTimeInterval(299)), "192.0.2.1")
         XCTAssertEqual(reading.display(chinese, now: date.addingTimeInterval(300)), "192.0.2.1 · 已过期")
         reading.failure = .transport
         XCTAssertEqual(reading.display(chinese, now: date.addingTimeInterval(300)), "192.0.2.1 · 已过期 · 传输失败")
         XCTAssertEqual(reading.display(english, now: date.addingTimeInterval(300)), reading.label(now: date.addingTimeInterval(300)))
         reading.address = nil; reading.checking = true
-        XCTAssertEqual(reading.display(chinese, now: date), "正在探测…")
+        XCTAssertEqual(reading.display(chinese, now: date), "正在查询…")
     }
     func testConnectivitySummaryUnknownPathAlsoLocalized() {
         var snapshot = NetworkSnapshot()

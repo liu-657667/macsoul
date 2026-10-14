@@ -44,7 +44,7 @@ struct SettingsView: View {
                             Text(language.text("Connectivity probes"))
                             Text(language.text("In Live mode, probes send anonymous HTTPS HEAD requests to GitHub, OpenAI and Anthropic. No account credentials or project data are sent. Turning probes off cancels pending probes."))
                                 .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
-                            Text(language.text("Live mode also queries ipify for public IPv4/IPv6. Developer Preview sends no external network requests."))
+                            Text(language.text("Live mode queries IPinfo for public IPv4/IPv6, with ident.me as fallback. Developer Preview sends no external network requests."))
                                 .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
                         }.frame(maxWidth: .infinity, alignment: .leading)
                         Toggle(language.text("Connectivity probes"), isOn: Binding(

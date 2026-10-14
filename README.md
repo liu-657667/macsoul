@@ -114,7 +114,9 @@ open MacSoul.xcodeproj
 
 ## 隐私与产品边界
 
-本地优先不等于零联网。Live Network 向 ipify 查询出口 IPv4/IPv6；启用 Connectivity 时向 GitHub/OpenAI/Anthropic 发匿名 HTTPS HEAD，不发送 API token、账户凭据或项目内容。OFF 仅关闭探测，不关闭公网 IP 查询。Preview 不启动这些外部请求；不采集 SSID/BSSID、位置或 Region，不修改 proxy/VPN/DNS/route。
+本地优先不等于零联网。已发布的 v0.1.0 Live Network 向 ipify 查询出口 IPv4/IPv6；本分支的 **v0.1.1 本地候选（未发布，目标 Mac Live 验证待 Owner 执行）**改为 IPinfo 纯文本接口，失败后最多尝试一次 ident.me。IPv4/IPv6 独立，每个地址族每次刷新最多两次查询、总超时预算 10 秒；启用 Connectivity 时向 GitHub/OpenAI/Anthropic 发匿名 HTTPS HEAD，不发送 API token、账户凭据或项目内容。OFF 仅关闭探测，不关闭公网 IP 查询。Preview 不启动这些外部请求；不采集 SSID/BSSID、位置或 Region，不修改 proxy/VPN/DNS/route。
+
+公网 IP 服务可观察请求方的公网出口 IP；仅解析 IP 文本，不读取 GPS、国家、城市、ASN、设备物理位置、真实账户信息或用户项目内容，不持久化真实公网 IP、原始 HTTP 响应或代理凭据。主备均失败时，仅保留上次有效地址及来源并标记 Stale；没有成功历史时显示 Unavailable。候选 Network 详情区区分最近成功时间、最近尝试时间、成功来源、查询状态及最近失败原因。服务可达性、目标设备代理/TLS/IPv6 与 UI 需单独人工验证；其他机器的可达性不是本机验收。
 
 Codex 启动选定的已验证 CLI app-server（PATH 或 bundled discovery），仅发送 initialize、initialized、account/rateLimits/read，消费最小 rate-limit 字段；不读取 account profile、prompts/threads、不发模型推理、不操作登录或配额。协议 usedPercent 保持原义，UI/进度条统一显示 remaining。5h 只有已验证 machine-readable capability 才能判为不适用，缺失窗口本身不足以判断。Claude 当前只检查 executable/version，安装不代表有订阅。
 
