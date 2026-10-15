@@ -6,7 +6,7 @@ protocol CodexQuotaTransport: Sendable {
     func send(_ data: Data) async throws
     func close() async
 }
-enum CodexTransportError: Error { case closed, oversized, malformed, launchFailed, timeout }
+enum CodexTransportError: Error, Equatable { case closed, oversized, malformed, launchFailed, timeout }
 
 struct CodexLineBuffer {
     static let limit = 64 * 1024
@@ -115,7 +115,9 @@ private final class CodexPipeSession: @unchecked Sendable {
                             }
                         }
                         continuation?.finish(throwing: buffer.hasPartialLine ? CodexTransportError.malformed : CodexTransportError.closed)
-                    } catch { continuation?.finish(throwing: CodexTransportError.closed) }
+                    } catch {
+                        continuation?.finish(throwing: (error as? CodexTransportError) ?? .closed)
+                    }
                 }
                 readers.enter()
                 DispatchQueue.global(qos: .utility).async { [self] in

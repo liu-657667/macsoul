@@ -4,6 +4,12 @@ import CoreFoundation
 enum QuotaConnectionState: String, Equatable {
     case connecting, available, reconnecting, unavailable, malformed, stopped
 }
+// Local, sanitized observations of this connection; never a promise about a CLI version.
+enum CodexSessionStatus: String, Equatable {
+    case checking, handshaking, reading, available, quotaUnavailable, quotaRequestFailed
+    case cliUnavailable, handshakeFailed, handshakeTimeout, requestTimeout
+    case methodUnsupported, invalidResponse, communicationFailure, stopped
+}
 enum ClaudeQuotaCapability: String, Equatable {
     case notInstalled, detectedUnauthenticated, detectedNoSubscriptionQuota
     case available, requestFailed, unsupportedVersion, noVerifiedSource
@@ -14,6 +20,7 @@ struct QuotaProviderDetail: Equatable {
     var claudeCapability: ClaudeQuotaCapability? = nil
     var version: String? = nil
     var authorizationRequired = false
+    var codexSession: CodexSessionStatus? = nil
 }
 struct AIQuotaSnapshot: Equatable {
     var items: [QuotaItem]

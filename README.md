@@ -48,7 +48,7 @@ MacSoul 希望把系统状态、AI 编程额度、网络和本地开发环境放
 |---|---|---|
 | **Soul** | 机器状态与恢复的简短反馈 | 本地确定性规则；CPU 持续阈值、memory pressure、冷却/恢复；静态图片，不依赖 LLM |
 | **系统状态** | CPU、内存、磁盘、电池与开发进程 | 原生 CPU、内存已用/总量、压力事件、根卷磁盘、电源状态；进程 CPU delta / RSS；真实 warning 已观察，critical 尚未观察 |
-| **AI 配额** | Codex / Claude Code 的适用窗口 | Codex CLI 0.160.0 / 0.160.1 / 0.162.0-alpha.2 经验证；共享快照显示剩余百分比与 provider reset；Claude 无已验证来源时 unavailable |
+| **AI 配额** | Codex / Claude Code 的适用窗口 | v0.1.1 本地候选按本次只读握手及首读判断会话兼容性（真实新版本待验收）；历史已验证 CLI 见 AI 配额说明；共享快照显示剩余百分比与 provider reset；Claude 无已验证来源时 unavailable |
 | **网络** | 出口 IP、代理线索、连通性 | NWPath、独立 IPv4/IPv6、App/system 代理及隧道线索、匿名 HEAD 探测；Region 不采集 |
 | **开发环境** | 运行时与开发相关监听端口 | Java/Node/Python/Go 与 SDKMAN/NVM/pyenv/goenv 上下文、缓存/刷新、开发端口筛选与全部端口展开；停止命令仅复制 |
 | **开发缓存** | 解释估算占用与内容 | Xcode/Gradle/Maven/npm/Homebrew，只读 Preview/drill-down；Docker 本地 logical usage，不遍历 VM；不清理 |
@@ -118,13 +118,13 @@ open MacSoul.xcodeproj
 
 公网 IP 服务可观察请求方的公网出口 IP；仅解析 IP 文本，不读取 GPS、国家、城市、ASN、设备物理位置、真实账户信息或用户项目内容，不持久化真实公网 IP、原始 HTTP 响应或代理凭据。主备均失败时，仅保留上次有效地址及来源并标记 Stale；没有成功历史时显示 Unavailable。候选 Network 详情区区分最近成功时间、最近尝试时间、成功来源、查询状态及最近失败原因。服务可达性、目标设备代理/TLS/IPv6 与 UI 需单独人工验证；其他机器的可达性不是本机验收。
 
-Codex 启动选定的已验证 CLI app-server（PATH 或 bundled discovery），仅发送 initialize、initialized、account/rateLimits/read，消费最小 rate-limit 字段；不读取 account profile、prompts/threads、不发模型推理、不操作登录或配额。协议 usedPercent 保持原义，UI/进度条统一显示 remaining。5h 只有已验证 machine-readable capability 才能判为不适用，缺失窗口本身不足以判断。Claude 当前只检查 executable/version，安装不代表有订阅。
+Codex 本地候选仅启动固定 ChatGPT.app bundled CLI app-server；同一可执行文件的版本信息仅供诊断，每次连接都验证握手与首读，仅发送 initialize、initialized、account/rateLimits/read，消费最小 rate-limit 字段；不读取 account profile、prompts/threads、不发模型推理、不操作登录或配额。协议 usedPercent 保持原义，UI/进度条统一显示 remaining。5h 只有已验证 machine-readable capability 才能判为不适用，缺失窗口本身不足以判断。Claude 当前只检查 executable/version，安装不代表有订阅。
 
 Cleaner 只读明确解析的 cache roots，不上传路径或内容；跳过符号链接，限制 Preview 边界。Docker 只查询本地 Engine logical usage，远程 context 不计入本机总量，不扫描 Docker.raw/VM。登录项是 macOS 系统设置，仅用户显式操作才更改；真实注册/取消为 NOT_RUN，按 Owner 批准延期至后续 installed/signed 环境。
 
 ### 限制
 
-- 配额是 Provider 上报，不是官方 SLA；未知 Codex 版本 fail closed，Claude 无 verified source 时不可用。
+- 配额是 Provider 上报，不是官方 SLA；Codex 本地候选按当前会话协议验证；不支持的方法或响应结构仍 fail closed，新版本真实兼容性尚未验收，Claude 无 verified source 时不可用。
 - 估算占用不是精确可回收字节；APFS clone/shared blocks、稀疏文件、hard links/purgeable 空间会造成差异。Docker logical usage 不是 VM 物理占用。
 - 监听端口不是冲突；复制 `kill -TERM <PID>` 不执行，用户执行前需确认 PID 未复用。
 - NWPath connected 不等于互联网健康；HTTP 401/405 只证明 transport reachable，不证明认证或完整服务健康；隧道线索不证明 VPN routing。
