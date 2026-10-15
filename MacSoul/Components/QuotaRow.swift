@@ -36,7 +36,7 @@ struct QuotaRow: View {
             }
             if presentation == .summary,
                let detail = store.snapshot.quotaDetails.first(where: { $0.provider == quota.provider }),
-               detail.connection == .reconnecting || detail.connection == .malformed {
+               detail.connection != .available && detail.connection != .stopped {
                 Text(language.quotaStatus(detail)).font(.caption).foregroundStyle(.orange)
             }
             if presentation == .detail {

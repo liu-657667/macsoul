@@ -35,6 +35,18 @@ private actor FakeQuotaTransport: CodexQuotaTransport {
     var sent: [[String: Any]] = []
     var failOpen = false
     var stream: AsyncThrowingStream<Data, Error>.Continuation?
+    var retiredStreams: [AsyncThrowingStream<Data, Error>.Continuation] = []
+    private var holdClose = false
+    private var closeEntries = 0
+    private var closeWaiters: [CheckedContinuation<Void, Never>] = []
+    func suspendClose() { holdClose = true }
+    func closeEntryCount() -> Int { closeEntries }
+    func pendingCloseCount() -> Int { closeWaiters.count }
+    func releaseClose() {
+        holdClose = false
+        let pending = closeWaiters; closeWaiters.removeAll()
+        pending.forEach { $0.resume() }
+    }
     func counts() -> (Int, Int, Int) { (opens, closes, sent.count) }
     func readIDs() -> [Int] { sent.filter { $0["method"] as? String == "account/rateLimits/read" }.compactMap { $0["id"] as? Int } }
     func methods() -> [String] { sent.compactMap { $0["method"] as? String } }
@@ -42,13 +54,30 @@ private actor FakeQuotaTransport: CodexQuotaTransport {
     func open() throws -> AsyncThrowingStream<Data, Error> {
         opens += 1
         if failOpen { throw CodexTransportError.launchFailed }
-        return AsyncThrowingStream { stream = $0 }
+        return AsyncThrowingStream { stream = $0; retiredStreams.append($0) }
     }
     func send(_ data: Data) throws { sent.append(try JSONSerialization.jsonObject(with: data) as! [String: Any]) }
-    func close() { if let stream { closes += 1; stream.finish(); self.stream = nil } }
+    func close() async {
+        closeEntries += 1
+        // Both watchdog and run-loop cleanup can enter close; one release drains every waiter.
+        if holdClose { await withCheckedContinuation { closeWaiters.append($0) } }
+        if let stream { closes += 1; stream.finish(); self.stream = nil }
+    }
     func emit(_ json: [String: Any]) throws { stream?.yield(try JSONSerialization.data(withJSONObject: json)) }
+    func emitFromFirstConnection(_ json: [String: Any]) throws {
+        retiredStreams.first?.yield(try JSONSerialization.data(withJSONObject: json))
+    }
     func malformed() { stream?.yield(Data("garbage".utf8)) }
     func exit() { stream?.finish(throwing: CodexTransportError.closed); stream = nil }
+}
+// Explicitly held metadata result lets cancellation be tested before a transport exists.
+private actor QuotaVersionGate {
+    private var continuation: CheckedContinuation<String?, Never>?
+    func hasEntered() -> Bool { continuation != nil }
+    func read() async -> String? {
+        await withCheckedContinuation { continuation = $0 }
+    }
+    func release(_ value: String?) { continuation?.resume(returning: value); continuation = nil }
 }
 @MainActor private final class FixtureQuotaProvider: LiveQuotaProviding {
     let provider: QuotaProvider
@@ -80,7 +109,12 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
 
 @MainActor final class AIQuotaLifecycleTests: XCTestCase {
     private func wait(_ condition: @escaping () async -> Bool, file: StaticString = #filePath, line: UInt = #line) async {
-        for _ in 0..<10_000 { if await condition() { return }; await Task.yield() }
+        // Real time is only a failure bound; progress depends on the named observable condition.
+        let deadline = ProcessInfo.processInfo.systemUptime + 3
+        while ProcessInfo.processInfo.systemUptime < deadline {
+            if await condition() { return }
+            await Task.yield()
+        }
         XCTFail("State did not progress", file: file, line: line)
     }
     private func payload(_ used: Int = 42) -> [String: Any] {
@@ -93,6 +127,21 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
         await wait { await transport.counts().2 >= 3 }
         try await transport.emit(["id": 2, "result": payload()])
         await wait { provider.detail.connection == .available }
+    }
+    private func whileCloseIsHeld(_ provider: CodexQuotaProvider, _ transport: FakeQuotaTransport,
+                                  body: () async throws -> Void) async throws {
+        await transport.suspendClose()
+        do { try await body() }
+        catch {
+            await transport.releaseClose()
+            provider.stop(); await provider.waitForStop()
+            throw error
+        }
+        // Release before awaiting stop, including when an assertion in body has failed.
+        await transport.releaseClose()
+        provider.stop(); await provider.waitForStop()
+        let pending = await transport.pendingCloseCount()
+        XCTAssertEqual(pending, 0)
     }
     func testUnauthorizedProviderNeverStartsTransport() async {
         let fake = FakeQuotaTransport()
@@ -157,8 +206,13 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
         await wait { provider.item.displayWindows(now: clock.now()).first?.state.value?.usedPercent == 73 }
         provider.start(); provider.start()
         // An old/duplicate reply cannot complete request 3 or install a fresh baseline.
+        var barrierSeen = false
+        provider.onUpdate = { item, _ in
+            if item.displayWindows(now: clock.now()).first?.state.value?.usedPercent == 73 { barrierSeen = true }
+        }
         try await fake.emit(["id": 2, "result": payload(0)])
-        for _ in 0..<30 { await Task.yield() }
+        try await fake.emit(["method": "account/rateLimits/updated", "params": payload(73)])
+        await wait { barrierSeen }
         XCTAssertEqual(provider.item.displayWindows(now: clock.now()).first?.state.value?.usedPercent, 73)
         clock.advance(9)
         let ids = await fake.readIDs(); XCTAssertEqual(ids, [2, 3])
@@ -167,14 +221,17 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
         await wait { clock.pending() == 1 }
         provider.stop(); await provider.waitForStop()
     }
-    func testReconnectRetainsNumericSampleWithOriginalTimeAndNaturallyStales() async throws {
+    func testReconnectImmediatelyStalesNumericSampleWithOriginalTime() async throws {
         let clock = ManualQuotaClock(), fake = FakeQuotaTransport()
         let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
         try await establish(provider, fake)
         let original = provider.item
         await fake.exit()
         await wait { provider.detail.connection == .reconnecting && clock.pending() == 1 }
-        XCTAssertEqual(provider.item, original)
+        XCTAssertEqual(provider.item.fiveHour, original.fiveHour)
+        XCTAssertEqual(provider.item.weekly, original.weekly)
+        XCTAssertEqual(provider.item.sampledAt, original.sampledAt)
+        XCTAssertEqual(provider.item.freshness, .stale)
         clock.advance(301)
         guard case .stale(let value) = provider.item.displayWindows(now: clock.now())[0].state else {
             provider.stop(); await provider.waitForStop(); return XCTFail("Retained sample must age, not refresh")
@@ -192,7 +249,10 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
         await wait { await fake.readIDs() == [2, 3] }
         await wait { clock.pending() == 1 }; clock.advance(10)
         await wait { provider.detail.connection == .reconnecting && clock.pending() == 1 }
-        XCTAssertEqual(provider.item, original)
+        XCTAssertEqual(provider.item.fiveHour, original.fiveHour)
+        XCTAssertEqual(provider.item.sampledAt, original.sampledAt)
+        XCTAssertEqual(provider.item.freshness, .stale)
+        XCTAssertEqual(provider.detail.codexSession, .requestTimeout)
         let ids = await fake.readIDs(); XCTAssertEqual(ids, [2, 3])
         provider.stop(); await provider.waitForStop()
     }
@@ -208,7 +268,7 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
         provider.start(); await wait { await fake.counts().0 == 2 }
         XCTAssertTrue(provider.item.entirelyUnavailable)
         await wait { await fake.methods().count == 4 }
-        try await fake.emit(["id": 1, "result": [:]])
+        try await fake.emit(["id": 1, "result": ["userAgent": "test"]])
         await wait { await fake.readIDs() == [2, 2] }
         try await fake.emit(["id": 2, "result": payload(17)])
         await wait { provider.detail.connection == .available }
@@ -232,47 +292,257 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
         XCTAssertEqual(provider.item.weekly, eventItem.weekly)
         provider.stop(); await provider.waitForStop()
     }
-    func testUnverifiedNativeVersionDoesNotOpenTransport() async {
-        let fake = FakeQuotaTransport()
-        let provider = CodexQuotaProvider(approved: true, versionLookup: { "0.999.0" }, makeTransport: { fake })
-        provider.start(); await wait { provider.detail.version == "0.999.0" }
-        XCTAssertTrue(provider.item.entirelyUnavailable)
-        let opens = await fake.counts().0; XCTAssertEqual(opens, 0)
-        provider.stop(); await provider.waitForStop()
-    }
-    func testCodex01600Accepted() async throws { try await assertVerifiedVersion("0.160.0") }
-    func testCodex01601Accepted() async throws { try await assertVerifiedVersion("0.160.1") }
-    func testCodex01620Alpha2Accepted() async throws { try await assertVerifiedVersion("0.162.0-alpha.2") }
-    private func assertVerifiedVersion(_ version: String) async throws {
+    func testHistoricalCodex01600RequiresCurrentHandshakeAndRead() async throws { try await assertSessionVersion("0.160.0") }
+    func testHistoricalCodex01601RequiresCurrentHandshakeAndRead() async throws { try await assertSessionVersion("0.160.1") }
+    func testHistoricalCodex01620Alpha2RequiresCurrentHandshakeAndRead() async throws { try await assertSessionVersion("0.162.0-alpha.2") }
+    func testUnknownVersionUsesCurrentCompatibleSession() async throws { try await assertSessionVersion("0.999.0") }
+    func testHistoricalUpgradeFailureVersionUsesCurrentCompatibleSession() async throws { try await assertSessionVersion("0.162.0-alpha.17.2") }
+    func testMissingVersionMetadataStillRequiresCurrentProtocol() async throws { try await assertSessionVersion(nil) }
+    private func assertSessionVersion(_ version: String?) async throws {
         let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
         let provider = CodexQuotaProvider(approved: true, clock: clock,
                                          versionLookup: { version }, makeTransport: { fake })
         try await establish(provider, fake)
         XCTAssertEqual(provider.detail.version, version)
-        XCTAssertEqual(provider.detail.connection, .available)
+        XCTAssertEqual(provider.detail.codexSession, .available)
         XCTAssertFalse(provider.item.entirelyUnavailable)
+        let methods = await fake.methods(), counts = await fake.counts()
+        XCTAssertEqual(methods, ["initialize", "initialized", "account/rateLimits/read"])
+        XCTAssertEqual(counts.0, 1)
+        provider.stop(); await provider.waitForStop()
+    }
+    func testKnownAndUnknownVersionsBothRejectUnsupportedReadMethod() async throws {
+        for version in ["0.160.0", "0.999.0"] {
+            let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
+            let provider = CodexQuotaProvider(approved: true, clock: clock, versionLookup: { version }, makeTransport: { fake })
+            provider.start(); await wait { await fake.methods() == ["initialize"] }
+            try await fake.emit(["id": 1, "result": ["userAgent": "fixture"]])
+            await wait { await fake.readIDs() == [2] }
+            try await fake.emit(["id": 2, "error": ["code": -32601, "message": "fake method unavailable"]])
+            await wait { await fake.counts().1 == 1 }
+            XCTAssertEqual(provider.detail.codexSession, .methodUnsupported)
+            XCTAssertEqual(clock.pending(), 0)
+            XCTAssertNil(provider.item.sampledAt)
+            let methods = await fake.methods()
+            XCTAssertEqual(methods, ["initialize", "initialized", "account/rateLimits/read"])
+            provider.stop(); await provider.waitForStop()
+        }
+    }
+    func testTerminalProtocolRejectionCanStartAgainWithoutStop() async throws {
+        let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
+        let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+        provider.start(); await wait { await fake.methods() == ["initialize"] }
+        try await fake.emit(["id": 1, "result": ["rateLimits": NSNull()]])
+        await wait { await fake.counts().1 == 1 }
+        XCTAssertEqual(provider.detail.codexSession, .invalidResponse)
+        XCTAssertNil(provider.item.sampledAt)
+        await wait { provider.start(); return provider.starts == 2 }
+        await wait { await fake.methods() == ["initialize", "initialize"] }
+        try await fake.emit(["id": 1, "result": ["userAgent": "fixture"]])
+        await wait { await fake.readIDs() == [2] }
+        try await fake.emit(["id": 2, "result": payload()])
+        await wait { provider.detail.codexSession == .available }
+        let opens = await fake.counts().0; XCTAssertEqual(opens, 2)
+        provider.stop(); await provider.waitForStop()
+    }
+    func testNullOrEmptyWindowsAreConnectedWithoutInventedQuota() async throws {
+        for limits: [String: Any] in [["rateLimits": NSNull()], ["rateLimits": [:]], ["rateLimits": ["primary": NSNull(), "secondary": NSNull()]]] {
+            let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
+            let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+            provider.start(); await wait { await fake.methods() == ["initialize"] }
+            try await fake.emit(["id": 1, "result": ["userAgent": "fixture"]])
+            await wait { await fake.readIDs() == [2] }
+            try await fake.emit(["id": 2, "result": limits])
+            await wait { provider.detail.codexSession == .quotaUnavailable }
+            XCTAssertEqual(provider.item.fiveHour, .unreported)
+            XCTAssertEqual(provider.item.weekly, .unreported)
+            XCTAssertTrue(provider.item.displayWindows(now: clock.now()).allSatisfy { $0.state.value == nil })
+            provider.stop(); await provider.waitForStop()
+        }
+    }
+    func testOptionalExtensionsAreIgnoredAndWindowsFollowDuration() async throws {
+        let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
+        let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+        provider.start(); await wait { await fake.methods() == ["initialize"] }
+        try await fake.emit(["id": 1, "result": ["userAgent": "fixture", "future": ["enabled": true]]])
+        await wait { await fake.readIDs() == [2] }
+        try await fake.emit(["id": 2, "result": ["extension": "ignored", "rateLimits": [
+            "primary": ["usedPercent": 20, "windowDurationMins": 10080, "resetsAt": NSNull(), "extra": true],
+            "secondary": ["usedPercent": 0, "windowDurationMins": 300, "resetsAt": 1_800_010_000]]]])
+        await wait { provider.detail.codexSession == .available }
+        let rows = provider.item.displayWindows(now: clock.now())
+        XCTAssertEqual(rows.map { $0.state.value?.usedPercent }, [0, 20])
+        XCTAssertNil(rows.last?.state.value?.resetsAt)
+        XCTAssertEqual(rows.map { $0.state.value?.remainingPercent }, [100, 80])
+        provider.stop(); await provider.waitForStop()
+    }
+    func testWrongDuplicateAndPrematureResponsesNeverPublishQuota() async throws {
+        let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
+        let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+        var published: [Double] = []
+        provider.onUpdate = { item, _ in
+            if let used = item.displayWindows(now: clock.now()).first?.state.value?.usedPercent { published.append(used) }
+        }
+        provider.start(); await wait { await fake.methods() == ["initialize"] }
+        try await fake.emit(["id": 2, "result": payload(1)]) // Quota cannot serve as initialization.
+        try await fake.emit(["method": "account/rateLimits/updated", "params": payload(2)]) // No baseline yet.
+        try await fake.emit(["id": 1, "result": ["userAgent": "fixture"]])
+        await wait { await fake.readIDs() == [2] }
+        try await fake.emit(["id": 99, "result": payload(3)])
+        try await fake.emit(["id": 1, "result": payload(4)])
+        try await fake.emit(["method": "account/rateLimits/updated", "params": payload(5)])
+        try await fake.emit(["id": 2, "result": payload(42)])
+        await wait { provider.detail.codexSession == .available }
+        try await fake.emit(["id": 2, "result": payload(6)])
+        // An accepted notification is the ordered stream barrier after the duplicate response.
+        try await fake.emit(["method": "account/rateLimits/updated", "params": payload(43)])
+        await wait { published.last == 43 }
+        XCTAssertEqual(published, [42, 43])
         let methods = await fake.methods()
         XCTAssertEqual(methods, ["initialize", "initialized", "account/rateLimits/read"])
         provider.stop(); await provider.waitForStop()
     }
-    func testCodex01602Rejected() async { await assertUnverifiedVersion("0.160.2") }
-    func testCodex01610Rejected() async { await assertUnverifiedVersion("0.161.0") }
-    func testUnverifiedCodex0162VariantsAnd0163Rejected() async {
-        for version in ["0.162.0-alpha.1", "0.162.0-alpha.3", "0.162.0", "0.163.0"] {
-            await assertUnverifiedVersion(version)
+    func testOldConnectionEventsCannotCompleteReconnectedFirstRead() async throws {
+        let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
+        let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+        try await establish(provider, fake)
+        provider.stop(); await provider.waitForStop()
+        var published: [Double] = []
+        provider.onUpdate = { item, _ in
+            if let used = item.displayWindows(now: clock.now()).first?.state.value?.usedPercent { published.append(used) }
+        }
+        provider.start(); await wait { await fake.methods().count == 4 }
+        try await fake.emitFromFirstConnection(["id": 1, "result": ["userAgent": "old"]])
+        try await fake.emitFromFirstConnection(["id": 2, "result": payload(1)])
+        try await fake.emit(["id": 1, "result": ["userAgent": "new"]])
+        await wait { await fake.readIDs() == [2, 2] }
+        try await fake.emit(["id": 2, "result": payload(51)])
+        await wait { provider.detail.codexSession == .available }
+        XCTAssertEqual(published, [51])
+        let opens = await fake.counts().0; XCTAssertEqual(opens, 2)
+        provider.stop(); await provider.waitForStop()
+    }
+    func testInvalidConsumedFieldsFailSessionForKnownAndUnknownVersions() async throws {
+        let badValues: [Any] = [true, "42", -1, 101]
+        for version in ["0.160.0", "0.999.0"] {
+            for value in badValues {
+                let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
+                let provider = CodexQuotaProvider(approved: true, clock: clock, versionLookup: { version }, makeTransport: { fake })
+                provider.start(); await wait { await fake.methods() == ["initialize"] }
+                try await fake.emit(["id": 1, "result": ["userAgent": "fixture"]])
+                await wait { await fake.readIDs() == [2] }
+                try await fake.emit(["id": 2, "result": ["rateLimits": ["primary": [
+                    "usedPercent": value, "windowDurationMins": 300, "resetsAt": NSNull()]]]])
+                await wait { await fake.counts().1 == 1 }
+                XCTAssertEqual(provider.detail.codexSession, .invalidResponse)
+                XCTAssertNil(provider.item.sampledAt)
+                XCTAssertEqual(clock.pending(), 0)
+                provider.stop(); await provider.waitForStop()
+            }
         }
     }
-    func testMalformedCodexVersionRejected() async { await assertUnverifiedVersion("codex-cli 0.160.1") }
-    func testMissingCodexVersionRejected() async { await assertUnverifiedVersion(nil) }
-    private func assertUnverifiedVersion(_ version: String?) async {
-        let fake = FakeQuotaTransport()
-        let provider = CodexQuotaProvider(approved: true, versionLookup: { version }, makeTransport: { fake })
+    func testBooleanResponseIDAndAmbiguousEnvelopeAreRejected() async throws {
+        for response: [String: Any] in [
+            ["id": true, "result": ["userAgent": "fixture"]],
+            ["id": 1, "result": ["userAgent": "fixture"], "error": ["code": -1, "message": "fake"]],
+            ["id": 1, "result": ["userAgent": false]],
+            ["id": 1, "result": ["userAgent": ""]]
+        ] {
+            let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
+            let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+            provider.start(); await wait { await fake.methods() == ["initialize"] }
+            try await fake.emit(response)
+            await wait { await fake.counts().1 == 1 }
+            XCTAssertEqual(provider.detail.codexSession, .invalidResponse)
+            XCTAssertNil(provider.item.sampledAt)
+            let methods = await fake.methods(); XCTAssertEqual(methods, ["initialize"])
+            provider.stop(); await provider.waitForStop()
+        }
+    }
+    func testTransientHandshakeAndReadFailureRecoverOnlyAfterNewBaseline() async throws {
+        for failHandshake in [true, false] {
+            let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
+            let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+            provider.start(); await wait { await fake.methods() == ["initialize"] }
+            if !failHandshake {
+                try await fake.emit(["id": 1, "result": ["userAgent": "fixture"]])
+                await wait { await fake.readIDs() == [2] }
+            }
+            try await fake.emit(["id": failHandshake ? 1 : 2, "error": ["code": -1, "message": "fixture transient failure"]])
+            await wait { provider.detail.connection == .reconnecting && clock.pending() == 1 }
+            XCTAssertEqual(provider.detail.codexSession, failHandshake ? .handshakeFailed : .quotaRequestFailed)
+            XCTAssertNil(provider.item.sampledAt)
+            clock.advance(1)
+            await wait { await fake.methods().filter { $0 == "initialize" }.count == 2 }
+            XCTAssertNil(provider.item.sampledAt)
+            try await fake.emit(["id": 1, "result": ["userAgent": "fixture"]])
+            await wait { await fake.readIDs().count == (failHandshake ? 1 : 2) }
+            try await fake.emit(["id": 2, "result": payload(27)])
+            await wait { provider.detail.codexSession == .available }
+            XCTAssertEqual(provider.item.displayWindows(now: clock.now()).first?.state.value?.usedPercent, 27)
+            XCTAssertEqual(provider.item.freshness, .fresh)
+            let counts = await fake.counts(); XCTAssertEqual(counts.0, 2)
+            provider.stop(); await provider.waitForStop()
+        }
+    }
+    func testMissingExecutableReportsCLIUnavailableWithoutOwnerProcess() async {
+        let clock = ManualQuotaClock()
+        let provider = CodexQuotaProvider(approved: true, clock: clock,
+                                         makeTransport: { NativeCodexQuotaTransport(executable: nil) })
         provider.start()
-        await wait { provider.detail.connection == .unavailable }
+        await wait { provider.detail.connection == .reconnecting && clock.pending() == 1 }
+        XCTAssertEqual(provider.detail.codexSession, .cliUnavailable)
         XCTAssertTrue(provider.item.entirelyUnavailable)
-        let opens = await fake.counts().0
-        XCTAssertEqual(opens, 0)
         provider.stop(); await provider.waitForStop()
+        XCTAssertEqual(clock.pending(), 0)
+    }
+    func testStopDuringHandshakeAndFirstReadClosesWithoutPublishingLateResponses() async throws {
+        for stopAfterHandshake in [false, true] {
+            let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
+            let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+            provider.start(); await wait { await fake.methods() == ["initialize"] }
+            if stopAfterHandshake {
+                try await fake.emit(["id": 1, "result": ["userAgent": "fixture"]])
+                await wait { await fake.readIDs() == [2] }
+            }
+            provider.stop(); await provider.waitForStop()
+            try await fake.emitFromFirstConnection(["id": 2, "result": payload(1)])
+            XCTAssertEqual(provider.detail.codexSession, .stopped)
+            XCTAssertTrue(provider.item.entirelyUnavailable)
+            XCTAssertEqual(clock.pending(), 0)
+            let counts = await fake.counts(); XCTAssertEqual(counts.0, 1); XCTAssertEqual(counts.1, 1)
+        }
+    }
+    func testStopFromFirstReadPublicationCannotInstallVerificationTimer() async throws {
+        let fake = FakeQuotaTransport(), clock = ManualQuotaClock()
+        let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+        var receivedBaseline = false
+        provider.onUpdate = { [weak provider] _, detail in
+            if detail.codexSession == .available { receivedBaseline = true; provider?.stop() }
+        }
+        provider.start(); await wait { await fake.methods() == ["initialize"] }
+        try await fake.emit(["id": 1, "result": ["userAgent": "fixture"]])
+        await wait { await fake.readIDs() == [2] }
+        try await fake.emit(["id": 2, "result": payload()])
+        await wait { receivedBaseline }
+        await provider.waitForStop()
+        XCTAssertEqual(provider.detail.codexSession, .stopped)
+        XCTAssertEqual(clock.pending(), 0)
+        let methods = await fake.methods(), counts = await fake.counts()
+        XCTAssertEqual(methods, ["initialize", "initialized", "account/rateLimits/read"])
+        XCTAssertEqual(counts.1, 1)
+        XCTAssertTrue(provider.item.entirelyUnavailable)
+    }
+    func testStopDuringVersionLookupCannotLaunchTransportAfterLateResult() async {
+        let fake = FakeQuotaTransport(), gate = QuotaVersionGate()
+        let provider = CodexQuotaProvider(approved: true, versionLookup: { await gate.read() }, makeTransport: { fake })
+        provider.start(); await wait { await gate.hasEntered() }
+        provider.stop()
+        await gate.release("0.999.0")
+        await provider.waitForStop()
+        let counts = await fake.counts(); XCTAssertEqual(counts.0, 0)
+        XCTAssertEqual(provider.detail.codexSession, .stopped)
+        XCTAssertNil(provider.detail.version)
     }
     func testNativeFactoryInUnitTestHostCannotReadOwnerAccount() async {
         let provider = CodexQuotaProvider.nativeLive()
@@ -288,6 +558,7 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
         provider.start()
         await wait { provider.detail.connection == .reconnecting && clock.pending() == 1 }
         XCTAssertTrue(provider.item.entirelyUnavailable)
+        XCTAssertEqual(provider.detail.codexSession, .cliUnavailable)
         clock.advance(0.5); let first = await fake.counts().0; XCTAssertEqual(first, 1)
         clock.advance(0.5); await wait { await fake.counts().0 == 2 }
         await wait { clock.pending() == 1 }; clock.advance(1)
@@ -299,7 +570,7 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
         let clock = ManualQuotaClock(), fake = FakeQuotaTransport()
         let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
         provider.start(); await wait { await fake.counts().2 == 1 }
-        try await fake.emit(["id": 1, "result": [:]])
+        try await fake.emit(["id": 1, "result": ["userAgent": "test"]])
         await wait { await fake.counts().2 == 3 }
         try await fake.emit(["id": 2, "error": ["code": -1, "message": "redacted fixture"]])
         await wait { provider.detail.connection == .reconnecting }
@@ -314,7 +585,9 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
         try await establish(provider, fake)
         try await fake.emit(["method": "account/rateLimits/updated", "params": payload(101)])
         await wait { states.contains(.malformed) }
-        XCTAssertEqual(provider.item.fiveHour, .requestFailed)
+        XCTAssertEqual(provider.detail.codexSession, .invalidResponse)
+        XCTAssertEqual(provider.item.freshness, .stale)
+        XCTAssertEqual(provider.item.displayWindows(now: clock.now()).first?.state.value?.usedPercent, 42)
         provider.stop(); await provider.waitForStop()
     }
     func testHandshakeTimeoutUsesInjectedClockAndClosesChild() async {
@@ -323,8 +596,159 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
         provider.start(); await wait { clock.pending() == 1 }
         clock.advance(10)
         await wait { provider.detail.connection == .reconnecting }
+        XCTAssertEqual(provider.detail.codexSession, .handshakeTimeout)
         let closes = await fake.counts().1; XCTAssertEqual(closes, 1)
         provider.stop(); await provider.waitForStop()
+    }
+    func testHandshakeTimeoutPublishesBeforeHeldCloseWithoutAnotherEvent() async throws {
+        let clock = ManualQuotaClock(), fake = FakeQuotaTransport()
+        let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+        try await whileCloseIsHeld(provider, fake) {
+            provider.start(); await wait { clock.pending() == 1 }
+            clock.advance(10)
+            await wait { await fake.closeEntryCount() >= 1 }
+            // No stream event or close completion has occurred after the deadline.
+            XCTAssertEqual(provider.detail.codexSession, .handshakeTimeout)
+            XCTAssertEqual(provider.detail.connection, .unavailable)
+            XCTAssertEqual(provider.item, .unavailable(.codex))
+            let counts = await fake.counts()
+            XCTAssertEqual(counts.0, 1); XCTAssertEqual(counts.1, 0)
+        }
+        XCTAssertEqual(provider.detail.codexSession, .stopped)
+        XCTAssertEqual(clock.pending(), 0)
+        let counts = await fake.counts()
+        XCTAssertEqual(counts.0, 1); XCTAssertEqual(counts.1, 1)
+    }
+    func testFirstReadTimeoutPublishesBeforeHeldCloseWithoutAnotherEvent() async throws {
+        let clock = ManualQuotaClock(), fake = FakeQuotaTransport()
+        let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+        try await whileCloseIsHeld(provider, fake) {
+            provider.start(); await wait { await fake.methods() == ["initialize"] }
+            try await fake.emit(["id": 1, "result": ["userAgent": "fixture"]])
+            await wait { await fake.readIDs() == [2] }
+            await wait { clock.pending() == 1 }; clock.advance(10)
+            await wait { await fake.closeEntryCount() >= 1 }
+            XCTAssertEqual(provider.detail.codexSession, .requestTimeout)
+            XCTAssertEqual(provider.detail.connection, .unavailable)
+            XCTAssertEqual(provider.item, .unavailable(.codex, failed: true))
+            XCTAssertNil(provider.item.sampledAt)
+            let counts = await fake.counts()
+            XCTAssertEqual(counts.0, 1); XCTAssertEqual(counts.1, 0)
+        }
+        XCTAssertEqual(clock.pending(), 0)
+        let counts = await fake.counts()
+        XCTAssertEqual(counts.0, 1); XCTAssertEqual(counts.1, 1)
+    }
+    func testVerificationTimeoutStalesBaselineBeforeHeldCloseWithoutAnotherEvent() async throws {
+        let clock = ManualQuotaClock(), fake = FakeQuotaTransport()
+        let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+        try await whileCloseIsHeld(provider, fake) {
+            try await establish(provider, fake)
+            let original = provider.item
+            await wait { clock.pending() == 1 }; clock.advance(240)
+            await wait { await fake.readIDs() == [2, 3] }
+            await wait { clock.pending() == 1 }; clock.advance(10)
+            await wait { await fake.closeEntryCount() >= 1 }
+            XCTAssertEqual(provider.detail.codexSession, .requestTimeout)
+            XCTAssertEqual(provider.detail.connection, .unavailable)
+            XCTAssertEqual(provider.item.freshness, .stale)
+            XCTAssertEqual(provider.item.fiveHour, original.fiveHour)
+            XCTAssertEqual(provider.item.weekly, original.weekly)
+            XCTAssertEqual(provider.item.source, original.source)
+            XCTAssertEqual(provider.item.sampledAt, original.sampledAt)
+            let counts = await fake.counts(), ids = await fake.readIDs()
+            XCTAssertEqual(counts.0, 1); XCTAssertEqual(counts.1, 0)
+            XCTAssertEqual(ids, [2, 3])
+        }
+        XCTAssertEqual(clock.pending(), 0)
+        let counts = await fake.counts()
+        XCTAssertEqual(counts.0, 1); XCTAssertEqual(counts.1, 1)
+    }
+    func testTimeoutPublicationCanStopAndRestartWithoutOldCleanupOverwritingNewSession() async throws {
+        let clock = ManualQuotaClock(), fake = FakeQuotaTransport(), replacement = FakeQuotaTransport()
+        var transportsMade = 0
+        let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: {
+            transportsMade += 1
+            return transportsMade == 1 ? fake : replacement
+        })
+        var timeoutSeen = false
+        var freshAfterTimeout = 0
+        provider.onUpdate = { item, detail in
+            if timeoutSeen && detail.codexSession == .available { freshAfterTimeout += 1 }
+            if detail.codexSession == .requestTimeout && !timeoutSeen {
+                timeoutSeen = true
+                XCTAssertEqual(item.fiveHour, .requestFailed)
+                provider.stop()
+                provider.start()
+            }
+        }
+        try await whileCloseIsHeld(provider, fake) {
+            provider.start(); await wait { await fake.methods() == ["initialize"] }
+            try await fake.emit(["id": 1, "result": ["userAgent": "fixture"]])
+            await wait { await fake.readIDs() == [2] }
+            await wait { clock.pending() == 1 }; clock.advance(10)
+            await wait { await fake.closeEntryCount() >= 1 }
+            XCTAssertTrue(timeoutSeen)
+            XCTAssertEqual(provider.detail.codexSession, .stopped)
+            XCTAssertEqual(freshAfterTimeout, 0)
+            XCTAssertEqual(clock.pending(), 0)
+            let heldCounts = await fake.counts()
+            XCTAssertEqual(heldCounts.0, 1); XCTAssertEqual(heldCounts.1, 0)
+            await fake.releaseClose()
+            await wait { await replacement.methods() == ["initialize"] }
+            XCTAssertEqual(provider.detail.codexSession, .handshaking)
+            try await replacement.emit(["id": 1, "result": ["userAgent": "new fixture"]])
+            await wait { await replacement.readIDs() == [2] }
+            try await replacement.emit(["id": 2, "result": payload(17)])
+            await wait { provider.detail.codexSession == .available && clock.pending() == 1 }
+            XCTAssertEqual(provider.item.freshness, .fresh)
+            XCTAssertEqual(provider.item.displayWindows(now: clock.now()).first?.state.value?.usedPercent, 17)
+            XCTAssertEqual(freshAfterTimeout, 1)
+            let counts = await fake.counts()
+            XCTAssertEqual(counts.0, 1); XCTAssertEqual(counts.1, 1)
+            let newCounts = await replacement.counts()
+            XCTAssertEqual(newCounts.0, 1); XCTAssertEqual(newCounts.1, 0)
+            XCTAssertEqual(transportsMade, 2)
+        }
+        XCTAssertEqual(provider.detail.codexSession, .stopped)
+        XCTAssertEqual(clock.pending(), 0)
+        let counts = await fake.counts()
+        XCTAssertEqual(counts.0, 1); XCTAssertEqual(counts.1, 1)
+        let newCounts = await replacement.counts()
+        XCTAssertEqual(newCounts.0, 1); XCTAssertEqual(newCounts.1, 1)
+        XCTAssertEqual(transportsMade, 2)
+    }
+    func testExpiredFirstReadRejectsLateResponseWhileTransportCloseIsHeld() async throws {
+        let clock = ManualQuotaClock(), fake = FakeQuotaTransport()
+        let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
+        var availablePublications = 0
+        provider.onUpdate = { _, detail in
+            if detail.codexSession == .available { availablePublications += 1 }
+        }
+        try await whileCloseIsHeld(provider, fake) {
+            provider.start(); await wait { await fake.methods() == ["initialize"] }
+            try await fake.emit(["id": 1, "result": ["userAgent": "fixture"]])
+            await wait { await fake.readIDs() == [2] }
+            await wait { clock.pending() == 1 }
+            clock.advance(10)
+            await wait { await fake.closeEntryCount() == 1 }
+            // The watchdog has expired but the child/stream deliberately remains open.
+            XCTAssertEqual(provider.detail.codexSession, .requestTimeout)
+            XCTAssertEqual(provider.detail.connection, .unavailable)
+            XCTAssertEqual(provider.item, .unavailable(.codex, failed: true))
+            try await fake.emit(["id": 2, "result": payload(91)])
+            // The late event must leave the stream and enter run-loop cleanup, not publish a baseline.
+            await wait { await fake.closeEntryCount() == 2 }
+            XCTAssertEqual(provider.detail.codexSession, .requestTimeout)
+            XCTAssertEqual(availablePublications, 0)
+            XCTAssertNil(provider.item.sampledAt)
+            XCTAssertEqual(provider.item.fiveHour, .requestFailed)
+            await fake.releaseClose()
+            await wait { provider.detail.connection == .reconnecting && clock.pending() == 1 }
+        }
+        XCTAssertEqual(clock.pending(), 0)
+        let counts = await fake.counts()
+        XCTAssertEqual(counts.0, 1); XCTAssertEqual(counts.1, 1)
     }
     func testStopDuringBackoffCancelsAllPendingWork() async {
         let clock = ManualQuotaClock(), fake = FakeQuotaTransport()
@@ -350,8 +774,13 @@ private struct NoQuotaTestHTTP: NetworkHTTPClient {
         let provider = CodexQuotaProvider(approved: true, clock: clock, makeTransport: { fake })
         try await establish(provider, fake)
         let original = provider.item
+        var barrierSeen = false
+        var published: [QuotaItem] = []
+        provider.onUpdate = { item, _ in published.append(item); barrierSeen = true }
         try await fake.emit(["method": "thread/started", "params": ["fake": "discard"]])
-        for _ in 0..<20 { await Task.yield() }
+        try await fake.emit(["method": "account/rateLimits/updated", "params": payload()])
+        await wait { barrierSeen }
+        XCTAssertEqual(published, [original])
         XCTAssertEqual(provider.item, original)
         provider.stop(); await provider.waitForStop()
     }
@@ -506,7 +935,15 @@ private actor HardeningDevRunner: ShellRunning {
                        runner: HardeningDevRunner = HardeningDevRunner(),
                        codex: FixtureQuotaProvider? = nil,
                        scanner: CleanerScanner = CleanerScanner()) -> AppStore {
-        AppStore(sampler: sampler, details: HardeningDetailSampler(),
+        // AppStore currently reads standard defaults directly. Override only the process-local
+        // argument domain during synchronous construction; never write the owner's preferences.
+        let defaults = UserDefaults.standard
+        let previous = defaults.volatileDomain(forName: UserDefaults.argumentDomain)
+        var fixture = previous
+        fixture["macsoul.connectivityEnabled"] = true
+        defaults.setVolatileDomain(fixture, forName: UserDefaults.argumentDomain)
+        defer { defaults.setVolatileDomain(previous, forName: UserDefaults.argumentDomain) }
+        return AppStore(sampler: sampler, details: HardeningDetailSampler(),
                  devRuntimes: RuntimeDetector(runner: runner, environment: [:], home: URL(fileURLWithPath: "/MacSoul-Test-No-Home")),
                  devPorts: PortDetector(runner: runner), networkPath: path ?? FakeNetworkPath(),
                  networkHTTP: NoQuotaTestHTTP(), networkLocal: FakeLocalNetwork(),

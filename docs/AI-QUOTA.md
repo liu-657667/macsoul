@@ -1,6 +1,20 @@
 # AI Quota Integration — Real-Time Without Aggressive Polling
 
-## Current v0.1.0 contract — 2026-10-08
+## Current v0.1.1 local candidate — 2026-10-15 (Issue #15)
+
+The bundled executable at `/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex` is the sole native Codex source. A bounded `--version` on that same resolved URL supplies diagnostic metadata only; missing version metadata does not prove protocol failure. No PATH/cwd/download discovery is added. XCTest/default Preview remain unapproved and cannot read the Owner account.
+
+Each new connection performs `initialize` → matched successful response (nonempty `userAgent`) → `initialized` → one `account/rateLimits/read`. The matched first read is both the compatibility check and quota baseline, with no second probe process/read. Known and unknown versions receive identical validation. The implementation consumes no other initialization fields; optional extensions are ignored. Current-session compatibility is never cached as a promise about future versions.
+
+Outbound methods remain exactly those three; `account/rateLimits/updated` is inbound only and is ignored until a valid baseline. IDs and connection generations isolate unrelated/duplicate/late responses; the watchdog immediately invalidates response admission before awaiting child teardown. Consumed fields retain strict numeric, duration, reset and bucket validation. A malformed recognized window rejects session compatibility, while valid missing/null or unfamiliar-duration windows remain unreported; no 5h is invented. No account/profile, login/logout, prompts, configuration writes or private HTTP endpoints are used.
+
+The shared snapshot carries sanitized `CodexSessionStatus`: checking/handshaking/reading, CLI missing or launch failure, handshake failure/timeout, quota request failure/timeout, unsupported method, incompatible response, communication failure, no reported quota, or current quota available. AI, Overview and Menu Bar use the same state and source. No raw RPC error/stderr text is shown, and no login/subscription diagnosis is guessed.
+
+Protocol/schema rejection closes the child and stops automatic reconnect until explicit stop/start. Temporary transport/service errors retain the existing 1/2/5/10/30/60-second capped backoff. Each reconnect redoes handshake and first read after old-child teardown. Failed/reconnecting samples keep their original values/time and are immediately Stale. Existing 10-second request watchdog and 240-second verification cadence remain; no extra timer loop is added. Stop, Preview, sleep and termination cancel owned work. A finished start task is cleared so explicit retry remains possible.
+
+Protocol reference: [official app-server documentation](https://developers.openai.com/codex/app-server/) (read 2026-10-15, redirects to [ChatGPT Learn](https://learn.chatgpt.com/docs/app-server)), initialization and account rate-limit sections. Optional fields do not grant new RPC permissions. This implementation is a local candidate, **not a new-version Live validation**; real Codex compatibility is NOT_RUN and Owner Live/UI is PENDING_OWNER. Issue #18 / #20 Network limited-acceptance boundaries are unaffected.
+
+## Historical published v0.1.0 contract — 2026-10-08
 
 Published [Unsigned Developer Preview](RELEASE.md): exact Codex CLI **0.160.0 / 0.160.1 / 0.162.0-alpha.2** are verified; unknown versions fail closed. UI text/bars show remaining (`100 - usedPercent`), while canonical fields and alert thresholds retain usedPercent. Live summaries render only applicable/reported windows; Week-only never gets an invented 5h row. Claude remains honestly unavailable without a verified installed live source. Owner Live acceptance is recorded in [Day 7](../reports/day-7-release-closeout-2026-10-07.md); natural quota updates and real quota95% events remain NOT_OBSERVED. The dated Day 4 checkpoints below retain their original UNKNOWN / NOT_RUN and version observations; later acceptance does not backfill them.
 

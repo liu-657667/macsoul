@@ -48,7 +48,7 @@ Additional view: [Settings, upper section (Developer Preview)](docs/screenshots/
 |---|---|---|
 | **Soul** | Concise reactions and recovery | Deterministic local rules: sustained CPU thresholds, memory pressure, cooldown/recovery; static artwork, no LLM |
 | **System** | CPU, memory, storage, power and developer processes | Native CPU, memory used/total, pressure events, root-volume disk, power-source state, process CPU delta/RSS; natural warning observed, critical not observed |
-| **AI quotas** | Applicable Codex / Claude Code windows | Verified Codex CLI 0.160.0 / 0.160.1 / 0.162.0-alpha.2; shared remaining percentages and provider resets; Claude unavailable without verified source |
+| **AI quotas** | Applicable Codex / Claude Code windows | v0.1.1 local candidate validates each read-only handshake and first read (new-version Live acceptance pending); historical CLI observations remain in AI quota docs; shared remaining percentages and provider resets; Claude unavailable without verified source |
 | **Network** | Egress IP, proxy hints, transport checks | NWPath, independent IPv4/IPv6, App/system proxy context, tunnel hints and anonymous HEAD probes; Region not collected |
 | **Dev environment** | Runtime contexts and developer TCP listeners | Java/Node/Python/Go, SDKMAN/NVM/pyenv/goenv, cache/refresh; developer filtering plus full-list disclosure; stop command is copy-only |
 | **Dev storage** | Explain estimates and inspect contents | Read-only Xcode/Gradle/Maven/npm/Homebrew Preview/drill-down, local Docker logical usage without VM traversal; no cleanup |
@@ -118,13 +118,13 @@ Local-first does not mean zero network traffic. Published v0.1.0 Live Network qu
 
 Public IP services can observe the requester’s public egress IP. Only IP text is parsed: no GPS, country, city, ASN, physical device location, real account data or project content is collected. Real public IPs, raw HTTP responses and proxy credentials are not persisted. If both sources fail, only the last valid address and its provenance are retained as Stale; without a successful history the state is Unavailable. Candidate Network details separate last success, last attempt, successful source, checking state and latest failure. Service reachability, target-device proxy/TLS/IPv6 and UI need separate manual validation; reachability on another machine is not acceptance on this Mac.
 
-Codex starts a selected verified CLI app-server (PATH or bundled discovery), sending only initialize, initialized and account/rateLimits/read and consuming minimal rate-limit fields. No account profile, prompts/threads, inference, login or quota mutation. Canonical usedPercent is preserved; numeric UI/bars show remaining. Only verified machine-readable capability can classify absent 5h as not applicable; absence alone is insufficient. Claude currently checks executable/version only; installation does not prove a subscription.
+The Codex local candidate starts only the fixed ChatGPT.app bundled CLI app-server. Version metadata comes from that same executable for diagnostics; each connection must pass handshake and first-read validation, sending only initialize, initialized and account/rateLimits/read and consuming minimal rate-limit fields. No account profile, prompts/threads, inference, login or quota mutation. Canonical usedPercent is preserved; numeric UI/bars show remaining. Only verified machine-readable capability can classify absent 5h as not applicable; absence alone is insufficient. Claude currently checks executable/version only; installation does not prove a subscription.
 
 Cleaner reads resolved cache roots without uploading paths/content, skips symlinks and constrains Preview traversal. Docker queries local Engine logical usage only; remote contexts are excluded, with no Docker.raw/VM traversal. Launch at Login uses macOS system state and changes only through explicit user action; real registration/unregistration remains NOT_RUN, explicitly deferred to a future installed/signed environment.
 
 ### Limitations
 
-- Provider-reported quotas are not an official SLA. Unknown Codex versions fail closed; Claude is unavailable without a verified source.
+- Provider-reported quotas are not an official SLA. The Codex local candidate validates the current session; unsupported methods or incompatible responses still fail closed, and real new-version compatibility remains unverified; Claude is unavailable without a verified source.
 - Estimated usage is not exact reclaimable bytes. APFS clones/shared blocks, sparse files, hard links and purgeable space differ. Docker logical usage is not VM physical usage.
 - Listening ports are not conflicts. Copying `kill -TERM <PID>` does not execute it; verify current PID ownership before running it yourself.
 - Connected NWPath is not internet health. HTTP 401/405 proves transport reachability, not authentication or full service health; tunnel hints do not prove VPN routing.

@@ -298,6 +298,39 @@ final class AIQuotaParserTests: XCTestCase {
         XCTAssertEqual(MacSoulLanguage.chinese.quotaStatus(QuotaProviderDetail(provider: .codex, connection: .malformed)), "配额响应格式无效")
         XCTAssertEqual(MacSoulLanguage.chinese.quotaStatus(QuotaProviderDetail(provider: .claude, connection: .unavailable, claudeCapability: .notInstalled)), "未检测到")
     }
+    func testCodexSessionReasonsAreDistinctAndBilingual() {
+        let states: [CodexSessionStatus] = [.checking, .handshaking, .reading, .available,
+            .quotaUnavailable, .quotaRequestFailed, .cliUnavailable, .handshakeFailed, .handshakeTimeout,
+            .requestTimeout, .methodUnsupported, .invalidResponse, .communicationFailure, .stopped]
+        for language: MacSoulLanguage in [.english, .chinese] {
+            let messages = states.map { state in
+                language.quotaStatus(QuotaProviderDetail(provider: .codex, connection: .unavailable, codexSession: state))
+            }
+            XCTAssertEqual(Set(messages).count, states.count)
+            XCTAssertTrue(messages.allSatisfy { !$0.isEmpty && !$0.contains("0%") })
+        }
+        let detail = QuotaProviderDetail(provider: .codex, connection: .reconnecting, codexSession: .handshakeTimeout)
+        XCTAssertTrue(MacSoulLanguage.english.quotaStatus(detail).contains("Reconnecting"))
+        XCTAssertTrue(MacSoulLanguage.chinese.quotaStatus(detail).contains("超时"))
+        let failure = QuotaProviderDetail(provider: .codex, connection: .reconnecting, codexSession: .quotaRequestFailed)
+        XCTAssertFalse(MacSoulLanguage.english.quotaStatus(failure).contains("Connected"))
+        XCTAssertFalse(MacSoulLanguage.chinese.quotaStatus(failure).contains("已连接"))
+    }
+    func testCodexSharedPresentationPreservesWeekOnlyRemainingAndStale() throws {
+        let parsed = try CodexQuotaParser.parse(wirePayload(primary: nil), now: quotaTestNow)
+        let stale = QuotaItem(provider: .codex, fiveHour: parsed.fiveHour, weekly: parsed.weekly,
+            sampledAt: parsed.sampledAt, source: parsed.source, freshness: .stale, mode: .live)
+        let detail = QuotaProviderDetail(provider: .codex, connection: .malformed, codexSession: .invalidResponse)
+        for presentation: QuotaPresentation in [.summary, .detail] {
+            let rows = stale.presentationWindows(now: quotaTestNow, presentation: presentation)
+            let week = try XCTUnwrap(rows.first { $0.kind == .weekly })
+            guard case .stale(let value) = week.state else { return XCTFail("Old data must be stale on every surface") }
+            XCTAssertEqual(value.remainingPercent, 100 - value.usedPercent)
+            XCTAssertEqual(stale.presentationSource(detail: detail), "Codex App Server")
+            XCTAssertTrue(QuotaWindowView.statusLabel(for: week, now: quotaTestNow, language: .english, presentation: presentation).contains("Stale"))
+            XCTAssertFalse(rows.contains { $0.kind == .fiveHour && $0.state.value != nil })
+        }
+    }
     func testClaudeNotInstalledDoesNotDisplayVerifiedStatusLineSource() {
         let detail = QuotaProviderDetail(provider: .claude, connection: .unavailable, claudeCapability: .notInstalled)
         XCTAssertNil(QuotaItem.unavailable(.claude).presentationSource(detail: detail))

@@ -16,7 +16,8 @@ import Foundation
     private(set) var detail = QuotaProviderDetail(provider: .codex, connection: .stopped)
     var onUpdate: ((QuotaItem, QuotaProviderDetail) -> Void)?
     static let verificationInterval: TimeInterval = 240
-    static let supportedVersions: Set<String> = ["0.160.0", "0.160.1", "0.162.0-alpha.2"]
+    // Metadata only. Both version lookup and transport capture this same trusted source.
+    nonisolated static let bundledExecutablePath = "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex"
     private let makeTransport: () -> any CodexQuotaTransport
     private let clock: any QuotaClock
     private let approved: Bool
@@ -36,13 +37,14 @@ import Foundation
         var pendingRead: Int?
         var nextRead = 2
         var hasBaseline = false
+        var timedOut = false
     }
 
     // Unapproved by default for injected/test AppStores. App entry explicitly selects nativeLive.
     init(approved: Bool = false, version: String? = nil, clock: any QuotaClock = SystemQuotaClock(),
          versionLookup: (() async -> String?)? = nil,
          makeTransport: @escaping () -> any CodexQuotaTransport = {
-             NativeCodexQuotaTransport(executable: QuotaExecutableDiscovery.codex())
+             NativeCodexQuotaTransport(executable: ExecutableResolver.explicit(CodexQuotaProvider.bundledExecutablePath))
          }) {
         self.approved = approved; self.clock = clock; self.makeTransport = makeTransport
         self.versionLookup = versionLookup
@@ -55,13 +57,12 @@ import Foundation
               ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else {
             return CodexQuotaProvider()
         }
-        let executable = ExecutableResolver.explicit(
-            "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex")
+        let executable = ExecutableResolver.explicit(bundledExecutablePath)
         return CodexQuotaProvider(approved: true, versionLookup: {
             guard let executable else { return nil }
             var command = ShellCommand(executableURL: executable, arguments: ["--version"])
             command.timeout = 3; command.stdoutLimit = 1024; command.stderrLimit = 1024
-            guard let result = try? await ShellRunner().run(command), !result.outputTruncated else { return nil }
+            guard let result = try? await ShellRunner().run(command), !result.outputTruncated, result.exitCode == 0 else { return nil }
             return QuotaExecutableDiscovery.version(result.stdout)
         }, makeTransport: { NativeCodexQuotaTransport(executable: executable) })
     }
@@ -79,14 +80,16 @@ import Foundation
         task = Task { [weak self] in
             if let previous { await previous.value }
             guard let self, !Task.isCancelled, cycle == generation else { return }
+            defer { if cycle == generation { task = nil } }
+            detail.codexSession = .checking
+            publish(.connecting, failed: false)
+            guard !Task.isCancelled, cycle == generation else { return }
             if let versionLookup {
                 let version = await versionLookup()
                 guard !Task.isCancelled, cycle == generation else { return }
                 detail.version = version
-                // Only independently verified exact versions may open a native session.
-                guard let version, Self.supportedVersions.contains(version) else {
-                    publish(.unavailable, failed: false); return
-                }
+                // Version metadata does not attest protocol compatibility. A missing/unreadable
+                // version still requires the exact same handshake and validated first read.
             }
             await run(cycle: cycle)
         }
@@ -96,13 +99,17 @@ import Foundation
         cancelTimers()
         if let task { retired = task; task.cancel(); self.task = nil }
         lastNumericSample = nil // Explicit stop/sleep/Preview is a fresh lifecycle baseline.
+        detail.codexSession = .stopped
         publish(.stopped, failed: false)
     }
     func waitForStop() async { await retired?.value }
 
     private func publish(_ state: QuotaConnectionState, failed: Bool) {
         detail.connection = state
-        item = lastNumericSample ?? .unavailable(.codex, failed: failed)
+        if let sample = lastNumericSample {
+            item = QuotaItem(provider: sample.provider, fiveHour: sample.fiveHour, weekly: sample.weekly,
+                             sampledAt: sample.sampledAt, source: sample.source, freshness: .stale, mode: .live)
+        } else { item = .unavailable(.codex, failed: failed) }
         onUpdate?(item, detail)
     }
     private func cancelTimers() {
@@ -110,7 +117,7 @@ import Foundation
         verification?.cancel(); verification = nil
     }
     private func isCurrent(_ connection: Connection, cycle: Int) -> Bool {
-        !Task.isCancelled && cycle == generation && connection.id == connectionID
+        !Task.isCancelled && cycle == generation && connection.id == connectionID && !connection.timedOut
     }
     private func deadline(_ transport: any CodexQuotaTransport, connection: Connection, cycle: Int) {
         watchdog?.cancel()
@@ -118,6 +125,11 @@ import Foundation
             guard let self else { return }
             do { try await clock.sleep(seconds: 10) } catch { return }
             guard isCurrent(connection, cycle: cycle) else { return }
+            connection.timedOut = true
+            detail.codexSession = connection.initialized ? .requestTimeout : .handshakeTimeout
+            publish(.unavailable, failed: connection.initialized)
+            // Publication can synchronously stop/restart the provider. This old transport
+            // still must close, even though timedOut/cancellation now invalidate admission.
             await transport.close()
         }
     }
@@ -145,10 +157,13 @@ import Foundation
     private func run(cycle: Int) async {
         var backoff = QuotaBackoff()
         while !Task.isCancelled && cycle == generation {
+            detail.codexSession = .handshaking
             publish(starts > 1 || backoff.failures > 0 ? .reconnecting : .connecting, failed: false)
+            guard !Task.isCancelled, cycle == generation else { break }
             let transport = makeTransport()
             let connection = Connection()
             connectionID = connection.id
+            var terminal = false
             do {
                 let stream = try await transport.open()
                 try Task.checkCancellation()
@@ -165,16 +180,22 @@ import Foundation
                             guard json["method"] == nil else { throw CodexTransportError.malformed }
                             let numericID = try QuotaWireValue.number(id)
                             if numericID == 1 && !connection.initialized {
-                                guard json["error"] == nil, json["result"] is [String: Any] else {
-                                    throw CodexTransportError.closed
+                                try checkResponse(json, initializing: true)
+                                guard let result = json["result"] as? [String: Any],
+                                      let agent = result["userAgent"] as? String, !agent.isEmpty else {
+                                    throw QuotaParseError.malformed
                                 }
                                 connection.initialized = true
+                                detail.codexSession = .reading
+                                publish(.connecting, failed: false)
+                                guard isCurrent(connection, cycle: cycle) else { break }
                                 try await transport.send(CodexReadOnlyRPC.message(method: "initialized"))
                                 try await read(transport, connection: connection, cycle: cycle)
                             } else if let pending = connection.pendingRead, numericID == Double(pending) {
-                                guard json["error"] == nil else { throw CodexTransportError.closed }
+                                try checkResponse(json, initializing: false)
                                 guard let payload = json["result"] as? [String: Any] else { throw QuotaParseError.malformed }
                                 try accept(payload, cycle: cycle)
+                                guard isCurrent(connection, cycle: cycle) else { break }
                                 connection.pendingRead = nil; connection.hasBaseline = true
                                 backoff.reset(); watchdog?.cancel(); watchdog = nil
                                 scheduleVerification(transport, connection: connection, cycle: cycle)
@@ -191,26 +212,63 @@ import Foundation
                 } onCancel: { Task { await transport.close() } }
             } catch {
                 if !Task.isCancelled && cycle == generation {
-                    publish(error is QuotaParseError ? .malformed : .unavailable, failed: connection.initialized)
+                    let reason: CodexSessionStatus
+                    if error is QuotaParseError {
+                        reason = .invalidResponse; terminal = true
+                    } else if let rejection = error as? SessionRejection {
+                        reason = rejection.reason; terminal = rejection.terminal
+                    } else if let transportError = error as? CodexTransportError,
+                              transportError == .malformed || transportError == .oversized {
+                        reason = .invalidResponse; terminal = true
+                    } else if connection.timedOut {
+                        reason = connection.initialized ? .requestTimeout : .handshakeTimeout
+                    } else if let transportError = error as? CodexTransportError,
+                              transportError == .launchFailed {
+                        reason = .cliUnavailable
+                    } else { reason = connection.initialized ? .communicationFailure : .handshakeFailed }
+                    detail.codexSession = reason
+                    publish(terminal ? .malformed : .unavailable, failed: connection.initialized)
                 }
             }
             cancelTimers()
             await transport.close() // Reap this child/pipe before another connection/generation.
             guard !Task.isCancelled, cycle == generation else { break }
             connectionID = nil
+            if terminal { break } // Explicit stop/start may retry; no incompatible-process loop.
             detail.connection = .reconnecting
             onUpdate?(item, detail)
             do { try await clock.sleep(seconds: backoff.next()) } catch { break }
         }
     }
+    private struct SessionRejection: Error {
+        let reason: CodexSessionStatus
+        let terminal: Bool
+    }
+    private func checkResponse(_ json: [String: Any], initializing: Bool) throws {
+        if let raw = json["error"] {
+            guard json["result"] == nil, let error = raw as? [String: Any],
+                  error["message"] is String else { throw QuotaParseError.malformed }
+            let code = try QuotaWireValue.number(error["code"])
+            guard code.rounded() == code else { throw QuotaParseError.malformed }
+            // Never retain/display server message, data or stderr.
+            if code == -32601 { throw SessionRejection(reason: .methodUnsupported, terminal: true) }
+            if code == -32600 || code == -32602 { throw QuotaParseError.malformed }
+            throw SessionRejection(reason: initializing ? .handshakeFailed : .quotaRequestFailed, terminal: false)
+        }
+        guard json["result"] is [String: Any] else { throw QuotaParseError.malformed }
+    }
     private func accept(_ payload: [String: Any], cycle: Int) throws {
         let parsed = try CodexQuotaParser.parse(payload, now: clock.now())
         guard cycle == generation, !Task.isCancelled else { return }
+        guard parsed.fiveHour != .requestFailed, parsed.weekly != .requestFailed else {
+            throw QuotaParseError.malformed
+        }
         item = parsed
         lastNumericSample = nil
         if case .available = parsed.fiveHour { lastNumericSample = parsed }
         else if case .available = parsed.weekly { lastNumericSample = parsed }
-        detail.connection = parsed.fiveHour == .requestFailed || parsed.weekly == .requestFailed ? .malformed : .available
+        detail.codexSession = lastNumericSample == nil ? .quotaUnavailable : .available
+        detail.connection = lastNumericSample == nil ? .unavailable : .available
         onUpdate?(item, detail)
     }
 }
