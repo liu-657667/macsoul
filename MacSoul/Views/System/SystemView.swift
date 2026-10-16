@@ -4,114 +4,132 @@ struct SystemView: View {
     @EnvironmentObject private var store: AppStore
     @Environment(\.macSoulLanguage) private var language
     var body: some View {
+        SystemContent(snapshot: store.snapshot, mode: store.systemMode)
+            .navigationTitle(language.text("System"))
+    }
+}
+
+/// Pure presentation also accepts synthetic snapshots without starting collectors.
+struct SystemContent: View {
+    let snapshot: AppSnapshot
+    let mode: SystemMode
+    @Environment(\.macSoulLanguage) private var language
+
+    var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.section) {
-                GroupBox(language.text(store.systemMode == .live ? "System · LIVE" : "System · MOCK DATA")) {
-                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
-                        LabeledContent(language.text("CPU"), value: store.snapshot.cpu.label)
-                        LabeledContent(language.text("Memory used"), value: store.snapshot.memoryUsed.label)
-                        if let memory = store.snapshot.memoryBytes {
-                            LabeledContent(language.text("Memory used / total"), value:
+                TypographySection(language.text(mode == .live ? "System · LIVE" : "System · MOCK DATA")) {
+                    Grid(alignment: .leading, horizontalSpacing: MacSoulTheme.Spacing.card, verticalSpacing: MacSoulTheme.Spacing.regular) {
+                        TypographyField(language.text("CPU"), value: snapshot.cpu.label)
+                        TypographyField(language.text("Memory used"), value: snapshot.memoryUsed.label)
+                        if let memory = snapshot.memoryBytes {
+                            TypographyField(language.text("Memory used / total"), value:
                                 String(format: "%.2f / %.2f GiB", memory.usedGiB, memory.totalGiB))
                         }
-                        LabeledContent(language.text("Memory pressure"), value: language.text(store.snapshot.memoryPressure))
+                        TypographyField(language.text("Memory pressure"), value: language.text(snapshot.memoryPressure))
                         diskRows
                         batteryRows
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                if store.systemMode == .live {
-                    GroupBox(language.text("Top Developer Processes")) {
+                if mode == .live {
+                    TypographySection(language.text("Top Developer Processes")) {
                         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                             processRows
                             Text(language.text("Process CPU is per logical CPU over two samples; a multicore process can exceed 100%. First CPU sample is unknown."))
-                                .foregroundStyle(.secondary)
+                                .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
-                Text(language.text(store.systemMode == .live
-                    ? "CPU is host-wide busy time between samples; first sample is unknown. Memory pressure stays unknown until macOS reports an event."
-                    : "No system sampler is connected."))
-                    .foregroundStyle(.secondary)
-                if store.systemMode == .live {
-                    Text(language.text("Memory used estimate: physical RAM minus free and file-backed pages; pressure is independent."))
-                        .foregroundStyle(.secondary)
-                    Text(language.text("Disk uses root volume total minus available bytes; APFS and purgeable space may differ from Storage Settings."))
-                        .foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+                    Text(language.text(mode == .live
+                        ? "CPU is host-wide busy time between samples; first sample is unknown. Memory pressure stays unknown until macOS reports an event."
+                        : "No system sampler is connected."))
+                    if mode == .live {
+                        Text(language.text("Memory used estimate: physical RAM minus free and file-backed pages; pressure is independent."))
+                        Text(language.text("Disk uses root volume total minus available bytes; APFS and purgeable space may differ from Storage Settings."))
+                    }
                 }
+                .font(MacSoulTheme.Typography.supporting)
+                .lineSpacing(2)
+                .foregroundStyle(.primary)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxWidth: 680, alignment: .topLeading)
+            .frame(maxWidth: 820, alignment: .topLeading)
             .frame(maxWidth: .infinity, alignment: .topLeading)
             .padding(MacSoulTheme.Spacing.section)
         }
-        .navigationTitle(language.text("System"))
     }
 
     @ViewBuilder private var diskRows: some View {
-        if store.systemMode == .preview {
-            LabeledContent(language.text("Disk · Mock"), value: store.snapshot.disk.label)
+        if mode == .preview {
+            TypographyField(language.text("Disk · Mock"), value: snapshot.disk.label)
         } else {
-            LabeledContent(language.text("Disk"), value: store.snapshot.disk.label)
-            switch store.snapshot.diskReading {
+            TypographyField(language.text("Disk"), value: snapshot.disk.label)
+            switch snapshot.diskReading {
             case .available(let usage, _):
-                LabeledContent(language.text("Disk used / total"), value:
+                TypographyField(language.text("Disk used / total"), value:
                     String(format: "%.1f / %.1f GiB", usage.usedGiB, usage.totalGiB))
             case .unknown:
-                Text(language.text("Disk sampling…")).foregroundStyle(.secondary)
+                Text(language.text("Disk sampling…")).font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
             case .unavailable:
-                Text(language.text("Disk unavailable")).foregroundStyle(.secondary)
+                Text(language.text("Disk unavailable")).font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
             }
         }
     }
 
     @ViewBuilder private var batteryRows: some View {
-        if store.systemMode == .preview {
-            LabeledContent(language.text("Battery · Mock"), value: store.snapshot.battery.label)
+        if mode == .preview {
+            TypographyField(language.text("Battery · Mock"), value: snapshot.battery.label)
         } else {
-            switch store.snapshot.batteryReading {
+            switch snapshot.batteryReading {
             case .unknown:
-                LabeledContent(language.text("Battery"), value: language.text("Sampling…"))
+                TypographyField(language.text("Battery"), value: language.text("Sampling…"))
             case .notPresent:
-                LabeledContent(language.text("Battery"), value: language.text("No battery"))
+                TypographyField(language.text("Battery"), value: language.text("No battery"))
             case .unavailable:
-                LabeledContent(language.text("Battery"), value: language.text("Unavailable"))
+                TypographyField(language.text("Battery"), value: language.text("Unavailable"))
             case .present(let status, _):
-                LabeledContent(language.text("Battery"), value: "\(status.chargePercent)%")
-                LabeledContent(language.text("Charge state"), value: language.text(status.chargeState.rawValue.capitalized))
+                TypographyField(language.text("Battery"), value: "\(status.chargePercent)%")
+                TypographyField(language.text("Charge state"), value: language.text(status.chargeState.rawValue.capitalized))
                 if let external = status.externalPower {
-                    LabeledContent(language.text("External power"), value: language.text(external ? "Connected" : "Disconnected"))
+                    TypographyField(language.text("External power"), value: language.text(external ? "Connected" : "Disconnected"))
                 }
             }
         }
     }
 
     @ViewBuilder private var processRows: some View {
-        switch store.snapshot.processReading {
+        switch snapshot.processReading {
         case .unknown:
-            Text(language.text("Process sampling…")).foregroundStyle(.secondary)
+            Text(language.text("Process sampling…")).font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
         case .unavailable:
-            Text(language.text("Process collection unavailable")).foregroundStyle(.secondary)
+            Text(language.text("Process collection unavailable")).font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
         case .available(let processes, _):
             if processes.isEmpty {
-                Text(language.text("No developer processes found")).foregroundStyle(.secondary)
+                Text(language.text("No developer processes found")).font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
             } else {
-                HStack {
+                HStack(spacing: MacSoulTheme.Spacing.tight) {
                     Text(language.text("Process")).frame(maxWidth: .infinity, alignment: .leading)
                     Text("CPU").frame(width: 78, alignment: .trailing)
                     Text(language.text("Memory")).frame(width: 90, alignment: .trailing)
                     Text("PID").frame(width: 64, alignment: .trailing)
-                }.font(.caption).foregroundStyle(.secondary)
+                }.font(MacSoulTheme.Typography.tableHeader).foregroundStyle(.primary)
                 ForEach(processes) { process in
-                    HStack {
-                        Text(process.name).lineLimit(1).frame(maxWidth: .infinity, alignment: .leading)
+                    HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.tight) {
+                        Text(process.name).font(MacSoulTheme.Typography.body)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         Text(process.cpuPercent.map { String(format: "%.1f%%", $0) } ?? "—")
+                            .font(MacSoulTheme.Typography.fieldValue).monospacedDigit()
                             .frame(width: 78, alignment: .trailing)
                         Text(process.residentMiB >= 1024
                              ? String(format: "%.1f GiB", process.residentMiB / 1024)
                              : String(format: "%.0f MiB", process.residentMiB))
+                            .font(MacSoulTheme.Typography.fieldValue).monospacedDigit()
                             .frame(width: 90, alignment: .trailing)
-                        Text(String(process.pid)).frame(width: 64, alignment: .trailing)
+                        Text(String(process.pid)).font(MacSoulTheme.Typography.body).monospacedDigit().frame(width: 64, alignment: .trailing)
                     }
                 }
             }

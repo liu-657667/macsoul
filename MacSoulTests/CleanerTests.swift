@@ -54,6 +54,40 @@ private actor CleanerStubDetails: SystemDetailSampling {
 }
 
 final class CleanerTests: XCTestCase {
+    func testCleanerPresentationDefaultsAndSyntheticInputsStaySeparate() async {
+        await MainActor.run {
+            let production = CleanerView()
+            XCTAssertNil(production.scanRunning)
+            XCTAssertNil(production.previewRunning)
+            var syntheticChecks = 0
+            let synthetic = CleanerView(scanRunning: true, previewRunning: false, pathExists: { _ in
+                syntheticChecks += 1
+                return false
+            })
+            XCTAssertEqual(synthetic.scanRunning, true)
+            XCTAssertEqual(synthetic.previewRunning, false)
+            XCTAssertFalse(synthetic.pathExists("/Users/SYNTHETIC/cache"))
+            XCTAssertEqual(syntheticChecks, 1)
+        }
+    }
+
+    func testScanSummaryPreservesEveryStateAndNeverAddsAnEstimateBeforeResults() {
+        var snapshot = CleanerSnapshot.live(categories: [])
+        for state in [CleanerScanState.notRun, .scanning, .available, .notFound, .cancelled, .inaccessible, .partial, .failed] {
+            snapshot.state = state
+            for language: MacSoulLanguage in [.chinese, .english] {
+                let summary = language.cleanerSummary(snapshot)
+                XCTAssertTrue(summary.hasPrefix(language.cleanerText(state.label)))
+                if state == .notRun || state == .scanning {
+                    XCTAssertEqual(summary, language.cleanerText(state.label))
+                }
+            }
+            XCTAssertEqual(snapshot.state, state)
+            XCTAssertTrue(snapshot.categories.isEmpty)
+            XCTAssertNil(snapshot.sampledAt)
+        }
+    }
+
     private func run(_ descriptor: CleanerDescriptor, files: any CleanerFileReading = FoundationCleanerFiles()) async -> CleanerCategory {
         let result = CleanerResults()
         let scanner = CleanerScanner(files: files)

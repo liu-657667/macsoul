@@ -1111,6 +1111,33 @@ final class NetworkTests: XCTestCase {
 }
 
 final class NetworkPresentationTests: XCTestCase {
+    func testStyledSummaryAvoidsRepeatedGenericUnavailableWithoutChangingDefault() {
+        let now = Date(timeIntervalSince1970: 1_760_000_000)
+        let reading = PublicIPReading(failure: .unavailable)
+        for language in MacSoulLanguage.allCases {
+            XCTAssertEqual(NetworkSummary.addressLabel(reading, now: now, language: language), reading.display(language, now: now))
+            for surface: SummarySurface in [.overview, .menuBar] {
+                XCTAssertEqual(NetworkSummary.addressLabel(reading, now: now, language: language, surface: surface), language.text("Unavailable"))
+            }
+        }
+    }
+
+    func testStyledSummaryRetainsStaleQueryingAndSpecificFailureMeaning() {
+        let now = Date(timeIntervalSince1970: 1_760_000_000)
+        let readings = [
+            PublicIPReading(address: "192.0.2.8", sampledAt: now.addingTimeInterval(-600), freshness: .stale, failure: .unavailable, source: .ipinfo),
+            PublicIPReading(failure: .unavailable, checking: true),
+            PublicIPReading(failure: .unsupported),
+            PublicIPReading(failure: .tls),
+            PublicIPReading()
+        ]
+        for reading in readings {
+            for language in MacSoulLanguage.allCases {
+                XCTAssertEqual(NetworkSummary.addressLabel(reading, now: now, language: language, surface: .menuBar), reading.display(language, now: now))
+            }
+        }
+    }
+
     private let chinese = MacSoulLanguage.chinese
     private let english = MacSoulLanguage.english
     private let utc = TimeZone(secondsFromGMT: 0)!

@@ -35,6 +35,7 @@ struct AppShellView: View {
             List(AppSection.allCases, selection: $selection) { item in
                 Label {
                     Text(language.text(item.rawValue))
+                        .font(selection == item ? MacSoulTheme.Typography.fieldValue : MacSoulTheme.Typography.body)
                 } icon: {
                     if item == .cleaner {
                         Image(item.icon)

@@ -10,19 +10,19 @@ struct SettingsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.section) {
-                GroupBox(language.text("Current build capabilities")) {
-                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
-                        LabeledContent(language.text("Data mode"), value: language.text(store.systemMode == .live ? "Live · availability per source" : "Bundled Mock"))
-                        LabeledContent(language.text("Live system sampling"), value: language.text(store.systemMode == .live ? "CPU, memory, disk, battery, processes" : "Not connected"))
-                        LabeledContent(language.text("Live developer environment"), value: language.text(store.systemMode == .live ? "Runtimes and TCP listeners" : "Not connected"))
-                        LabeledContent(language.text("Live network monitoring"), value: language.text(store.systemMode == .live ? "Path, public IP, proxy, tunnel hints, connectivity" : "Not connected"))
-                        LabeledContent(language.text("Live quota providers"), value: language.text(store.systemMode == .live ? "Availability per provider" : "Not connected"))
-                        LabeledContent(language.text("Cleaner"), value: language.cleanerText(store.systemMode == .live ? "Read only · on demand" : "Preview uses Mock fixtures; no filesystem scan runs."))
-                        LabeledContent(language.text("Cleaner deletion"), value: language.text("Not available"))
+                TypographySection(language.text("Current build capabilities")) {
+                    Grid(alignment: .leading, horizontalSpacing: MacSoulTheme.Spacing.card, verticalSpacing: MacSoulTheme.Spacing.regular) {
+                        TypographyField(language.text("Data mode"), value: language.text(store.systemMode == .live ? "Live · availability per source" : "Bundled Mock"))
+                        TypographyField(language.text("Live system sampling"), value: language.text(store.systemMode == .live ? "CPU, memory, disk, battery, processes" : "Not connected"))
+                        TypographyField(language.text("Live developer environment"), value: language.text(store.systemMode == .live ? "Runtimes and TCP listeners" : "Not connected"))
+                        TypographyField(language.text("Live network monitoring"), value: language.text(store.systemMode == .live ? "Path, public IP, proxy, tunnel hints, connectivity" : "Not connected"))
+                        TypographyField(language.text("Live quota providers"), value: language.text(store.systemMode == .live ? "Availability per provider" : "Not connected"))
+                        TypographyField(language.text("Cleaner"), value: language.cleanerText(store.systemMode == .live ? "Read only · on demand" : "Preview uses Mock fixtures; no filesystem scan runs."))
+                        TypographyField(language.text("Cleaner deletion"), value: language.text("Not available"))
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                GroupBox(language.text("System data source")) {
+                TypographySection(language.text("System data source")) {
                     VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                         Picker(language.text("Mode"), selection: Binding(
                             get: { store.systemMode },
@@ -32,71 +32,77 @@ struct SettingsView: View {
                                 Text(language.text(option.label)).tag(option)
                             }
                         }
+                        .font(MacSoulTheme.Typography.fieldLabel)
                         .frame(maxWidth: 440, alignment: .leading)
                         Text(language.text("Live mode includes System, Dev Environment and Network. AI availability is reported per provider."))
-                            .font(.caption).foregroundStyle(.secondary)
+                            .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                GroupBox(language.text("Network external requests")) {
+                TypographySection(language.text("Network external requests")) {
                     HStack(alignment: .top, spacing: MacSoulTheme.Spacing.card) {
                         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                             Text(language.text("Connectivity probes"))
+                                .font(MacSoulTheme.Typography.fieldLabel)
                             Text(language.text("In Live mode, probes send anonymous HTTPS HEAD requests to GitHub, OpenAI and Anthropic. No account credentials or project data are sent. Turning probes off cancels pending probes."))
-                                .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
+                                .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
                             Text(language.text("Live mode queries IPinfo for public IPv4/IPv6, with ident.me as fallback. Developer Preview sends no external network requests."))
-                                .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
+                                .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
                         }.frame(maxWidth: .infinity, alignment: .leading)
                         Toggle(language.text("Connectivity probes"), isOn: Binding(
                             get: { store.connectivityEnabled }, set: { store.setConnectivityEnabled($0) }))
                             .labelsHidden()
+                            .font(MacSoulTheme.Typography.fieldLabel)
                             .toggleStyle(.switch)
                             .accessibilityLabel(language.text("Connectivity probes"))
                             .accessibilityHint(language.text("Turning probes off cancels pending connectivity probes."))
                     }.frame(maxWidth: .infinity, alignment: .leading)
                 }
-                GroupBox(language == .english ? "Launch at Login" : "登录时启动") {
+                TypographySection(language == .english ? "Launch at Login" : "登录时启动") {
                     VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                         Toggle(language == .english ? "Launch MacSoul at login" : "登录时启动 MacSoul", isOn: Binding(
                             get: { loginItem.state.isRegistered }, set: { loginItem.setEnabled($0) }))
+                            .font(MacSoulTheme.Typography.fieldLabel)
                             .toggleStyle(.switch)
                             .disabled(loginItem.state == .unavailable)
-                        Text(loginItem.state.label(language)).font(.caption)
+                        Text(loginItem.state.label(language)).font(MacSoulTheme.Typography.status)
                         if loginItem.operationFailed {
                             Text(language == .english ? "Could not change the login item. Check System Settings and refresh."
                                  : "无法更改登录项，请检查系统设置并刷新。")
-                                .font(.caption).foregroundStyle(.orange)
+                                .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.orange)
                         }
                         Text(language == .english ? "Uses the macOS login item. Changes apply only when you use this switch."
                              : "使用 macOS 系统登录项；仅在操作此开关时更改设置。")
-                            .font(.caption).foregroundStyle(MacSoulTheme.supportingText)
+                            .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
                         Button(language.text("Refresh")) { loginItem.refresh() }.controlSize(.small)
                     }.frame(maxWidth: .infinity, alignment: .leading)
                 }
-                GroupBox(language.text("App appearance")) {
+                TypographySection(language.text("App appearance")) {
                     VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                         Picker(language.text("Appearance"), selection: $appearance) {
                             ForEach(MacSoulAppearance.allCases) { option in
                                 Text(language.text(option.label)).tag(option.rawValue)
                             }
                         }
+                        .font(MacSoulTheme.Typography.fieldLabel)
                         .frame(maxWidth: 440, alignment: .leading)
                         Text(language.text("Changes MacSoul windows only; the macOS appearance stays as it is."))
-                            .font(.caption).foregroundStyle(.secondary)
+                            .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                GroupBox(language == .english ? "Language" : "语言") {
+                TypographySection(language == .english ? "Language" : "语言") {
                     Picker(language == .english ? "Language" : "语言", selection: $selectedLanguage) {
                         ForEach(MacSoulLanguage.allCases) { option in
                             Text(option.label).tag(option.rawValue)
                         }
                     }
+                    .font(MacSoulTheme.Typography.fieldLabel)
                     .frame(maxWidth: 440, alignment: .leading)
                 }
                 #if DEBUG
                 if store.systemMode == .preview, let currentFixture = store.previewFixture {
-                    GroupBox(language.text("Developer preview scenarios")) {
+                    TypographySection(language.text("Developer preview scenarios")) {
                         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                             Picker(language.text("Fixture"), selection: Binding(
                                 get: { store.previewFixture ?? currentFixture },
@@ -106,14 +112,15 @@ struct SettingsView: View {
                                     Text(language.text(fixture.label)).tag(fixture)
                                 }
                             }
+                            .font(MacSoulTheme.Typography.fieldLabel)
                             .frame(maxWidth: 440, alignment: .leading)
                             Text(language.text("The fixture selector changes local demo data. It does not enable live collection or account access."))
-                                .font(.caption).foregroundStyle(.secondary)
+                                .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
-                GroupBox(language.text("Menu Bar artwork · DRAFT")) {
+                TypographySection(language.text("Menu Bar artwork · DRAFT")) {
                     HStack(spacing: MacSoulTheme.Spacing.regular) {
                         Image("MacSoulMenuTemplateDraft")
                             .renderingMode(.template)
@@ -122,6 +129,7 @@ struct SettingsView: View {
                             .frame(width: 18, height: 18)
                             .accessibilityHidden(true)
                         Text(language.text("18 pt template candidate is active; small-size artwork remains DRAFT."))
+                            .font(MacSoulTheme.Typography.body)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }

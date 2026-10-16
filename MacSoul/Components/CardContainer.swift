@@ -2,13 +2,16 @@ import SwiftUI
 
 struct CardContainer<Content: View>: View {
     @Environment(\.macSoulLanguage) private var language
+    @Environment(\.colorScheme) private var colorScheme
     let title: String
     private let badge: String?
     private let systemImage: String?
     private let assetImage: String?
+    private let surface: SummarySurface
     private let content: () -> Content
 
-    init(title: String, systemImage: String, badge: String? = nil, @ViewBuilder content: @escaping () -> Content) {
+    init(title: String, systemImage: String, badge: String? = nil, surface: SummarySurface = .standard, @ViewBuilder content: @escaping () -> Content) {
+        self.surface = surface
         self.title = title
         self.badge = badge
         self.systemImage = systemImage
@@ -16,7 +19,8 @@ struct CardContainer<Content: View>: View {
         self.content = content
     }
 
-    init(title: String, assetImage: String, badge: String? = nil, @ViewBuilder content: @escaping () -> Content) {
+    init(title: String, assetImage: String, badge: String? = nil, surface: SummarySurface = .standard, @ViewBuilder content: @escaping () -> Content) {
+        self.surface = surface
         self.title = title
         self.badge = badge
         self.systemImage = nil
@@ -40,10 +44,10 @@ struct CardContainer<Content: View>: View {
                             .frame(width: 18, height: 18)
                     }
                 }
-                .font(.headline)
+                .font(surface == .standard ? .headline : MacSoulTheme.Typography.sectionTitle)
                 if let badge {
                     Text(language.text(badge))
-                        .font(.caption2.weight(.semibold))
+                        .font(surface == .standard ? .caption2.weight(.semibold) : MacSoulTheme.Typography.status)
                         .foregroundStyle(MacSoulTheme.supportingText)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
@@ -54,7 +58,14 @@ struct CardContainer<Content: View>: View {
         }
         .padding(MacSoulTheme.Spacing.card)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(MacSoulTheme.cardBackground)
+        .background {
+            if surface == .overview {
+                RoundedRectangle(cornerRadius: MacSoulTheme.Radius.card, style: .continuous)
+                    .fill(Color(nsColor: MacSoulTheme.overviewCardBackgroundColor(for: colorScheme)))
+            } else {
+                MacSoulTheme.cardBackground
+            }
+        }
         .clipShape(RoundedRectangle(cornerRadius: MacSoulTheme.Radius.card, style: .continuous))
     }
 }
@@ -63,6 +74,11 @@ struct CardContainer<Content: View>: View {
 struct SoulArtwork: View {
     let visual: SoulVisual?
     let size: CGFloat
+    var surface: SummarySurface = .standard
+
+    var fallbackScale: CGFloat {
+        surface == .standard ? 1 : min(1, size / MacSoulTheme.Size.soulGlyph)
+    }
 
     var body: some View {
         Group {
@@ -72,7 +88,7 @@ struct SoulArtwork: View {
                     .resizable()
                     .scaledToFit()
             } else {
-                SoulGlyph()
+                SoulGlyph().scaleEffect(fallbackScale)
             }
         }
         .frame(width: size, height: size)
