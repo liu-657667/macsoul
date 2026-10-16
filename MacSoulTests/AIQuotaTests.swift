@@ -1,5 +1,13 @@
 import XCTest
+import SwiftUI
 @testable import MacSoul
+
+private struct TypographyShellFrameKey: PreferenceKey {
+    static var defaultValue: [String: CGRect] = [:]
+    static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {
+        value.merge(nextValue(), uniquingKeysWith: { _, new in new })
+    }
+}
 
 private let quotaTestNow = Date(timeIntervalSince1970: 1_800_000_000)
 private func wireWindow(_ used: Any = 42, minutes: Any = 300, reset: Any = 1_800_010_000) -> [String: Any] {
@@ -350,6 +358,155 @@ final class AIQuotaParserTests: XCTestCase {
         let preview = MockProvider(fixture: .healthy).snapshot(now: quotaTestNow).quotas.first { $0.provider == .claude }!
         XCTAssertEqual(preview.presentationSource(detail: nil), preview.source)
         XCTAssertEqual(QuotaItem.unavailable(.codex).presentationSource(detail: nil), "Codex App Server")
+    }
+}
+
+final class QuotaTypographyPresentationTests: XCTestCase {
+    @MainActor func testOverviewDoesNotPushNativeNavigationIntoToolbarAtLowHeights() async {
+        for width in [900.0, 1120.0] {
+            for height in [620.0, 568.0] {
+                let store = AppStore(provider: MockProvider(fixture: .healthy), cleanerCategories: [], now: quotaTestNow)
+                let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: width, height: height),
+                                      styleMask: [.titled, .resizable, .fullSizeContentView], backing: .buffered, defer: false)
+                window.isReleasedWhenClosed = false
+                window.toolbar = NSToolbar(identifier: "TypographySyntheticToolbar")
+                let ready = expectation(description: "Native shell geometry \(width)×\(height)")
+                var measured: CGRect = .zero
+                var reported = false
+                let root = AppShellView().environmentObject(store)
+                    .environment(\.macSoulLanguage, .english)
+                    .background(GeometryReader { proxy in
+                        Color.clear.preference(key: TypographyShellFrameKey.self, value: ["shell": proxy.frame(in: .global)])
+                    })
+                    .onPreferenceChange(TypographyShellFrameKey.self) { [weak window] frames in
+                        guard let window, let frame = frames["shell"] else { return }
+                        measured = frame
+                        let available = window.contentLayoutRect
+                        let top = window.frame.height - available.maxY
+                        if !reported && window.toolbar != nil && frame.height > 0
+                            && abs(frame.height - available.height) <= 1
+                            && abs(frame.minY - top) <= 1 && abs(frame.width - available.width) <= 1 {
+                            reported = true
+                            ready.fulfill()
+                        }
+                    }
+                let host = NSHostingView(rootView: root)
+                host.sizingOptions = []
+                window.contentView = host
+                window.contentMinSize = .zero
+                window.setContentSize(NSSize(width: width, height: height))
+                host.layoutSubtreeIfNeeded()
+                window.displayIfNeeded()
+                await fulfillment(of: [ready], timeout: 3)
+                host.layoutSubtreeIfNeeded()
+                let available = window.contentLayoutRect
+                let top = window.frame.height - available.maxY
+                print("TYPOGRAPHY_GEOMETRY requested=\(width)x\(height) available=\(available.width)x\(available.height) root=\(measured) top=\(top)")
+                XCTAssertLessThanOrEqual(available.height, height + 1)
+                XCTAssertLessThanOrEqual(measured.height, available.height + 1)
+                XCTAssertEqual(measured.minY, top, accuracy: 1)
+                XCTAssertEqual(measured.width, available.width, accuracy: 1)
+                XCTAssertEqual(store.systemMode, .preview)
+                XCTAssertEqual(store.sensorStarts + store.devStarts + store.networkStarts + store.quotaStarts, 0)
+                store.stopForTermination()
+                window.close()
+            }
+        }
+    }
+
+    func testOverviewCardFillIsOpaqueAndDistinctFromWindowInBothAppearances() async throws {
+        try await MainActor.run {
+            for scheme: ColorScheme in [.light, .dark] {
+                let card = try XCTUnwrap(MacSoulTheme.overviewCardBackgroundColor(for: scheme).usingColorSpace(.deviceRGB))
+                let window = try XCTUnwrap(MacSoulTheme.windowBackgroundColor(for: scheme).usingColorSpace(.deviceRGB))
+                XCTAssertEqual(card.alphaComponent, 1, accuracy: 0.001)
+                let separation = max(abs(card.redComponent - window.redComponent),
+                                     abs(card.greenComponent - window.greenComponent),
+                                     abs(card.blueComponent - window.blueComponent))
+                XCTAssertGreaterThan(separation, 1.0 / 255.0, "Overview surface must remain distinguishable in \(scheme)")
+            }
+        }
+    }
+
+    func testSummaryFallbackFitsSmallSlotWithoutChangingDefault() async {
+        await MainActor.run {
+            XCTAssertEqual(SoulArtwork(visual: nil, size: 48).fallbackScale, 1)
+            XCTAssertEqual(SoulArtwork(visual: nil, size: 48, surface: .menuBar).fallbackScale, 0.75)
+            XCTAssertEqual(SoulArtwork(visual: nil, size: 96, surface: .overview).fallbackScale, 1)
+        }
+    }
+
+    func testSummaryTypographyIsExplicitAndNeverChangesDetailSelection() {
+        for appearance: QuotaRowAppearance in [.overviewSummary, .menuBarSummary] {
+            XCTAssertTrue(appearance.usesSummaryTypography(presentation: .summary))
+            XCTAssertFalse(appearance.usesSummaryTypography(presentation: .detail))
+            XCTAssertTrue(appearance.showsProviderHeader(presentation: .summary))
+            XCTAssertTrue(appearance.showsProviderHeader(presentation: .detail))
+        }
+        XCTAssertFalse(QuotaRowAppearance.standard.usesSummaryTypography(presentation: .summary))
+        XCTAssertFalse(QuotaRowAppearance.aiDetail.usesSummaryTypography(presentation: .summary))
+        XCTAssertFalse(QuotaRowAppearance.aiDetail.showsProviderHeader(presentation: .detail))
+    }
+
+    func testSummaryComponentsKeepProductionDefaultsAndDoNotSelectLive() async {
+        await MainActor.run {
+            XCTAssertNil(OverviewView().presentationMode)
+            XCTAssertNil(MenuBarContentView().presentationMode)
+            XCTAssertEqual(MetricTile(name: "CPU", metric: .init(usedPercent: nil)).surface, .standard)
+            XCTAssertEqual(MemoryPressureLabel(pressure: "Unknown · Live").surface, .standard)
+            XCTAssertEqual(NetworkSummary(snapshot: .init(), now: quotaTestNow).surface, .standard)
+            XCTAssertEqual(OverviewView(presentationMode: .live).presentationMode, .live)
+            XCTAssertEqual(MenuBarContentView(presentationMode: .preview).presentationMode, .preview)
+        }
+    }
+
+    func testSummaryModeKeepsAIProviderAvailabilitySeparate() {
+        let live = SummaryModeLabel.key(for: .live)
+        let preview = SummaryModeLabel.key(for: .preview)
+        XCTAssertEqual(live, "System, Dev and Network: Live · AI availability per provider")
+        XCTAssertEqual(preview, "Developer Preview · No live sampling or quota provider")
+        XCTAssertEqual(MacSoulLanguage.chinese.text(preview), "开发预览 · 未连接实时采样或配额服务")
+    }
+
+    func testSharedQuotaViewsKeepStandardAppearanceByDefault() async {
+        await MainActor.run {
+            let quota = MockProvider(fixture: .healthy).snapshot(now: quotaTestNow).quotas[0]
+            XCTAssertEqual(QuotaRow(quota: quota).appearance, .standard)
+            XCTAssertEqual(QuotaRow(quota: quota, presentation: .summary).appearance, .standard)
+            XCTAssertTrue(QuotaRowAppearance.standard.showsProviderHeader(presentation: .summary))
+            XCTAssertTrue(QuotaRowAppearance.standard.showsProviderHeader(presentation: .detail))
+            let window = quota.displayWindows(now: quotaTestNow)[0]
+            XCTAssertEqual(QuotaWindowView(window: window, now: quotaTestNow, presentation: .summary).appearance, .standard)
+        }
+    }
+
+    func testOnlyExplicitAIDetailRemovesDuplicateProviderHeader() {
+        XCTAssertFalse(QuotaRowAppearance.aiDetail.showsProviderHeader(presentation: .detail))
+        // A summary must retain its Provider even if the opt-in is passed accidentally.
+        XCTAssertTrue(QuotaRowAppearance.aiDetail.showsProviderHeader(presentation: .summary))
+    }
+
+    func testStandaloneResetRemovesOnlyTheInlineSeparator() {
+        for language: MacSoulLanguage in [.english, .chinese] {
+            for reset in [nil, quotaTestNow, quotaTestNow.addingTimeInterval(86_400)] {
+                let value = QuotaWindow(usedPercent: 31, durationMinutes: 10080, resetsAt: reset)!
+                let standard = QuotaWindowView.resetLabel(for: value, now: quotaTestNow, language: language)
+                let standalone = QuotaWindowView.resetLabel(for: value, now: quotaTestNow,
+                                                           language: language, inlineSeparator: false)
+                XCTAssertEqual(standard, "· " + standalone)
+                XCTAssertFalse(standalone.hasPrefix("·"))
+                XCTAssertEqual(value.resetsAt, reset)
+            }
+        }
+    }
+
+    func testStandardResetKeepsUnknownAndDueCopy() {
+        let unknown = QuotaWindow(usedPercent: 0, durationMinutes: 300, resetsAt: nil)!
+        let due = QuotaWindow(usedPercent: 0, durationMinutes: 300, resetsAt: quotaTestNow)!
+        XCTAssertEqual(QuotaWindowView.resetLabel(for: unknown, now: quotaTestNow, language: .english), "· Reset —")
+        XCTAssertEqual(QuotaWindowView.resetLabel(for: unknown, now: quotaTestNow, language: .chinese), "· 重置时间未知")
+        XCTAssertEqual(QuotaWindowView.resetLabel(for: due, now: quotaTestNow, language: .english), "· Reset due; awaiting refresh")
+        XCTAssertEqual(QuotaWindowView.resetLabel(for: due, now: quotaTestNow, language: .chinese), "· 重置时间已到，等待刷新")
     }
 }
 

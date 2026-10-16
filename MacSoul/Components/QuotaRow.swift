@@ -4,11 +4,28 @@ enum QuotaPresentation: Equatable {
     case summary, detail
 }
 
+// Only the AI detail page opts in; shared summaries keep their existing layout.
+enum QuotaRowAppearance: Equatable {
+    case standard, aiDetail, overviewSummary, menuBarSummary
+
+    func usesSummaryTypography(presentation: QuotaPresentation) -> Bool {
+        presentation == .summary && (self == .overviewSummary || self == .menuBarSummary)
+    }
+
+    func showsProviderHeader(presentation: QuotaPresentation) -> Bool {
+        self != .aiDetail || presentation != .detail
+    }
+}
+
 struct QuotaRow: View {
     @Environment(\.macSoulLanguage) private var language
     @EnvironmentObject private var store: AppStore
     let quota: QuotaItem
     var presentation: QuotaPresentation = .detail
+    var appearance: QuotaRowAppearance = .standard
+
+    private var usesDetailTypography: Bool { appearance == .aiDetail && presentation == .detail }
+    private var usesSummaryTypography: Bool { appearance.usesSummaryTypography(presentation: presentation) }
 
     var body: some View {
         content(now: store.displayNow)
@@ -16,36 +33,53 @@ struct QuotaRow: View {
 
     private func content(now: Date) -> some View {
         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
-            HStack {
-                Text(quota.provider.rawValue).font(.headline)
-                Spacer()
-                if presentation == .detail {
-                    Text(language.text(quota.badge))
-                        .font(.caption).foregroundStyle(.secondary)
+            if appearance.showsProviderHeader(presentation: presentation) {
+                HStack {
+                    Text(quota.provider.rawValue)
+                        .font(usesSummaryTypography ? (appearance == .menuBarSummary ? MacSoulTheme.Typography.fieldValue : MacSoulTheme.Typography.itemTitle) : .headline)
+                    Spacer()
+                    if presentation == .detail {
+                        Text(language.text(quota.badge))
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
                 }
             }
             if quota.entirelyUnavailable {
-                Text(language.text("Quota unavailable")).font(.caption).foregroundStyle(MacSoulTheme.supportingText)
+                if usesDetailTypography || usesSummaryTypography {
+                    Text(language.text("Quota unavailable")).font(MacSoulTheme.Typography.status)
+                } else {
+                    Text(language.text("Quota unavailable")).font(.caption).foregroundStyle(MacSoulTheme.supportingText)
+                }
             } else {
                 if presentation == .summary && quota.presentationWindows(now: now, presentation: presentation).isEmpty {
-                    Text(language.text("Not reported")).font(.caption).foregroundStyle(MacSoulTheme.supportingText)
+                    Text(language.text("Not reported")).font(usesSummaryTypography ? MacSoulTheme.Typography.status : .caption).foregroundStyle(usesSummaryTypography ? .primary : MacSoulTheme.supportingText)
                 }
                 ForEach(quota.presentationWindows(now: now, presentation: presentation)) { window in
-                    QuotaWindowView(window: window, now: now, presentation: presentation)
+                    QuotaWindowView(window: window, now: now, presentation: presentation, appearance: appearance)
                 }
             }
             if presentation == .summary,
                let detail = store.snapshot.quotaDetails.first(where: { $0.provider == quota.provider }),
                detail.connection != .available && detail.connection != .stopped {
-                Text(language.quotaStatus(detail)).font(.caption).foregroundStyle(.orange)
+                Text(language.quotaStatus(detail)).font(usesSummaryTypography ? MacSoulTheme.Typography.status : .caption).foregroundStyle(.orange)
             }
             if presentation == .detail {
                 ForEach(quota.notApplicableLabels(), id: \.self) { label in
                     Text("\(language.text(label)): \(language.text("Not applicable"))")
+                        .font(usesDetailTypography ? MacSoulTheme.Typography.supporting : .caption2)
+                        .foregroundStyle(usesDetailTypography ? .primary : .secondary)
+                }
+                if usesDetailTypography {
+                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.compact) {
+                        Text("\(language.text("Source")): \(sourceLabel)")
+                        Text("\(language.text("Updated")): \(quota.sampledAt.map { fullTime($0) } ?? "—")")
+                    }
+                    .font(MacSoulTheme.Typography.supporting).lineSpacing(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                } else {
+                    Text("\(language.text("Source")): \(sourceLabel) · \(language.text("Updated")): \(quota.sampledAt.map { fullTime($0) } ?? "—")")
                         .font(.caption2).foregroundStyle(.secondary)
                 }
-                Text("\(language.text("Source")): \(sourceLabel) · \(language.text("Updated")): \(quota.sampledAt.map { fullTime($0) } ?? "—")")
-                    .font(.caption2).foregroundStyle(.secondary)
             }
         }
     }
@@ -65,23 +99,59 @@ struct QuotaWindowView: View {
     let window: QuotaDisplayWindow
     let now: Date
     let presentation: QuotaPresentation
+    var appearance: QuotaRowAppearance = .standard
+
+    private var usesDetailTypography: Bool { appearance == .aiDetail && presentation == .detail }
+    private var usesSummaryTypography: Bool { appearance.usesSummaryTypography(presentation: presentation) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.compact) {
-            HStack {
-                Text(language.text(window.kind.label)).foregroundStyle(MacSoulTheme.supportingText)
-                Spacer()
-                if isAbnormal {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.orange)
-                        .accessibilityHidden(true)
+            if usesDetailTypography {
+                HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.tight) {
+                    Text(language.text(window.kind.label)).font(MacSoulTheme.Typography.fieldLabel)
+                    Spacer()
+                    if isAbnormal {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(.orange).accessibilityHidden(true)
+                    }
+                    Text(Self.statusLabel(for: window, now: now, language: language, presentation: presentation))
+                        .font(MacSoulTheme.Typography.fieldValue).monospacedDigit()
                 }
-                Text(Self.statusLabel(for: window, now: now, language: language, presentation: presentation))
-                    .fontWeight(isAbnormal ? .semibold : .regular)
-                if presentation == .detail, let value = window.state.value {
-                    Text(fullResetLabel(for: value)).foregroundStyle(.secondary)
+                if let value = window.state.value {
+                    Text(fullResetLabel(for: value, inlineSeparator: false))
+                        .font(MacSoulTheme.Typography.supporting).lineSpacing(2)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
-            }.font(.caption)
+            } else if usesSummaryTypography {
+                HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.tight) {
+                    Text(language.text(window.kind.label)).font(MacSoulTheme.Typography.fieldLabel)
+                        .fixedSize(horizontal: true, vertical: false)
+                    Spacer(minLength: MacSoulTheme.Spacing.compact)
+                    if isAbnormal {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(.orange).accessibilityHidden(true)
+                    }
+                    Text(Self.statusLabel(for: window, now: now, language: language, presentation: presentation))
+                        .font(MacSoulTheme.Typography.fieldValue).monospacedDigit()
+                        .multilineTextAlignment(.trailing).fixedSize(horizontal: false, vertical: true)
+                }
+            } else {
+                HStack {
+                    Text(language.text(window.kind.label)).foregroundStyle(MacSoulTheme.supportingText)
+                    Spacer()
+                    if isAbnormal {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(.orange)
+                            .accessibilityHidden(true)
+                    }
+                    Text(Self.statusLabel(for: window, now: now, language: language, presentation: presentation))
+                        .fontWeight(isAbnormal ? .semibold : .regular)
+                    if presentation == .detail, let value = window.state.value {
+                        Text(fullResetLabel(for: value)).foregroundStyle(.secondary)
+                    }
+                }
+                .font(.caption)
+            }
             if let value = window.state.value {
                 ProgressView(value: value.remainingProgress)
             }
@@ -134,10 +204,16 @@ struct QuotaWindowView: View {
         return language == .english ? "reset in \(remainingMinutes)m" : "\(remainingMinutes)分钟后重置"
     }
 
-    private func fullResetLabel(for value: QuotaWindow) -> String {
-        guard let reset = value.resetsAt else { return language == .english ? "· Reset —" : "· 重置时间未知" }
-        if reset <= now { return language == .english ? "· Reset due; awaiting refresh" : "· 重置时间已到，等待刷新" }
+    private func fullResetLabel(for value: QuotaWindow, inlineSeparator: Bool = true) -> String {
+        Self.resetLabel(for: value, now: now, language: language, inlineSeparator: inlineSeparator)
+    }
+
+    static func resetLabel(for value: QuotaWindow, now: Date, language: MacSoulLanguage,
+                           inlineSeparator: Bool = true) -> String {
+        let prefix = inlineSeparator ? "· " : ""
+        guard let reset = value.resetsAt else { return prefix + (language == .english ? "Reset —" : "重置时间未知") }
+        if reset <= now { return prefix + (language == .english ? "Reset due; awaiting refresh" : "重置时间已到，等待刷新") }
         let formatted = reset.formatted(Date.FormatStyle(date: .abbreviated, time: .shortened).locale(language.locale))
-        return language == .english ? "· Reset \(formatted)" : "· \(formatted) 重置"
+        return prefix + (language == .english ? "Reset \(formatted)" : "\(formatted) 重置")
     }
 }

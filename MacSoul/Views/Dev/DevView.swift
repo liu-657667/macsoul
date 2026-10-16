@@ -26,50 +26,62 @@ struct DevView: View {
             VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.section) {
                 HStack {
                     Text(language.text(store.snapshot.devMode == .live ? "Dev Environment · LIVE" : "Dev Environment · MOCK"))
-                        .font(.headline)
+                        .font(MacSoulTheme.Typography.sectionTitle)
+                        .accessibilityAddTraits(.isHeader)
                     Spacer()
                     if store.snapshot.devMode == .live {
                         Button(language.text("Refresh")) { store.refreshDev() }
                     }
                 }
-                GroupBox(language.text("Runtimes")) {
-                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+                TypographySection(language.text("Runtimes")) {
+                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.regular) {
                         if store.snapshot.devMode == .live, let reading = store.snapshot.runtimeReading {
                             if reading.state == .sampling {
                                 Text(language.text("Sampling…"))
+                                    .font(MacSoulTheme.Typography.status)
                             } else {
                                 ForEach(reading.records) { record in
-                                    VStack(alignment: .leading, spacing: 5) {
-                                        HStack {
-                                            Text(record.name).fontWeight(.semibold)
-                                            Spacer()
-                                            Text(language.text(record.primary?.version ?? record.status.label))
+                                    VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+                                        Grid(alignment: .leading, horizontalSpacing: MacSoulTheme.Spacing.card) {
+                                            GridRow(alignment: .firstTextBaseline) {
+                                                Text(record.name).font(MacSoulTheme.Typography.itemTitle)
+                                                    .frame(width: 100, alignment: .leading)
+                                                Text(language.text(record.primary?.version ?? record.status.label))
+                                                    .font(MacSoulTheme.Typography.fieldValue)
+                                                    .monospacedDigit()
+                                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                            }
                                         }
                                         ForEach(record.contexts) { context in
-                                            HStack(alignment: .firstTextBaseline) {
-                                                Text(context.source).foregroundStyle(.secondary)
-                                                Spacer()
-                                                Text(language.text(context.version ?? context.state.label))
+                                            VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.compact) {
+                                                HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.card) {
+                                                    Text(context.source).font(MacSoulTheme.Typography.fieldLabel)
+                                                    Text(language.text(context.version ?? context.state.label))
+                                                        .font(MacSoulTheme.Typography.fieldValue).monospacedDigit()
+                                                }
                                                 if let path = context.path {
-                                                    Text(path).font(.caption.monospaced())
-                                                        .foregroundStyle(.secondary)
+                                                    Text(path).font(MacSoulTheme.Typography.technical)
                                                         .textSelection(.enabled)
-                                                        .lineLimit(1).truncationMode(.middle)
+                                                        .fixedSize(horizontal: false, vertical: true)
+                                                        .frame(maxWidth: .infinity, alignment: .leading)
                                                 }
                                             }
                                         }
                                         if record.hasMismatch {
                                             Text(language.text("Different detection contexts resolve different versions."))
-                                                .font(.caption).foregroundStyle(.orange)
+                                                .font(MacSoulTheme.Typography.supporting).foregroundStyle(.orange)
                                         }
                                     }
-                                    .padding(.vertical, 4)
+                                    .padding(.vertical, MacSoulTheme.Spacing.compact)
                                     if record.id != reading.records.last?.id { Divider() }
                                 }
                             }
                         } else {
-                            ForEach(store.snapshot.runtimes) { runtime in
-                                LabeledContent(runtime.name, value: language.text(runtime.version))
+                            Grid(alignment: .leading, horizontalSpacing: MacSoulTheme.Spacing.card,
+                                 verticalSpacing: MacSoulTheme.Spacing.regular) {
+                                ForEach(store.snapshot.runtimes) { runtime in
+                                    TypographyField(runtime.name, value: language.text(runtime.version))
+                                }
                             }
                         }
                     }
@@ -78,7 +90,8 @@ struct DevView: View {
                 VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                     Text(language.text(store.snapshot.devMode == .live
                         ? "Developer TCP Listeners" : "Listening Ports — Mock"))
-                        .font(.headline)
+                        .font(MacSoulTheme.Typography.sectionTitle)
+                        .accessibilityAddTraits(.isHeader)
                     if store.snapshot.devMode == .live, let reading = store.snapshot.portReading {
                         if reading.state == .available || reading.state == .empty {
                             let developer = reading.developerListeners
@@ -86,31 +99,33 @@ struct DevView: View {
                             VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.regular) {
                                 if developer.isEmpty {
                                     Text(language.text("No developer TCP listeners found"))
-                                        .foregroundStyle(.secondary)
+                                        .font(MacSoulTheme.Typography.supporting)
                                 } else {
                                     PortTable(items: developer)
                                 }
                                 DisclosureGroup(isExpanded: $showAllListeners) {
                                     if all.isEmpty {
                                         Text(language.text("No visible TCP listeners"))
-                                            .foregroundStyle(.secondary)
+                                            .font(MacSoulTheme.Typography.supporting)
                                     } else {
                                         PortTable(items: all)
                                     }
                                 } label: {
                                     Text(language.text("Show all user-visible listeners") + " (\(all.count))")
+                                        .font(MacSoulTheme.Typography.fieldLabel)
                                 }
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                         } else {
                             Text(language.text(reading.state.label))
-                                .foregroundStyle(.secondary)
+                                .font(MacSoulTheme.Typography.status)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     } else {
                         VStack(alignment: .leading) {
                             ForEach(store.snapshot.ports) { item in
                                 LabeledContent(item.displayPort, value: language.text(item.process))
+                                    .font(MacSoulTheme.Typography.body)
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -137,25 +152,26 @@ private struct PortTable: View {
 
     var body: some View {
         Table(items, selection: $selection) {
-            TableColumn(language.text("Port")) { item in
-                Text(String(item.port)).monospacedDigit().lineLimit(1)
+            column(language.text("Port")) {
+                Text(String($0.port)).font(MacSoulTheme.Typography.body).monospacedDigit().lineLimit(1)
             }
-            .width(85)
-            TableColumn(language.text("Process")) { item in
-                Text(item.process).lineLimit(1).truncationMode(.tail)
+            .width(65)
+            column(language.text("Process")) { item in
+                Text(item.process).font(MacSoulTheme.Typography.body).lineLimit(1).truncationMode(.tail)
                     .help(item.process)
             }
-            .width(min: 160, ideal: 190, max: 240)
-            TableColumn("PID") { item in
-                Text(String(item.pid)).monospacedDigit().lineLimit(1)
+            .width(min: 140, ideal: 140, max: 360)
+            column("PID") { item in
+                Text(String(item.pid)).font(MacSoulTheme.Typography.body).monospacedDigit().lineLimit(1)
                     .frame(maxWidth: .infinity, alignment: .trailing)
+                    .help(String(item.pid))
             }
-            .width(85)
-            TableColumn(language.text("Bind")) { item in
-                ListenerBindCell(item: item)
+            .width(100)
+            column(language.text("Bind")) { item in
+                ListenerBindCell(item: item).font(MacSoulTheme.Typography.body)
             }
-            .width(min: 120, ideal: 150, max: 180)
-            TableColumn(language.text("Actions")) { item in
+            .width(min: 120, ideal: 120, max: 300)
+            column(language.text("Actions")) { item in
                 HStack(spacing: 12) {
                     Menu {
                         Button(language.text("Copy Port")) { copy(String(item.port)) }
@@ -176,12 +192,26 @@ private struct PortTable: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .width(min: 110, ideal: 120, max: .infinity)
+            .width(100)
         }
+        .font(MacSoulTheme.Typography.tableHeader)
         .tableStyle(.inset(alternatesRowBackgrounds: true))
         .controlSize(.small)
-        .frame(height: min(max(CGFloat(items.count) * 26 + 28, 80), 320))
+        // Include the 26pt action target and native row insets, not text height
+        // alone, so the final row is fully visible before Table starts scrolling.
+        .frame(height: min(max(CGFloat(items.count) * 42 + 28, 80), 320))
         .border(Color(nsColor: .separatorColor), width: 0.5)
+    }
+
+    // Text column headers are available from macOS 13.5; keep the original
+    // String initializer on 13.0–13.4 and the same native Table on both paths.
+    private func column<Cell: View>(_ title: String, @ViewBuilder content: @escaping (LogicalListener) -> Cell)
+        -> TableColumn<LogicalListener, Never, Cell, Text> {
+        if #available(macOS 13.5, *) {
+            return TableColumn(Text(title).font(MacSoulTheme.Typography.tableHeader), content: content)
+        } else {
+            return TableColumn(title, content: content)
+        }
     }
 
     private func copy(_ value: String) {
@@ -220,7 +250,7 @@ private struct StopCommandButton: View {
             : "复制当前 PID 的 SIGTERM 命令。执行前请确认 PID 仍属于该进程。")
         .popover(isPresented: $showingCopied, arrowEdge: .bottom) {
             Text(language == .english ? "Stop command copied" : "已复制停止命令")
-                .font(.callout)
+                .font(MacSoulTheme.Typography.supporting)
                 .padding(10)
                 .task(id: feedbackID) {
                     do { try await Task.sleep(nanoseconds: 1_500_000_000) }
@@ -253,9 +283,9 @@ private struct ListenerBindCell: View {
             .help(item.bindAddresses.joined(separator: "\n"))
             .popover(isPresented: $showingAddresses) {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(language.text("Bind")).font(.headline)
+                    Text(language.text("Bind")).font(MacSoulTheme.Typography.itemTitle)
                     ForEach(item.bindAddresses, id: \.self) { address in
-                        Text(address).font(.body.monospaced())
+                        Text(address).font(MacSoulTheme.Typography.technical)
                             .textSelection(.enabled)
                     }
                 }

@@ -1,6 +1,20 @@
 import SwiftUI
 
 enum MacSoulTheme {
+    // Opt-in page roles; no app-wide font override.
+    enum Typography {
+        static let brandTitle = Font.system(size: 20, weight: .semibold)
+        static let sectionTitle = Font.system(size: 15, weight: .semibold)
+        static let body = Font.system(size: 13)
+        static let fieldLabel = Font.system(size: 13)
+        static let fieldValue = Font.system(size: 13, weight: .medium)
+        static let supporting = Font.system(size: 12)
+        static let status = Font.system(size: 12, weight: .medium)
+        static let tableHeader = Font.system(size: 12, weight: .medium)
+        static let itemTitle = Font.system(size: 14, weight: .semibold)
+        static let technical = Font.system(size: 12, design: .monospaced)
+    }
+
     enum Spacing {
         static let compact: CGFloat = 4
         static let tight: CGFloat = 8
@@ -24,6 +38,20 @@ enum MacSoulTheme {
         Color(nsColor: .controlBackgroundColor).opacity(0.86)
     }
 
+    // Overview needs an opaque surface distinct from its window. Keep the
+    // existing shared token unchanged for AI detail and standard components.
+    static func overviewCardBackgroundColor(for scheme: ColorScheme) -> NSColor {
+        let name: NSAppearance.Name = scheme == .dark ? .darkAqua : .aqua
+        guard let appearance = NSAppearance(named: name) else {
+            return .underPageBackgroundColor
+        }
+        var resolved = NSColor.underPageBackgroundColor
+        appearance.performAsCurrentDrawingAppearance {
+            resolved = NSColor.underPageBackgroundColor.usingColorSpace(.deviceRGB) ?? .underPageBackgroundColor
+        }
+        return resolved
+    }
+
     static var secondaryBackground: Color {
         Color(nsColor: .windowBackgroundColor)
     }
@@ -40,6 +68,101 @@ enum MacSoulTheme {
             resolved = NSColor.windowBackgroundColor.usingColorSpace(.deviceRGB) ?? .windowBackgroundColor
         }
         return resolved
+    }
+}
+
+// Explicit summary surfaces never alter the default styling of detail pages.
+enum SummarySurface: Equatable {
+    case standard, overview, menuBar
+}
+
+/// One mode statement per summary surface. Provider availability stays separate.
+struct SummaryModeLabel: View {
+    let mode: SystemMode
+    @Environment(\.macSoulLanguage) private var language
+
+    static func key(for mode: SystemMode) -> String {
+        mode == .live ? "System, Dev and Network: Live · AI availability per provider"
+            : "Developer Preview · No live sampling or quota provider"
+    }
+
+    var body: some View {
+        Text(language.text(Self.key(for: mode)))
+            .font(MacSoulTheme.Typography.supporting)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+/// Scoped to summary fields; native LabeledContent retains its label/value relationship.
+struct SummaryLabeledContentStyle: LabeledContentStyle {
+    var technicalValue = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.tight) {
+            configuration.label.font(MacSoulTheme.Typography.fieldLabel)
+                .frame(maxWidth: 110, alignment: .leading).fixedSize(horizontal: false, vertical: true)
+            configuration.content
+                .font(technicalValue ? MacSoulTheme.Typography.technical : MacSoulTheme.Typography.fieldValue)
+                .frame(maxWidth: .infinity, alignment: .leading).fixedSize(horizontal: false, vertical: true)
+        }
+    }
+}
+
+/// Two text columns inside an opt-in Grid. The label column can shrink and wrap;
+/// its cap leaves room for long values without pushing them to the far edge.
+struct TypographyField: View {
+    let label: String
+    let value: String
+
+    init(_ label: String, value: String) {
+        self.label = label
+        self.value = value
+    }
+
+    var body: some View {
+        GridRow(alignment: .firstTextBaseline) {
+            Text(label)
+                .font(MacSoulTheme.Typography.fieldLabel)
+                .frame(maxWidth: 180, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
+            Text(value)
+                .font(MacSoulTheme.Typography.fieldValue)
+                .monospacedDigit()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(label)
+        .accessibilityValue(value)
+    }
+}
+
+struct TypographySection<Content: View>: View {
+    let title: String
+    let content: Content
+
+    init(_ title: String, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.content = content()
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+            Text(title)
+                .font(MacSoulTheme.Typography.sectionTitle)
+                .accessibilityAddTraits(.isHeader)
+            GroupBox {
+                // Native inset is about 4pt here; add 12pt for ~16pt total.
+                content
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(MacSoulTheme.Spacing.regular)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        // Keep the header and native controls individually accessible, in order.
+        // Only the visible header supplies the name; do not repeat it on the box.
+        .accessibilityElement(children: .contain)
     }
 }
 
@@ -225,6 +348,7 @@ enum MacSoulLanguage: String, CaseIterable, Identifiable {
         "Network path": "网络路径",
         "Overview": "总览", "System": "系统", "Network": "网络", "AI Coding": "AI 编程",
         "Dev": "开发环境", "Cleaner": "清理", "Settings": "设置", "Soul": "灵魂",
+        "Developer Preview · No live sampling or quota provider": "开发预览 · 未连接实时采样或配额服务",
         "MOCK DATA": "模拟数据", "MOCK DATA · No live sampling or quota provider": "模拟数据 · 未连接实时采样或配额服务",
         "CPU / Memory LIVE · other data MOCK": "处理器 / 内存实时 · 其他数据模拟",
         "CPU / MEMORY LIVE · OTHER MOCK": "处理器 / 内存实时 · 其他模拟",

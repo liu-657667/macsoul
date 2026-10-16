@@ -8,6 +8,7 @@ struct MetricTile: View {
     var attentionText: String? = nil
     var overrideLabel: String? = nil
     var emptyStateText = "Unavailable"
+    var surface: SummarySurface = .standard
 
     @ViewBuilder var body: some View {
         if compact {
@@ -20,7 +21,36 @@ struct MetricTile: View {
         }
     }
 
-    private var content: some View {
+    @ViewBuilder private var content: some View {
+        if surface == .standard { standardContent } else { summaryContent }
+    }
+
+    private var summaryContent: some View {
+        VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
+            HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.tight) {
+                Text(language.text(name)).font(MacSoulTheme.Typography.fieldLabel)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: MacSoulTheme.Spacing.compact)
+                Text(language.text(overrideLabel ?? metric.label))
+                    .font(MacSoulTheme.Typography.fieldValue).monospacedDigit()
+                    .fixedSize(horizontal: true, vertical: false).layoutPriority(1)
+            }
+            if let progress = metric.progress { ProgressView(value: progress).progressViewStyle(.linear) }
+            else if overrideLabel == nil {
+                Text(language.text(emptyStateText)).font(MacSoulTheme.Typography.supporting)
+            }
+            if let attentionText {
+                Label(language.text(attentionText), systemImage: "exclamationmark.triangle.fill")
+                    .font(MacSoulTheme.Typography.status).foregroundStyle(.orange)
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(language.text(name))
+        .accessibilityValue(AccessibilityPresentation.metricValue(metric: metric, language: language,
+            override: overrideLabel, empty: emptyStateText, attention: attentionText))
+    }
+
+    private var standardContent: some View {
         VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
             HStack(alignment: .firstTextBaseline, spacing: MacSoulTheme.Spacing.tight) {
                 Text(language.text(name))
@@ -53,6 +83,7 @@ struct MetricTile: View {
 struct MemoryPressureLabel: View {
     @Environment(\.macSoulLanguage) private var language
     let pressure: String
+    var surface: SummarySurface = .standard
 
     private var text: String {
         let summary = pressure == "Unknown · Live" ? "Monitoring · Live" : pressure
@@ -69,6 +100,6 @@ struct MemoryPressureLabel: View {
                 Text(text).foregroundStyle(MacSoulTheme.supportingText)
             }
         }
-        .font(.caption)
+        .font(surface == .standard ? .caption : MacSoulTheme.Typography.status)
     }
 }
