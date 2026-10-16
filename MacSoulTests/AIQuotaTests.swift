@@ -419,11 +419,27 @@ final class QuotaTypographyPresentationTests: XCTestCase {
             for scheme: ColorScheme in [.light, .dark] {
                 let card = try XCTUnwrap(MacSoulTheme.overviewCardBackgroundColor(for: scheme).usingColorSpace(.deviceRGB))
                 let window = try XCTUnwrap(MacSoulTheme.windowBackgroundColor(for: scheme).usingColorSpace(.deviceRGB))
-                XCTAssertEqual(card.alphaComponent, 1, accuracy: 0.001)
                 let separation = max(abs(card.redComponent - window.redComponent),
                                      abs(card.greenComponent - window.greenComponent),
                                      abs(card.blueComponent - window.blueComponent))
-                XCTAssertGreaterThan(separation, 1.0 / 255.0, "Overview surface must remain distinguishable in \(scheme)")
+                let context = "scheme=\(scheme), cardRGB=\(card.redComponent),\(card.greenComponent),\(card.blueComponent), alpha=\(card.alphaComponent), windowRGB=\(window.redComponent),\(window.greenComponent),\(window.blueComponent)"
+                print("OVERVIEW_COLOR_CHECK \(context), separation=\(separation)")
+                XCTAssertEqual(card.alphaComponent, 1, accuracy: 0.001, context)
+                XCTAssertGreaterThan(separation, 1.0 / 255.0, "Overview surface must remain distinguishable: \(context)")
+            }
+        }
+    }
+
+    func testOverviewCardOpacityNormalizationPreservesRGB() async throws {
+        try await MainActor.run {
+            for alpha in [0.0, 229.0 / 255.0, 1.0] {
+                let input = NSColor(deviceRed: 0.2, green: 0.4, blue: 0.6, alpha: alpha)
+                let output = try XCTUnwrap(MacSoulTheme.opaqueOverviewCardColor(input).usingColorSpace(.deviceRGB))
+                let context = "inputAlpha=\(alpha)"
+                XCTAssertEqual(output.alphaComponent, 1, accuracy: 0.001, context)
+                XCTAssertEqual(output.redComponent, input.redComponent, accuracy: 0.000001, context)
+                XCTAssertEqual(output.greenComponent, input.greenComponent, accuracy: 0.000001, context)
+                XCTAssertEqual(output.blueComponent, input.blueComponent, accuracy: 0.000001, context)
             }
         }
     }

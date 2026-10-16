@@ -43,13 +43,19 @@ enum MacSoulTheme {
     static func overviewCardBackgroundColor(for scheme: ColorScheme) -> NSColor {
         let name: NSAppearance.Name = scheme == .dark ? .darkAqua : .aqua
         guard let appearance = NSAppearance(named: name) else {
-            return .underPageBackgroundColor
+            return opaqueOverviewCardColor(.underPageBackgroundColor)
         }
         var resolved = NSColor.underPageBackgroundColor
         appearance.performAsCurrentDrawingAppearance {
             resolved = NSColor.underPageBackgroundColor.usingColorSpace(.deviceRGB) ?? .underPageBackgroundColor
         }
-        return resolved
+        return opaqueOverviewCardColor(resolved)
+    }
+
+    // System semantic colors can be translucent. Preserve their resolved RGB
+    // while enforcing the Overview surface's opacity on every return path.
+    static func opaqueOverviewCardColor(_ color: NSColor) -> NSColor {
+        color.withAlphaComponent(1)
     }
 
     static var secondaryBackground: Color {
