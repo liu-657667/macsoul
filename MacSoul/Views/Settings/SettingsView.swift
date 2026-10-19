@@ -64,11 +64,14 @@ struct SettingsView: View {
                             get: { loginItem.state.isRegistered }, set: { loginItem.setEnabled($0) }))
                             .font(MacSoulTheme.Typography.fieldLabel)
                             .toggleStyle(.switch)
-                            .disabled(loginItem.state == .unavailable)
+                            .disabled(!loginItem.canChangeRegistration)
                         Text(loginItem.state.label(language)).font(MacSoulTheme.Typography.status)
-                        if loginItem.operationFailed {
-                            Text(language == .english ? "Could not change the login item. Check System Settings and refresh."
-                                 : "无法更改登录项，请检查系统设置并刷新。")
+                        Text(loginItem.state.explanation(language))
+                            .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
+                        Text(loginItem.eligibility.explanation(language))
+                            .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
+                        if let error = loginItem.operationError {
+                            Text(error.message(language))
                                 .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.orange)
                         }
                         Text(language == .english ? "Uses the macOS login item. Changes apply only when you use this switch."

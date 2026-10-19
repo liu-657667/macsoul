@@ -4,31 +4,45 @@ import ServiceManagement
 
 @MainActor private final class FakeLoginItemManager: LoginItemManaging {
     var state: LoginItemState = .disabled
+    var eligibility: LoginItemEligibility = .eligible
     var registrations = 0, removals = 0
     var next: LoginItemState = .enabled
-    var fail = false
-    func register() throws { registrations += 1; if fail { throw CocoaError(.featureUnsupported) }; state = next }
-    func unregister() throws { removals += 1; if fail { throw CocoaError(.featureUnsupported) }; state = .disabled }
+    var nextAfterUnregister: LoginItemState = .disabled
+    var error: Error?
+    var stateAfterFailure: LoginItemState?
+    private func failIfNeeded() throws {
+        if let error {
+            if let stateAfterFailure { state = stateAfterFailure }
+            throw error
+        }
+    }
+    func register() throws { registrations += 1; try failIfNeeded(); state = next }
+    func unregister() throws { removals += 1; try failIfNeeded(); state = nextAfterUnregister }
 }
 @MainActor final class LoginItemTests: XCTestCase {
     func testNativeStatusMappingAndConservativeNotFound() {
         XCTAssertEqual(LoginItemState.map(.notRegistered), .disabled)
         XCTAssertEqual(LoginItemState.map(.enabled), .enabled)
         XCTAssertEqual(LoginItemState.map(.requiresApproval), .requiresApproval)
-        XCTAssertEqual(LoginItemState.map(.notFound), .unavailable)
+        XCTAssertEqual(LoginItemState.map(.notFound), .serviceNotFound)
     }
     func testInitAndRefreshNeverMutateSystem() {
-        let fake = FakeLoginItemManager()
-        let value = LoginItemController(manager: fake)
-        value.refresh()
-        XCTAssertEqual(fake.registrations, 0); XCTAssertEqual(fake.removals, 0)
+        for state in LoginItemState.allCases {
+            for eligibility in LoginItemEligibility.allCases {
+                let fake = FakeLoginItemManager(); fake.state = state; fake.eligibility = eligibility
+                let value = LoginItemController(manager: fake)
+                value.refresh(); value.refresh()
+                XCTAssertEqual(value.state, state); XCTAssertEqual(value.eligibility, eligibility)
+                XCTAssertEqual(fake.registrations, 0); XCTAssertEqual(fake.removals, 0)
+            }
+        }
     }
     func testExplicitEnableDisableUsesObservedSystemState() {
         let fake = FakeLoginItemManager()
         let controller = LoginItemController(manager: fake)
         controller.setEnabled(true); controller.setEnabled(true)
         XCTAssertEqual(fake.registrations, 1); XCTAssertEqual(controller.state, .enabled)
-        controller.setEnabled(false)
+        controller.setEnabled(false); controller.setEnabled(false)
         XCTAssertEqual(fake.removals, 1); XCTAssertEqual(controller.state, .disabled)
     }
     func testRequiresApprovalDoesNotRegisterRepeatedly() {
@@ -36,18 +50,19 @@ import ServiceManagement
         let value = LoginItemController(manager: fake)
         value.setEnabled(true); value.refresh(); value.setEnabled(true)
         XCTAssertEqual(value.state, .requiresApproval); XCTAssertEqual(fake.registrations, 1)
-        value.setEnabled(false); XCTAssertEqual(value.state, .disabled)
+        XCTAssertTrue(value.state.isRegistered); XCTAssertNotEqual(value.state, .enabled)
+        value.setEnabled(false); XCTAssertEqual(value.state, .disabled); XCTAssertEqual(fake.removals, 1)
     }
     func testFailedMutationDoesNotOptimisticallyFabricateState() {
-        let fake = FakeLoginItemManager(); fake.fail = true
+        let fake = FakeLoginItemManager(); fake.error = CocoaError(.featureUnsupported)
         let value = LoginItemController(manager: fake)
         value.setEnabled(true)
-        XCTAssertTrue(value.operationFailed); XCTAssertEqual(value.state, .disabled)
-        fake.fail = false; value.setEnabled(true)
-        XCTAssertFalse(value.operationFailed); XCTAssertEqual(value.state, .enabled)
+        XCTAssertEqual(value.operationError, .unknownFailure); XCTAssertEqual(value.state, .disabled)
+        fake.error = nil; value.setEnabled(true)
+        XCTAssertNil(value.operationError); XCTAssertEqual(value.state, .enabled)
     }
-    func testUnavailableCannotMutateAndRefreshReflectsExternalChange() {
-        let fake = FakeLoginItemManager(); fake.state = .unavailable
+    func testServiceNotFoundCannotMutateAndRefreshReflectsExternalChange() {
+        let fake = FakeLoginItemManager(); fake.state = .serviceNotFound
         let value = LoginItemController(manager: fake)
         value.setEnabled(true); XCTAssertEqual(fake.registrations, 0)
         fake.state = .enabled; value.refresh(); XCTAssertEqual(value.state, .enabled)
@@ -55,7 +70,170 @@ import ServiceManagement
     func testLoginItemStatusBothLanguages() {
         XCTAssertEqual(LoginItemState.requiresApproval.label(.chinese), "需要在系统设置中确认")
         XCTAssertEqual(LoginItemState.requiresApproval.label(.english), "Approval required in System Settings")
-        XCTAssertEqual(LoginItemState.unavailable.label(.chinese), "不可用")
+        XCTAssertEqual(LoginItemState.serviceNotFound.label(.chinese), "未找到登录服务")
+        XCTAssertEqual(LoginItemState.serviceNotFound.label(.english), "Login service not found")
+        XCTAssertEqual(LoginItemState.disabled.label(.chinese), "未注册")
+        XCTAssertEqual(LoginItemState.disabled.label(.english), "Not registered")
+        XCTAssertEqual(LoginItemState.enabled.label(.chinese), "已启用")
+        XCTAssertEqual(LoginItemState.enabled.label(.english), "Enabled")
+        XCTAssertEqual(LoginItemState.unknown.label(.chinese), "未知登录项状态")
+        XCTAssertEqual(LoginItemState.unknown.label(.english), "Unknown login-item status")
+    }
+    func testFutureNativeStatusFailsClosed() throws {
+        let status = try XCTUnwrap(SMAppService.Status(rawValue: Int.max))
+        XCTAssertEqual(LoginItemState.map(status), .unknown)
+        let fake = FakeLoginItemManager(); fake.state = .unknown
+        let value = LoginItemController(manager: fake)
+        XCTAssertFalse(value.canChangeRegistration)
+        value.setEnabled(true); value.setEnabled(false)
+        XCTAssertEqual(fake.registrations, 0); XCTAssertEqual(fake.removals, 0)
+    }
+    func testServiceNotFoundIsNotOrdinaryDisabled() {
+        XCTAssertNotEqual(LoginItemState.serviceNotFound, .disabled)
+        let fake = FakeLoginItemManager(); fake.state = .serviceNotFound
+        let value = LoginItemController(manager: fake)
+        XCTAssertFalse(value.state.isRegistered); XCTAssertFalse(value.canChangeRegistration)
+        value.setEnabled(true); value.setEnabled(false)
+        XCTAssertEqual(fake.registrations, 0); XCTAssertEqual(fake.removals, 0)
+        fake.state = .disabled; value.refresh()
+        XCTAssertTrue(value.canChangeRegistration)
+        value.setEnabled(true); XCTAssertEqual(fake.registrations, 1)
+    }
+    func testUnverifiedOrIneligibleEnvironmentNeverMutatesAnyState() {
+        for eligibility in [LoginItemEligibility.unknown, .ineligible] {
+            for state in LoginItemState.allCases {
+                let fake = FakeLoginItemManager(); fake.state = state; fake.eligibility = eligibility
+                let value = LoginItemController(manager: fake)
+                value.setEnabled(true); value.setEnabled(false); value.refresh()
+                XCTAssertFalse(value.canChangeRegistration)
+                XCTAssertEqual(value.state, state)
+                XCTAssertEqual(fake.registrations, 0); XCTAssertEqual(fake.removals, 0)
+            }
+        }
+    }
+    func testActionRechecksEnvironmentAndNativeState() {
+        let fake = FakeLoginItemManager()
+        let value = LoginItemController(manager: fake)
+        XCTAssertTrue(value.canChangeRegistration)
+        fake.eligibility = .unknown
+        value.setEnabled(true); XCTAssertEqual(fake.registrations, 0)
+        XCTAssertEqual(value.eligibility, .unknown)
+        fake.eligibility = .eligible; fake.state = .unknown
+        value.setEnabled(true); XCTAssertEqual(fake.registrations, 0)
+        XCTAssertEqual(value.state, .unknown)
+    }
+    func testUnregisterFailurePreservesObservedRegisteredState() {
+        let fake = FakeLoginItemManager(); fake.state = .enabled; fake.error = CocoaError(.featureUnsupported)
+        let value = LoginItemController(manager: fake)
+        value.setEnabled(false)
+        XCTAssertEqual(fake.removals, 1); XCTAssertEqual(fake.registrations, 0)
+        XCTAssertEqual(value.state, .enabled); XCTAssertEqual(value.operationError, .unregisterFailed)
+        value.refresh(); XCTAssertEqual(value.operationError, .unregisterFailed)
+        fake.error = nil; value.setEnabled(false)
+        XCTAssertEqual(fake.removals, 2); XCTAssertEqual(value.state, .disabled)
+        XCTAssertNil(value.operationError)
+    }
+    func testSuccessfulRegisterDoesNotInventEnabledState() {
+        for observed in [LoginItemState.disabled, .requiresApproval, .serviceNotFound, .unknown] {
+            let fake = FakeLoginItemManager(); fake.next = observed
+            let value = LoginItemController(manager: fake)
+            value.setEnabled(true)
+            XCTAssertEqual(fake.registrations, 1)
+            XCTAssertEqual(value.state, observed); XCTAssertNotEqual(value.state, .enabled)
+            XCTAssertNil(value.operationError)
+        }
+    }
+    func testSuccessfulUnregisterDoesNotInventDisabledState() {
+        for observed in [LoginItemState.enabled, .requiresApproval, .serviceNotFound, .unknown] {
+            let fake = FakeLoginItemManager(); fake.state = .enabled; fake.nextAfterUnregister = observed
+            let value = LoginItemController(manager: fake)
+            value.setEnabled(false)
+            XCTAssertEqual(fake.removals, 1)
+            XCTAssertEqual(value.state, observed); XCTAssertNotEqual(value.state, .disabled)
+            XCTAssertNil(value.operationError)
+        }
+    }
+    func testFailedRegisterObservesChangedStateAndRetainsFailureUntilExternalChange() {
+        let fake = FakeLoginItemManager(); fake.error = CocoaError(.featureUnsupported)
+        fake.stateAfterFailure = .requiresApproval
+        let value = LoginItemController(manager: fake)
+        value.setEnabled(true)
+        XCTAssertEqual(fake.registrations, 1); XCTAssertEqual(value.state, .requiresApproval)
+        XCTAssertEqual(value.operationError, .unknownFailure)
+        value.refresh(); XCTAssertEqual(value.operationError, .unknownFailure)
+        value.setEnabled(true); XCTAssertEqual(fake.registrations, 1)
+        XCTAssertEqual(value.operationError, .unknownFailure)
+        fake.state = .enabled; value.refresh()
+        XCTAssertEqual(value.state, .enabled); XCTAssertNil(value.operationError)
+    }
+    func testFailedUnregisterObservesChangedStateWithoutHidingFailure() {
+        let fake = FakeLoginItemManager(); fake.state = .enabled
+        fake.error = CocoaError(.featureUnsupported); fake.stateAfterFailure = .disabled
+        let value = LoginItemController(manager: fake)
+        value.setEnabled(false)
+        XCTAssertEqual(fake.removals, 1); XCTAssertEqual(value.state, .disabled)
+        XCTAssertEqual(value.operationError, .unregisterFailed)
+        value.refresh(); value.setEnabled(false)
+        XCTAssertEqual(fake.removals, 1); XCTAssertEqual(value.operationError, .unregisterFailed)
+        fake.state = .serviceNotFound; value.refresh()
+        XCTAssertEqual(value.state, .serviceNotFound); XCTAssertNil(value.operationError)
+    }
+    func testUnchangedRefreshPreservesFailureButExternalStateChangeClearsIt() {
+        let fake = FakeLoginItemManager(); fake.error = CocoaError(.featureUnsupported)
+        let value = LoginItemController(manager: fake)
+        value.setEnabled(true); value.refresh(); value.refresh()
+        XCTAssertEqual(value.operationError, .unknownFailure)
+        fake.state = .serviceNotFound; value.refresh()
+        XCTAssertNil(value.operationError); XCTAssertEqual(value.state, .serviceNotFound)
+    }
+    func testServiceManagementErrorsUseOfficialConstantsAndDomains() {
+        var domains = [kSMErrorDomainFramework as String]
+        if #available(macOS 15.0, *) { domains.append(SMAppServiceErrorDomain) }
+        let cases: [(Int, LoginItemOperationError)] = [
+            (kSMErrorInvalidSignature, .invalidSignature),
+            (kSMErrorLaunchDeniedByUser, .approvalDenied),
+            (kSMErrorAlreadyRegistered, .alreadyRegistered),
+            (kSMErrorJobNotFound, .serviceNotFound)
+        ]
+        for domain in domains {
+            for (code, expected) in cases {
+                let error = NSError(domain: domain, code: code)
+                for unregistering in [false, true] {
+                    XCTAssertEqual(LoginItemOperationError.classify(error, unregistering: unregistering), expected)
+                }
+            }
+        }
+    }
+    func testForeignDomainsAndUnrecognizedCodesRemainGeneric() {
+        for code in [kSMErrorInvalidSignature, kSMErrorLaunchDeniedByUser, kSMErrorAlreadyRegistered, kSMErrorJobNotFound] {
+            let error = NSError(domain: NSCocoaErrorDomain, code: code,
+                                userInfo: [NSLocalizedDescriptionKey: "SENSITIVE-MOCK-PATH-DO-NOT-DISPLAY"])
+            XCTAssertEqual(LoginItemOperationError.classify(error, unregistering: false), .unknownFailure)
+            XCTAssertEqual(LoginItemOperationError.classify(error, unregistering: true), .unregisterFailed)
+        }
+        let unknown = NSError(domain: kSMErrorDomainFramework as String, code: Int.max)
+        XCTAssertEqual(LoginItemOperationError.classify(unknown, unregistering: false), .unknownFailure)
+        XCTAssertEqual(LoginItemOperationError.classify(unknown, unregistering: true), .unregisterFailed)
+    }
+    func testRecoveryAndErrorCopyIsLocalizedAndDoesNotInventEnvironmentCause() {
+        for state in LoginItemState.allCases {
+            XCTAssertFalse(state.explanation(.english).isEmpty); XCTAssertFalse(state.explanation(.chinese).isEmpty)
+            XCTAssertNotEqual(state.explanation(.english), state.explanation(.chinese))
+        }
+        XCTAssertTrue(LoginItemState.serviceNotFound.explanation(.english).contains("cause has not been confirmed"))
+        XCTAssertTrue(LoginItemState.serviceNotFound.explanation(.chinese).contains("原因尚未确认"))
+        for eligibility in LoginItemEligibility.allCases {
+            XCTAssertFalse(eligibility.explanation(.english).isEmpty)
+            XCTAssertFalse(eligibility.explanation(.chinese).isEmpty)
+            XCTAssertNotEqual(eligibility.explanation(.english), eligibility.explanation(.chinese))
+        }
+        for error in LoginItemOperationError.allCases {
+            for language in MacSoulLanguage.allCases {
+                XCTAssertFalse(error.message(language).isEmpty)
+                XCTAssertFalse(error.message(language).contains("SENSITIVE-MOCK-PATH-DO-NOT-DISPLAY"))
+            }
+            XCTAssertNotEqual(error.message(.english), error.message(.chinese))
+        }
     }
 }
 final class AccessibilityPresentationTests: XCTestCase {
