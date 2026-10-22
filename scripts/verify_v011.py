@@ -322,8 +322,6 @@ def documents(root):
 def ci_whitespace_range(root, environment):
     """Resolve event-specific immutable inputs; never substitute HEAD for a base."""
     head = git(root, 'rev-parse', 'HEAD').decode().strip()
-    if environment.get('GITHUB_SHA') != head:
-        raise ValueError('CI whitespace checkout/event SHA mismatch')
     event_path = environment.get('GITHUB_EVENT_PATH')
     if not event_path:
         raise ValueError('missing CI event payload for whitespace baseline')
@@ -337,6 +335,38 @@ def ci_whitespace_range(root, environment):
             raise ValueError('missing/invalid CI whitespace ' + label + ' object: ' + value) from error
         return value
     kind = environment.get('GITHUB_EVENT_NAME')
+    if kind == 'push' and any(isinstance(ref, str) and ref.startswith('refs/tags/')
+                              for ref in (event.get('ref'), environment.get('GITHUB_REF'))):
+        ref = event.get('ref')
+        if not isinstance(ref, str) or not ref.startswith('refs/tags/') or environment.get('GITHUB_REF') != ref:
+            raise ValueError('CI tag ref/context mismatch')
+        git(root, 'check-ref-format', ref)
+        if event.get('before') != '0' * 40 or event.get('created') is not True or event.get('deleted') is not False:
+            raise ValueError('CI tag whitespace requires a new, nondeleted tag')
+        after = event.get('after')
+        if not isinstance(after, str) or not re.fullmatch(r'[0-9a-f]{40}', after):
+            raise ValueError('invalid CI tag after SHA')
+        # Push after can be the annotated tag object; checkout HEAD is its
+        # peeled commit. Bind both exact identities, not just any same-target tag.
+        if git(root, 'rev-parse', '--verify', ref).decode().strip() != after:
+            raise ValueError('CI tag ref/after mismatch')
+        target = commit(git(root, 'rev-parse', '--verify', after + '^{commit}').decode().strip(), 'tag target')
+        if target != head or environment.get('GITHUB_SHA') not in (after, target):
+            raise ValueError('CI tag checkout/event SHA mismatch')
+        # Check the tagged commit's change, including merge commits. Comparing
+        # to origin/main could silently become HEAD..HEAD at release time.
+        # Read real parents even in a shallow checkout: missing ancestry fails.
+        parents = [line[7:] for line in git(root, 'cat-file', 'commit', target).decode().split('\n\n', 1)[0].splitlines()
+                   if line.startswith('parent ')]
+        if parents:
+            baseline = commit(parents[0], 'tag parent')
+        else:
+            baseline = subprocess.check_output(['git', '-C', str(root), 'hash-object', '-w', '-t', 'tree', '--stdin'],
+                                               input=b'', timeout=60).decode().strip()
+        return {'event': kind, 'role': 'INITIAL_TAG', 'baseline': baseline, 'target': target,
+                'event_ref': ref, 'event_after': after, 'context_sha': environment.get('GITHUB_SHA')}
+    if environment.get('GITHUB_SHA') != head:
+        raise ValueError('CI whitespace checkout/event SHA mismatch')
     if kind == 'pull_request':
         pr = event.get('pull_request', {})
         base = commit(pr.get('base', {}).get('sha'), 'PR base')
@@ -466,7 +496,16 @@ def validate_receipt(root, receipt, expected, run_id, commands):
         raise ValueError('missing current toolchain evidence')
     started = datetime.fromisoformat(receipt['started_at'])
     if expected['checkout_kind'] == 'CI_CLEAN':
-        if receipt.get('ci') not in ('RUNNING', 'AUTOMATIC_JOB_CHECKS_PASS') or receipt.get('ci_context', {}).get('GITHUB_SHA') != expected['git_revision']:
+        context = receipt.get('ci_context', {})
+        context_sha = context.get('GITHUB_SHA')
+        matches = context_sha == expected['git_revision']
+        if not matches and context.get('GITHUB_EVENT_NAME') == 'push':
+            ref = context.get('GITHUB_REF')
+            if isinstance(ref, str) and ref.startswith('refs/tags/') and isinstance(context_sha, str) and re.fullmatch(r'[0-9a-f]{40}', context_sha):
+                git(root, 'check-ref-format', ref)
+                matches = (git(root, 'rev-parse', '--verify', ref).decode().strip() == context_sha
+                           and git(root, 'rev-parse', '--verify', context_sha + '^{commit}').decode().strip() == expected['git_revision'])
+        if receipt.get('ci') not in ('RUNNING', 'AUTOMATIC_JOB_CHECKS_PASS') or not matches:
             raise ValueError('CI revision/result context mismatch')
     elif receipt.get('ci') != 'NOT_RUN':
         raise ValueError('local receipt cannot claim remote CI')
@@ -523,7 +562,7 @@ def run_all(root):
     receipt = {'schema': SCHEMA, 'run_id': run_id, 'started_at': now(), 'identity': None,
                'checks': {}, 'unexecuted': dict(UNEXECUTED), 'ci': 'RUNNING' if ci else 'NOT_RUN',
                'ci_context': {key: os.environ.get(key, 'NOT_AVAILABLE') for key in
-                              ('GITHUB_EVENT_NAME', 'GITHUB_SHA', 'GITHUB_RUN_ID', 'GITHUB_REPOSITORY')},
+                              ('GITHUB_EVENT_NAME', 'GITHUB_SHA', 'GITHUB_REF', 'GITHUB_RUN_ID', 'GITHUB_REPOSITORY')},
                'historical_scope': {'revision': HISTORICAL, 'tree': HISTORICAL_TREE, 'fingerprint': HISTORICAL_FP,
                                     'owner_decision_sha256': HISTORICAL_DECISION}, 'status': 'RUNNING'}
     commands = plan(run); problem = None
