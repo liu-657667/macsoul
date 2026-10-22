@@ -3,7 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject private var store: AppStore
     @Environment(\.macSoulLanguage) private var language
-    @StateObject private var loginItem = LoginItemController(manager: NativeLoginItemManager())
+    @StateObject private var loginItem = LaunchAgentController(manager: LaunchAgentManager.native())
     @AppStorage("macsoul.appearance") private var appearance = MacSoulAppearance.system.rawValue
     @AppStorage("macsoul.language") private var selectedLanguage = MacSoulLanguage.english.rawValue
 
@@ -61,23 +61,24 @@ struct SettingsView: View {
                 TypographySection(language == .english ? "Launch at Login" : "登录时启动") {
                     VStack(alignment: .leading, spacing: MacSoulTheme.Spacing.tight) {
                         Toggle(language == .english ? "Launch MacSoul at login" : "登录时启动 MacSoul", isOn: Binding(
-                            get: { loginItem.state.isRegistered }, set: { loginItem.setEnabled($0) }))
+                            get: { loginItem.state.isConfigured }, set: { enabled in Task { await loginItem.setEnabled(enabled) } }))
                             .font(MacSoulTheme.Typography.fieldLabel)
                             .toggleStyle(.switch)
-                            .disabled(!loginItem.canChangeRegistration)
+                            .disabled(loginItem.isBusy || !loginItem.state.permitsChanges)
+                            .accessibilityValue(loginItem.state.label(language))
+                            .accessibilityHint(loginItem.state.explanation(language))
                         Text(loginItem.state.label(language)).font(MacSoulTheme.Typography.status)
                         Text(loginItem.state.explanation(language))
-                            .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
-                        Text(loginItem.eligibility.explanation(language))
                             .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
                         if let error = loginItem.operationError {
                             Text(error.message(language))
                                 .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.orange)
                         }
-                        Text(language == .english ? "Uses the macOS login item. Changes apply only when you use this switch."
-                             : "使用 macOS 系统登录项；仅在操作此开关时更改设置。")
+                        Text(language == .english ? "Uses a user LaunchAgent. Changes apply only when you use this switch; login launch still needs separate verification."
+                             : "使用用户级 LaunchAgent；仅操作此开关时更改配置，实际登录启动仍需另行验证。")
                             .font(MacSoulTheme.Typography.supporting).lineSpacing(2).foregroundStyle(.primary)
-                        Button(language.text("Refresh")) { loginItem.refresh() }.controlSize(.small)
+                        Button(language.text("Refresh")) { Task { await loginItem.refresh() } }.controlSize(.small)
+                            .disabled(loginItem.isBusy)
                     }.frame(maxWidth: .infinity, alignment: .leading)
                 }
                 TypographySection(language.text("App appearance")) {
@@ -143,7 +144,7 @@ struct SettingsView: View {
             .padding(MacSoulTheme.Spacing.section)
         }
         .navigationTitle(language.text("Settings"))
-        .onAppear { loginItem.refresh() }
-        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in loginItem.refresh() }
+        .task { await loginItem.refresh() }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in Task { await loginItem.refresh() } }
     }
 }
