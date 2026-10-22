@@ -303,6 +303,142 @@ class VerificationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'merge parents'):
             verify.whitespace_check(self.root, env)
 
+    def tag_environment(self, name, annotated=False, target='HEAD'):
+        # Only isolated TemporaryDirectory repositories receive fixture tags.
+        if annotated:
+            self.git('tag', '-a', name, target, '-m', 'TEST_FIXTURE_ONLY, never pushed')
+        else:
+            self.git('tag', name, target)
+        ref = 'refs/tags/' + name
+        after = self.git('rev-parse', ref).decode().strip()
+        event = dict(before='0' * 40, after=after, ref=ref, created=True, deleted=False,
+                     repository=dict(default_branch='main'))
+        env = self.ci_environment('push', event)
+        env.update(GITHUB_REF=ref, GITHUB_SHA=after)
+        return event, env
+
+    def test_ci_new_tags_check_target_commit_even_at_default_tip(self):
+        for annotated in (False, True):
+            for bad in (False, True):
+                with self.subTest(annotated=annotated, bad=bad):
+                    before = self.git('rev-parse', 'HEAD').decode().strip()
+                    tip = self.successor('TEST_FIXTURE_ONLY bad \n' if bad else '# Clean tagged change\n')
+                    self.git('update-ref', 'refs/remotes/origin/main', tip)
+                    event, env = self.tag_environment(f'fixture-{annotated}-{bad}', annotated)
+                    for context_sha in {event['after'], tip}:
+                        env['GITHUB_SHA'] = context_sha
+                        comparison = verify.ci_whitespace_range(self.root, env)
+                        self.assertEqual((comparison['baseline'], comparison['target']), (before, tip))
+                        self.assertEqual(comparison['event_after'], event['after'])
+                        self.assertEqual(comparison['role'], 'INITIAL_TAG')
+                        if bad:
+                            with self.assertRaises(subprocess.CalledProcessError):
+                                verify.whitespace_check(self.root, env)
+                        else:
+                            verify.whitespace_check(self.root, env)
+
+    def test_ci_root_tag_checks_full_tree(self):
+        _, env = self.tag_environment('fixture-root', True)
+        result = verify.whitespace_check(self.root, env)
+        self.assertEqual(self.git('cat-file', 'tree', result['baseline']), b'')
+        self.assertEqual(result['role'], 'INITIAL_TAG')
+
+    def test_ci_tag_identity_and_noncreation_events_fail_closed(self):
+        tip = self.successor('# Tag target\n')
+        event, env = self.tag_environment('fixture-identity', True)
+        self.git('tag', '-a', 'fixture-same-target', tip, '-m', 'Different TEST_FIXTURE_ONLY object')
+        other = self.git('rev-parse', 'refs/tags/fixture-same-target').decode().strip()
+        cases = [({'after': 'missing'}, {}), ({'after': '1' * 40}, {}),
+                 ({'after': self.initial['git_revision']}, {}),
+                 ({'ref': 'refs/tags/missing'}, {'GITHUB_REF': 'refs/tags/missing'}),
+                 ({'ref': 'refs/tags/bad..name'}, {'GITHUB_REF': 'refs/tags/bad..name'}),
+                 ({}, {'GITHUB_REF': 'refs/tags/other'}), ({}, {'GITHUB_REF': ''}),
+                 ({}, {'GITHUB_SHA': other}), ({}, {'GITHUB_SHA': self.initial['git_revision']}),
+                 ({'before': tip}, {}), ({'created': False}, {}), ({'created': 1}, {}),
+                 ({'deleted': True}, {}), ({'deleted': None}, {})]
+        for changes, context in cases:
+            with self.subTest(changes=changes, context=context):
+                payload = dict(event, **changes)
+                bad_env = dict(env, **context)
+                Path(bad_env['GITHUB_EVENT_PATH']).write_text(json.dumps(payload))
+                with self.assertRaises((ValueError, subprocess.CalledProcessError)):
+                    verify.whitespace_check(self.root, bad_env)
+
+    def test_ci_tag_noncommit_targets_are_rejected(self):
+        for target in ('HEAD^{tree}', 'HEAD:README.md'):
+            with self.subTest(target=target):
+                _, env = self.tag_environment('fixture-noncommit-' + str(len(target)), target=target)
+                with self.assertRaises((ValueError, subprocess.CalledProcessError)):
+                    verify.whitespace_check(self.root, env)
+
+    def test_ci_shallow_tag_requires_real_parent_object(self):
+        before = self.initial['git_revision']; tip = self.successor('TEST_FIXTURE_ONLY bad \n')
+        event, _ = self.tag_environment('fixture-shallow', True)
+        clone = Path(self.temp.name) / 'shallow-tag'
+        subprocess.run(['git', 'clone', '--depth', '1', '--branch', 'fixture-shallow', '--no-local',
+                        str(self.root), str(clone)], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+        env = self.ci_environment('push', event, clone)
+        env.update(GITHUB_REF=event['ref'], GITHUB_SHA=event['after'])
+        with self.assertRaisesRegex(ValueError, 'tag parent object'):
+            verify.whitespace_check(clone, env)
+        subprocess.run(['git', '-C', str(clone), 'fetch', '--depth', '1', '--no-tags', str(self.root), before],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+        self.assertEqual(verify.ci_whitespace_range(clone, env)['target'], tip)
+        with self.assertRaises(subprocess.CalledProcessError):
+            verify.whitespace_check(clone, env)
+
+    def test_ci_tag_receipt_accepts_exact_raw_or_peeled_identity_only(self):
+        event, env = self.tag_environment('fixture-receipt', True)
+        self.initial = verify.identity(self.root, ci=True)
+        data = self.receipt(); data.update(ci='RUNNING', ci_context=env)
+        self.validate(data)
+        data['ci_context'] = dict(env, GITHUB_SHA=self.initial['git_revision'])
+        self.validate(data)
+        self.git('tag', '-a', 'fixture-receipt-other', '-m', 'Different TEST_FIXTURE_ONLY object')
+        other = self.git('rev-parse', 'refs/tags/fixture-receipt-other').decode().strip()
+        for changes in ({'GITHUB_SHA': other}, {'GITHUB_REF': 'refs/heads/fixture-feature'},
+                        {'GITHUB_REF': ''}, {'GITHUB_EVENT_NAME': 'pull_request'}):
+            data['ci_context'] = dict(env, **changes)
+            with self.subTest(changes=changes), self.assertRaisesRegex(ValueError, 'CI revision/result context'):
+                self.validate(data)
+
+    def test_ci_tag_runner_retains_raw_identity(self):
+        event, env = self.tag_environment('fixture-runner', True)
+        commands = {name: [sys.executable, '-c', 'print("TEST_FIXTURE_ONLY")'] for name in verify.REQUIRED}
+        real_output = subprocess.check_output
+        def output(argv, *args, **kwargs):
+            if argv in (['xcodebuild', '-version'], ['sw_vers', '-productVersion']):
+                return b'TEST_FIXTURE_ONLY\n'
+            return real_output(argv, *args, **kwargs)
+        # Exercise actual tag whitespace validation and receipt, simulating only
+        # expensive build/history commands as existing runner fixtures do.
+        real_execute = verify.execute
+        def execute(root, argv, log, timeout=1200):
+            requested_argv = argv
+            if log.name in ('history-preparation.log', 'current-fixed-validator.log'):
+                argv = [sys.executable, '-c', 'print("TEST_FIXTURE_ONLY")']
+            if log.name == 'git_state.log':
+                verify.whitespace_check(root, env)
+            item = real_execute(root, argv, log, timeout)
+            # Simulated history command identity only; production execute and
+            # receipt validation remain exact and are not bypassed.
+            item['argv'] = requested_argv
+            return item
+        def summary(root, run, name):
+            p = run / (name + '-summary.json')
+            p.write_text(json.dumps(dict(totalTestCount=1, failedTests=0, skippedTests=0, result='Passed')))
+            return dict(tests=1, failures=0, skips=0, result='Passed', summary=str(p.relative_to(root)),
+                        summary_sha256=verify.sha(p.read_bytes()))
+        with patch.object(verify, 'plan', return_value=commands), patch.object(verify, 'execute', side_effect=execute), \
+             patch.object(verify, 'test_summary', side_effect=summary), patch.dict('os.environ', env), \
+             patch.object(subprocess, 'check_output', side_effect=output):
+            self.assertEqual(verify.run_all(self.root), 0)
+        data = json.loads((self.root / '.artifacts/v0.1.1-verification.json').read_text())
+        self.assertEqual(data['ci_context']['GITHUB_SHA'], event['after'])
+        self.assertEqual(data['ci_context']['GITHUB_REF'], event['ref'])
+        self.assertEqual(data['identity']['git_revision'], self.initial['git_revision'])
+        self.assertEqual(data['ci'], 'AUTOMATIC_JOB_CHECKS_PASS')
+
     def test_ci_initial_feature_push_uses_default_merge_base(self):
         before = self.initial['git_revision']; tip = self.successor('TEST_FIXTURE_ONLY bad \n')
         self.git('update-ref', 'refs/remotes/origin/main', before)

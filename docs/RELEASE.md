@@ -1,4 +1,54 @@
-# MacSoul v0.1.0 release guide
+# MacSoul release guide
+
+## v0.1.1 Beta preparation — Unreleased
+
+**v0.1.1-beta is planned as a GitHub Pre-release and has not been published.** The current public download remains [v0.1.0 Unsigned Developer Preview](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0). Read-only GitHub verification on 2026-10-22 found main at `66149decaec43f08b986ab2fa302aa9530d0d196`, tree `e5884360e2118fa77396f527ee09ddefd826be98`, and no Beta Tag, Release or release assets. [Post-merge CI 39743270528](https://github.com/liu-657667/macsoul/actions/runs/39743270528) is SUCCESS using `./scripts/verify-v0.1.1.sh`; successful logs do not expose test counts. Historical local counts must not be assigned to this CI or Beta.
+
+当前公开版本仍为 v0.1.0。main 已合入四项改进，但 Beta 发行包及公开发布尚未完成；本节是 Phase 1 文档候选，不是 Release Candidate 或发布批准。
+
+### Phases and authorization
+
+| Phase | Scope and stop point |
+|---|---|
+| **Phase 1 — current authorization** | Local documentation only: README.md, README.en.md, CHANGELOG.md and this guide; read-only GitHub/local verification, applicable documentation/Git checks, and fresh ignored `.artifacts/` evidence. No commit, push, PR, Tag, Release or package. Stop for Owner Review; only a candidate with resolved scope/environment/check issues may be marked `PHASE_1_DOCUMENTATION_CANDIDATE_READY_FOR_OWNER_REVIEW`. |
+| **Phase 2 — separate Owner authorization required** | Version/Build synchronization, unified verification, a new Release Archive, Universal architectures, resources/privacy, DMG/ZIP/SHA256 and actual distribution-package validation, all bound to the new candidate identity. Signing/notarization conclusions require actual artifact evidence and appropriate authorization. |
+| **Phase 3 — separate Owner authorization required** | Review, PR, CI, Merge, Tag, GitHub Pre-release, public-download verification and post-publication documentation synchronization. Phase 1 authorizes none of these actions. |
+
+After actual publication and verified public downloads, synchronize real release links through a normal documentation commit/PR. Do not move a published Tag. The v0.1.0 Tag's documents retain their pre-publication Unreleased snapshot; main's later published-status record is authoritative for the completed publication and must not be replaced by that old text.
+
+### Merged changes and retained acceptance boundaries
+
+[#15](https://github.com/liu-657667/macsoul/issues/15), [#16](https://github.com/liu-657667/macsoul/issues/16), [#17](https://github.com/liu-657667/macsoul/issues/17) and [#18](https://github.com/liu-657667/macsoul/issues/18) are Closed / completed. Completed denotes only each accepted scope, not full verification or Beta release approval.
+
+- **Codex — [PR #21](https://github.com/liu-657667/macsoul/pull/21):** current-connection handshake and first quota-response validation replace exact-version matching as the sole gate. Fixed ChatGPT.app bundled CLI provenance, the minimal `initialize` / `initialized` / `account/rateLimits/read` RPC set, applicable-window semantics, schema/ID validation and fail-closed behavior remain. Version information is diagnostic and does not automatically certify unverified versions.
+- **Launch at Login — [PR #23](https://github.com/liu-657667/macsoul/pull/23), [PR #24](https://github.com/liu-657667/macsoul/pull/24):** the final Settings path uses a Native User LaunchAgent. Only explicit enable/disable mutates configuration; lifecycle events and Refresh observe. Install directly in `/Applications` or the current user's `~/Applications` before enabling. Enabling configures the next login, without an immediate extra App launch; moving the App requires explicit disable/reconfiguration. Legacy SMAppService types are not dual registration, and the old macOS system issue's root cause remains unconfirmed.
+- **Typography — [PR #22](https://github.com/liu-657667/macsoul/pull/22):** fonts, weights, spacing and hierarchy span Settings/System, Dev/AI, Network/Cleaner and Overview/Menu Bar/Sidebar. Fixes include Overview background, Cleaner summary heading and content entering the title bar at minimum window height; this is not full accessibility or every-window-size acceptance.
+- **Network — [PR #19](https://github.com/liu-657667/macsoul/pull/19):** IPinfo primary → ident.me fallback, independently for IPv4/IPv6. Primary success skips fallback; failure allows at most one fallback attempt. Stale, Unavailable, Unsupported, actual source and time remain explicit; HTTPS/TLS and strict response checks remain. Preview sends none of these external requests. Connectivity probes controls anonymous HTTPS HEAD probes, not Live public-IP queries. Published v0.1.0 used ipify; current main uses IPinfo with ident.me fallback.
+
+| Record | Accepted/observed scope | Retained limits — not new Phase 1 execution |
+|---|---|---|
+| [#15 latest acceptance](https://github.com/liu-657667/macsoul/issues/15#issuecomment-6189348347) | **Limited Owner Acceptance**: finite standalone real protocol session with CLI `0.162.0-alpha.17.2`; limited App observation across AI / Overview / Menu Bar **PARTIAL_PASS** | App CLI version/window categories **NOT_RECORDED**; strict single Live entry **NOT_MET**; duration/request count **NOT_MEASURED**; natural update notification **NOT_OBSERVED**; observer/pipe measurements incomplete. 240-second long-running check, longer operation, Sleep/Wake, performance and full UI/Accessibility **NOT_RUN**. No guarantee for all future CLI versions. |
+| [#16 latest acceptance](https://github.com/liu-657667/macsoul/issues/16#issuecomment-6335761099) | Core Debug real-machine enable/disable **PASS** | Original **LA-P3 PARTIAL** retained; Accessibility **OWNER_DEFERRED**. Tab/Shift+Tab **NOT_PASSED**, cause **UNCONFIRMED**; Space/VoiceOver **NOT_TESTED**. One Mac/macOS observation; Beta distribution-package acceptance not performed. |
+| [#17 latest acceptance](https://github.com/liu-657667/macsoul/issues/17#issuecomment-6211963717) | Owner visual **PASSED_WITH_SCOPE** | VoiceOver/Keyboard **NOT_RUN**; Reduce Motion **NOT_FULLY_VERIFIED**; continuous Resize **NOT_RUN**. Local minimum-height recheck does not cover all window sizes. |
+| [#18 latest acceptance](https://github.com/liu-657667/macsoul/issues/18#issuecomment-6160623602) | Implementation complete; Owner Live/UI **PARTIAL_PASS**; limited IPv4 Fresh/IPinfo and source/time observations, with IPv4 working when IPv6 was Unsupported | Terminal provider reachability does not prove automatic App fallback. IPv6 terminal TLS root cause remains unconfirmed; full Live/UI limits remain in #20. |
+| [#20 open follow-up](https://github.com/liu-657667/macsoul/issues/20) | Complete before/after Refresh time comparison **PARTIAL_PASS** | Automatic fallback, dual-source failure → Stale, recovery → Fresh and Querying **NOT_OBSERVED**. Usable IPv6, actual network switching, Sleep/Wake, VoiceOver/Keyboard and full interaction/other window sizes **NOT_RUN**. |
+
+Under the Owner's current plan, #20 proceeds **after Beta**; this sequencing comes from the current Owner authorization, not an edit to the older Issue body. Outstanding checks are not automatically all release blockers. Cross-macOS and Intel hardware coverage remains incomplete. Beta packages, signing, notarization, public publication and download verification have not been executed.
+
+**This Phase 1: Build / Unit / Live / UI / Performance / Package / Signing / Notarization / Publication = NOT_RUN.** Read-only inspection of existing GitHub CI is not a new local run. The documentation validator checks external-link syntax only, not public downloads. Original Owner decisions, failure records, ledger/STATUS and historical fingerprints are preserved.
+
+### Later dependencies — recorded, not fixed in Phase 1
+
+1. `MacSoul.xcodeproj/project.pbxproj` and `scripts/generate_project.py` still specify **0.1.0 / build 1**; synchronize both in Phase 2.
+2. `MacSoul/Models/CodexQuotaTransport.swift` still sends `clientInfo.version = 0.1.0`; review it during later version synchronization. This is MacSoul client metadata, **not the CLI version**.
+3. Proposed Tag: **v0.1.1-beta**; proposed App numeric version: **0.1.1**. The Build Number remains to be determined in Phase 2; no values are changed here.
+4. `verify-v0.1.1` performs **Debug** automatic verification; it does not validate an actual Release Archive or distribution package.
+5. `.github/workflows/verify.yml` responds to Tag pushes, but the new-ref whitespace branch in `scripts/verify_v011.py` accepts only `refs/heads/`. Before creating the Beta Tag, complete a separately authorized minimal adaptation or an explicit validation strategy. This is a **static-review risk**, not an observed Tag CI failure; this phase does not push a Tag or change the workflow/checker.
+6. Existing LaunchAgent Debug real-machine PASS cannot substitute for Beta distribution-package acceptance.
+7. Source configuration `CODE_SIGNING_ALLOWED=NO` does not mean the Beta artifact's signing state has been checked. Unsigned/Signing/Notarization conclusions must come from the later actual artifact.
+8. Universal architecture, privacy/resources, per-architecture path scans and independent extraction/mount checks must all bind to the new candidate identity. Historical Archive methods may inform later work; old App bytes, ZIPs and PASS records cannot serve as Beta evidence.
+
+**v0.1.0 historical scope below:** the following public assets, sizes, hashes, dates, Day 5–7 measurements, 365 tests, Archive procedure, failures, deferrals and finite Owner acceptance remain v0.1.0 records. The future Developer ID section is a retained plan, not authorization or executed Beta work. No old package or acceptance is reused for Beta, and no historical content is rewritten as a Beta result.
 
 ## Current public release / 当前公开发行状态
 

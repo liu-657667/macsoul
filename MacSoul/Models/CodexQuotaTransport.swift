@@ -35,7 +35,7 @@ enum CodexReadOnlyRPC {
         case "initialize":
             guard let id else { throw CodexTransportError.malformed }
             message["id"] = id
-            message["params"] = ["clientInfo": ["name": "macsoul", "title": "MacSoul", "version": "0.1.0"]]
+            message["params"] = ["clientInfo": ["name": "macsoul", "title": "MacSoul", "version": "0.1.1"]]
         case "initialized": message["params"] = [:] as [String: String]
         case "account/rateLimits/read":
             guard let id else { throw CodexTransportError.malformed }
