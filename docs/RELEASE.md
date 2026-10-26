@@ -1,6 +1,58 @@
 # MacSoul release guide
 
+## Current v0.1.1 Beta.1 publication
+
+**当前最新公开预发布候选 / Latest public prerelease candidate: [v0.1.1-beta.1](https://github.com/liu-657667/macsoul/releases/tag/v0.1.1-beta.1)** — **2026-10-23 17:22:30 Asia/Shanghai** (`2026-10-23T09:22:30Z`), GitHub **Pre-release, not Latest**. App **0.1.1 / build 2**, **No Developer ID / Unnotarized Beta Developer Preview**.
+
+| Identity | Published value |
+|---|---|
+| Release ID / state | **421589810** / `draft=false`, `prerelease=true`, `isLatest=false` |
+| Tag / raw annotated object | `v0.1.1-beta.1` / `de1a700aa01c998494ff72e6342b9a2e58aa5b23` |
+| Tagged Commit | `66ce3719e232af0df1a8e1648efc61660750d6e1` |
+| Tagged Tree | `1e7620b47993d97d9610cf2830113d915dd57480` |
+| Source fingerprint | `4e347031518054703acfbc94c4efccd7c51b9029b968a0208693a3a7d7373f04` |
+| 277 inputs SHA256 | `d26b68d617f2627d5630c8c73c797cb3e2442d20fab807177998098ac8cbd45d` |
+| Notes UTF-8 SHA256 | `802aae14533e030d9e2b868ed23161807c6e946aa60a01894b25463d849db026` |
+| Real Tag CI | [39916936993](https://github.com/liu-657667/macsoul/actions/runs/39916936993), completed/success, **11/11 Gates PASS**; exact test counts **NOT_EXPOSED** |
+
+| Public asset | Bytes | SHA256 |
+|---|---:|---|
+| [MacSoul-v0.1.1-beta.1-macos-universal-no-developer-id.dmg](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/MacSoul-v0.1.1-beta.1-macos-universal-no-developer-id.dmg) | 6,660,656 | `9b75bfcab322ad9b8af60963cf055caba45b0af63ef8bf556be54613bcef8db4` |
+| [MacSoul-v0.1.1-beta.1-no-developer-id.zip](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/MacSoul-v0.1.1-beta.1-no-developer-id.zip) | 6,276,771 | `6306413271efd2d988c536b52177302e9a88cf42ff4cdd439b7abd7a4af46f42` |
+| [SHA256SUMS.txt](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/SHA256SUMS.txt) | 232 | `a73cc49c29690ea7b3f360bcba45100c5d489e19aea5835e1cb52109266ec3d7` |
+
+**Phase 3E-R2 actual public verification — PASS:** anonymous HTTP access to the public page and all three files, exact sizes/SHA256/checksum contents, independent read-only DMG mount and ZIP extraction. All 7 App files, paths/types, permissions/xattrs, resources/PrivacyInfo/ThirdPartyNotices, version and Universal slices matched the accepted R3 Release Archive. No source, private dSYM, logs, internal evidence or account data were included. This records the accepted 2026-10-23 execution, not a new package or browser test in this documentation sync.
+
+**实际匿名公开验证已通过**：公开页面、三个附件的下载/大小/哈希/校验文件，以及独立 DMG 挂载、ZIP 解包与包内 App 完整身份匹配均依据 Phase 3E-R2 真实证据。发行包来自新 Release Archive，不是 Debug App；文档同步不重建、不重签、不移动发布 Tag。
+
+### Beta.1 validation boundaries
+
+| Scope | Actual result / retained limit |
+|---|---|
+| Full Code Signing | **FAIL / classification A**: arm64 **linker ad-hoc**, x86_64 **unsigned**; **No Developer ID / Unnotarized**. No unexplained corruption was found in the accepted diagnostics; this is not Signing PASS. |
+| Public-browser quarantine / Gatekeeper | **PENDING_OWNER / NOT_RUN**. Anonymous HTTP and local/cross-Mac opening do not establish Gatekeeper PASS. |
+| Beta.1 finite hardware observations | Apple Silicon installation/Bundled Mock/main window/appearance/Menu Bar/Quit/Reopen observed within Owner scope. Second **MacBook Air M1 / macOS 27.0.1** UI and enabled-login autostart / disabled-login no-autostart events **PASS**. |
+| LaunchAgent attribution | Full controlled attribution **PARTIAL_PASS**. Existing Debug core PASS does not replace package evidence; original **LA-P3 PARTIAL**, Accessibility **OWNER_DEFERRED** remain. Tab/Shift+Tab **NOT_PASSED**, cause **UNCONFIRMED**; Space/VoiceOver **NOT_TESTED**. |
+| [#15 Codex](https://github.com/liu-657667/macsoul/issues/15) | **Limited Owner Acceptance**. Finite standalone CLI session and limited App observation; long-running operation, Sleep/Wake, performance and full UI/Accessibility are not certified; no guarantee covers future CLI versions. |
+| [#17 Typography](https://github.com/liu-657667/macsoul/issues/17) | **PASSED_WITH_SCOPE**. VoiceOver/Keyboard **NOT_RUN**, Reduce Motion **NOT_FULLY_VERIFIED**, continuous Resize **NOT_RUN**; not every window size verified. |
+| [#18 Network](https://github.com/liu-657667/macsoul/issues/18) / [#20 follow-up](https://github.com/liu-657667/macsoul/issues/20) | Owner Live/UI **PARTIAL_PASS**. #20 **OPEN**, scheduled **after Beta**: automatic fallback, dual-source failure → Stale, recovery → Fresh and Querying **NOT_OBSERVED**; usable IPv6, actual network switching, Sleep/Wake and full interaction **NOT_RUN**; complete Refresh time comparison **PARTIAL_PASS**. |
+| Other coverage | Intel and other macOS hardware, full Accessibility, long-running and some Live/Performance checks remain incomplete. No historical v0.1.0 performance/test counts are reassigned to Beta.1. |
+
+**浏览器 Gatekeeper 尚待 Owner**；第二台 M1 Air 的有限 UI 与登录启停事件 PASS，不等于完整受控 LaunchAgent 归因（仍 PARTIAL_PASS）。#15/#16/#17/#18 的原有限验收与 #20 OPEN/Beta 后推进、Intel/其他 macOS/Accessibility/Live/Performance 限制均保留。Completed 只表示已接受范围，不等于全面验证。
+
+For installation, choose DMG or ZIP plus checksums above. With both packages present, run `shasum -a 256 -c SHA256SUMS.txt`; for one package compare its `shasum -a 256` output with its entry. Normally Quit existing MacSoul, then install in `/Applications` or your user's `~/Applications` and confirm **0.1.1 / build 2**, **Bundled Mock**. Minimum deployment target: macOS 13.0; Universal arm64/x86_64 is not hardware coverage. Enable login launch only from the installed copy, explicitly; moving it requires reconfiguration.
+
+下载后先核对 SHA256，安装及首次打开由用户本人执行。No Developer ID/未公证的首次打开可能被拦截；可信来源与哈希核对后参考 [Apple 官方逐 App 打开说明](https://support.apple.com/en-us/102445)，不关闭全局保护、不清除 quarantine。若损坏、恶意内容、无法启动或异常退出，停止并报告。Record actual browser download/quarantine/system prompt and action; without Owner observation retain **PENDING_OWNER / NOT_RUN**. No App Store, Homebrew or automatic updates; Cleaner remains read-only and Claude unavailable without verified source.
+
+### Release history and immutable source
+
+[PR #25](https://github.com/liu-657667/macsoul/pull/25) integrated Beta source/release validation; [PR #26](https://github.com/liu-657667/macsoul/pull/26) fixed annotated-Tag checkout normalization before the final main above. The original `v0.1.1-beta` raw Tag `712e6e4dc5009e3dfdb60cf8869f648a3606be88` still points to `b77d87fc00a4ddd3f7c4444dfcd707a91fca6722`; [real Tag CI 39880285031](https://github.com/liu-657667/macsoul/actions/runs/39880285031) remains **FAILURE**. That Tag was never published as a GitHub Release. Beta.1's real Tag CI and public verification are separate later evidence, not a rewrite of the failure.
+
+The old Phase 1/2/3 plan below is a **historical/superseded snapshot**, not a pending release instruction. The App and project/generator configuration are 0.1.1 / build 2; Codex clientInfo.version is 0.1.1 (MacSoul client metadata, not the CLI version). Tag CI, new Release Archive/package and publication steps were completed in their separately authorized phases. Published Tag/Release/assets and their Markdown snapshots remain fixed. This Phase 3F updates only four documentation files through a branch/PR; merge and any later release or #20 work require separate authorization.
+
 ## v0.1.1 Beta preparation — Unreleased
+
+> **Historical / superseded Phase 1 snapshot — 2026-10-22.** This entire preparation section (including Phase 1/2/3 authorizations, dependencies and NOT_RUN statements) records that checkpoint only. It is not the current release state or permission to repeat the old steps; current Beta.1 facts and validation boundaries are above. The heading is retained for historical links.
 
 **v0.1.1-beta is planned as a GitHub Pre-release and has not been published.** The current public download remains [v0.1.0 Unsigned Developer Preview](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0). Read-only GitHub verification on 2026-10-22 found main at `66149decaec43f08b986ab2fa302aa9530d0d196`, tree `e5884360e2118fa77396f527ee09ddefd826be98`, and no Beta Tag, Release or release assets. [Post-merge CI 39743270528](https://github.com/liu-657667/macsoul/actions/runs/39743270528) is SUCCESS using `./scripts/verify-v0.1.1.sh`; successful logs do not expose test counts. Historical local counts must not be assigned to this CI or Beta.
 
@@ -50,7 +102,7 @@ Under the Owner's current plan, #20 proceeds **after Beta**; this sequencing com
 
 **v0.1.0 historical scope below:** the following public assets, sizes, hashes, dates, Day 5–7 measurements, 365 tests, Archive procedure, failures, deferrals and finite Owner acceptance remain v0.1.0 records. The future Developer ID section is a retained plan, not authorization or executed Beta work. No old package or acceptance is reused for Beta, and no historical content is rewritten as a Beta result.
 
-## Current public release / 当前公开发行状态
+## Historical v0.1.0 public release / v0.1.0 历史公开发行状态
 
 **v0.1.0 UNSIGNED / UNNOTARIZED Developer Preview was publicly released on 2026-10-07.** [Official Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) — published at **2026-10-07T12:44:17Z**, `draft=false`, `prerelease=true`, **not Latest**. Tag `v0.1.0` is fixed at commit `2075572faafa5989ce3fd6ff7e6d7393365d8b99`; later documentation commits advance main without moving this tag. Day 7 local RC acceptance and repository integration remain complete: [PR #10](https://github.com/liu-657667/macsoul/pull/10) merged; [main CI 37614072470](https://github.com/liu-657667/macsoul/actions/runs/37614072470) SUCCESS. Signing/notarization remains NOT_RUN.
 

@@ -18,9 +18,11 @@ MacSoul 希望把系统状态、AI 编程额度、网络和本地开发环境放
 
 **有趣的反馈是入口，清楚、可信的数据才是目的。**
 
-> **MacSoul v0.1.0 Unsigned Developer Preview 已于 2026-10-07 公开发布。** 从 [GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) 下载预编译 Universal DMG 或 ZIP，无需安装 Xcode 或自行编译。当前版本未签名、未公证，首次打开可能受到 macOS 拦截；安装方法与验证边界见下方说明。
+> **当前最新公开预发布候选：MacSoul v0.1.1-beta.1**，已于 **2026-10-23 17:22:30 Asia/Shanghai** 公开发布为 GitHub **Pre-release、非 Latest**。App **0.1.1 / build 2**，**No Developer ID / Unnotarized**；公开浏览器 Gatekeeper 仍为 **PENDING_OWNER / NOT_RUN**。
 
-> **当前 main 已合入 v0.1.1 的四项改进；计划版本 v0.1.1-beta 准备中，尚未发布。** Beta 发行包及公开发布待后续独立授权阶段完成，目前下载仍为 v0.1.0。2026-10-22 核验 main 为 `66149dec`，[合并后 CI](https://github.com/liu-657667/macsoul/actions/runs/39743270528) SUCCESS；成功日志未暴露测试数量，不沿用历史本地计数，也不代表 Beta 发布批准。
+[Beta.1 GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.1-beta.1) · [Universal DMG（推荐）](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/MacSoul-v0.1.1-beta.1-macos-universal-no-developer-id.dmg) · [ZIP](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/MacSoul-v0.1.1-beta.1-no-developer-id.zip) · [SHA256SUMS.txt](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/SHA256SUMS.txt)
+
+> 公开页面、三个附件的匿名下载/哈希和 DMG/ZIP 包内身份已在 Phase 3E-R2 通过；[真实 Tag CI 39916936993](https://github.com/liu-657667/macsoul/actions/runs/39916936993) 为 11/11 Gate PASS，成功日志未公开精确测试计数。签名与有限实机边界见[当前发行说明](docs/RELEASE.md#current-v011-beta1-publication)。[v0.1.0 Unsigned Developer Preview](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) 保留为历史发行，完整下载入口见下方。
 
 ![MacSoul 产品概念主视觉，非当前 App 截图](assets-source/reference/macsoul-product-hero.png)
 
@@ -42,7 +44,7 @@ MacSoul 希望把系统状态、AI 编程额度、网络和本地开发环境放
 
 更多界面：[设置页上半部分（开发预览）](docs/screenshots/v0.1/settings.png)。
 
-*设置 — v0.1.0 unsigned Developer Preview。「登录时启动」不可用属于该历史 RC，不能作为当前 main 的结论；当前 Settings 已采用 Native User LaunchAgent，核心 Debug 实机启停已验收，Beta 分发包尚未验收。*
+*设置 — v0.1.0 unsigned Developer Preview。「登录时启动」不可用属于该历史 RC，不能作为当前 main 的结论；当前 Settings 已采用 Native User LaunchAgent；Beta.1 有限安装/UI 与登录事件已有观察，完整受控 LaunchAgent 归因仍为 PARTIAL_PASS。本截图仅属于 v0.1.0。*
 
 ## 核心功能与当前状态
 
@@ -76,11 +78,11 @@ MacSoul 的目标是展示账户实际提供的额度窗口，而不是根据套
 ### v0.1.1 已合并改进与验收边界
 
 - **Codex**（[#15](https://github.com/liu-657667/macsoul/issues/15)、[PR #21](https://github.com/liu-657667/macsoul/pull/21)）：以当前连接的握手和首个额度响应验证替代 exact-version 唯一准入。保留固定 CLI 来源、最小只读 RPC、适用窗口语义、schema/ID 校验与 fail-closed；版本信息仅供诊断，不保证未经验证的未来版本兼容。Limited Owner Acceptance 包括当时 CLI `0.162.0-alpha.17.2` 的有限独立协议会话和 App 三入口有限观察（PARTIAL_PASS）；App 内 CLI 版本与窗口类别未记录，长期运行、Sleep/Wake、性能、完整 UI/Accessibility 等仍未验证。
-- **登录时启动**（[#16](https://github.com/liu-657667/macsoul/issues/16)、[PR #23](https://github.com/liu-657667/macsoul/pull/23)、[PR #24](https://github.com/liu-657667/macsoul/pull/24)）：当前 Settings 使用 Native User LaunchAgent；仅用户显式启用/关闭更改配置，生命周期与 Refresh 只观察。先安装到 `/Applications` 或当前用户 `~/Applications`，启用只配置下一次登录，不立即额外启动 App；移动后需显式关闭旧配置并重新启用。核心 Debug 实机启停 PASS，原 LA-P3 PARTIAL 保留；Accessibility 为 OWNER_DEFERRED，Beta 分发包未验收。保留的旧 SMAppService 类型不构成双轨注册，旧系统问题根因未完全确认。
+- **登录时启动**（[#16](https://github.com/liu-657667/macsoul/issues/16)、[PR #23](https://github.com/liu-657667/macsoul/pull/23)、[PR #24](https://github.com/liu-657667/macsoul/pull/24)）：当前 Settings 使用 Native User LaunchAgent；仅用户显式启用/关闭更改配置，生命周期与 Refresh 只观察。先安装到 `/Applications` 或当前用户 `~/Applications`，启用只配置下一次登录，不立即额外启动 App；移动后需显式关闭旧配置并重新启用。核心 Debug 实机启停 PASS，原 LA-P3 PARTIAL 与 Accessibility OWNER_DEFERRED 保留。Beta.1 在 Apple Silicon 有限 UI/登录事件已观察，包括第二台 MacBook Air M1 / macOS 27.0.1 的启用后登录自启、关闭后登录未自启事件 PASS；完整受控 LaunchAgent 归因仍为 PARTIAL_PASS。保留的旧 SMAppService 类型不构成双轨注册，旧系统问题根因未完全确认。
 - **字体与布局**（[#17](https://github.com/liu-657667/macsoul/issues/17)、[PR #22](https://github.com/liu-657667/macsoul/pull/22)）：统一 Settings/System、Dev/AI、Network/Cleaner、Overview/Menu Bar/Sidebar 的字体、字重、间距与信息层级；修复 Overview 背景、Cleaner 摘要标题和最低窗口高度下内容侵入标题栏的问题。Owner visual 为 PASSED_WITH_SCOPE；完整无障碍、持续 Resize 与所有窗口尺寸未获验证。
 - **网络备源**（[#18](https://github.com/liu-657667/macsoul/issues/18)、[PR #19](https://github.com/liu-657667/macsoul/pull/19)）：IPinfo primary → ident.me fallback，IPv4/IPv6 独立；主源成功不查备源，失败后最多一次 fallback。实现已完成，Owner Live/UI 为 PARTIAL_PASS；[#20](https://github.com/liu-657667/macsoul/issues/20) 保留未观察/未执行项，按 Owner 当前计划在 Beta 后推进。
 
-Completed 仅表示对应已接受范围。各项键盘、VoiceOver、Reduce Motion、Network 与跨 macOS / Intel 覆盖的具体限制见[Beta 准备与验证边界](docs/RELEASE.md#v011-beta-preparation--unreleased)，未完成项不自动全部视为发布 blocker。
+Completed 仅表示对应已接受范围。各项键盘、VoiceOver、Reduce Motion、Network 与跨 macOS / Intel 覆盖的具体限制见[Beta.1 验证边界](docs/RELEASE.md#beta1-validation-boundaries)，未完成项不自动全部视为发布 blocker。
 
 ### Soul：有个性，但不打扰
 
@@ -88,7 +90,21 @@ Completed 仅表示对应已接受范围。各项键盘、VoiceOver、Reduce Mot
 
 实时 Soul 联动使用本地规则、持续阈值、冷却与恢复反馈，不依赖大模型生成吐槽；CPU 瞬时尖峰不会直接触发状态切换。
 
-## 预编译 App：v0.1.0 已公开发布
+## 预编译 App：v0.1.1-beta.1
+
+从 [Beta.1 GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.1-beta.1) 下载 App **0.1.1 / build 2**；发布于 **2026-10-23 17:22:30 Asia/Shanghai**，为 **Pre-release、非 Latest**，无需 Xcode 或自行编译。
+
+- [Universal DMG（推荐）](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/MacSoul-v0.1.1-beta.1-macos-universal-no-developer-id.dmg)
+- [ZIP（备用）](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/MacSoul-v0.1.1-beta.1-no-developer-id.zip)
+- [SHA256SUMS.txt（校验文件）](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/SHA256SUMS.txt)
+
+在下载目录用 `shasum -a 256 -c SHA256SUMS.txt` 核对两包；只下载一个包时，用 `shasum -a 256 <文件名>` 与对应条目比较。打开 DMG 后将 App 拖入 `/Applications` 或当前用户 `~/Applications`；ZIP 则解包后复制 App。先正常 Quit 已运行的 MacSoul；打开后确认 Settings 的 Data mode 为 **Bundled Mock**。最低部署目标为 macOS 13.0，Universal arm64/x86_64 不等于 Intel 或所有 macOS 实机已验证。
+
+**No Developer ID / Unnotarized；完整 Code Signing 验证 FAIL / 分类 A**：arm64 linker ad-hoc，x86_64 unsigned。Phase 3E-R2 已验证匿名公开下载、校验文件、独立 DMG 挂载/ZIP 解包及全部 7 个 App 文件与已接受 Archive 一致；这不替代浏览器首次打开。**公开浏览器 Gatekeeper 为 PENDING_OWNER / NOT_RUN**。首次打开可能被 macOS 拦截；仅在确认来源和哈希可信后，由用户本人参考 [Apple 逐 App 打开说明](https://support.apple.com/en-us/102445)决定操作，不关闭全局保护或清除 quarantine。出现损坏、恶意内容、无法启动或异常退出应停止并报告。没有 App Store、Homebrew 或自动更新渠道。
+
+### 历史下载：v0.1.0
+
+以下下载及浏览器观察仅属于 v0.1.0，不作为 Beta.1 的 Gatekeeper 或实机验收结果。
 
 从 [v0.1.0 GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) 下载以下公开附件；该版本为 **Pre-release、非 Latest**。使用预编译 App 不需要安装 Xcode 或自行编译。
 
@@ -121,17 +137,17 @@ open MacSoul.xcodeproj
 
 运行预览脚本前，请先正常退出已运行的 MacSoul。应用默认使用开发预览数据；在 **Settings → 系统数据来源** 可选择「实时系统」，启用真实 System/Dev/Network 和已验证 AI Provider。切回开发预览后，可选择 `Codex: Week only`、高 CPU、内存压力等模拟场景；这些场景不会修改真实账户套餐，也不会给电脑制造真实高负载。
 
-以上命令供源码开发使用；体验已公开的 v0.1.0 预编译 App 可直接使用上方下载链接，无需运行这些命令。
+以上命令供源码开发使用；体验已公开的 v0.1.1-beta.1 预编译 App 可直接使用上方下载链接，无需运行这些命令。
 
 ## 隐私与产品边界
 
-本地优先不等于零联网。已发布的 v0.1.0 Live Network 向 ipify 查询出口 IPv4/IPv6；**当前 main（计划用于尚未发布的 v0.1.1-beta）**改为 IPinfo 纯文本接口，主源成功不查备源，失败后最多尝试一次 ident.me。IPv4/IPv6 独立，每个地址族每次刷新最多两次查询、总超时预算 10 秒；保留 HTTPS/TLS、状态码、响应大小与 IP 地址族的严格校验，不绕过证书验证。启用 Connectivity probes 时向 GitHub/OpenAI/Anthropic 发匿名 HTTPS HEAD，不发送 API token、账户凭据或项目内容。OFF 仅关闭探测，不关闭公网 IP 查询。Preview 不启动这些外部请求；不采集 SSID/BSSID、位置或 Region，不修改 proxy/VPN/DNS/route。
+本地优先不等于零联网。已发布的 v0.1.0 Live Network 向 ipify 查询出口 IPv4/IPv6；**已发布的 v0.1.1-beta.1 与当前 main**改为 IPinfo 纯文本接口，主源成功不查备源，失败后最多尝试一次 ident.me。IPv4/IPv6 独立，每个地址族每次刷新最多两次查询、总超时预算 10 秒；保留 HTTPS/TLS、状态码、响应大小与 IP 地址族的严格校验，不绕过证书验证。启用 Connectivity probes 时向 GitHub/OpenAI/Anthropic 发匿名 HTTPS HEAD，不发送 API token、账户凭据或项目内容。OFF 仅关闭探测，不关闭公网 IP 查询。Preview 不启动这些外部请求；不采集 SSID/BSSID、位置或 Region，不修改 proxy/VPN/DNS/route。
 
 公网 IP 服务可观察请求方的公网出口 IP；仅解析 IP 文本，不读取 GPS、国家、城市、ASN、设备物理位置、真实账户信息或用户项目内容，不持久化真实公网 IP、原始 HTTP 响应或代理凭据。主备均失败时，仅保留上次有效地址及来源并标记 Stale；没有成功历史时显示 Unavailable，不支持的地址族显示 Unsupported。当前 Network 详情区区分最近成功时间、最近尝试时间、实际成功来源、查询状态及最近失败原因。Owner Live/UI 仅 PARTIAL_PASS；完整服务可达性、目标设备代理/TLS/IPv6 与交互需分别验证，其他机器或终端的可达性不证明 App 自动 fallback。
 
 当前 main 的 Codex 仅启动固定 ChatGPT.app bundled CLI app-server；同一可执行文件的版本信息仅供诊断，每次连接都验证握手与首读，仅发送 initialize、initialized、account/rateLimits/read，消费最小 rate-limit 字段；不读取 account profile、prompts/threads、不发模型推理、不操作登录或配额。协议 usedPercent 保持原义，UI/进度条统一显示 remaining。5h 只有已验证 machine-readable capability 才能判为不适用，缺失窗口本身不足以判断。Claude 当前只检查 executable/version，安装不代表有订阅。
 
-Cleaner 只读明确解析的 cache roots，不上传路径或内容；跳过符号链接，限制 Preview 边界。Docker 只查询本地 Engine logical usage，远程 context 不计入本机总量，不扫描 Docker.raw/VM。当前登录启动使用用户级 LaunchAgent，仅用户显式操作更改配置；已接受的 Debug 实机启停不替代后续 Beta 分发包验证。
+Cleaner 只读明确解析的 cache roots，不上传路径或内容；跳过符号链接，限制 Preview 边界。Docker 只查询本地 Engine logical usage，远程 context 不计入本机总量，不扫描 Docker.raw/VM。当前登录启动使用用户级 LaunchAgent，仅用户显式操作更改配置；Beta.1 已有独立分发包验证和有限实机事件记录，完整受控 LaunchAgent 归因仍为 PARTIAL_PASS；Debug 记录保持原范围。
 
 ### 限制
 
@@ -155,7 +171,7 @@ v0.1.0 Day 7 五分钟结果：CPU avg / p95 / max 为 0.012488% / 0.039502% / 0
 |---|---|
 | **已完成：v0.1.0 核心能力集成** | System / Dev / Network / Codex、只读 Cleaner；Day 6 review、无障碍、设置与持续性能验收按当时范围收口，属于 v0.1.0 历史记录 |
 | **已公开：v0.1.0** | [Unsigned Developer Preview](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) 于 2026-10-07 公开发布；Pre-release、非 Latest，Universal DMG / ZIP 与校验文件可公开下载；仍未签名、未公证 |
-| **准备中：v0.1.1-beta** | 四项改进已合入 main；当前为 Phase 1 文档候选，Beta 打包与公开发布待后续独立授权 |
+| **已公开：v0.1.1-beta.1** | [Beta Developer Preview](https://github.com/liu-657667/macsoul/releases/tag/v0.1.1-beta.1) 于 2026-10-23 发布，App 0.1.1 / build 2；Pre-release、非 Latest；No Developer ID / Unnotarized，公开浏览器 Gatekeeper 待 Owner |
 | **Beta 后：Network Live/UI** | 按 Owner 当前计划推进 [#20](https://github.com/liu-657667/macsoul/issues/20)，保留未观察、未执行和部分通过项 |
 | **v0.2.0 计划** | 单独设计 Cleaner cleanup/Trash/确认、Maven/Gradle Build Tools、Docker 扩展，不是现有功能 |
 

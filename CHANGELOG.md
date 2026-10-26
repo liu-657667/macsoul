@@ -1,6 +1,27 @@
 # Changelog
 
+## [0.1.1-beta.1] - 2026-10-23
+
+[Public GitHub Pre-release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.1-beta.1), **not Latest**, published at **2026-10-23 17:22:30 Asia/Shanghai** (`2026-10-23T09:22:30Z`). Release ID **421589810**; App **0.1.1 / build 2**; **No Developer ID / Unnotarized Beta Developer Preview**.
+
+### Merged improvements
+
+- Codex compatibility ([#15](https://github.com/liu-657667/macsoul/issues/15), [PR #21](https://github.com/liu-657667/macsoul/pull/21)): validate each connection's handshake and first quota response instead of exact-version matching as the sole gate. Retain fixed CLI provenance, minimal read-only RPCs, applicable-window semantics, schema/ID checks and fail-closed behavior. Version metadata is diagnostic, not automatic compatibility approval.
+- Launch at Login ([#16](https://github.com/liu-657667/macsoul/issues/16), [PR #23](https://github.com/liu-657667/macsoul/pull/23), [PR #24](https://github.com/liu-657667/macsoul/pull/24)): Settings uses a Native User LaunchAgent with explicit enable/disable; lifecycle and Refresh only observe. Install directly in `/Applications` or the current user's `~/Applications` first. Enabling configures the next login without an extra immediate launch; moving the App requires explicit reconfiguration. Retained SMAppService types do not constitute dual registration.
+- Typography ([#17](https://github.com/liu-657667/macsoul/issues/17), [PR #22](https://github.com/liu-657667/macsoul/pull/22)): unify fonts, weights, spacing and hierarchy across Settings/System, Dev/AI, Network/Cleaner and Overview/Menu Bar/Sidebar; fix Overview background, Cleaner summary heading and content entering the title bar at minimum height.
+- Network fallback ([#18](https://github.com/liu-657667/macsoul/issues/18), [PR #19](https://github.com/liu-657667/macsoul/pull/19)): IPinfo primary → ident.me fallback independently for IPv4/IPv6; primary success skips fallback, failure permits at most one fallback attempt. Retain Stale/Unavailable/Unsupported, actual source/time, HTTPS/TLS and strict response validation. Preview sends neither public-IP requests nor connectivity probes; the Connectivity probes switch does not disable Live public-IP queries.
+
+### Integration and release validation
+
+- [PR #25](https://github.com/liu-657667/macsoul/pull/25) integrated the Beta source and release validation. [PR #26](https://github.com/liu-657667/macsoul/pull/26) fixed annotated-Tag checkout normalization in CI; the release Tag is fixed at `66ce3719e232af0df1a8e1648efc61660750d6e1`.
+- The earlier `v0.1.1-beta` annotated Tag was created, but its [real Tag CI 39880285031](https://github.com/liu-657667/macsoul/actions/runs/39880285031) **FAILED**. It was not published as a GitHub Release and remains unchanged. Beta.1 [real Tag CI 39916936993](https://github.com/liu-657667/macsoul/actions/runs/39916936993) **SUCCESS**, all **11 Gates PASS**; successful logs do not expose exact test counts.
+- Phase 3E-R2 verified the anonymous public page and all three assets, sizes/SHA256/checksum contents, independent DMG mount/ZIP extraction and complete packaged App identity against the accepted Release Archive. Asset names, sizes, hashes and source identity are in the [current release guide](docs/RELEASE.md#current-v011-beta1-publication).
+- **Code Signing FAIL / classification A**: arm64 linker ad-hoc, x86_64 unsigned; no Developer ID or Apple notarization. **Public-browser Gatekeeper PENDING_OWNER / NOT_RUN**; anonymous HTTP or local opening does not establish Gatekeeper PASS.
+- Limited Apple Silicon UI/login events include the second MacBook Air M1 / macOS 27.0.1. Full controlled LaunchAgent attribution remains **PARTIAL_PASS**. #15 Limited Owner Acceptance; #16 LA-P3 PARTIAL / Accessibility OWNER_DEFERRED; #17 PASSED_WITH_SCOPE; #18 Owner Live/UI PARTIAL_PASS remain. [#20](https://github.com/liu-657667/macsoul/issues/20) is **OPEN**, planned after Beta. Intel/other macOS hardware, full Accessibility and some Live/Performance coverage remain incomplete; see [Beta.1 boundaries](docs/RELEASE.md#beta1-validation-boundaries).
+
 ## [0.1.1-beta] - Unreleased
+
+> **Historical / superseded Phase 1 preparation snapshot — 2026-10-22.** The dated statements below are retained as that checkpoint, not the current release plan. The candidate later received a Tag with failed real Tag CI, never a public GitHub Release; the published successor is Beta.1 above.
 
 Planned as a GitHub **Pre-release**. The changes below are merged into main; Beta packaging and public publication are not complete. As verified on 2026-10-22, there is no v0.1.1-beta Tag, Release or release asset. The publicly downloadable version remains [v0.1.0 Unsigned Developer Preview](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0).
 

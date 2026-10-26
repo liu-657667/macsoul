@@ -18,9 +18,11 @@ MacSoul aims to bring system health, AI coding quotas, network information and y
 
 **Personality gets your attention. Clear, trustworthy information is the point.**
 
-> **MacSoul v0.1.0 Unsigned Developer Preview was publicly released on 2026-10-07.** Download the precompiled Universal DMG or ZIP from the [GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0); no Xcode or compilation is required. This release is unsigned and unnotarized, so macOS may block first opening. See the installation instructions and validation limits below.
+> **Latest public prerelease candidate: MacSoul v0.1.1-beta.1**, published on **2026-10-23 at 17:22:30 Asia/Shanghai** as a GitHub **Pre-release, not Latest**. App **0.1.1 / build 2**, **No Developer ID / Unnotarized**. Public-browser Gatekeeper remains **PENDING_OWNER / NOT_RUN**.
 
-> **Current main includes four v0.1.1 improvements; the planned v0.1.1-beta is in preparation and unreleased.** Beta packages and public publication await separately authorized later phases; downloads still provide v0.1.0. Main was verified at `66149dec` on 2026-10-22, with [post-merge CI](https://github.com/liu-657667/macsoul/actions/runs/39743270528) SUCCESS. Successful logs expose no test count; historical local counts are not reused, and CI success does not approve the Beta release.
+[Beta.1 GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.1-beta.1) · [Universal DMG (recommended)](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/MacSoul-v0.1.1-beta.1-macos-universal-no-developer-id.dmg) · [ZIP](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/MacSoul-v0.1.1-beta.1-no-developer-id.zip) · [SHA256SUMS.txt](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/SHA256SUMS.txt)
+
+> The public page, anonymous downloads/hashes of all three assets and packaged App identity in DMG/ZIP passed in Phase 3E-R2. [Real Tag CI 39916936993](https://github.com/liu-657667/macsoul/actions/runs/39916936993) passed all 11 Gates; successful logs expose no exact test counts. See [current release details](docs/RELEASE.md#current-v011-beta1-publication) for signing and limited hardware acceptance. [v0.1.0 Unsigned Developer Preview](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) remains a historical release with full download links below.
 
 ![MacSoul product concept artwork, not a screenshot of the current app](assets-source/reference/macsoul-product-hero.png)
 
@@ -42,7 +44,7 @@ These preserved v0.1.0 Developer Preview captures use bundled mock data and do n
 
 Additional view: [Settings, upper section (Developer Preview)](docs/screenshots/v0.1/settings.png).
 
-*Settings — v0.1.0 unsigned Developer Preview. Unavailable Launch at Login belongs to that historical RC, not current main. Settings now uses a Native User LaunchAgent; core Debug enable/disable behavior has real-machine acceptance, while the Beta distribution package remains unvalidated.*
+*Settings — v0.1.0 unsigned Developer Preview. Unavailable Launch at Login belongs to that historical RC, not current main. Settings now uses a Native User LaunchAgent. Beta.1 has limited installation/UI and login-event observations; full controlled LaunchAgent attribution remains PARTIAL_PASS. This screenshot belongs only to v0.1.0.*
 
 ## Features and implementation status
 
@@ -76,11 +78,11 @@ Settings can switch MacSoul between Follow macOS, Light and Dark, and between Si
 ### Merged v0.1.1 improvements and validation boundaries
 
 - **Codex** ([#15](https://github.com/liu-657667/macsoul/issues/15), [PR #21](https://github.com/liu-657667/macsoul/pull/21)): validation of the current connection's handshake and first quota response replaces exact-version matching as the sole admission gate. Fixed CLI provenance, minimal read-only RPCs, applicable-window semantics, schema/ID checks and fail-closed behavior remain. Version metadata is diagnostic, not a guarantee of unverified future compatibility. Limited Owner Acceptance covers a finite standalone protocol session with then-current CLI `0.162.0-alpha.17.2` and limited App observation across three surfaces (PARTIAL_PASS). The App's CLI version and window categories were not recorded; long-running behavior, Sleep/Wake, performance and full UI/Accessibility remain unverified.
-- **Launch at Login** ([#16](https://github.com/liu-657667/macsoul/issues/16), [PR #23](https://github.com/liu-657667/macsoul/pull/23), [PR #24](https://github.com/liu-657667/macsoul/pull/24)): Settings now uses a Native User LaunchAgent. Only explicit user enable/disable changes configuration; lifecycle events and Refresh only observe. Install directly in `/Applications` or the current user's `~/Applications` first. Enabling configures the next login without immediately launching another App instance; moving the App requires explicitly disabling the old configuration and enabling again. Core Debug real-machine enable/disable is PASS; original LA-P3 PARTIAL remains, Accessibility is OWNER_DEFERRED, and Beta package validation is outstanding. Retained legacy SMAppService types do not mean dual registration; the old system issue's root cause remains unconfirmed.
+- **Launch at Login** ([#16](https://github.com/liu-657667/macsoul/issues/16), [PR #23](https://github.com/liu-657667/macsoul/pull/23), [PR #24](https://github.com/liu-657667/macsoul/pull/24)): Settings now uses a Native User LaunchAgent. Only explicit user enable/disable changes configuration; lifecycle events and Refresh only observe. Install directly in `/Applications` or the current user's `~/Applications` first. Enabling configures the next login without immediately launching another App instance; moving the App requires explicitly disabling the old configuration and enabling again. Core Debug real-machine enable/disable is PASS; original LA-P3 PARTIAL and Accessibility OWNER_DEFERRED remain. Beta.1 has limited Apple Silicon UI/login observations, including enabled-login autostart and disabled-login no-autostart events PASS on the second MacBook Air M1 / macOS 27.0.1. Full controlled LaunchAgent attribution remains PARTIAL_PASS. Retained legacy SMAppService types do not mean dual registration; the old system issue's root cause remains unconfirmed.
 - **Typography and layout** ([#17](https://github.com/liu-657667/macsoul/issues/17), [PR #22](https://github.com/liu-657667/macsoul/pull/22)): consistent fonts, weights, spacing and hierarchy across Settings/System, Dev/AI, Network/Cleaner and Overview/Menu Bar/Sidebar. Fixes cover the Overview background, Cleaner summary heading and content entering the title bar at minimum window height. Owner visual acceptance is PASSED_WITH_SCOPE; full accessibility, continuous Resize and all window sizes are not verified.
 - **Network fallback** ([#18](https://github.com/liu-657667/macsoul/issues/18), [PR #19](https://github.com/liu-657667/macsoul/pull/19)): IPinfo primary → ident.me fallback, independently for IPv4/IPv6. Primary success skips the fallback; failure allows at most one fallback attempt. Implementation is complete; Owner Live/UI is PARTIAL_PASS. [#20](https://github.com/liu-657667/macsoul/issues/20) retains unobserved/unexecuted checks and is planned after Beta under the Owner's current sequence.
 
-Completed means only the accepted scope. See [Beta preparation and validation boundaries](docs/RELEASE.md#v011-beta-preparation--unreleased) for exact keyboard, VoiceOver, Reduce Motion, Network and cross-macOS / Intel coverage limits. Outstanding checks are not automatically all release blockers.
+Completed means only the accepted scope. See [Beta.1 validation boundaries](docs/RELEASE.md#beta1-validation-boundaries) for exact keyboard, VoiceOver, Reduce Motion, Network and cross-macOS / Intel coverage limits. Outstanding checks are not automatically all release blockers.
 
 ### A personality, not a notification machine
 
@@ -88,7 +90,21 @@ Normal, busy, overloaded, too full, low energy and resting are expressions of th
 
 Live Soul behavior uses local rules, sustained thresholds, cooldowns and recovery rather than an LLM generating comments. A momentary CPU spike does not directly change Soul state.
 
-## Precompiled App: v0.1.0 is publicly available
+## Precompiled App: v0.1.1-beta.1
+
+Download App **0.1.1 / build 2** from the [Beta.1 GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.1-beta.1), published **2026-10-23 at 17:22:30 Asia/Shanghai** as a **Pre-release, not Latest**. No Xcode or compilation is required.
+
+- [Universal DMG (recommended)](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/MacSoul-v0.1.1-beta.1-macos-universal-no-developer-id.dmg)
+- [ZIP (alternative)](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/MacSoul-v0.1.1-beta.1-no-developer-id.zip)
+- [SHA256SUMS.txt (checksums)](https://github.com/liu-657667/macsoul/releases/download/v0.1.1-beta.1/SHA256SUMS.txt)
+
+In the download directory, use `shasum -a 256 -c SHA256SUMS.txt` for both packages, or compare `shasum -a 256 <filename>` with the matching entry for one package. Open the DMG and drag the App to `/Applications` or your user's `~/Applications`; alternatively extract the ZIP and copy the App. Normally Quit existing MacSoul instances first, then confirm **Bundled Mock** under Settings / Data mode. The minimum deployment target is macOS 13.0; Universal arm64/x86_64 does not establish Intel or every macOS version as hardware-tested.
+
+**No Developer ID / Unnotarized; full Code Signing verification FAIL / classification A**: arm64 linker ad-hoc, x86_64 unsigned. Phase 3E-R2 verified anonymous public downloads, checksums, independent DMG mounting/ZIP extraction and all 7 App files against the accepted Archive. This does not replace browser first-opening checks. **Public-browser Gatekeeper is PENDING_OWNER / NOT_RUN**. macOS may block first opening. Only after trusting the source and hash, personally consult [Apple's per-App opening guidance](https://support.apple.com/en-us/102445); do not disable global protection or remove quarantine. Stop and report damaged-app or malicious-content warnings, inability to launch or abnormal exits. No App Store, Homebrew or automatic update channel is provided.
+
+### Historical downloads: v0.1.0
+
+The following downloads and browser observations belong only to v0.1.0, not Beta.1 Gatekeeper or hardware acceptance.
 
 Download these public assets from the [v0.1.0 GitHub Release](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0); this is a **Pre-release, not Latest**. The precompiled App does not require Xcode or compilation.
 
@@ -121,17 +137,17 @@ open MacSoul.xcodeproj
 
 Quit any running MacSoul instance before using the preview script. The app starts with mock data. Choose **Settings → System data source → Live System** for live System/Dev/Network and verified AI providers. Back in Developer Preview, try `Codex: Week only`, high CPU and memory-pressure scenarios. These fixtures neither alter a real subscription nor place the machine under load.
 
-The commands above are for source development; use the public download links above to try the v0.1.0 precompiled App without running these commands.
+The commands above are for source development; use the public download links above to try the v0.1.1-beta.1 precompiled App without running these commands.
 
 ## Privacy and boundaries
 
-Local-first does not mean zero network traffic. Published v0.1.0 Live Network queries ipify for observed IPv4/IPv6 egress addresses. **Current main (intended for the unreleased v0.1.1-beta)** uses IPinfo plain-text endpoints. Primary success skips the fallback; failure allows at most one ident.me attempt. IPv4/IPv6 are independent, with at most two queries and a 10-second total timeout budget per family per refresh. HTTPS/TLS and strict status-code, response-size and IP-family validation remain; certificate validation is not bypassed. Enabled Connectivity probes send anonymous HTTPS HEAD requests to GitHub/OpenAI/Anthropic without API tokens, credentials or project data. OFF disables probes, not IP lookups. Preview starts neither. No SSID/BSSID, location or Region collection; no proxy/VPN/DNS/route mutation.
+Local-first does not mean zero network traffic. Published v0.1.0 Live Network queries ipify for observed IPv4/IPv6 egress addresses. **Published v0.1.1-beta.1 and current main** use IPinfo plain-text endpoints. Primary success skips the fallback; failure allows at most one ident.me attempt. IPv4/IPv6 are independent, with at most two queries and a 10-second total timeout budget per family per refresh. HTTPS/TLS and strict status-code, response-size and IP-family validation remain; certificate validation is not bypassed. Enabled Connectivity probes send anonymous HTTPS HEAD requests to GitHub/OpenAI/Anthropic without API tokens, credentials or project data. OFF disables probes, not IP lookups. Preview starts neither. No SSID/BSSID, location or Region collection; no proxy/VPN/DNS/route mutation.
 
 Public IP services can observe the requester’s public egress IP. Only IP text is parsed: no GPS, country, city, ASN, physical device location, real account data or project content is collected. Real public IPs, raw HTTP responses and proxy credentials are not persisted. If both sources fail, only the last valid address and its provenance are retained as Stale; without a successful history the state is Unavailable, and an unsupported address family is Unsupported. Current Network details separate last success, last attempt, actual successful source, checking state and latest failure. Owner Live/UI is only PARTIAL_PASS. Full service reachability, target-device proxy/TLS/IPv6 and interaction require separate validation; another machine's or terminal's reachability does not prove automatic App fallback.
 
 Codex on current main starts only the fixed ChatGPT.app bundled CLI app-server. Version metadata comes from that same executable for diagnostics; each connection must pass handshake and first-read validation, sending only initialize, initialized and account/rateLimits/read and consuming minimal rate-limit fields. No account profile, prompts/threads, inference, login or quota mutation. Canonical usedPercent is preserved; numeric UI/bars show remaining. Only verified machine-readable capability can classify absent 5h as not applicable; absence alone is insufficient. Claude currently checks executable/version only; installation does not prove a subscription.
 
-Cleaner reads resolved cache roots without uploading paths/content, skips symlinks and constrains Preview traversal. Docker queries local Engine logical usage only; remote contexts are excluded, with no Docker.raw/VM traversal. Current Launch at Login uses a user LaunchAgent and changes configuration only through explicit user action. Accepted Debug real-machine enable/disable does not replace later Beta distribution validation.
+Cleaner reads resolved cache roots without uploading paths/content, skips symlinks and constrains Preview traversal. Docker queries local Engine logical usage only; remote contexts are excluded, with no Docker.raw/VM traversal. Current Launch at Login uses a user LaunchAgent and changes configuration only through explicit user action. Beta.1 has separate distribution-package validation and limited hardware-event records; full controlled LaunchAgent attribution remains PARTIAL_PASS. Debug records retain their original scope.
 
 ### Limitations
 
@@ -155,7 +171,7 @@ Finite runs do not guarantee <0.5% on every machine or prove that future leaks a
 |---|---|
 | **Completed: v0.1.0 core integrations** | System / Dev / Network / Codex, read-only Cleaner; Day 6 review, accessibility, Settings and sustained-performance acceptance closed within the scope recorded for v0.1.0 |
 | **Publicly released: v0.1.0** | [Unsigned Developer Preview](https://github.com/liu-657667/macsoul/releases/tag/v0.1.0) published on 2026-10-07; Pre-release, not Latest; public Universal DMG / ZIP and checksums; still unsigned and unnotarized |
-| **In preparation: v0.1.1-beta** | Four improvements merged into main; currently a Phase 1 documentation candidate, with Beta packaging and publication awaiting separately authorized later phases |
+| **Publicly released: v0.1.1-beta.1** | [Beta Developer Preview](https://github.com/liu-657667/macsoul/releases/tag/v0.1.1-beta.1) published 2026-10-23, App 0.1.1 / build 2; Pre-release, not Latest; No Developer ID / Unnotarized, public-browser Gatekeeper pending Owner |
 | **After Beta: Network Live/UI** | Progress [#20](https://github.com/liu-657667/macsoul/issues/20) under the Owner's current plan, retaining NOT_OBSERVED, NOT_RUN and partial results |
 | **v0.2.0 plans** | Separately design Cleaner cleanup/Trash/confirmation, Maven/Gradle Build Tools and Docker extensions; not current capabilities |
 
